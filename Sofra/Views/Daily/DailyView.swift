@@ -2,12 +2,15 @@
 //  DailyView.swift
 //  Sofra — main daily screen after logging.
 //
-//  Central calorie ring + macro readouts + bread/tea quick counters
-//  + access to 7-day summary. Camera button at top returns to capture.
+//  Greeting + date header, central calorie ring, macro progress cards,
+//  bread/tea quick counters, a 7-day sparkline card and today's meals
+//  (with delete). Camera and text-log entry points live in the header
+//  and in the empty state.
 //
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct DailyView: View {
     @Environment(NavigationModel.self) private var nav
@@ -45,6 +48,15 @@ struct DailyView: View {
         todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.fat } }
     }
 
+    /// Macro gram targets derived from the calorie target (30/40/30 split).
+    private var proteinTarget: Double { calorieTarget * 0.30 / 4 }
+    private var carbsTarget: Double { calorieTarget * 0.40 / 4 }
+    private var fatTarget: Double { calorieTarget * 0.30 / 9 }
+
+    private var weekSummaries: [DaySummary] {
+        DaySummaryBuilder.lastSevenDays(scans: scanEntries, counters: counters)
+    }
+
     /// Today's quick counter (fetched or new).
     @State private var breadSlices: Int = 0
     @State private var teaGlasses: Int = 0
@@ -55,32 +67,24 @@ struct DailyView: View {
 
             ScrollView(showsIndicators: false) {
                 VStack(spacing: Layout.Spacing.xl) {
-                    // Top bar
                     topBar
 
-                    // Calorie ring
                     CalorieRingView(consumed: todayCalories, target: calorieTarget)
-                        .padding(.top, Layout.Spacing.md)
+                        .padding(.top, Layout.Spacing.sm)
 
-                    // Macro readouts
                     macroRow
 
-                    // Quick counters
                     QuickCounterView(
                         breadSlices: $breadSlices,
                         teaGlasses: $teaGlasses
                     )
                     .padding(.horizontal, Layout.Spacing.lg)
 
-                    // 7-day summary link
-                    sevenDayButton
+                    sevenDayCard
 
-                    // Today's entries
-                    if !todayScans.isEmpty {
-                        todayEntriesSection
-                    }
+                    todayEntriesSection
 
-                    Spacer(minLength: 120)
+                    Spacer(minLength: 40)
                 }
             }
         }
@@ -98,72 +102,86 @@ struct DailyView: View {
     // MARK: - Top bar
 
     private var topBar: some View {
-        HStack {
-            // Date
+        HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(todayLabel)
+                Text(greeting)
                     .font(.sofraTitle)
                     .foregroundStyle(Color.textPrimary)
-                Text("Günlük Özet")
+                Text(todayLabel)
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
 
             Spacer()
 
-            // Text log button
+            // Text log
             Button {
-                nav.goToTextLog()
+                nav.goToTextLog(from: .daily)
             } label: {
                 Image(systemName: "text.alignleft")
-                    .font(.system(size: 15))
+                    .font(.system(size: 16))
                     .foregroundStyle(Color.textSecondary)
-                    .padding(Layout.Spacing.md)
+                    .frame(width: 46, height: 46)
                     .background(Color.surfaceRaised, in: Circle())
+                    .raisedSurface(cornerRadius: 23)
             }
 
-            // Camera button
+            // Camera — the primary action
             Button {
                 nav.goToCamera()
             } label: {
                 Image(systemName: "camera.fill")
-                    .font(.system(size: 16))
+                    .font(.system(size: 18))
                     .foregroundStyle(Color.onAccent)
-                    .padding(Layout.Spacing.md)
-                    .background(Color.accentFill, in: Circle())
+                    .frame(width: 52, height: 52)
+                    .background(
+                        Circle().fill(
+                            Color.accentFill
+                                .shadow(.drop(color: .borderShadow.opacity(0.6), radius: 5, x: 3, y: 3))
+                        )
+                    )
             }
         }
         .padding(.horizontal, Layout.Spacing.lg)
-        .padding(.top, 60)
+        .padding(.top, Layout.Spacing.md)
     }
 
     // MARK: - Macro row
 
     private var macroRow: some View {
-        HStack(spacing: Layout.Spacing.xl) {
-            MacroPill(label: "Protein", value: todayProtein, unit: "g", color: .green)
-            MacroPill(label: "Carbs", value: todayCarbs, unit: "g", color: .orange)
-            MacroPill(label: "Yağ", value: todayFat, unit: "g", color: .red.opacity(0.8))
+        HStack(spacing: Layout.Spacing.md) {
+            MacroCard(label: "Protein", value: todayProtein, target: proteinTarget, color: .macroProtein)
+            MacroCard(label: "Karb.", value: todayCarbs, target: carbsTarget, color: .macroCarb)
+            MacroCard(label: "Yağ", value: todayFat, target: fatTarget, color: .macroFat)
         }
         .padding(.horizontal, Layout.Spacing.lg)
     }
 
-    // MARK: - 7-day summary button
+    // MARK: - 7-day summary card (with sparkline)
 
-    private var sevenDayButton: some View {
+    private var sevenDayCard: some View {
         Button {
             nav.showSevenDaySummary = true
         } label: {
-            HStack(spacing: Layout.Spacing.sm) {
-                Image(systemName: "chart.bar.fill")
-                    .font(.system(size: 13))
-                Text("7 Günlük Özet")
-                    .font(.sofraLabel)
+            HStack(spacing: Layout.Spacing.md) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("7 Günlük Özet")
+                        .font(.sofraLabel)
+                        .foregroundStyle(Color.textPrimary)
+                    Text(weekAverage > 0 ? "Ortalama \(Int(weekAverage)) kcal" : "Henüz veri yok")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+
                 Spacer()
+
+                WeekSparkline(summaries: weekSummaries, target: calorieTarget)
+                    .frame(width: 96, height: 36)
+
                 Image(systemName: "chevron.right")
                     .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(Color.textMuted)
             }
-            .foregroundStyle(Color.textPrimary)
             .padding(Layout.Spacing.lg)
             .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
             .raisedSurface(cornerRadius: Layout.Radius.card)
@@ -172,8 +190,15 @@ struct DailyView: View {
         .padding(.horizontal, Layout.Spacing.lg)
     }
 
+    private var weekAverage: Double {
+        let days = weekSummaries.filter { $0.calories > 0 }
+        guard !days.isEmpty else { return 0 }
+        return days.reduce(0) { $0 + $1.calories } / Double(days.count)
+    }
+
     // MARK: - Today's entries
 
+    @ViewBuilder
     private var todayEntriesSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             Text("Bugünkü Öğünler")
@@ -181,32 +206,78 @@ struct DailyView: View {
                 .foregroundStyle(Color.textSecondary)
                 .padding(.horizontal, Layout.Spacing.lg)
 
-            ForEach(todayScans, id: \.id) { entry in
-                VStack(spacing: Layout.Spacing.xs) {
-                    ForEach(entry.itemsOrEmpty, id: \.persistentModelID) { item in
-                        HStack(spacing: Layout.Spacing.sm) {
-                            SofraIconView(icon: item.portionUnit.icon ?? .tabak, size: 20)
-                                .foregroundStyle(Color.accentFill)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(item.name)
-                                    .font(.sofraBody)
-                                    .foregroundStyle(Color.textPrimary)
-                                Text("\(item.quantity, specifier: "%.1f") \(item.portionUnit.displayName)")
-                                    .font(.sofraCaption)
-                                    .foregroundStyle(Color.textMuted)
-                            }
-                            Spacer()
-                            Text("\(Int(item.calories)) kcal")
-                                .font(.sofraNumericSmall)
-                                .foregroundStyle(Color.accentText)
-                        }
+            if todayScans.isEmpty {
+                emptyMealsCard
+            } else {
+                ForEach(todayScans, id: \.id) { entry in
+                    MealEntryCard(entry: entry) {
+                        delete(entry)
                     }
+                    .padding(.horizontal, Layout.Spacing.lg)
                 }
-                .padding(Layout.Spacing.md)
-                .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
-                .padding(.horizontal, Layout.Spacing.lg)
             }
         }
+    }
+
+    private var emptyMealsCard: some View {
+        VStack(spacing: Layout.Spacing.md) {
+            SofraIconView(icon: .sofra, size: 44)
+                .foregroundStyle(Color.accentFill)
+
+            Text("Bugün henüz öğün eklemedin")
+                .font(.sofraBody)
+                .foregroundStyle(Color.textPrimary)
+
+            Text("Tabağının fotoğrafını çek, gerisini Sofra halletsin.")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+                .multilineTextAlignment(.center)
+
+            HStack(spacing: Layout.Spacing.md) {
+                Button {
+                    nav.goToCamera()
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "camera.fill")
+                            .font(.system(size: 13))
+                        Text("Fotoğrafla ekle")
+                            .font(.sofraLabel)
+                    }
+                    .foregroundStyle(Color.onAccent)
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.vertical, Layout.Spacing.sm)
+                    .background(Color.accentFill, in: Capsule())
+                }
+
+                Button {
+                    nav.goToTextLog(from: .daily)
+                } label: {
+                    Text("Yazarak ekle")
+                        .font(.sofraLabel)
+                        .foregroundStyle(Color.textPrimary)
+                        .padding(.horizontal, Layout.Spacing.lg)
+                        .padding(.vertical, Layout.Spacing.sm)
+                        .background(Color.surfaceFlat, in: Capsule())
+                }
+            }
+            .padding(.top, Layout.Spacing.xs)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(Layout.Spacing.xl)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.raisedContainer))
+        .raisedSurface(cornerRadius: Layout.Radius.raisedContainer)
+        .padding(.horizontal, Layout.Spacing.lg)
+    }
+
+    private func delete(_ entry: ScanEntry) {
+        withAnimation(.sofraSpring) {
+            modelContext.delete(entry)
+            try? modelContext.save()
+        }
+        WidgetDataStore.saveCurrentDaySummary(
+            modelContext: modelContext,
+            calorieTarget: calorieTarget
+        )
     }
 
     // MARK: - Counters persistence
@@ -230,45 +301,172 @@ struct DailyView: View {
         if let existing = counters.first(where: { counter in
             counter.date >= today && counter.date < cal.date(byAdding: .day, value: 1, to: today) ?? Date()
         }) {
+            guard existing.breadSlices != breadSlices || existing.teaGlasses != teaGlasses else { return }
             existing.breadSlices = breadSlices
             existing.teaGlasses = teaGlasses
         } else {
+            guard breadSlices != 0 || teaGlasses != 0 else { return }
             let new = DailyQuickCounter(date: today, breadSlices: breadSlices, teaGlasses: teaGlasses)
             modelContext.insert(new)
         }
         try? modelContext.save()
+
+        // Update widget after counter change
+        WidgetDataStore.saveCurrentDaySummary(
+            modelContext: modelContext,
+            calorieTarget: calorieTarget
+        )
+    }
+
+    private var greeting: String {
+        switch Calendar.current.component(.hour, from: Date()) {
+        case 5..<11:  return "Günaydın"
+        case 11..<18: return "İyi günler"
+        default:      return "İyi akşamlar"
+        }
     }
 
     private var todayLabel: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "d MMMM"
+        formatter.dateFormat = "d MMMM EEEE"
         return formatter.string(from: Date())
     }
 }
 
-// MARK: - Macro pill
+// MARK: - Macro card (value + progress toward derived target)
 
-struct MacroPill: View {
+struct MacroCard: View {
     let label: String
     let value: Double
-    let unit: String
+    let target: Double
     let color: Color
 
+    private var progress: Double {
+        guard target > 0 else { return 0 }
+        return min(value / target, 1)
+    }
+
     var body: some View {
-        VStack(spacing: 4) {
-            Text("\(Int(value))")
-                .font(.sofraNumericSmall)
-                .foregroundStyle(Color.textPrimary)
-            Text("\(label)")
-                .font(.system(size: 11))
-                .foregroundStyle(Color.textMuted)
-            Text(unit)
-                .font(.system(size: 10))
-                .foregroundStyle(Color.textMuted)
+        VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+            Text(label)
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textSecondary)
+
+            HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text("\(Int(value))")
+                    .font(.sofraNumericSmall)
+                    .foregroundStyle(Color.textPrimary)
+                    .contentTransition(.numericText())
+                Text("/ \(Int(target)) g")
+                    .font(.system(size: 10))
+                    .foregroundStyle(Color.textMuted)
+            }
+
+            // Progress bar
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Color.surfaceFlat)
+                    Capsule()
+                        .fill(color)
+                        .frame(width: max(geo.size.width * progress, progress > 0 ? 6 : 0))
+                        .animation(.easeOut(duration: 0.5), value: progress)
+                }
+            }
+            .frame(height: 6)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, Layout.Spacing.md)
-        .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+        .padding(Layout.Spacing.md)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+        .raisedSurface(cornerRadius: Layout.Radius.card)
+    }
+}
+
+// MARK: - Week sparkline (mini 7-bar chart, oldest → newest)
+
+struct WeekSparkline: View {
+    let summaries: [DaySummary]   // today first
+    let target: Double
+
+    var body: some View {
+        let ordered = Array(summaries.reversed())
+        let peak = max(ordered.map(\.calories).max() ?? 0, target, 1)
+
+        HStack(alignment: .bottom, spacing: 4) {
+            ForEach(Array(ordered.enumerated()), id: \.offset) { idx, day in
+                let isToday = idx == ordered.count - 1
+                Capsule()
+                    .fill(isToday ? Color.accentFill : Color.accentFill.opacity(0.35))
+                    .frame(height: max(4, 36 * day.calories / peak))
+                    .frame(maxWidth: .infinity, alignment: .bottom)
+            }
+        }
+    }
+}
+
+// MARK: - Meal entry card
+
+struct MealEntryCard: View {
+    let entry: ScanEntry
+    let onDelete: () -> Void
+
+    private var entryCalories: Double {
+        entry.itemsOrEmpty.reduce(0) { $0 + $1.calories }
+    }
+
+    private var timeLabel: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: entry.timestamp)
+    }
+
+    var body: some View {
+        VStack(spacing: Layout.Spacing.sm) {
+            // Entry header: time + source + total
+            HStack(spacing: Layout.Spacing.xs) {
+                Image(systemName: entry.source == .photo ? "camera.fill" : "text.alignleft")
+                    .font(.system(size: 10))
+                    .foregroundStyle(Color.textMuted)
+                Text(timeLabel)
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textMuted)
+                Spacer()
+                Text("\(Int(entryCalories)) kcal")
+                    .font(.sofraNumericSmall)
+                    .foregroundStyle(Color.accentText)
+            }
+
+            Divider().overlay(Color.borderHairline)
+
+            ForEach(entry.itemsOrEmpty, id: \.persistentModelID) { item in
+                HStack(spacing: Layout.Spacing.sm) {
+                    SofraIconView(icon: item.portionUnit.icon ?? .tabak, size: 20)
+                        .foregroundStyle(Color.accentFill)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(item.name)
+                            .font(.sofraBody)
+                            .foregroundStyle(Color.textPrimary)
+                        Text("\(item.quantity, specifier: "%.1f") \(item.portionUnit.displayName)")
+                            .font(.sofraCaption)
+                            .foregroundStyle(Color.textMuted)
+                    }
+                    Spacer()
+                    Text("\(Int(item.calories)) kcal")
+                        .font(.sofraNumericSmall)
+                        .foregroundStyle(Color.textSecondary)
+                }
+            }
+        }
+        .padding(Layout.Spacing.lg)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+        .raisedSurface(cornerRadius: Layout.Radius.card)
+        .contextMenu {
+            Button(role: .destructive) {
+                onDelete()
+            } label: {
+                Label("Öğünü Sil", systemImage: "trash")
+            }
+        }
     }
 }

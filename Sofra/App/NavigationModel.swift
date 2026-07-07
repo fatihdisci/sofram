@@ -56,6 +56,15 @@ final class NavigationModel {
     /// Whether to show the free-scan-limit screen.
     var showFreeScanLimit: Bool = false
 
+    /// Where the text-log screen was opened from — its close button returns there.
+    enum TextLogOrigin {
+        case camera, daily
+    }
+    private(set) var textLogOrigin: TextLogOrigin = .camera
+
+    /// Draft of the text-log input, kept so backing out of a result doesn't lose it.
+    var textLogDraft: String = ""
+
     // MARK: - Navigation methods
 
     func goToCamera() {
@@ -74,7 +83,25 @@ final class NavigationModel {
         screen = .daily
     }
 
-    func goToTextLog() {
+    func goToTextLog(from origin: TextLogOrigin) {
+        textLogOrigin = origin
         screen = .textLog
+    }
+
+    /// Close the text-log screen back to wherever it was opened from.
+    func closeTextLog() {
+        switch textLogOrigin {
+        case .camera: screen = .camera
+        case .daily:  screen = .daily
+        }
+    }
+
+    /// Dismiss a result without logging. Photo scans return to the camera,
+    /// text scans return to the text-log screen (the draft is preserved).
+    func dismissResult(source: ScanSource) {
+        switch source {
+        case .text:  screen = .textLog
+        default:     screen = .camera
+        }
     }
 }

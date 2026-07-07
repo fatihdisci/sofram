@@ -40,18 +40,39 @@
 		<string>remote-notification</string>
 	</array>
 
-	<!-- Purpose strings for later phases (camera/scanning UI is out of scope now,
-	     but declaring intent here is foundation and avoids a future footgun). -->
+	<!-- Purpose strings -->
 	<key>NSCameraUsageDescription</key>
 	<string>Sofra, tabağınızdaki yemekleri tanıyıp kalori ve makro tahmini yapmak için kameranızı kullanır.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Yemek fotoğraflarınızı analiz için Sofra ile paylaşabilirsiniz.</string>
 
-	<!-- AI proxy endpoint (configurable). Placeholder for this phase; the real
-	     Vercel Edge Function deployment is out of scope. AIProxyClient reads these. -->
+	<!-- Widget deep link: sofra://daily → günlük özet -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.fatih.sofra</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sofra</string>
+			</array>
+		</dict>
+	</array>
+
+	<!-- AI proxy endpoint (configurable). -->
 	<key>AIProxyEndpointURL</key>
 	<string>https://REPLACE-ME.vercel.app/api/scan</string>
 	<key>AIProxyAPIKey</key>
 	<string></string>
+
+	<!-- Custom fonts: Geist Sans (UI) + Geist Mono (numeric displays) -->
+	<key>UIAppFonts</key>
+	<array>
+		<string>Geist-Regular.otf</string>
+		<string>Geist-Medium.otf</string>
+		<string>Geist-SemiBold.otf</string>
+		<string>GeistMono-Regular.otf</string>
+		<string>GeistMono-Medium.otf</string>
+	</array>
 </dict>
 </plist>

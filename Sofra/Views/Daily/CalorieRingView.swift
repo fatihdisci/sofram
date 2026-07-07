@@ -6,6 +6,9 @@
 //  to the new value — never an incrementing counter, never a hard jump.
 //  Number displayed in the Geist Mono numeric-display token.
 //
+//  Over-target is shown as neutral data ("+126 hedef üstü"), never as a
+//  red/shaming state — consistent with the quick-counter philosophy.
+//
 
 import SwiftUI
 
@@ -20,9 +23,7 @@ struct CalorieRingView: View {
         return min(consumed / target, 1.0)
     }
 
-    private var remaining: Double {
-        max(target - consumed, 0)
-    }
+    private var remaining: Double { target - consumed }
 
     var body: some View {
         ZStack {
@@ -31,14 +32,13 @@ struct CalorieRingView: View {
                 .fill(Color.surfaceRaised)
                 .raisedSurface(cornerRadius: 999)
 
-            // Track ring
+            // Track ring — inset look
             Circle()
-                .trim(from: 0, to: 1)
                 .stroke(
                     Color.surfaceFlat,
-                    style: StrokeStyle(lineWidth: 14, lineCap: .round)
+                    style: StrokeStyle(lineWidth: 16, lineCap: .round)
                 )
-                .padding(20)
+                .padding(24)
 
             // Progress ring
             Circle()
@@ -50,24 +50,30 @@ struct CalorieRingView: View {
                         startAngle: .degrees(-90),
                         endAngle: .degrees(270)
                     ),
-                    style: StrokeStyle(lineWidth: 14, lineCap: .round)
+                    style: StrokeStyle(lineWidth: 16, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
-                .padding(20)
+                .padding(24)
 
             // Center numeric display
-            VStack(spacing: 0) {
-                Text("\(Int(remaining))")
+            VStack(spacing: 2) {
+                Text("\(Int(abs(remaining).rounded()))")
                     .font(.sofraDisplayNumeric)
                     .foregroundStyle(Color.textPrimary)
+                    .contentTransition(.numericText())
                     .animation(.none, value: remaining) // no incrementing counter
 
-                Text("kalan")
+                Text(remaining >= 0 ? "kcal kalan" : "kcal hedef üstü")
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
+
+                Text("\(Int(consumed)) / \(Int(target))")
+                    .font(.sofraNumericSmall)
+                    .foregroundStyle(Color.textSecondary)
+                    .padding(.top, Layout.Spacing.sm)
             }
         }
-        .frame(width: 220, height: 220)
+        .frame(width: 250, height: 250)
         .onAppear {
             withAnimation(.easeOut(duration: 0.5)) {
                 animatedProgress = progress

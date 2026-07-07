@@ -48,6 +48,8 @@ struct OnboardingView: View {
                         .tag(OnboardingStep.result)
                     PaywallView {
                         model.completeOnboarding()
+                        let notification = UINotificationFeedbackGenerator()
+                        notification.notificationOccurred(.success)
                         onboardingCompleted = true
                     }
                         .tag(OnboardingStep.paywall)
@@ -169,7 +171,7 @@ struct GoalStepView: View {
             VStack(spacing: Layout.Spacing.md) {
                 ForEach(Goal.allCases, id: \.self) { goal in
                     Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                             model.goal = goal
                         }
                     } label: {
@@ -269,7 +271,7 @@ struct ActivityStepView: View {
             VStack(spacing: Layout.Spacing.md) {
                 ForEach(ActivityLevel.allCases, id: \.self) { level in
                     Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                             model.activityLevel = level
                         }
                     } label: {
@@ -348,7 +350,7 @@ struct SexStepView: View {
             VStack(spacing: Layout.Spacing.md) {
                 ForEach(BiologicalSex.allCases, id: \.self) { sex in
                     Button {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                             model.biologicalSex = sex
                         }
                     } label: {

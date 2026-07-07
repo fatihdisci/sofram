@@ -14,10 +14,15 @@
 //
 
 import Foundation
+import UIKit
 
 enum AIProxyError: LocalizedError {
     /// Endpoint URL missing/malformed in configuration.
     case invalidConfiguration
+    /// The endpoint is still the REPLACE-ME placeholder — the proxy was never
+    /// deployed/configured. Surfaced distinctly so it can't be mistaken for a
+    /// camera or transient network problem.
+    case notConfigured
     /// Anything the user should just retry: transport error, non-2xx, or unparseable body.
     /// Deliberately generic — the client does not distinguish which model failed.
     case scanFailed
@@ -26,6 +31,8 @@ enum AIProxyError: LocalizedError {
         switch self {
         case .invalidConfiguration:
             return "Yapılandırma hatası."
+        case .notConfigured:
+            return "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil — sunucu adresi yapılandırılınca tarama çalışacak."
         case .scanFailed:
             return "Tarama başarısız oldu, lütfen tekrar deneyin."
         }
@@ -103,18 +110,37 @@ final class AIProxyClient {
         self.session = session
     }
 
+    /// False while the endpoint is still the REPLACE-ME placeholder.
+    var isConfigured: Bool {
+        configuration.endpointURL.host()?.contains("REPLACE-ME") != true
+    }
+
+    /// Debug builds answer scans with local demo data while the proxy is not
+    /// yet deployed, so the full capture → analysis → log flow stays testable.
+    /// Release builds never fake results — they surface `.notConfigured`.
+    var isDemoMode: Bool {
+        #if DEBUG
+        return !isConfigured
+        #else
+        return false
+        #endif
+    }
+
     /// Sends an image to the proxy and returns the typed result.
     /// Throws `AIProxyError.scanFailed` for any failure the user should retry.
     func scan(imageData: Data) async throws -> VisionResponse {
-        let locale = Locale.current.identifier
-        let body = AIProxyRequest.photo(imageData: imageData, locale: locale)
+        if isDemoMode { return try await DemoVisionData.photoResponse() }
+        guard isConfigured else { throw AIProxyError.notConfigured }
+        let payload = ImageDownscaler.jpegForUpload(imageData) ?? imageData
+        let body = AIProxyRequest.photo(imageData: payload, locale: Locale.current.identifier)
         return try await performRequest(body: body)
     }
 
     /// Sends free-text description to the proxy and returns the typed result.
     func scanText(_ description: String) async throws -> VisionResponse {
-        let locale = Locale.current.identifier
-        let body = AIProxyRequest.text(description: description, locale: locale)
+        if isDemoMode { return try await DemoVisionData.textResponse(for: description) }
+        guard isConfigured else { throw AIProxyError.notConfigured }
+        let body = AIProxyRequest.text(description: description, locale: Locale.current.identifier)
         return try await performRequest(body: body)
     }
 
@@ -153,5 +179,129 @@ final class AIProxyClient {
             throw AIProxyError.invalidConfiguration
         }
         return request
+    }
+}
+
+// MARK: - Upload downscaling
+
+/// Full-resolution captures are ~5–10 MB; base64 inflates them another 33%.
+/// The vision models don't need more than ~1280px on the long edge, so uploads
+/// are resized + recompressed (typically to a few hundred KB) before encoding.
+enum ImageDownscaler {
+    static let maxDimension: CGFloat = 1280
+    static let jpegQuality: CGFloat = 0.7
+
+    static func jpegForUpload(_ data: Data) -> Data? {
+        guard let image = UIImage(data: data) else { return nil }
+        let longEdge = max(image.size.width, image.size.height)
+        guard longEdge > maxDimension else {
+            return image.jpegData(compressionQuality: jpegQuality)
+        }
+        let scale = maxDimension / longEdge
+        let newSize = CGSize(width: image.size.width * scale,
+                             height: image.size.height * scale)
+        let format = UIGraphicsImageRendererFormat.default()
+        format.scale = 1
+        let resized = UIGraphicsImageRenderer(size: newSize, format: format).image { _ in
+            image.draw(in: CGRect(origin: .zero, size: newSize))
+        }
+        return resized.jpegData(compressionQuality: jpegQuality)
+    }
+}
+
+// MARK: - Demo data (DEBUG-only, used while the proxy endpoint is unconfigured)
+
+enum DemoVisionData {
+
+    /// Simulated network+inference latency so the analysis animation is exercised.
+    private static let latency: UInt64 = 1_400_000_000
+
+    private static let sampleMeals: [[VisionItem]] = [
+        [
+            VisionItem(name: "Mercimek çorbası", nameEn: "Lentil soup", estimatedGrams: 250,
+                       householdUnit: "kepçe", householdQuantity: 2, calories: 185,
+                       proteinG: 11, carbsG: 27, fatG: 4, confidence: 0.92, note: nil),
+            VisionItem(name: "Ekmek", nameEn: "Bread", estimatedGrams: 50,
+                       householdUnit: "dilim", householdQuantity: 2, calories: 132,
+                       proteinG: 4, carbsG: 26, fatG: 1, confidence: 0.88, note: nil),
+        ],
+        [
+            VisionItem(name: "Kuru fasulye", nameEn: "White bean stew", estimatedGrams: 300,
+                       householdUnit: "kepçe", householdQuantity: 2, calories: 342,
+                       proteinG: 19, carbsG: 45, fatG: 10, confidence: 0.85,
+                       note: "Tencere yemeği — porsiyon tahmini"),
+            VisionItem(name: "Pirinç pilavı", nameEn: "Rice pilaf", estimatedGrams: 180,
+                       householdUnit: "kase", householdQuantity: 1, calories: 258,
+                       proteinG: 5, carbsG: 48, fatG: 5, confidence: 0.9, note: nil),
+            VisionItem(name: "Ayran", nameEn: "Ayran", estimatedGrams: 200,
+                       householdUnit: "su bardağı", householdQuantity: 1, calories: 76,
+                       proteinG: 4, carbsG: 6, fatG: 4, confidence: 0.95, note: nil),
+        ],
+        [
+            VisionItem(name: "Menemen", nameEn: "Menemen", estimatedGrams: 220,
+                       householdUnit: "kase", householdQuantity: 1, calories: 265,
+                       proteinG: 13, carbsG: 9, fatG: 19, confidence: 0.87, note: nil),
+            VisionItem(name: "Beyaz peynir", nameEn: "White cheese", estimatedGrams: 40,
+                       householdUnit: "dilim", householdQuantity: 2, calories: 106,
+                       proteinG: 7, carbsG: 1, fatG: 8, confidence: 0.8, note: nil),
+            VisionItem(name: "Çay", nameEn: "Black tea", estimatedGrams: 100,
+                       householdUnit: "çay bardağı", householdQuantity: 1, calories: 2,
+                       proteinG: 0, carbsG: 0, fatG: 0, confidence: 0.97, note: nil),
+        ],
+    ]
+
+    static func photoResponse() async throws -> VisionResponse {
+        try? await Task.sleep(nanoseconds: latency)
+        let items = sampleMeals.randomElement() ?? sampleMeals[0]
+        return VisionResponse(items: items, noFoodDetected: false)
+    }
+
+    /// Builds one plausible item per comma-separated segment of the typed text,
+    /// with a light "2 kepçe mercimek" style quantity+unit parse.
+    static func textResponse(for description: String) async throws -> VisionResponse {
+        try? await Task.sleep(nanoseconds: latency)
+        let segments = description
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        guard !segments.isEmpty else {
+            return VisionResponse(items: [], noFoodDetected: true)
+        }
+        return VisionResponse(items: segments.map(demoItem(from:)), noFoodDetected: false)
+    }
+
+    private static func demoItem(from segment: String) -> VisionItem {
+        var quantity: Double = 1
+        var unit = "adet"
+        var name = segment
+
+        let words = segment.split(separator: " ").map(String.init)
+        if let first = words.first,
+           let parsed = Double(first.replacingOccurrences(of: ",", with: ".")) {
+            quantity = parsed
+            name = words.dropFirst().joined(separator: " ")
+            let unitWords = ["kepçe", "dilim", "kase", "avuç", "adet",
+                             "su bardağı", "çay bardağı", "yemek kaşığı", "bardak"]
+            for candidate in unitWords where name.lowercased().hasPrefix(candidate) {
+                unit = candidate == "bardak" ? "su bardağı" : candidate
+                name = String(name.dropFirst(candidate.count)).trimmingCharacters(in: .whitespaces)
+                break
+            }
+        }
+        if name.isEmpty { name = segment }
+        let calories = Double.random(in: 60...320).rounded()
+        return VisionItem(
+            name: name.prefix(1).capitalized + name.dropFirst(),
+            nameEn: name,
+            estimatedGrams: (quantity * 120).rounded(),
+            householdUnit: unit,
+            householdQuantity: quantity,
+            calories: calories,
+            proteinG: (calories * 0.12 / 4).rounded(),
+            carbsG: (calories * 0.5 / 4).rounded(),
+            fatG: (calories * 0.3 / 9).rounded(),
+            confidence: 0.9,
+            note: nil
+        )
     }
 }

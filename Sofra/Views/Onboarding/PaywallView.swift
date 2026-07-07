@@ -18,6 +18,10 @@ struct PaywallView: View {
 
     let onComplete: () -> Void
 
+    /// Label of the no-purchase escape hatch. Onboarding offers the free tier;
+    /// the free-scan-limit screen overrides this with a plain "close".
+    var skipTitle: String = "Ücretsiz denemek istemiyorum, 3 tarama ile devam et"
+
     @State private var selectedProductID = SofraProductID.annual
     @State private var isRestoring = false
     @State private var showManageSheet = false
@@ -144,7 +148,7 @@ struct PaywallView: View {
     private func planCard(product: Product?, productID: String, badge: String?, period: String, monthlyEquivalent: String?) -> some View {
         let isSelected = selectedProductID == productID
         return Button {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 selectedProductID = productID
             }
         } label: {
@@ -257,7 +261,7 @@ struct PaywallView: View {
             Button {
                 onComplete()
             } label: {
-                Text("Ücretsiz denemek istemiyorum, 3 tarama ile devam et")
+                Text(skipTitle)
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }

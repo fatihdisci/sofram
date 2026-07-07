@@ -2,8 +2,12 @@
 //  SevenDaySummaryView.swift
 //  Sofra — trailing 7-day calories + bread/tea summary.
 //
-//  Presented as a sheet from the daily view. Compact list with
-//  Geist Mono for numbers, warm palette consistent with design tokens.
+//  Presented as a sheet from the daily view: header stats (average kcal,
+//  total bread/tea), a 7-bar chart with the daily target line, and an
+//  aligned day-by-day breakdown. Geist Mono for numbers, warm palette.
+//
+//  Tea counts above the daily threshold appear here as passive data only
+//  (mikro-etkilesimler.md: no in-the-moment shaming).
 //
 
 import SwiftUI
@@ -18,113 +22,185 @@ struct SevenDaySummaryView: View {
     @Query(sort: \ScanEntry.timestamp, order: .reverse)
     private var scanEntries: [ScanEntry]
 
-    /// Build day summaries from the last 7 days.
+    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
+
+    /// Trailing 7 days, today first.
     private var daySummaries: [DaySummary] {
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        var result: [DaySummary] = []
-        for offset in 0..<7 {
-            let date = cal.date(byAdding: .day, value: -offset, to: today) ?? today
-            let dayEnd = cal.date(byAdding: .day, value: 1, to: date) ?? date
-
-            // Calories from scan entries on this day
-            let dayScans = scanEntries.filter { entry in
-                entry.timestamp >= date && entry.timestamp < dayEnd
-            }
-            let calories = dayScans.reduce(0.0) { total, scan in
-                total + (scan.itemsOrEmpty).reduce(0.0) { $0 + $1.calories }
-            }
-
-            // Bread/tea from quick counter for this day
-            let dayCounter = counters.first(where: { counter in
-                counter.date >= date && counter.date < dayEnd
-            })
-
-            result.append(DaySummary(
-                date: date,
-                calories: calories,
-                breadSlices: dayCounter?.breadSlices ?? 0,
-                teaGlasses: dayCounter?.teaGlasses ?? 0
-            ))
-        }
-        return result
+        DaySummaryBuilder.lastSevenDays(scans: scanEntries, counters: counters)
     }
 
+    private var loggedDays: [DaySummary] { daySummaries.filter { $0.calories > 0 } }
+
+    private var averageCalories: Double {
+        guard !loggedDays.isEmpty else { return 0 }
+        return loggedDays.reduce(0) { $0 + $1.calories } / Double(loggedDays.count)
+    }
+
+    private var totalBread: Int { daySummaries.reduce(0) { $0 + $1.breadSlices } }
+    private var totalTea: Int { daySummaries.reduce(0) { $0 + $1.teaGlasses } }
+
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.bgPage.ignoresSafeArea()
+        ZStack {
+            Color.bgPage.ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    // Header row
-                    HStack(spacing: Layout.Spacing.sm) {
-                        // Day column
-                        Text("Gün")
-                            .frame(width: 70, alignment: .leading)
-                        // Calorie column
-                        Text("Kalori")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        // Bread/tea column
-                        HStack(spacing: Layout.Spacing.sm) {
-                            SofraIconView(icon: .ekmekDilimi, size: 14)
-                                .foregroundStyle(Color.textMuted)
-                            Text("/")
-                                .font(.sofraCaption)
-                                .foregroundStyle(Color.textMuted)
-                            SofraIconView(icon: .cayBardagi, size: 14)
-                                .foregroundStyle(Color.textMuted)
+            VStack(spacing: 0) {
+                header
+
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: Layout.Spacing.lg) {
+                        statsRow
+
+                        if loggedDays.isEmpty {
+                            emptyState
+                        } else {
+                            chartCard
                         }
-                        .frame(width: 50)
+
+                        dayRows
                     }
-                    .font(.sofraCaption)
-                    .foregroundStyle(Color.textMuted)
                     .padding(.horizontal, Layout.Spacing.lg)
-                    .padding(.vertical, Layout.Spacing.sm)
-
-                    Divider()
-                        .overlay(Color.borderHairline)
-
-                    // Day rows
-                    List {
-                        ForEach(daySummaries, id: \.date) { day in
-                            HStack(spacing: Layout.Spacing.sm) {
-                                Text(dayLabel(for: day.date))
-                                    .frame(width: 70, alignment: .leading)
-
-                                Text("\(Int(day.calories)) kcal")
-                                    .font(.sofraNumericSmall)
-                                    .foregroundStyle(Color.textPrimary)
-                                    .frame(maxWidth: .infinity, alignment: .trailing)
-
-                                HStack(spacing: Layout.Spacing.sm) {
-                                    Text("\(day.breadSlices)")
-                                        .font(.sofraNumericSmall)
-                                        .foregroundStyle(Color.textSecondary)
-                                        .frame(width: 18, alignment: .trailing)
-                                    Text("\(day.teaGlasses)")
-                                        .font(.sofraNumericSmall)
-                                        .foregroundStyle(Color.textSecondary)
-                                        .frame(width: 18, alignment: .trailing)
-                                }
-                            }
-                            .padding(.vertical, Layout.Spacing.xs)
-                            .listRowBackground(Color.clear)
-                            .listRowSeparator(.hidden)
-                        }
-                    }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
-                }
-            }
-            .navigationTitle("7 Günlük Özet")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Kapat") { dismiss() }
-                        .foregroundStyle(Color.accentText)
+                    .padding(.top, Layout.Spacing.md)
+                    .padding(.bottom, Layout.Spacing.xxl)
                 }
             }
         }
+        .presentationDetents([.large])
+        .presentationDragIndicator(.visible)
+    }
+
+    // MARK: - Header
+
+    private var header: some View {
+        HStack {
+            Text("7 Günlük Özet")
+                .font(.sofraHeading)
+                .foregroundStyle(Color.textPrimary)
+            Spacer()
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(Color.textPrimary)
+                    .frame(width: 36, height: 36)
+                    .background(Color.surfaceRaised, in: Circle())
+            }
+        }
+        .padding(.horizontal, Layout.Spacing.lg)
+        .padding(.top, Layout.Spacing.lg)
+        .padding(.bottom, Layout.Spacing.sm)
+    }
+
+    // MARK: - Stats row
+
+    private var statsRow: some View {
+        HStack(spacing: Layout.Spacing.md) {
+            StatCell(value: "\(Int(averageCalories))", caption: "ort. kcal / gün")
+            StatCell(value: "\(totalBread)", caption: "dilim ekmek", icon: .ekmekDilimi)
+            StatCell(value: "\(totalTea)", caption: "bardak çay", icon: .cayBardagi)
+        }
+    }
+
+    // MARK: - Chart
+
+    private var chartCard: some View {
+        VStack(alignment: .leading, spacing: Layout.Spacing.md) {
+            Text("Kalori")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textSecondary)
+
+            WeekBarChart(summaries: daySummaries, target: calorieTarget)
+                .frame(height: 160)
+
+            HStack(spacing: 4) {
+                Rectangle()
+                    .fill(Color.textMuted)
+                    .frame(width: 14, height: 1)
+                Text("hedef · \(Int(calorieTarget)) kcal")
+                    .font(.system(size: 10))
+                    .foregroundStyle(Color.textMuted)
+            }
+        }
+        .padding(Layout.Spacing.lg)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.raisedContainer))
+        .raisedSurface(cornerRadius: Layout.Radius.raisedContainer)
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: Layout.Spacing.md) {
+            SofraIconView(icon: .tabak, size: 40)
+                .foregroundStyle(Color.textMuted)
+            Text("Henüz kayıtlı gün yok")
+                .font(.sofraBody)
+                .foregroundStyle(Color.textSecondary)
+            Text("Öğün ekledikçe haftalık görünüm burada dolacak.")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(Layout.Spacing.xl)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.raisedContainer))
+    }
+
+    // MARK: - Day rows
+
+    private var dayRows: some View {
+        VStack(spacing: 0) {
+            // Column header
+            HStack(spacing: Layout.Spacing.sm) {
+                Text("Gün")
+                    .frame(width: 64, alignment: .leading)
+                Spacer()
+                Text("Kalori")
+                    .frame(width: 90, alignment: .trailing)
+                SofraIconView(icon: .ekmekDilimi, size: 14)
+                    .foregroundStyle(Color.textMuted)
+                    .frame(width: 34, alignment: .trailing)
+                SofraIconView(icon: .cayBardagi, size: 14)
+                    .foregroundStyle(Color.textMuted)
+                    .frame(width: 34, alignment: .trailing)
+            }
+            .font(.sofraCaption)
+            .foregroundStyle(Color.textMuted)
+            .padding(.horizontal, Layout.Spacing.lg)
+            .padding(.vertical, Layout.Spacing.sm)
+
+            ForEach(Array(daySummaries.enumerated()), id: \.element.date) { idx, day in
+                HStack(spacing: Layout.Spacing.sm) {
+                    Text(dayLabel(for: day.date))
+                        .font(idx == 0 ? .sofraLabel : .sofraBody)
+                        .foregroundStyle(Color.textPrimary)
+                        .frame(width: 64, alignment: .leading)
+                    Spacer()
+                    Text(day.calories > 0 ? "\(Int(day.calories)) kcal" : "—")
+                        .font(.sofraNumericSmall)
+                        .foregroundStyle(day.calories > 0 ? Color.textPrimary : Color.textMuted)
+                        .frame(width: 90, alignment: .trailing)
+                    Text("\(day.breadSlices)")
+                        .font(.sofraNumericSmall)
+                        .foregroundStyle(Color.textSecondary)
+                        .frame(width: 34, alignment: .trailing)
+                    Text("\(day.teaGlasses)")
+                        .font(.sofraNumericSmall)
+                        .foregroundStyle(Color.textSecondary)
+                        .frame(width: 34, alignment: .trailing)
+                }
+                .padding(.horizontal, Layout.Spacing.lg)
+                .padding(.vertical, Layout.Spacing.md)
+                .background(
+                    idx == 0 ? Color.surfaceRaised : Color.clear,
+                    in: RoundedRectangle(cornerRadius: Layout.Radius.control)
+                )
+
+                if idx < daySummaries.count - 1 {
+                    Divider()
+                        .overlay(Color.borderHairline)
+                        .padding(.horizontal, Layout.Spacing.lg)
+                }
+            }
+        }
+        .padding(.vertical, Layout.Spacing.xs)
+        .background(Color.bgPage)
     }
 
     private func dayLabel(for date: Date) -> String {
@@ -138,9 +214,89 @@ struct SevenDaySummaryView: View {
     }
 }
 
-struct DaySummary {
-    let date: Date
-    let calories: Double
-    let breadSlices: Int
-    let teaGlasses: Int
+// MARK: - Stat cell
+
+private struct StatCell: View {
+    let value: String
+    let caption: String
+    var icon: SofraIcon?
+
+    var body: some View {
+        VStack(spacing: 4) {
+            HStack(spacing: 4) {
+                if let icon {
+                    SofraIconView(icon: icon, size: 16)
+                        .foregroundStyle(Color.accentFill)
+                }
+                Text(value)
+                    .font(.sofraNumericSmall)
+                    .foregroundStyle(Color.textPrimary)
+            }
+            Text(caption)
+                .font(.system(size: 10))
+                .foregroundStyle(Color.textMuted)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Layout.Spacing.md)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+        .raisedSurface(cornerRadius: Layout.Radius.card)
+    }
+}
+
+// MARK: - Week bar chart
+
+/// Seven vertical bars (oldest → newest) with a dashed target line.
+/// Today's bar is full copper; other days are muted copper.
+struct WeekBarChart: View {
+    let summaries: [DaySummary]   // today first
+    let target: Double
+
+    var body: some View {
+        let ordered = Array(summaries.reversed())
+        let peak = max(ordered.map(\.calories).max() ?? 0, target) * 1.15
+
+        GeometryReader { geo in
+            let chartHeight = geo.size.height - 22  // reserve label strip
+
+            ZStack(alignment: .bottom) {
+                // Target line
+                Path { p in
+                    let y = chartHeight * (1 - target / peak)
+                    p.move(to: CGPoint(x: 0, y: y))
+                    p.addLine(to: CGPoint(x: geo.size.width, y: y))
+                }
+                .stroke(style: StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                .foregroundStyle(Color.textMuted.opacity(0.6))
+
+                // Bars + day labels
+                HStack(alignment: .bottom, spacing: Layout.Spacing.sm) {
+                    ForEach(Array(ordered.enumerated()), id: \.offset) { idx, day in
+                        let isToday = idx == ordered.count - 1
+                        VStack(spacing: 6) {
+                            Spacer(minLength: 0)
+                            Capsule()
+                                .fill(isToday
+                                      ? AnyShapeStyle(LinearGradient(
+                                            colors: [Color.accentFill, Color.accentFillPressed],
+                                            startPoint: .top, endPoint: .bottom))
+                                      : AnyShapeStyle(Color.accentFill.opacity(0.35)))
+                                .frame(height: max(6, chartHeight * day.calories / peak))
+                            Text(shortDayLabel(day.date))
+                                .font(.system(size: 10))
+                                .foregroundStyle(isToday ? Color.textPrimary : Color.textMuted)
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
+            }
+        }
+    }
+
+    private func shortDayLabel(_ date: Date) -> String {
+        if Calendar.current.isDateInToday(date) { return "Bugün" }
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "tr_TR")
+        formatter.dateFormat = "EEEEE"   // single-letter day
+        return formatter.string(from: date).capitalized
+    }
 }

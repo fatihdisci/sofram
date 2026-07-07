@@ -14,5 +14,10 @@
 	<!-- Silent push for CloudKit background sync. -->
 	<key>aps-environment</key>
 	<string>development</string>
+	<!-- App Group for widget data sharing. -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.fatih.sofra</string>
+	</array>
 </dict>
 </plist>

@@ -4,17 +4,9 @@
 //
 //  Geist Sans (UI) + Geist Mono (all numeric displays, tabular figures).
 //
-//  NOTE: Geist font files are not yet bundled in this phase. Per the Phase 1 prompt,
-//  the accessors currently fall back to `.system(...)` with the exact sizes/weights
-//  from the token scale (SF Pro / SF Mono). Mono uses `.monospaced` design so numeric
-//  displays already get tabular figures.
-//
-//  TODO: replace with Geist once font files are added.
-//        1. Drop Geist-Regular/Medium/SemiBold + GeistMono-Regular/Medium into
-//           Sofra/Resources/Fonts/ (see the README there).
-//        2. Add their filenames to Info.plist under `UIAppFonts`.
-//        3. Flip `SofraTypography.geistAvailable` to `true`.
-//        Nothing else changes — every call site already routes through here.
+//  Geist static OTFs live in Sofra/Resources/Fonts/ and are registered in
+//  Info.plist under `UIAppFonts`. If a font file ever goes missing, `.custom`
+//  falls back to the system font at the same size (SF Pro / SF Mono).
 //
 
 import SwiftUI
@@ -38,8 +30,9 @@ extension Font {
 
 enum SofraTypography {
 
-    /// Flip to `true` once the Geist font files are bundled + registered (see file header).
-    static let geistAvailable = false
+    /// Geist font files are bundled in Sofra/Resources/Fonts/ and registered via
+    /// Info.plist `UIAppFonts` (see the README there).
+    static let geistAvailable = true
 
     static func sans(size: CGFloat, weight: Font.Weight) -> Font {
         if geistAvailable { return .custom(geistSansName(weight), size: size) }

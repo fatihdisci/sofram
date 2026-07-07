@@ -37,6 +37,11 @@ extension Color {
     static let accentText        = Color("accentText", bundle: .main)        // emphasized text/numbers
     static let onAccent          = Color("onAccent", bundle: .main)          // label on an accentFill surface
     static let accentTintBg      = Color("accentTintBg", bundle: .main)      // subtle tinted background
+
+    // MARK: Macro hues (graphics only — warm-toned to sit on the bej palette)
+    static let macroProtein = Color("macroProtein", bundle: .main)  // sage green
+    static let macroCarb    = Color("macroCarb", bundle: .main)     // warm amber
+    static let macroFat     = Color("macroFat", bundle: .main)      // muted terracotta
 }
 
 extension Color {

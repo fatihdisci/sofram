@@ -26,6 +26,18 @@ struct ContentView: View {
             }
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.75), value: onboardingCompleted)
+        .onOpenURL { url in
+            // Deep links (widget + future lock-screen quick actions):
+            //  sofra://daily → daily summary, sofra://camera → capture,
+            //  sofra://textlog → text logging.
+            guard url.scheme == "sofra" else { return }
+            switch url.host {
+            case "daily":   nav.goToDaily()
+            case "camera":  nav.goToCamera()
+            case "textlog": nav.goToTextLog(from: .daily)
+            default: break
+            }
+        }
     }
 
     // MARK: - Main app flow
@@ -34,6 +46,8 @@ struct ContentView: View {
         Group {
             switch nav.screen {
             case .camera:
+                // Both scan entry points (photo + text) consume the same
+                // lifetime free-scan allowance, so both are gated here.
                 if FreeScanCounter.shared.canScanForFree {
                     CameraView()
                 } else {
@@ -50,48 +64,88 @@ struct ContentView: View {
                 DailyView()
 
             case .textLog:
-                TextLogView()
+                if FreeScanCounter.shared.canScanForFree {
+                    TextLogView()
+                } else {
+                    FreeScanLimitView()
+                }
             }
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.75), value: nav.screen)
     }
 }
 
-// MARK: - Free scan limit placeholder
+// MARK: - Free scan limit → paywall
 
 struct FreeScanLimitView: View {
+    @Environment(NavigationModel.self) private var nav
     @State private var counter = FreeScanCounter.shared
+    @State private var showPaywall = false
 
     var body: some View {
         ZStack {
             Color.bgPage.ignoresSafeArea()
 
-            VStack(spacing: Layout.Spacing.xl) {
+            VStack(spacing: Layout.Spacing.lg) {
+                // Back to daily — the limit screen must never be a dead end
+                HStack {
+                    Button {
+                        nav.goToDaily()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(Color.textPrimary)
+                            .frame(width: 42, height: 42)
+                            .background(Color.surfaceRaised, in: Circle())
+                            .raisedSurface(cornerRadius: 21)
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal, Layout.Spacing.lg)
+                .padding(.top, Layout.Spacing.md)
+
                 Spacer()
 
-                Image(systemName: "camera.metering.none")
-                    .font(.system(size: 56))
-                    .foregroundStyle(Color.textMuted)
+                ZStack {
+                    Circle()
+                        .fill(Color.surfaceRaised)
+                        .frame(width: 120, height: 120)
+                        .raisedSurface(cornerRadius: 60)
+                    SofraIconView(icon: .sofra, size: 56)
+                        .foregroundStyle(Color.accentFill)
+                }
 
-                Text("Ücretsiz Tarama Hakkınız Bitti")
-                    .font(.sofraHeading)
+                Text("Ücretsiz taramaların bitti")
+                    .font(.sofraTitle)
                     .foregroundStyle(Color.textPrimary)
                     .multilineTextAlignment(.center)
 
-                Text("Sofra'yı kullanmaya devam etmek için\nsınırsız taramaya yükseltin.")
+                Text("3 ücretsiz taramanın üçünü de kullandın.\nSınırsız taramayla devam et — istediğin an iptal.")
                     .font(.sofraBody)
                     .foregroundStyle(Color.textSecondary)
                     .multilineTextAlignment(.center)
 
-                Button("Yakında") {
-                    // No-op — paywall is Phase 3b
+                Button {
+                    showPaywall = true
+                } label: {
+                    Text("Sınırsız Taramaya Geç")
+                        .font(.sofraLabel)
+                        .foregroundStyle(Color.onAccent)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, Layout.Spacing.md)
+                        .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(Color.accentFill)
+                .padding(.horizontal, Layout.Spacing.xl)
+                .padding(.top, Layout.Spacing.sm)
 
                 Spacer()
+                Spacer()
             }
-            .padding(Layout.Spacing.xxl)
+            .padding(Layout.Spacing.lg)
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(onComplete: { showPaywall = false },
+                        skipTitle: "Şimdilik kapat")
         }
     }
 }

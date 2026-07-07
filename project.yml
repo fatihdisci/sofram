@@ -50,3 +50,25 @@ targets:
         ENABLE_PREVIEWS: "YES"
         TARGETED_DEVICE_FAMILY: "1"      # iPhone
         CODE_SIGN_STYLE: Automatic
+    dependencies:
+      - target: SofraWidgetExtension
+
+  SofraWidgetExtension:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: SofraWidget
+      - path: Sofra/Models/WidgetDailySummary.swift
+      - path: Sofra/Models/WidgetDataStore.swift
+      - path: Sofra/Assets.xcassets
+    settings:
+      base:
+        PRODUCT_NAME: "Sofra Widget"
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.sofra.widget
+        INFOPLIST_FILE: SofraWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: SofraWidget/SofraWidget.entitlements
+        GENERATE_INFOPLIST_FILE: "NO"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1"      # iPhone
+        CODE_SIGN_STYLE: Automatic
