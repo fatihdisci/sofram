@@ -30,4 +30,19 @@ Bir taramanın gerçek maliyeti (görsel + kısa prompt + JSON çıktı, ~500-10
 
 **Qwen-VL ailesi MVP'de kullanılmıyor** — occlusion zayıflığı bizim ana kullanım senaryomuzla (karışık/örtüşen ev yemeği tabakları) doğrudan çelişiyor. İleride, kendi RTX 3060'ında self-host edilebilir bir deney/maliyet-sıfırlama seçeneği olarak nota düşülüyor ama şimdilik plan dışı.
 
+## Tier-based model routing (Phase 3d/4)
+
+Client, her istekte `tier` alanını gönderir (`"free"` veya `"pro"`). Değer `FreeScanCounter.shared.isSubscribed` (StoreKit 2) üzerinden belirlenir.
+
+| Tier | Primary Model | Fallback | Tahmini maliyet/tarama |
+|------|--------------|----------|----------------------|
+| **free** | Gemini 2.5 Flash-Lite | Yok (hata dönerse kullanıcıya "tekrar dene") | ~$0.0003-0.0008 |
+| **pro** | Gemini 2.5 Flash-Lite | GPT-4.1 mini (auto-fallback) | ~$0.0005-0.002 |
+
+**Free tier neden fallback'siz?** Maliyet optimizasyonu. Free kullanıcı ömür boyu sadece 3 tarama yapabilir — 3 taramanın birinde hata olsa bile kullanıcı "tekrar dene" ile düzeltebilir. Fallback zinciri sadece sınırsız tarama yapan pro kullanıcılar için anlamlı.
+
+**Backend'in yapması gereken:** `tier` alanına göre:
+- `"free"` → sadece Gemini 2.5 Flash-Lite çağrısı, hata durumunda direkt hata dön
+- `"pro"` → Gemini 2.5 Flash-Lite dene, refusal/error alırsan GPT-4.1 mini'ye geç, o da başarısız olursa hata dön
+
 Bu tavsiye `PHASE_1_PROMPT.md`'deki "AI proxy networking client" bölümüne bir **fallback chain** olarak yansıtıldı (aşağıya bakınız).
