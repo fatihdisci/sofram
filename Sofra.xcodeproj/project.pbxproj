@@ -7,13 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AF6FEBF2EC509B74055940C /* SevenDaySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */; };
 		0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */; };
 		268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D959F549ED125A75211383C7 /* LoggedItem.swift */; };
 		2FABEA2D5A210D794CF519D8 /* PortionUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CA283C143DFB3AF113488E /* PortionUnit.swift */; };
+		3AC2C367F7B791A1EE285299 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987B7D2B180F46B008B29D3A /* ResultView.swift */; };
 		3B70C192B418CF2B2E2F4888 /* Color+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */; };
 		3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385DF247D014F9EF0BDF72D6 /* ContentView.swift */; };
 		4194A98747DEEE37227513C9 /* Font+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */; };
+		4F161E3B39AD0D2F8CAE8DB1 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43AEF8082A2E562C2842E4 /* DailyView.swift */; };
+		526A711DAC33408D9629EAA5 /* LogButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */; };
+		57955CD4F69C53B723E74FA2 /* CalorieRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238FF164D03FBE4CB6367536 /* CalorieRingView.swift */; };
 		58EA6A2261AFD526DD213D2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */; };
+		5E2E74169EB20BB3FA006060 /* AnalysisOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497CB36C5D07712BBC769BFF /* AnalysisOverlay.swift */; };
+		60E892F92E0887DAC479A39E /* ResultItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */; };
+		625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF0AD775886DE66BC40E360 /* CameraView.swift */; };
+		79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */; };
+		88B5B14F618C6D8C047B11ED /* TextLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABEDB088BD86173D15337A9 /* TextLogView.swift */; };
 		92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */; };
 		9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */; };
 		99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */; };
@@ -24,34 +34,80 @@
 		C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39394ADA5B6933015390DC8 /* ScanEntry.swift */; };
 		C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EBF7CCF553D14C6174559 /* AIProxyClient.swift */; };
 		C6589D98D126F801A9DE3673 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A9E8334613F75FF1CA6EAD /* Layout.swift */; };
+		F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 		086EBF7CCF553D14C6174559 /* AIProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClient.swift; sourceTree = "<group>"; };
 		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1ABEDB088BD86173D15337A9 /* TextLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogView.swift; sourceTree = "<group>"; };
 		1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraApp.swift; sourceTree = "<group>"; };
+		238FF164D03FBE4CB6367536 /* CalorieRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingView.swift; sourceTree = "<group>"; };
 		2B17F01B847BA24B835B4037 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		385DF247D014F9EF0BDF72D6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3F43AEF8082A2E562C2842E4 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
+		497CB36C5D07712BBC769BFF /* AnalysisOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisOverlay.swift; sourceTree = "<group>"; };
 		4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyQuickCounter.swift; sourceTree = "<group>"; };
 		60A9E8334613F75FF1CA6EAD /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
+		6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCounterView.swift; sourceTree = "<group>"; };
 		87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Tokens.swift"; sourceTree = "<group>"; };
+		8FF0AD775886DE66BC40E360 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogButton.swift; sourceTree = "<group>"; };
+		987B7D2B180F46B008B29D3A /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surfaces.swift; sourceTree = "<group>"; };
 		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
 		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
 		C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraModelContainer.swift; sourceTree = "<group>"; };
 		D959F549ED125A75211383C7 /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
+		E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItemCard.swift; sourceTree = "<group>"; };
 		EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounter.swift; sourceTree = "<group>"; };
+		FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenDaySummaryView.swift; sourceTree = "<group>"; };
 		FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		2532FDAFB72DA18C110BBADD /* Daily */ = {
+			isa = PBXGroup;
+			children = (
+				238FF164D03FBE4CB6367536 /* CalorieRingView.swift */,
+				3F43AEF8082A2E562C2842E4 /* DailyView.swift */,
+				6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */,
+				FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */,
+			);
+			path = Daily;
+			sourceTree = "<group>";
+		};
+		2CE4BD35B616F3A7BF36F0E3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D0BFFC07FB6F626B6B2C284E /* Analysis */,
+				B37A30B44021471D12663445 /* Camera */,
+				FE15C10253716DD32F01C20E /* Components */,
+				2532FDAFB72DA18C110BBADD /* Daily */,
+				2D324E050984C4336380B8B0 /* Result */,
+				A74D09E2D17E4836C57FAF7D /* TextLog */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2D324E050984C4336380B8B0 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */,
+				987B7D2B180F46B008B29D3A /* ResultView.swift */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
 		3AF8F5ACF117AC000E8F31E3 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				385DF247D014F9EF0BDF72D6 /* ContentView.swift */,
+				00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */,
 				1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */,
 			);
 			path = App;
@@ -112,6 +168,7 @@
 				3CE869EBA21DE36DE94948C7 /* Networking */,
 				40BC61BE2D2C595666C68E47 /* Persistence */,
 				A393E1770736058EF5CB308A /* Resources */,
+				2CE4BD35B616F3A7BF36F0E3 /* Views */,
 				3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */,
 			);
 			path = Sofra;
@@ -124,6 +181,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		A74D09E2D17E4836C57FAF7D /* TextLog */ = {
+			isa = PBXGroup;
+			children = (
+				1ABEDB088BD86173D15337A9 /* TextLogView.swift */,
+			);
+			path = TextLog;
+			sourceTree = "<group>";
+		};
 		ABCC4EF4F95D5007CC7AB31C /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +199,30 @@
 				99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */,
 			);
 			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		B37A30B44021471D12663445 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				8FF0AD775886DE66BC40E360 /* CameraView.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		D0BFFC07FB6F626B6B2C284E /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				497CB36C5D07712BBC769BFF /* AnalysisOverlay.swift */,
+			);
+			path = Analysis;
+			sourceTree = "<group>";
+		};
+		FE15C10253716DD32F01C20E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,19 +297,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */,
+				5E2E74169EB20BB3FA006060 /* AnalysisOverlay.swift in Sources */,
+				57955CD4F69C53B723E74FA2 /* CalorieRingView.swift in Sources */,
+				625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */,
 				3B70C192B418CF2B2E2F4888 /* Color+Tokens.swift in Sources */,
 				3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */,
 				0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */,
+				4F161E3B39AD0D2F8CAE8DB1 /* DailyView.swift in Sources */,
 				4194A98747DEEE37227513C9 /* Font+Tokens.swift in Sources */,
 				99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */,
 				C6589D98D126F801A9DE3673 /* Layout.swift in Sources */,
+				526A711DAC33408D9629EAA5 /* LogButton.swift in Sources */,
 				268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */,
+				F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */,
 				2FABEA2D5A210D794CF519D8 /* PortionUnit.swift in Sources */,
+				79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */,
+				60E892F92E0887DAC479A39E /* ResultItemCard.swift in Sources */,
+				3AC2C367F7B791A1EE285299 /* ResultView.swift in Sources */,
 				C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */,
+				0AF6FEBF2EC509B74055940C /* SevenDaySummaryView.swift in Sources */,
 				92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */,
 				BDBB9B674BEB8923D1BA5065 /* SofraIcon.swift in Sources */,
 				9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */,
 				BABBBF429BC9E1A04F1E9BE0 /* Surfaces.swift in Sources */,
+				88B5B14F618C6D8C047B11ED /* TextLogView.swift in Sources */,
 				B9744D5660C9C7FA9F6EB2A7 /* UserProfile.swift in Sources */,
 				B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */,
 			);

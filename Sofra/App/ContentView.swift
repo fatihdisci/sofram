@@ -1,39 +1,83 @@
 //
 //  ContentView.swift
-//  Sofra — placeholder root view for Phase 1.
+//  Sofra — navigation state machine root.
 //
-//  No real UI yet (camera, scanning, onboarding, paywall are later phases). This
-//  view exists to confirm the app builds and to smoke-test that the design system
-//  links: it exercises a color token, a font token, the raised-surface modifier,
-//  and a custom Sofra icon in one place.
+//  Camera is the root screen (no tab bar). The flow branches:
+//   camera → capture → analysis → result → daily
+//   camera → textLog → result → daily
+//
+//  Free-scan limit gate: if the user has exhausted free scans (and is not subscribed),
+//  a placeholder limit screen is shown instead of the camera.
 //
 
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(NavigationModel.self) private var nav
+
     var body: some View {
         ZStack {
-            Color.bgPage
-                .ignoresSafeArea()
+            switch nav.screen {
+            case .camera:
+                if FreeScanCounter.shared.canScanForFree {
+                    CameraView()
+                } else {
+                    FreeScanLimitView()
+                }
 
-            VStack(spacing: Layout.Spacing.lg) {
-                SofraIconView(icon: .sofra, size: 56)
-                    .foregroundStyle(Color.accentFill)
+            case .analyzing(let imageData, let uiImage):
+                AnalysisOverlay(imageData: imageData, uiImage: uiImage)
 
-                Text("Sofra")
-                    .font(.sofraTitle)
-                    .foregroundStyle(Color.textPrimary)
+            case .result(let uiImage, let items, let source):
+                ResultView(uiImage: uiImage, items: items, source: source)
 
-                Text("Phase 1 · foundation")
-                    .font(.sofraCaption)
-                    .foregroundStyle(Color.textSecondary)
+            case .daily:
+                DailyView()
+
+            case .textLog:
+                TextLogView()
             }
-            .padding(Layout.Spacing.xxl)
-            .raisedSurface()
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: nav.screen)
     }
 }
 
-#Preview {
-    ContentView()
+// MARK: - Free scan limit placeholder
+
+struct FreeScanLimitView: View {
+    @State private var counter = FreeScanCounter.shared
+
+    var body: some View {
+        ZStack {
+            Color.bgPage.ignoresSafeArea()
+
+            VStack(spacing: Layout.Spacing.xl) {
+                Spacer()
+
+                Image(systemName: "camera.metering.none")
+                    .font(.system(size: 56))
+                    .foregroundStyle(Color.textMuted)
+
+                Text("Ücretsiz Tarama Hakkınız Bitti")
+                    .font(.sofraHeading)
+                    .foregroundStyle(Color.textPrimary)
+                    .multilineTextAlignment(.center)
+
+                Text("Sofra'yı kullanmaya devam etmek için\nsınırsız taramaya yükseltin.")
+                    .font(.sofraBody)
+                    .foregroundStyle(Color.textSecondary)
+                    .multilineTextAlignment(.center)
+
+                // Placeholder CTA (real StoreKit flow in Phase 3b)
+                Button("Yakında") {
+                    // No-op — paywall is Phase 3b
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(Color.accentFill)
+
+                Spacer()
+            }
+            .padding(Layout.Spacing.xxl)
+        }
+    }
 }

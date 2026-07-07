@@ -34,18 +34,40 @@ enum AIProxyError: LocalizedError {
 
 /// Request body sent to the proxy.
 struct AIProxyRequest: Encodable {
-    /// Base64-encoded JPEG bytes.
-    let imageBase64: String
-    /// "photo" for image scans. Reserved for a future "text" logging mode
-    /// ("2 kepçe mercimek, 1 dilim ekmek") that shares this proxy contract.
+    /// Base64-encoded JPEG bytes (nil for text scans).
+    let imageBase64: String?
+    /// Free-text meal description (nil for photo scans).
+    let text: String?
+    /// "photo" for image scans, "text" for free-text logging.
     let mode: String
     /// BCP-47 locale so the backend can bias dish naming (e.g. "tr-TR").
     let locale: String
 
     enum CodingKeys: String, CodingKey {
         case imageBase64 = "image_base64"
+        case text
         case mode
         case locale
+    }
+
+    /// Photo-scan request.
+    static func photo(imageData: Data, locale: String) -> AIProxyRequest {
+        AIProxyRequest(
+            imageBase64: imageData.base64EncodedString(),
+            text: nil,
+            mode: "photo",
+            locale: locale
+        )
+    }
+
+    /// Text-scan request.
+    static func text(description: String, locale: String) -> AIProxyRequest {
+        AIProxyRequest(
+            imageBase64: nil,
+            text: description,
+            mode: "text",
+            locale: locale
+        )
     }
 }
 
@@ -83,14 +105,25 @@ final class AIProxyClient {
 
     /// Sends an image to the proxy and returns the typed result.
     /// Throws `AIProxyError.scanFailed` for any failure the user should retry.
-    ///
-    /// - Parameters:
-    ///   - imageData: JPEG-encoded image bytes.
-    ///   - source: how the scan was initiated (photo/text) — recorded on the result.
-    func scan(imageData: Data, source: ScanSource = .photo) async throws -> VisionResponse {
-        let request = try makeURLRequest(imageData: imageData)
+    func scan(imageData: Data) async throws -> VisionResponse {
+        let locale = Locale.current.identifier
+        let body = AIProxyRequest.photo(imageData: imageData, locale: locale)
+        return try await performRequest(body: body)
+    }
+
+    /// Sends free-text description to the proxy and returns the typed result.
+    func scanText(_ description: String) async throws -> VisionResponse {
+        let locale = Locale.current.identifier
+        let body = AIProxyRequest.text(description: description, locale: locale)
+        return try await performRequest(body: body)
+    }
+
+    // MARK: - Private
+
+    private func performRequest(body: AIProxyRequest) async throws -> VisionResponse {
+        let urlRequest = try makeURLRequest(body: body)
         do {
-            let (data, response) = try await session.data(for: request)
+            let (data, response) = try await session.data(for: urlRequest)
             guard let http = response as? HTTPURLResponse,
                   (200..<300).contains(http.statusCode) else {
                 throw AIProxyError.scanFailed
@@ -101,19 +134,11 @@ final class AIProxyClient {
         } catch is DecodingError {
             throw AIProxyError.scanFailed
         } catch {
-            // URLError / transport / cancellation — all surface as a generic retry.
             throw AIProxyError.scanFailed
         }
     }
 
-    // MARK: - Private
-
-    private func makeURLRequest(imageData: Data) throws -> URLRequest {
-        let body = AIProxyRequest(
-            imageBase64: imageData.base64EncodedString(),
-            mode: "photo",
-            locale: Locale.current.identifier
-        )
+    private func makeURLRequest(body: AIProxyRequest) throws -> URLRequest {
         var request = URLRequest(url: configuration.endpointURL)
         request.httpMethod = "POST"
         request.timeoutInterval = configuration.timeout
