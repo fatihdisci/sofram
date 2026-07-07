@@ -1,0 +1,522 @@
+//
+//  OnboardingView.swift
+//  Sofra — onboarding quiz: goal → height → weight → activity → age → sex → result → paywall.
+//
+//  One question per page using TabView page-style. Design tokens throughout.
+//  Raised-surface cards, spring transitions, accent progress indicator.
+//
+
+import SwiftUI
+import SwiftData
+
+struct OnboardingView: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var model = OnboardingModel()
+
+    @AppStorage("sofra.onboardingCompleted") private var onboardingCompleted = false
+
+    var body: some View {
+        ZStack {
+            Color.bgPage.ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                // Progress indicator
+                progressBar
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.top, 60)
+
+                // Page content
+                TabView(selection: $model.currentStep) {
+                    GoalStepView(model: model)
+                        .tag(OnboardingStep.goal)
+                    HeightStepView(model: model)
+                        .tag(OnboardingStep.height)
+                    WeightStepView(model: model)
+                        .tag(OnboardingStep.weight)
+                    ActivityStepView(model: model)
+                        .tag(OnboardingStep.activity)
+                    AgeStepView(model: model)
+                        .tag(OnboardingStep.age)
+                    SexStepView(model: model)
+                        .tag(OnboardingStep.sex)
+                    ResultStepView(model: model) {
+                        model.saveProfile(to: modelContext)
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                            model.goToNext()
+                        }
+                    }
+                        .tag(OnboardingStep.result)
+                    PaywallPlaceholderView(model: model, onComplete: {
+                        model.completeOnboarding()
+                        onboardingCompleted = true
+                    })
+                        .tag(OnboardingStep.paywall)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .animation(.spring(response: 0.4, dampingFraction: 0.75), value: model.currentStep)
+
+                // Bottom navigation
+                bottomNavigation
+            }
+        }
+    }
+
+    // MARK: - Progress bar
+
+    private var progressBar: some View {
+        let total = Double(OnboardingStep.allCases.count)
+        let current = Double(model.currentStep.rawValue)
+        let progress = (current + 1) / total
+        return GeometryReader { geo in
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(Color.surfaceFlat)
+                    .frame(height: 4)
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(Color.accentFill)
+                    .frame(width: geo.size.width * progress, height: 4)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.75), value: progress)
+            }
+        }
+        .frame(height: 4)
+    }
+
+    // MARK: - Bottom navigation
+
+    private var bottomNavigation: some View {
+        HStack(spacing: Layout.Spacing.md) {
+            // Back button
+            if model.currentStep.rawValue > 0 && model.currentStep != .paywall {
+                Button {
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                        model.goToPrevious()
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .medium))
+                        Text("Geri")
+                            .font(.sofraLabel)
+                    }
+                    .foregroundStyle(Color.textSecondary)
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.vertical, Layout.Spacing.md)
+                }
+            }
+
+            Spacer()
+
+            // Next / complete button
+            if model.currentStep != .paywall && model.currentStep != .result {
+                Button {
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                        model.goToNext()
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("İleri")
+                            .font(.sofraLabel)
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 14, weight: .medium))
+                    }
+                    .foregroundStyle(Color.onAccent)
+                    .padding(.horizontal, Layout.Spacing.xl)
+                    .padding(.vertical, Layout.Spacing.md)
+                    .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+                }
+            }
+        }
+        .padding(.horizontal, Layout.Spacing.lg)
+        .padding(.bottom, 40)
+    }
+}
+
+// MARK: - Step card wrapper
+
+struct StepCard<Content: View>: View {
+    let title: String
+    let subtitle: String
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(spacing: Layout.Spacing.xl) {
+            VStack(spacing: Layout.Spacing.sm) {
+                Text(title)
+                    .font(.sofraTitle)
+                    .foregroundStyle(Color.textPrimary)
+                    .multilineTextAlignment(.center)
+                if !subtitle.isEmpty {
+                    Text(subtitle)
+                        .font(.sofraBody)
+                        .foregroundStyle(Color.textSecondary)
+                        .multilineTextAlignment(.center)
+                }
+            }
+
+            content
+        }
+        .padding(.horizontal, Layout.Spacing.xl)
+    }
+}
+
+// MARK: - Goal step
+
+struct GoalStepView: View {
+    let model: OnboardingModel
+
+    var body: some View {
+        StepCard(title: OnboardingStep.goal.title, subtitle: OnboardingStep.goal.subtitle) {
+            VStack(spacing: Layout.Spacing.md) {
+                ForEach(Goal.allCases, id: \.self) { goal in
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            model.goal = goal
+                        }
+                    } label: {
+                        HStack(spacing: Layout.Spacing.md) {
+                            Text(goal.displayName)
+                                .font(.sofraHeading)
+                                .foregroundStyle(Color.textPrimary)
+                            Spacer()
+                            if model.goal == goal {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 22))
+                                    .foregroundStyle(Color.accentFill)
+                            } else {
+                                Circle()
+                                    .strokeBorder(Color.borderHairline, lineWidth: 1.5)
+                                    .frame(width: 22, height: 22)
+                            }
+                        }
+                        .padding(Layout.Spacing.lg)
+                        .background(
+                            model.goal == goal ? Color.accentTintBg : Color.surfaceRaised,
+                            in: RoundedRectangle(cornerRadius: Layout.Radius.card)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Height step
+
+struct HeightStepView: View {
+    @Bindable var model: OnboardingModel
+
+    var body: some View {
+        StepCard(title: OnboardingStep.height.title, subtitle: OnboardingStep.height.subtitle) {
+            VStack(spacing: Layout.Spacing.lg) {
+                Text("\(Int(model.heightCm))")
+                    .font(.sofraDisplayNumeric)
+                    .foregroundStyle(Color.accentText)
+
+                Slider(value: $model.heightCm, in: 130...220, step: 1)
+                    .tint(Color.accentFill)
+
+                HStack {
+                    Text("130 cm")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                    Spacer()
+                    Text("220 cm")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Weight step
+
+struct WeightStepView: View {
+    @Bindable var model: OnboardingModel
+
+    var body: some View {
+        StepCard(title: OnboardingStep.weight.title, subtitle: OnboardingStep.weight.subtitle) {
+            VStack(spacing: Layout.Spacing.lg) {
+                Text("\(Int(model.weightKg))")
+                    .font(.sofraDisplayNumeric)
+                    .foregroundStyle(Color.accentText)
+
+                Slider(value: $model.weightKg, in: 35...200, step: 0.5)
+                    .tint(Color.accentFill)
+
+                HStack {
+                    Text("35 kg")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                    Spacer()
+                    Text("200 kg")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Activity step
+
+struct ActivityStepView: View {
+    let model: OnboardingModel
+
+    var body: some View {
+        StepCard(title: OnboardingStep.activity.title, subtitle: OnboardingStep.activity.subtitle) {
+            VStack(spacing: Layout.Spacing.md) {
+                ForEach(ActivityLevel.allCases, id: \.self) { level in
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            model.activityLevel = level
+                        }
+                    } label: {
+                        HStack(spacing: Layout.Spacing.md) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(level.displayName)
+                                    .font(.sofraLabel)
+                                    .foregroundStyle(Color.textPrimary)
+                                Text(level.description)
+                                    .font(.sofraCaption)
+                                    .foregroundStyle(Color.textMuted)
+                            }
+                            Spacer()
+                            if model.activityLevel == level {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 22))
+                                    .foregroundStyle(Color.accentFill)
+                            } else {
+                                Circle()
+                                    .strokeBorder(Color.borderHairline, lineWidth: 1.5)
+                                    .frame(width: 22, height: 22)
+                            }
+                        }
+                        .padding(Layout.Spacing.md)
+                        .background(
+                            model.activityLevel == level ? Color.accentTintBg : Color.surfaceRaised,
+                            in: RoundedRectangle(cornerRadius: Layout.Radius.card)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Age step
+
+struct AgeStepView: View {
+    let model: OnboardingModel
+
+    var body: some View {
+        StepCard(title: OnboardingStep.age.title, subtitle: OnboardingStep.age.subtitle) {
+            VStack(spacing: Layout.Spacing.lg) {
+                Text("\(model.age)")
+                    .font(.sofraDisplayNumeric)
+                    .foregroundStyle(Color.accentText)
+
+                Slider(value: Binding(
+                    get: { Double(model.age) },
+                    set: { model.age = Int($0) }
+                ), in: 14...100, step: 1)
+                .tint(Color.accentFill)
+
+                HStack {
+                    Text("14")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                    Spacer()
+                    Text("100")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Sex step
+
+struct SexStepView: View {
+    let model: OnboardingModel
+
+    var body: some View {
+        StepCard(title: OnboardingStep.sex.title, subtitle: OnboardingStep.sex.subtitle) {
+            VStack(spacing: Layout.Spacing.md) {
+                ForEach(BiologicalSex.allCases, id: \.self) { sex in
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            model.biologicalSex = sex
+                        }
+                    } label: {
+                        HStack(spacing: Layout.Spacing.md) {
+                            Image(systemName: sex == .male ? "figure.stand" : "figure.stand.dress")
+                                .font(.system(size: 24))
+                                .foregroundStyle(Color.accentFill)
+                                .frame(width: 40)
+                            Text(sex.rawValue)
+                                .font(.sofraHeading)
+                                .foregroundStyle(Color.textPrimary)
+                            Spacer()
+                            if model.biologicalSex == sex {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 22))
+                                    .foregroundStyle(Color.accentFill)
+                            } else {
+                                Circle()
+                                    .strokeBorder(Color.borderHairline, lineWidth: 1.5)
+                                    .frame(width: 22, height: 22)
+                            }
+                        }
+                        .padding(Layout.Spacing.lg)
+                        .background(
+                            model.biologicalSex == sex ? Color.accentTintBg : Color.surfaceRaised,
+                            in: RoundedRectangle(cornerRadius: Layout.Radius.card)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Result step
+
+struct ResultStepView: View {
+    let model: OnboardingModel
+    var onSave: (() -> Void)?
+
+    var body: some View {
+        VStack(spacing: Layout.Spacing.xl) {
+            Spacer()
+
+            Text("Günlük Hedefin")
+                .font(.sofraTitle)
+                .foregroundStyle(Color.textPrimary)
+
+            // Calorie target
+            VStack(spacing: 0) {
+                Text("\(Int(model.dailyCalorieTarget))")
+                    .font(.sofraDisplayNumeric)
+                    .foregroundStyle(Color.accentText)
+                Text("kalori/gün")
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textMuted)
+            }
+            .frame(width: 180, height: 180)
+            .background(Color.surfaceRaised, in: Circle())
+            .raisedSurface(cornerRadius: 999)
+
+            // Macro breakdown
+            VStack(spacing: Layout.Spacing.md) {
+                Text("Makro Dağılımı")
+                    .font(.sofraLabel)
+                    .foregroundStyle(Color.textSecondary)
+
+                HStack(spacing: Layout.Spacing.xl) {
+                    macroPill(label: "Protein", value: model.proteinTargetG, color: .green)
+                    macroPill(label: "Carbs", value: model.carbsTargetG, color: .orange)
+                    macroPill(label: "Yağ", value: model.fatTargetG, color: .red.opacity(0.8))
+                }
+            }
+            .padding(Layout.Spacing.lg)
+            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+
+            // Start button
+            Button {
+                onSave?()
+            } label: {
+                Text("Devam Et")
+                    .font(.sofraLabel)
+                    .foregroundStyle(Color.onAccent)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, Layout.Spacing.md)
+                    .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+            }
+
+            Text("BMR: \(Int(model.bmr)) kcal · Aktivite: ×\(String(format: "%.2f", model.activityMultiplier))")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+
+            Spacer()
+        }
+        .padding(.horizontal, Layout.Spacing.xl)
+    }
+
+    private func macroPill(label: String, value: Double, color: Color) -> some View {
+        VStack(spacing: 4) {
+            Text("\(Int(value))g")
+                .font(.sofraNumericSmall)
+                .foregroundStyle(Color.textPrimary)
+            Text(label)
+                .font(.system(size: 11))
+                .foregroundStyle(Color.textMuted)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Layout.Spacing.sm)
+        .background(color.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+    }
+}
+
+// MARK: - Paywall placeholder
+
+struct PaywallPlaceholderView: View {
+    let model: OnboardingModel
+    let onComplete: () -> Void
+
+    var body: some View {
+        VStack(spacing: Layout.Spacing.xl) {
+            Spacer()
+
+            SofraIconView(icon: .sofra, size: 64)
+                .foregroundStyle(Color.accentFill)
+
+            Text("Sofra'ya\nHoş Geldin")
+                .font(.sofraTitle)
+                .foregroundStyle(Color.textPrimary)
+                .multilineTextAlignment(.center)
+
+            Text("Fotoğrafla kalori takibine başla.\n3 ücretsiz tarama seni bekliyor.")
+                .font(.sofraBody)
+                .foregroundStyle(Color.textSecondary)
+                .multilineTextAlignment(.center)
+
+            // Paywall hook — Phase 3b replaces this with real StoreKit 2 flow
+            VStack(spacing: Layout.Spacing.md) {
+                Text("PAYWall PLACEHOLDER")
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textMuted)
+                Text("Phase 3b: StoreKit 2 subscription burada olacak.\nŞimdilik ücretsiz devam et.")
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textMuted)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(Layout.Spacing.lg)
+            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+
+            Spacer()
+
+            // Free tier CTA
+            Button {
+                onComplete()
+            } label: {
+                Text("Ücretsiz Başla")
+                    .font(.sofraLabel)
+                    .foregroundStyle(Color.onAccent)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, Layout.Spacing.md)
+                    .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+            }
+            .padding(.horizontal, Layout.Spacing.xl)
+
+            Text("3 tarama ücretsiz · Abonelik gerekmez")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+        }
+        .padding(.bottom, 40)
+    }
+}

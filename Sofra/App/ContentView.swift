@@ -2,12 +2,12 @@
 //  ContentView.swift
 //  Sofra — navigation state machine root.
 //
-//  Camera is the root screen (no tab bar). The flow branches:
+//  First launch: onboarding quiz → paywall placeholder → main flow.
+//  Subsequent launches: camera is the root screen.
+//
+//  Camera is the root (no tab bar). Flow branches:
 //   camera → capture → analysis → result → daily
 //   camera → textLog → result → daily
-//
-//  Free-scan limit gate: if the user has exhausted free scans (and is not subscribed),
-//  a placeholder limit screen is shown instead of the camera.
 //
 
 import SwiftUI
@@ -15,8 +15,23 @@ import SwiftUI
 struct ContentView: View {
     @Environment(NavigationModel.self) private var nav
 
+    @AppStorage("sofra.onboardingCompleted") private var onboardingCompleted = false
+
     var body: some View {
         ZStack {
+            if !onboardingCompleted {
+                OnboardingView()
+            } else {
+                mainFlow
+            }
+        }
+        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: onboardingCompleted)
+    }
+
+    // MARK: - Main app flow
+
+    private var mainFlow: some View {
+        Group {
             switch nav.screen {
             case .camera:
                 if FreeScanCounter.shared.canScanForFree {
@@ -68,7 +83,6 @@ struct FreeScanLimitView: View {
                     .foregroundStyle(Color.textSecondary)
                     .multilineTextAlignment(.center)
 
-                // Placeholder CTA (real StoreKit flow in Phase 3b)
                 Button("Yakında") {
                     // No-op — paywall is Phase 3b
                 }

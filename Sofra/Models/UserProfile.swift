@@ -10,6 +10,16 @@ enum Goal: String, Codable, CaseIterable {
     case lose
     case maintain
     case gain
+    case gainMuscle = "gain_muscle"
+
+    var displayName: String {
+        switch self {
+        case .lose:       return "Kilo vermek"
+        case .maintain:   return "Korumak"
+        case .gain:       return "Kilo almak"
+        case .gainMuscle: return "Kas yapmak"
+        }
+    }
 }
 
 enum ActivityLevel: String, Codable, CaseIterable {
@@ -18,6 +28,26 @@ enum ActivityLevel: String, Codable, CaseIterable {
     case moderate
     case active
     case veryActive
+
+    var displayName: String {
+        switch self {
+        case .sedentary:  return "Hareketsiz"
+        case .light:      return "Hafif aktif"
+        case .moderate:   return "Orta aktif"
+        case .active:     return "Aktif"
+        case .veryActive: return "Çok aktif"
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .sedentary:  return "Masa başı çalışma, az hareket"
+        case .light:      return "Haftada 1-2 gün hafif egzersiz"
+        case .moderate:   return "Haftada 3-5 gün egzersiz"
+        case .active:     return "Haftada 6-7 gün egzersiz"
+        case .veryActive: return "Yoğun antrenman / fiziksel iş"
+        }
+    }
 }
 
 @Model
