@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */; };
+		268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D959F549ED125A75211383C7 /* LoggedItem.swift */; };
+		2FABEA2D5A210D794CF519D8 /* PortionUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CA283C143DFB3AF113488E /* PortionUnit.swift */; };
+		3B70C192B418CF2B2E2F4888 /* Color+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */; };
+		3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385DF247D014F9EF0BDF72D6 /* ContentView.swift */; };
+		4194A98747DEEE37227513C9 /* Font+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */; };
+		58EA6A2261AFD526DD213D2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */; };
+		92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */; };
+		9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */; };
+		99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */; };
+		B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7021E076DC4ED88D26975B /* VisionResponse.swift */; };
+		B9744D5660C9C7FA9F6EB2A7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17F01B847BA24B835B4037 /* UserProfile.swift */; };
+		BABBBF429BC9E1A04F1E9BE0 /* Surfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */; };
+		BDBB9B674BEB8923D1BA5065 /* SofraIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */; };
+		C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39394ADA5B6933015390DC8 /* ScanEntry.swift */; };
+		C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EBF7CCF553D14C6174559 /* AIProxyClient.swift */; };
+		C6589D98D126F801A9DE3673 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A9E8334613F75FF1CA6EAD /* Layout.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		086EBF7CCF553D14C6174559 /* AIProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClient.swift; sourceTree = "<group>"; };
+		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraApp.swift; sourceTree = "<group>"; };
+		2B17F01B847BA24B835B4037 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		385DF247D014F9EF0BDF72D6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyQuickCounter.swift; sourceTree = "<group>"; };
+		60A9E8334613F75FF1CA6EAD /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
+		87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Tokens.swift"; sourceTree = "<group>"; };
+		99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surfaces.swift; sourceTree = "<group>"; };
+		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
+		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
+		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
+		C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraModelContainer.swift; sourceTree = "<group>"; };
+		D959F549ED125A75211383C7 /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
+		EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounter.swift; sourceTree = "<group>"; };
+		FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraIcon.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		3AF8F5ACF117AC000E8F31E3 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				385DF247D014F9EF0BDF72D6 /* ContentView.swift */,
+				1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3CE869EBA21DE36DE94948C7 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				086EBF7CCF553D14C6174559 /* AIProxyClient.swift */,
+				EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */,
+				9D7021E076DC4ED88D26975B /* VisionResponse.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		40BC61BE2D2C595666C68E47 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		57440A81151301AB9257B87B = {
+			isa = PBXGroup;
+			children = (
+				A0DD425CDFDC8FCC829BD940 /* Sofra */,
+				718CAD927C385D892256CB2D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		718CAD927C385D892256CB2D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				142093050464BF9252D327F3 /* Sofra.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		87522F40CDC496FAEF7D4EEF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */,
+				D959F549ED125A75211383C7 /* LoggedItem.swift */,
+				61CA283C143DFB3AF113488E /* PortionUnit.swift */,
+				C39394ADA5B6933015390DC8 /* ScanEntry.swift */,
+				2B17F01B847BA24B835B4037 /* UserProfile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A0DD425CDFDC8FCC829BD940 /* Sofra */ = {
+			isa = PBXGroup;
+			children = (
+				3AF8F5ACF117AC000E8F31E3 /* App */,
+				ABCC4EF4F95D5007CC7AB31C /* DesignSystem */,
+				87522F40CDC496FAEF7D4EEF /* Models */,
+				3CE869EBA21DE36DE94948C7 /* Networking */,
+				40BC61BE2D2C595666C68E47 /* Persistence */,
+				A393E1770736058EF5CB308A /* Resources */,
+				3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */,
+			);
+			path = Sofra;
+			sourceTree = "<group>";
+		};
+		A393E1770736058EF5CB308A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		ABCC4EF4F95D5007CC7AB31C /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */,
+				ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */,
+				60A9E8334613F75FF1CA6EAD /* Layout.swift */,
+				FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */,
+				99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4CEAA32D14A007032EAE0522 /* Sofra */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7219B26090424D715395726C /* Build configuration list for PBXNativeTarget "Sofra" */;
+			buildPhases = (
+				A2E48FF7E615621CD8F12959 /* Sources */,
+				F56156FBF86B8DBBB3656AAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Sofra;
+			packageProductDependencies = (
+			);
+			productName = Sofra;
+			productReference = 142093050464BF9252D327F3 /* Sofra.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF3E49C6ACFD5235EBF36E95 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					4CEAA32D14A007032EAE0522 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 8437586D20BCD59A001B4817 /* Build configuration list for PBXProject "Sofra" */;
+			developmentRegion = tr;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				tr,
+			);
+			mainGroup = 57440A81151301AB9257B87B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 718CAD927C385D892256CB2D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4CEAA32D14A007032EAE0522 /* Sofra */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F56156FBF86B8DBBB3656AAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				58EA6A2261AFD526DD213D2C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A2E48FF7E615621CD8F12959 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */,
+				3B70C192B418CF2B2E2F4888 /* Color+Tokens.swift in Sources */,
+				3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */,
+				0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */,
+				4194A98747DEEE37227513C9 /* Font+Tokens.swift in Sources */,
+				99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */,
+				C6589D98D126F801A9DE3673 /* Layout.swift in Sources */,
+				268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */,
+				2FABEA2D5A210D794CF519D8 /* PortionUnit.swift in Sources */,
+				C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */,
+				92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */,
+				BDBB9B674BEB8923D1BA5065 /* SofraIcon.swift in Sources */,
+				9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */,
+				BABBBF429BC9E1A04F1E9BE0 /* Surfaces.swift in Sources */,
+				B9744D5660C9C7FA9F6EB2A7 /* UserProfile.swift in Sources */,
+				B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		11E6BB4A31D76D40EE1953BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sofra/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra;
+				PRODUCT_NAME = Sofra;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A96DF400C0A6507B618CD9A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AC6B94118C13E59A3371FE5B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E80F3DB9314FE8A2D326D4DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sofra/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra;
+				PRODUCT_NAME = Sofra;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7219B26090424D715395726C /* Build configuration list for PBXNativeTarget "Sofra" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11E6BB4A31D76D40EE1953BB /* Debug */,
+				E80F3DB9314FE8A2D326D4DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8437586D20BCD59A001B4817 /* Build configuration list for PBXProject "Sofra" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A96DF400C0A6507B618CD9A2 /* Debug */,
+				AC6B94118C13E59A3371FE5B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF3E49C6ACFD5235EBF36E95 /* Project object */;
+}

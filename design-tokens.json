@@ -1,0 +1,95 @@
+{
+  "name": "Sofra — Yumuşak Sofra (Soft Native)",
+  "color": {
+    "light": {
+      "bg-page": "#F4F1EC",
+      "surface-raised": "#EDE8DE",
+      "surface-flat": "#F4F1EC",
+      "border-highlight": "#FFFFFF",
+      "border-shadow": "#D0C9B9",
+      "border-hairline": "#E2DCCC",
+      "text-primary": "#3A342A",
+      "text-secondary": "#6E6659",
+      "text-muted": "#9C9488",
+      "accent-fill": "#B87333",
+      "accent-fill-pressed": "#8F5423",
+      "accent-text": "#8F5423",
+      "on-accent": "#FBF3EA",
+      "accent-tint-bg": "#F0DDC7"
+    },
+    "dark": {
+      "bg-page": "#1E1B16",
+      "surface-raised": "#29241D",
+      "surface-flat": "#211D18",
+      "border-highlight": "#342E25",
+      "border-shadow": "#100E0B",
+      "border-hairline": "#3A342A",
+      "text-primary": "#F2ECE0",
+      "text-secondary": "#A79C8C",
+      "text-muted": "#756B5D",
+      "accent-fill": "#E0A164",
+      "accent-fill-pressed": "#EEB57F",
+      "accent-text": "#E0A164",
+      "on-accent": "#1E1B16",
+      "accent-tint-bg": "#3A2D1E"
+    },
+    "contrast_notes": {
+      "text-secondary-on-bg-page": "≥4.5:1 in both modes (AA, small text)",
+      "accent-text-on-bg-page": "≥4.5:1 in both modes — use accent-fill only for icons/graphics (3:1 non-text threshold), never as small body text color",
+      "on-accent-on-accent-fill": "≥3.7:1 — acceptable for icon/large-button label, avoid for small text"
+    }
+  },
+  "typography": {
+    "family-sans": "Geist Sans",
+    "family-mono": "Geist Mono",
+    "fallback-sans": "SF Pro",
+    "fallback-mono": "SF Mono",
+    "scale": {
+      "display-numeric": { "font": "mono", "size": 36, "weight": "medium", "usage": "günlük halka merkez değeri" },
+      "title": { "font": "sans", "size": 28, "weight": "semibold", "usage": "onboarding/paywall başlıkları" },
+      "heading": { "font": "sans", "size": 20, "weight": "medium", "usage": "ekran başlıkları" },
+      "body": { "font": "sans", "size": 16, "weight": "regular", "usage": "gövde metni" },
+      "label": { "font": "sans", "size": 14, "weight": "medium", "usage": "buton/etiket" },
+      "caption": { "font": "sans", "size": 13, "weight": "regular", "usage": "ikincil metin, zaman damgası" },
+      "numeric-small": { "font": "mono", "size": 14, "weight": "medium", "usage": "makro gram değerleri, kart içi kalori sayıları", "tabular": true }
+    }
+  },
+  "spacing": { "unit": 4, "scale": [4, 8, 12, 16, 20, 24, 32] },
+  "radius": {
+    "control": 12,
+    "card": 16,
+    "raised-container": 24,
+    "pill": 999
+  },
+  "shadow_recipe": {
+    "description": "Neomorphism iki-tonlu kenarlık tekniği — gerçek blur shadow değil, SwiftUI çift .shadow() modifier ile",
+    "light": {
+      "raised": [
+        { "color": "border-highlight", "opacity": 0.9, "radius": 5, "x": -3, "y": -3 },
+        { "color": "border-shadow", "opacity": 0.6, "radius": 5, "x": 3, "y": 3 }
+      ],
+      "pressed": [
+        { "color": "border-shadow", "opacity": 0.5, "radius": 4, "x": -2, "y": -2, "inset": true },
+        { "color": "border-highlight", "opacity": 0.4, "radius": 4, "x": 2, "y": 2, "inset": true }
+      ]
+    },
+    "dark": {
+      "raised": [
+        { "color": "border-highlight", "opacity": 0.8, "radius": 5, "x": -3, "y": -3 },
+        { "color": "border-shadow", "opacity": 0.9, "radius": 5, "x": 3, "y": 3 }
+      ],
+      "pressed": [
+        { "color": "border-shadow", "opacity": 0.7, "radius": 4, "x": -2, "y": -2, "inset": true },
+        { "color": "border-highlight", "opacity": 0.3, "radius": 4, "x": 2, "y": 2, "inset": true }
+      ]
+    }
+  },
+  "motion": {
+    "dur-fast": 150,
+    "dur-snap": 200,
+    "dur-base": 300,
+    "dur-slow": 500,
+    "spring": { "response": 0.4, "dampingFraction": 0.75 },
+    "note": "Detaylı tetikleyici listesi mikro-etkilesimler.md dosyasında"
+  }
+}

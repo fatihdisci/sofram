@@ -1,0 +1,52 @@
+#
+#  project.yml — XcodeGen spec for Sofra
+#
+#  Regenerate the .xcodeproj after changing this file (or adding/removing sources):
+#      xcodegen generate
+#
+#  Both project.yml and the generated Sofra.xcodeproj are committed, so the app can
+#  be opened directly without XcodeGen installed.
+#
+
+name: Sofra
+
+options:
+  bundleIdPrefix: com.fatih
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  developmentLanguage: tr
+  groupSortPosition: top
+
+settings:
+  base:
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"                 # Swift 5 language mode — avoids strict-concurrency churn this phase
+    DEVELOPMENT_TEAM: ""                 # set your Apple Developer team here to sign + enable CloudKit
+    SWIFT_EMIT_LOC_STRINGS: "YES"
+    ENABLE_USER_SCRIPT_SANDBOXING: "YES"
+
+targets:
+  Sofra:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Sofra
+        excludes:
+          - "**/*.md"                    # keep the Fonts drop-in README out of the bundle
+          - "Info.plist"                 # referenced via INFOPLIST_FILE, not a bundle resource
+          - "*.entitlements"             # referenced via CODE_SIGN_ENTITLEMENTS
+    settings:
+      base:
+        PRODUCT_NAME: Sofra
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.sofra
+        INFOPLIST_FILE: Sofra/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Sofra/Sofra.entitlements
+        GENERATE_INFOPLIST_FILE: "NO"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_PREVIEWS: "YES"
+        TARGETED_DEVICE_FAMILY: "1"      # iPhone
+        CODE_SIGN_STYLE: Automatic

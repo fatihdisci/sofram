@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Sofra</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+
+	<!-- Purpose strings for later phases (camera/scanning UI is out of scope now,
+	     but declaring intent here is foundation and avoids a future footgun). -->
+	<key>NSCameraUsageDescription</key>
+	<string>Sofra, tabağınızdaki yemekleri tanıyıp kalori ve makro tahmini yapmak için kameranızı kullanır.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Yemek fotoğraflarınızı analiz için Sofra ile paylaşabilirsiniz.</string>
+
+	<!-- AI proxy endpoint (configurable). Placeholder for this phase; the real
+	     Vercel Edge Function deployment is out of scope. AIProxyClient reads these. -->
+	<key>AIProxyEndpointURL</key>
+	<string>https://REPLACE-ME.vercel.app/api/scan</string>
+	<key>AIProxyAPIKey</key>
+	<string></string>
+</dict>
+</plist>
