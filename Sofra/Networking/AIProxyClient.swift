@@ -93,13 +93,19 @@ private struct OpenAIImageURL: Encodable {
 private struct OpenAIRequest: Encodable {
     let model: String
     let messages: [OpenAIMessage]
-    let maxTokens: Int
-    let temperature: Double
+    /// GPT-5 family requires `max_completion_tokens` (the old `max_tokens` is rejected).
+    /// The budget also covers reasoning tokens, so it must be generous or the model
+    /// can spend the whole cap thinking and return empty content (finish_reason: length).
+    let maxCompletionTokens: Int
+    /// GPT-5 models only accept the default temperature (1). Sending a custom value
+    /// returns HTTP 400, so we omit temperature entirely and steer accuracy with
+    /// `reasoning_effort` instead — "minimal" keeps latency low for a structured task.
+    let reasoningEffort: String
 
     enum CodingKeys: String, CodingKey {
         case model, messages
-        case maxTokens = "max_tokens"
-        case temperature
+        case maxCompletionTokens = "max_completion_tokens"
+        case reasoningEffort = "reasoning_effort"
     }
 }
 
@@ -276,8 +282,8 @@ final class AIProxyClient {
                     .image(base64: base64)
                 ])
             ],
-            maxTokens: 1024,
-            temperature: 0.3
+            maxCompletionTokens: 2048,
+            reasoningEffort: "minimal"
         )
 
         return try await performOpenAIRequest(body: body, model: model, tier: tier)
@@ -293,8 +299,8 @@ final class AIProxyClient {
             messages: [
                 OpenAIMessage(role: "user", content: [.text(prompt)])
             ],
-            maxTokens: 1024,
-            temperature: 0.3
+            maxCompletionTokens: 2048,
+            reasoningEffort: "minimal"
         )
 
         return try await performOpenAIRequest(body: body, model: model, tier: tier)
@@ -325,8 +331,8 @@ final class AIProxyClient {
                 let fallbackBody = OpenAIRequest(
                     model: "gpt-5-nano",
                     messages: body.messages,
-                    maxTokens: body.maxTokens,
-                    temperature: body.temperature
+                    maxCompletionTokens: body.maxCompletionTokens,
+                    reasoningEffort: body.reasoningEffort
                 )
                 var fallbackRequest = URLRequest(url: openAIURL())
                 fallbackRequest.httpMethod = "POST"
