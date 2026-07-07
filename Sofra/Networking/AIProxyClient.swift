@@ -5,10 +5,15 @@
 //  MODEL-AGNOSTIC BY DESIGN. This client POSTs an image to a configurable endpoint
 //  and gets back the typed `VisionResponse`. It never names a model. The endpoint is
 //  a black box (a Vercel Edge Function). On the backend — out of scope here — the
-//  proxy runs a primary/fallback model chain (see MODEL_RESEARCH.md: primary
-//  Gemini Flash-Lite, automatic fallback to GPT-4.1 mini on error/refusal) and
-//  caches by image hash via Upstash. The client only ever sees a valid response or
-//  a generic failure, so the backend can swap models with zero client changes.
+//  proxy runs a tier-based model chain (see MODEL_RESEARCH.md):
+//
+//    free tier: Gemini 2.5 Flash-Lite only (no fallback)
+//    pro tier:  Gemini 2.5 Flash-Lite → GPT-4.1 mini (auto-fallback on error/refusal)
+//
+//  The tier is determined by StoreKit 2 subscription status and sent as a `tier`
+//  field in the request body. The proxy caches by image hash via Upstash.
+//  The client only ever sees a valid response or a generic failure, so the backend
+//  can swap models with zero client changes.
 //
 //  Transport: JSON body with a base64-encoded JPEG (documented in PHASE_1_NOTES.md).
 //
@@ -49,31 +54,37 @@ struct AIProxyRequest: Encodable {
     let mode: String
     /// BCP-47 locale so the backend can bias dish naming (e.g. "tr-TR").
     let locale: String
+    /// Model tier: "free" (Gemini 2.5 Flash-Lite only) or "pro" (Flash-Lite + GPT-4.1 mini fallback).
+    /// Determined by StoreKit subscription status at request time.
+    let tier: String
 
     enum CodingKeys: String, CodingKey {
         case imageBase64 = "image_base64"
         case text
         case mode
         case locale
+        case tier
     }
 
     /// Photo-scan request.
-    static func photo(imageData: Data, locale: String) -> AIProxyRequest {
+    static func photo(imageData: Data, locale: String, tier: String) -> AIProxyRequest {
         AIProxyRequest(
             imageBase64: imageData.base64EncodedString(),
             text: nil,
             mode: "photo",
-            locale: locale
+            locale: locale,
+            tier: tier
         )
     }
 
     /// Text-scan request.
-    static func text(description: String, locale: String) -> AIProxyRequest {
+    static func text(description: String, locale: String, tier: String) -> AIProxyRequest {
         AIProxyRequest(
             imageBase64: nil,
             text: description,
             mode: "text",
-            locale: locale
+            locale: locale,
+            tier: tier
         )
     }
 }
@@ -132,7 +143,8 @@ final class AIProxyClient {
         if isDemoMode { return try await DemoVisionData.photoResponse() }
         guard isConfigured else { throw AIProxyError.notConfigured }
         let payload = ImageDownscaler.jpegForUpload(imageData) ?? imageData
-        let body = AIProxyRequest.photo(imageData: payload, locale: Locale.current.identifier)
+        let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
+        let body = AIProxyRequest.photo(imageData: payload, locale: Locale.current.identifier, tier: tier)
         return try await performRequest(body: body)
     }
 
@@ -140,7 +152,8 @@ final class AIProxyClient {
     func scanText(_ description: String) async throws -> VisionResponse {
         if isDemoMode { return try await DemoVisionData.textResponse(for: description) }
         guard isConfigured else { throw AIProxyError.notConfigured }
-        let body = AIProxyRequest.text(description: description, locale: Locale.current.identifier)
+        let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
+        let body = AIProxyRequest.text(description: description, locale: Locale.current.identifier, tier: tier)
         return try await performRequest(body: body)
     }
 
