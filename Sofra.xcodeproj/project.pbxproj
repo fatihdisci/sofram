@@ -11,6 +11,7 @@
 		0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */; };
 		268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D959F549ED125A75211383C7 /* LoggedItem.swift */; };
 		2FABEA2D5A210D794CF519D8 /* PortionUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CA283C143DFB3AF113488E /* PortionUnit.swift */; };
+		3547A3A4E512CA44F0E178A9 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = AA5EC66D7882786D07D37B17 /* Products.storekit */; };
 		3AC2C367F7B791A1EE285299 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987B7D2B180F46B008B29D3A /* ResultView.swift */; };
 		3B70C192B418CF2B2E2F4888 /* Color+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */; };
 		3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385DF247D014F9EF0BDF72D6 /* ContentView.swift */; };
@@ -19,7 +20,9 @@
 		526A711DAC33408D9629EAA5 /* LogButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */; };
 		57955CD4F69C53B723E74FA2 /* CalorieRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238FF164D03FBE4CB6367536 /* CalorieRingView.swift */; };
 		58EA6A2261AFD526DD213D2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */; };
+		5AE2AA53DAF21C00BCF61DAA /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA21E1C27ED51254B60BEDE /* PaywallView.swift */; };
 		5E2E74169EB20BB3FA006060 /* AnalysisOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497CB36C5D07712BBC769BFF /* AnalysisOverlay.swift */; };
+		600B95BBBA35A630EECF81BD /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */; };
 		60E892F92E0887DAC479A39E /* ResultItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */; };
 		625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF0AD775886DE66BC40E360 /* CameraView.swift */; };
 		79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */; };
@@ -43,7 +46,7 @@
 		00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 		086EBF7CCF553D14C6174559 /* AIProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClient.swift; sourceTree = "<group>"; };
 		0E38887382F74AA55C63EA6C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABEDB088BD86173D15337A9 /* TextLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogView.swift; sourceTree = "<group>"; };
 		1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraApp.swift; sourceTree = "<group>"; };
 		238FF164D03FBE4CB6367536 /* CalorieRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingView.swift; sourceTree = "<group>"; };
@@ -57,12 +60,15 @@
 		60A9E8334613F75FF1CA6EAD /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
 		6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCounterView.swift; sourceTree = "<group>"; };
+		6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
 		87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Tokens.swift"; sourceTree = "<group>"; };
 		8FF0AD775886DE66BC40E360 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogButton.swift; sourceTree = "<group>"; };
 		987B7D2B180F46B008B29D3A /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surfaces.swift; sourceTree = "<group>"; };
+		9CA21E1C27ED51254B60BEDE /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
+		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
 		C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraModelContainer.swift; sourceTree = "<group>"; };
@@ -157,6 +163,7 @@
 			children = (
 				3567280D677BC253A09E08E4 /* OnboardingModel.swift */,
 				0E38887382F74AA55C63EA6C /* OnboardingView.swift */,
+				9CA21E1C27ED51254B60BEDE /* PaywallView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -182,6 +189,7 @@
 				3CE869EBA21DE36DE94948C7 /* Networking */,
 				40BC61BE2D2C595666C68E47 /* Persistence */,
 				A393E1770736058EF5CB308A /* Resources */,
+				B1F0FC49EF3FEA8DFD38ECB0 /* StoreKit */,
 				2CE4BD35B616F3A7BF36F0E3 /* Views */,
 				3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */,
 			);
@@ -213,6 +221,15 @@
 				99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */,
 			);
 			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		B1F0FC49EF3FEA8DFD38ECB0 /* StoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				AA5EC66D7882786D07D37B17 /* Products.storekit */,
+				6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */,
+			);
+			path = StoreKit;
 			sourceTree = "<group>";
 		};
 		B37A30B44021471D12663445 /* Camera */ = {
@@ -270,7 +287,6 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					4CEAA32D14A007032EAE0522 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -300,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58EA6A2261AFD526DD213D2C /* Assets.xcassets in Resources */,
+				3547A3A4E512CA44F0E178A9 /* Products.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +343,7 @@
 				F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */,
 				AC5CB5E73C3CFD78D22FF1A0 /* OnboardingModel.swift in Sources */,
 				E1EED8CCB3177B5560586B87 /* OnboardingView.swift in Sources */,
+				5AE2AA53DAF21C00BCF61DAA /* PaywallView.swift in Sources */,
 				2FABEA2D5A210D794CF519D8 /* PortionUnit.swift in Sources */,
 				79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */,
 				60E892F92E0887DAC479A39E /* ResultItemCard.swift in Sources */,
@@ -335,6 +353,7 @@
 				92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */,
 				BDBB9B674BEB8923D1BA5065 /* SofraIcon.swift in Sources */,
 				9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */,
+				600B95BBBA35A630EECF81BD /* StoreKitManager.swift in Sources */,
 				BABBBF429BC9E1A04F1E9BE0 /* Surfaces.swift in Sources */,
 				88B5B14F618C6D8C047B11ED /* TextLogView.swift in Sources */,
 				B9744D5660C9C7FA9F6EB2A7 /* UserProfile.swift in Sources */,
@@ -353,6 +372,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sofra/Info.plist;
@@ -505,6 +525,7 @@
 				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sofra/Info.plist;

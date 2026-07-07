@@ -111,6 +111,17 @@ struct DailyView: View {
 
             Spacer()
 
+            // Text log button
+            Button {
+                nav.goToTextLog()
+            } label: {
+                Image(systemName: "text.alignleft")
+                    .font(.system(size: 15))
+                    .foregroundStyle(Color.textSecondary)
+                    .padding(Layout.Spacing.md)
+                    .background(Color.surfaceRaised, in: Circle())
+            }
+
             // Camera button
             Button {
                 nav.goToCamera()

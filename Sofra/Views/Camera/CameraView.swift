@@ -14,30 +14,38 @@ import UIKit
 
 // MARK: - AVFoundation camera preview
 
+/// Custom UIView that keeps its preview layer sized to bounds.
+final class PreviewView: UIView {
+    var previewLayer: AVCaptureVideoPreviewLayer? {
+        didSet { oldValue?.removeFromSuperlayer() }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        previewLayer?.frame = bounds
+    }
+
+    func attach(_ layer: AVCaptureVideoPreviewLayer) {
+        layer.frame = bounds
+        layer.videoGravity = .resizeAspectFill
+        self.layer.insertSublayer(layer, at: 0)
+        self.previewLayer = layer
+    }
+}
+
 struct CameraPreview: UIViewRepresentable {
     let session: AVCaptureSession
 
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView(frame: .zero)
+    func makeUIView(context: Context) -> PreviewView {
+        let view = PreviewView(frame: .zero)
         view.backgroundColor = .black
         let previewLayer = AVCaptureVideoPreviewLayer(session: session)
-        previewLayer.videoGravity = .resizeAspectFill
-        previewLayer.frame = view.bounds
-        view.layer.addSublayer(previewLayer)
-        context.coordinator.previewLayer = previewLayer
+        view.attach(previewLayer)
         return view
     }
 
-    func updateUIView(_ uiView: UIView, context: Context) {
-        context.coordinator.previewLayer?.frame = uiView.bounds
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
-
-    class Coordinator {
-        var previewLayer: AVCaptureVideoPreviewLayer?
+    func updateUIView(_ uiView: PreviewView, context: Context) {
+        // layoutSubviews handles frame resizing
     }
 }
 

@@ -38,7 +38,7 @@ enum AppScreen: Equatable {
 @MainActor
 @Observable
 final class NavigationModel {
-    var screen: AppScreen = .camera
+    var screen: AppScreen = .daily
 
     /// Today's total calories (derived from saved ScanEntries for today).
     var todayCalories: Double = 0

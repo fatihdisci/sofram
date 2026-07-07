@@ -46,10 +46,10 @@ struct OnboardingView: View {
                         }
                     }
                         .tag(OnboardingStep.result)
-                    PaywallPlaceholderView(model: model, onComplete: {
+                    PaywallView {
                         model.completeOnboarding()
                         onboardingCompleted = true
-                    })
+                    }
                         .tag(OnboardingStep.paywall)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
@@ -464,59 +464,3 @@ struct ResultStepView: View {
 
 // MARK: - Paywall placeholder
 
-struct PaywallPlaceholderView: View {
-    let model: OnboardingModel
-    let onComplete: () -> Void
-
-    var body: some View {
-        VStack(spacing: Layout.Spacing.xl) {
-            Spacer()
-
-            SofraIconView(icon: .sofra, size: 64)
-                .foregroundStyle(Color.accentFill)
-
-            Text("Sofra'ya\nHoş Geldin")
-                .font(.sofraTitle)
-                .foregroundStyle(Color.textPrimary)
-                .multilineTextAlignment(.center)
-
-            Text("Fotoğrafla kalori takibine başla.\n3 ücretsiz tarama seni bekliyor.")
-                .font(.sofraBody)
-                .foregroundStyle(Color.textSecondary)
-                .multilineTextAlignment(.center)
-
-            // Paywall hook — Phase 3b replaces this with real StoreKit 2 flow
-            VStack(spacing: Layout.Spacing.md) {
-                Text("PAYWall PLACEHOLDER")
-                    .font(.sofraCaption)
-                    .foregroundStyle(Color.textMuted)
-                Text("Phase 3b: StoreKit 2 subscription burada olacak.\nŞimdilik ücretsiz devam et.")
-                    .font(.sofraCaption)
-                    .foregroundStyle(Color.textMuted)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(Layout.Spacing.lg)
-            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
-
-            Spacer()
-
-            // Free tier CTA
-            Button {
-                onComplete()
-            } label: {
-                Text("Ücretsiz Başla")
-                    .font(.sofraLabel)
-                    .foregroundStyle(Color.onAccent)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, Layout.Spacing.md)
-                    .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
-            }
-            .padding(.horizontal, Layout.Spacing.xl)
-
-            Text("3 tarama ücretsiz · Abonelik gerekmez")
-                .font(.sofraCaption)
-                .foregroundStyle(Color.textMuted)
-        }
-        .padding(.bottom, 40)
-    }
-}
