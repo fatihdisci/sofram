@@ -16,6 +16,7 @@
 import SwiftUI
 import AVFoundation
 import UIKit
+import PhotosUI
 
 // MARK: - AVFoundation camera preview
 
@@ -246,6 +247,7 @@ struct CameraView: View {
     @State private var focusPoint: CGPoint?
     @State private var focusRingVisible = false
     @State private var guideVisible = false
+    @State private var selectedPhotoItem: PhotosPickerItem?
 
     var body: some View {
         ZStack {
@@ -328,6 +330,18 @@ struct CameraView: View {
             if granted {
                 camera.startSession()
                 withAnimation(.sofraSpring.delay(0.15)) { guideVisible = true }
+            }
+        }
+        .onChange(of: selectedPhotoItem) { _, newItem in
+            guard let item = newItem else { return }
+            Task {
+                defer { selectedPhotoItem = nil }
+                guard let data = try? await item.loadTransferable(type: Data.self),
+                      let uiImage = UIImage(data: data) else {
+                    showCaptureError("Fotoğraf yüklenemedi.")
+                    return
+                }
+                nav.startAnalysis(imageData: data, uiImage: uiImage)
             }
         }
         .onDisappear {
@@ -420,20 +434,36 @@ struct CameraView: View {
             .disabled(isCapturing || authorization != .authorized)
             .animation(.spring(response: 0.2, dampingFraction: 0.6), value: isCapturing)
 
-            // Text log alternative
-            Button {
-                nav.goToTextLog(from: .camera)
-            } label: {
-                HStack(spacing: Layout.Spacing.xs) {
-                    Image(systemName: "text.alignleft")
-                        .font(.system(size: 15))
-                    Text("Yazarak ekle")
-                        .font(.sofraLabel)
+            HStack(spacing: Layout.Spacing.md) {
+                // Gallery picker
+                PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
+                    HStack(spacing: Layout.Spacing.xs) {
+                        Image(systemName: "photo.on.rectangle")
+                            .font(.system(size: 15))
+                        Text("Galeri")
+                            .font(.sofraLabel)
+                    }
+                    .foregroundStyle(.white.opacity(0.9))
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.vertical, Layout.Spacing.sm)
+                    .background(.ultraThinMaterial, in: Capsule())
                 }
-                .foregroundStyle(.white.opacity(0.9))
-                .padding(.horizontal, Layout.Spacing.lg)
-                .padding(.vertical, Layout.Spacing.sm)
-                .background(.ultraThinMaterial, in: Capsule())
+
+                // Text log alternative
+                Button {
+                    nav.goToTextLog(from: .camera)
+                } label: {
+                    HStack(spacing: Layout.Spacing.xs) {
+                        Image(systemName: "text.alignleft")
+                            .font(.system(size: 15))
+                        Text("Yazarak ekle")
+                            .font(.sofraLabel)
+                    }
+                    .foregroundStyle(.white.opacity(0.9))
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.vertical, Layout.Spacing.sm)
+                    .background(.ultraThinMaterial, in: Capsule())
+                }
             }
         }
         .padding(.bottom, Layout.Spacing.xl)

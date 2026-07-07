@@ -43,7 +43,12 @@ final class FreeScanCounter {
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         self.usedScans = defaults.integer(forKey: Keys.used)
+        #if DEBUG
+        // Always pro in debug builds — no scan limits during testing.
+        self.isSubscribed = true
+        #else
         self.isSubscribed = defaults.bool(forKey: Keys.subscribed)
+        #endif
     }
 
     /// Free scans still available (0 once the cap is hit).

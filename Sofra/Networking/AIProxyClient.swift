@@ -132,6 +132,16 @@ final class AIProxyClient {
             return key
         }
 
+        /// OpenAI organization ID from Secrets.plist (optional — project-scoped keys may need it).
+        var openAIOrgID: String? {
+            guard let secretsURL = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
+                  let secrets = NSDictionary(contentsOf: secretsURL),
+                  let orgID = secrets["OpenAIOrgID"] as? String,
+                  !orgID.isEmpty
+            else { return nil }
+            return orgID
+        }
+
         static let placeholderEndpoint = URL(string: "https://REPLACE-ME.vercel.app/api/scan")!
 
         static func fromBundle(_ bundle: Bundle = .main) -> Configuration {
@@ -234,14 +244,22 @@ final class AIProxyClient {
     }
 
     private func openAIModel(for tier: String) -> String {
+        // tier → model mapping. Models confirmed on OpenAI official pricing page (July 2026).
+        // gpt-5-mini: $0.25/$0.025 | gpt-5-nano: $0.05/$0.005
+        // Dated snapshots exist (gpt-5-mini-2025-08-07, gpt-5-nano-2025-08-07) but
+        // rolling aliases are preferred to track improvements automatically.
         tier == "pro" ? "gpt-5-mini" : "gpt-5-nano"
     }
 
     private func openAIHeaders() -> [String: String] {
-        [
+        var headers: [String: String] = [
             "Content-Type": "application/json",
             "Authorization": "Bearer \(configuration.openAIKey ?? "")"
         ]
+        if let orgID = configuration.openAIOrgID {
+            headers["OpenAI-Organization"] = orgID
+        }
+        return headers
     }
 
     /// Photo → OpenAI Chat Completions (vision).
@@ -296,7 +314,13 @@ final class AIProxyClient {
             let (data, response) = try await session.data(for: request)
             guard let http = response as? HTTPURLResponse else { throw AIProxyError.scanFailed }
 
-            // Try GPT-5-nano fallback if GPT-5-mini fails (pro tier only)
+            if http.statusCode >= 400 {
+                // Log the actual error for debugging
+                let body = String(data: data, encoding: .utf8) ?? "<no body>"
+                print("[AIProxyClient] OpenAI error \(http.statusCode): \(body)")
+            }
+
+            // Try gpt-5-nano fallback if gpt-5-mini fails (pro tier only)
             if http.statusCode >= 400, tier == "pro", model != "gpt-5-nano" {
                 let fallbackBody = OpenAIRequest(
                     model: "gpt-5-nano",
@@ -314,6 +338,8 @@ final class AIProxyClient {
                 let (fallbackData, fallbackResponse) = try await session.data(for: fallbackRequest)
                 guard let fallbackHTTP = fallbackResponse as? HTTPURLResponse,
                       (200..<300).contains(fallbackHTTP.statusCode) else {
+                    let fb = String(data: fallbackData, encoding: .utf8) ?? "<no body>"
+                    print("[AIProxyClient] Fallback also failed: \(fb)")
                     throw AIProxyError.scanFailed
                 }
                 return try parseOpenAIResponse(fallbackData)
@@ -324,7 +350,10 @@ final class AIProxyClient {
             }
             return try parseOpenAIResponse(data)
         } catch let error as AIProxyError { throw error }
-        catch { throw AIProxyError.scanFailed }
+        catch {
+            print("[AIProxyClient] Unexpected error: \(error.localizedDescription)")
+            throw AIProxyError.scanFailed
+        }
     }
 
     /// Parse OpenAI JSON response → VisionResponse, with retry for malformed JSON.
