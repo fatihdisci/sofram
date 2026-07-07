@@ -201,8 +201,11 @@ final class OnboardingModel {
         context.insert(profile)
         try? context.save()
 
-        // Also store the calorie target for the daily ring
+        // Also store the calorie + macro targets that DailyView and Ayarlar read.
         UserDefaults.standard.set(dailyCalorieTarget, forKey: "sofra.dailyCalorieTarget")
+        UserDefaults.standard.set(proteinTargetG, forKey: "sofra.proteinTarget")
+        UserDefaults.standard.set(carbsTargetG, forKey: "sofra.carbsTarget")
+        UserDefaults.standard.set(fatTargetG, forKey: "sofra.fatTarget")
 
         completeOnboarding()
     }

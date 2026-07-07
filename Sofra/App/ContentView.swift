@@ -1,16 +1,22 @@
 //
 //  ContentView.swift
-//  Sofra — navigation state machine root.
+//  Sofra — root: onboarding → tabbed home + scan-flow cover.
 //
-//  First launch: onboarding quiz → paywall placeholder → main flow.
-//  Subsequent launches: camera is the root screen.
+//  v2 structure:
+//   • First launch: onboarding quiz → paywall.
+//   • Home: a 3-tab bar — Bugün (daily) · Geçmiş (history) · Ayarlar (settings).
+//   • The scan task-flow (camera → analysis → result, or text-log → result)
+//     is presented as a full-screen cover over the tabs, driven by
+//     NavigationModel.scanFlow. This keeps capture immersive while the home
+//     stays a normal, navigable app.
 //
-//  Camera is the root (no tab bar). Flow branches:
-//   camera → capture → analysis → result → daily
-//   camera → textLog → result → daily
+//  NOTE: SettingsView lives in this file (rather than its own) so it compiles
+//  against the committed .xcodeproj without a `xcodegen generate` step. It can
+//  be split into Sofra/Views/Settings/ once the project is regenerated.
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @Environment(NavigationModel.self) private var nav
@@ -22,13 +28,13 @@ struct ContentView: View {
             if !onboardingCompleted {
                 OnboardingView()
             } else {
-                mainFlow
+                home
             }
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.75), value: onboardingCompleted)
         .onOpenURL { url in
             // Deep links (widget + future lock-screen quick actions):
-            //  sofra://daily → daily summary, sofra://camera → capture,
+            //  sofra://daily → Bugün tab, sofra://camera → capture,
             //  sofra://textlog → text logging.
             guard url.scheme == "sofra" else { return }
             switch url.host {
@@ -40,14 +46,47 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Main app flow
+    // MARK: - Tabbed home + scan-flow cover
 
-    private var mainFlow: some View {
+    @ViewBuilder
+    private var home: some View {
+        @Bindable var nav = nav
+
+        TabView(selection: $nav.selectedTab) {
+            DailyView()
+                .tabItem { Label("Bugün", systemImage: "sun.max.fill") }
+                .tag(AppTab.today)
+
+            HistoryView()
+                .tabItem { Label("Geçmiş", systemImage: "chart.bar.fill") }
+                .tag(AppTab.history)
+
+            SettingsView()
+                .tabItem { Label("Ayarlar", systemImage: "gearshape.fill") }
+                .tag(AppTab.settings)
+        }
+        .tint(Color.accentFill)
+        .fullScreenCover(isPresented: Binding(
+            get: { nav.scanFlow != nil },
+            set: { if !$0 { nav.scanFlow = nil } }
+        )) {
+            ScanFlowContainer()
+                .environment(nav)
+        }
+    }
+}
+
+// MARK: - Scan flow container (full-screen cover)
+
+/// Hosts the immersive scan task-flow. Free-scan gating that used to live in
+/// the root switch now guards the two entry screens here.
+struct ScanFlowContainer: View {
+    @Environment(NavigationModel.self) private var nav
+
+    var body: some View {
         Group {
-            switch nav.screen {
+            switch nav.scanFlow {
             case .camera:
-                // Both scan entry points (photo + text) consume the same
-                // lifetime free-scan allowance, so both are gated here.
                 if FreeScanCounter.shared.canScanForFree {
                     CameraView()
                 } else {
@@ -60,18 +99,18 @@ struct ContentView: View {
             case .result(let uiImage, let items, let source):
                 ResultView(uiImage: uiImage, items: items, source: source)
 
-            case .daily:
-                DailyView()
-
             case .textLog:
                 if FreeScanCounter.shared.canScanForFree {
                     TextLogView()
                 } else {
                     FreeScanLimitView()
                 }
+
+            case .none:
+                Color.bgPage.ignoresSafeArea()
             }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: nav.screen)
+        .animation(.spring(response: 0.4, dampingFraction: 0.75), value: nav.scanFlow)
     }
 }
 
@@ -147,5 +186,242 @@ struct FreeScanLimitView: View {
             PaywallView(onComplete: { showPaywall = false },
                         skipTitle: "Şimdilik kapat")
         }
+    }
+}
+
+// MARK: - Settings tab
+
+/// Ayarlar: editable profile, daily targets, subscription, and about.
+/// Targets are stored in AppStorage (the same keys DailyView reads), so edits
+/// here immediately drive the daily ring and macro cards.
+struct SettingsView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var profiles: [UserProfile]
+
+    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("sofra.proteinTarget") private var proteinTarget: Double = 0
+    @AppStorage("sofra.carbsTarget") private var carbsTarget: Double = 0
+    @AppStorage("sofra.fatTarget") private var fatTarget: Double = 0
+
+    @State private var store = StoreKitManager.shared
+    @State private var subscriptions = FreeScanCounter.shared
+    @State private var showPaywall = false
+    @State private var isRestoring = false
+
+    private var profile: UserProfile? { profiles.first }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                proSection
+                targetsSection
+                profileSection
+                aboutSection
+            }
+            .scrollContentBackground(.hidden)
+            .background(Color.bgPage.ignoresSafeArea())
+            .navigationTitle("Ayarlar")
+            .onAppear { seedTargetsIfNeeded() }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(onComplete: { showPaywall = false },
+                        skipTitle: "Kapat")
+        }
+        .tint(Color.accentFill)
+    }
+
+    // MARK: Pro
+
+    @ViewBuilder
+    private var proSection: some View {
+        Section {
+            if subscriptions.isSubscribed {
+                HStack {
+                    Label("Sofra Pro", systemImage: "checkmark.seal.fill")
+                        .foregroundStyle(Color.accentFill)
+                    Spacer()
+                    Text("Aktif")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textSecondary)
+                }
+                Button("Aboneliği Yönet") { store.openManageSubscriptions() }
+            } else {
+                Button {
+                    showPaywall = true
+                } label: {
+                    HStack {
+                        Label("Sofra Pro'ya Geç", systemImage: "sparkles")
+                            .foregroundStyle(Color.textPrimary)
+                        Spacer()
+                        Text("\(subscriptions.remainingFreeScans) tarama kaldı")
+                            .font(.sofraCaption)
+                            .foregroundStyle(Color.textMuted)
+                    }
+                }
+            }
+
+            Button {
+                Task { await restore() }
+            } label: {
+                HStack {
+                    Text("Satın Alımları Geri Yükle")
+                    if isRestoring {
+                        Spacer()
+                        ProgressView()
+                    }
+                }
+            }
+            .disabled(isRestoring)
+        } header: {
+            Text("Abonelik")
+        }
+    }
+
+    // MARK: Targets
+
+    private var targetsSection: some View {
+        Section {
+            targetRow(title: "Günlük kalori", value: $calorieTarget, unit: "kcal", step: 50)
+            targetRow(title: "Protein", value: $proteinTarget, unit: "g", step: 5)
+            targetRow(title: "Karbonhidrat", value: $carbsTarget, unit: "g", step: 5)
+            targetRow(title: "Yağ", value: $fatTarget, unit: "g", step: 1)
+
+            Button("Kaloriden makro dağıt (P25 · K45 · Y30)") {
+                distributeMacros()
+            }
+            .font(.sofraCaption)
+        } header: {
+            Text("Günlük Hedefler")
+        } footer: {
+            Text("Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır.")
+        }
+    }
+
+    private func targetRow(title: String, value: Binding<Double>, unit: String, step: Double) -> some View {
+        HStack {
+            Text(title)
+                .foregroundStyle(Color.textPrimary)
+            Spacer()
+            TextField("0", value: value, format: .number)
+                .keyboardType(.numberPad)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 64)
+                .font(.sofraNumericSmall)
+            Text(unit)
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+            Stepper("", value: value, in: 0...10000, step: step)
+                .labelsHidden()
+        }
+    }
+
+    // MARK: Profile
+
+    @ViewBuilder
+    private var profileSection: some View {
+        Section {
+            if let profile {
+                Picker("Hedef", selection: Binding(
+                    get: { profile.goal },
+                    set: { profile.goal = $0; save() }
+                )) {
+                    ForEach(Goal.allCases, id: \.self) { Text($0.displayName).tag($0) }
+                }
+
+                Picker("Aktivite", selection: Binding(
+                    get: { profile.activityLevel },
+                    set: { profile.activityLevel = $0; save() }
+                )) {
+                    ForEach(ActivityLevel.allCases, id: \.self) { Text($0.displayName).tag($0) }
+                }
+
+                Stepper(value: Binding(
+                    get: { profile.heightCm },
+                    set: { profile.heightCm = $0; save() }
+                ), in: 100...250, step: 1) {
+                    HStack {
+                        Text("Boy")
+                        Spacer()
+                        Text("\(Int(profile.heightCm)) cm")
+                            .font(.sofraNumericSmall)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                }
+
+                Stepper(value: Binding(
+                    get: { profile.weightKg },
+                    set: { profile.weightKg = $0; save() }
+                ), in: 30...300, step: 0.5) {
+                    HStack {
+                        Text("Kilo")
+                        Spacer()
+                        Text("\(profile.weightKg, specifier: "%.1f") kg")
+                            .font(.sofraNumericSmall)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                }
+            } else {
+                Text("Profil bulunamadı.")
+                    .foregroundStyle(Color.textMuted)
+            }
+        } header: {
+            Text("Profil")
+        }
+    }
+
+    // MARK: About
+
+    private var aboutSection: some View {
+        Section {
+            HStack {
+                Text("Sürüm")
+                Spacer()
+                Text(appVersion)
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textMuted)
+            }
+        } header: {
+            Text("Hakkında")
+        }
+    }
+
+    // MARK: Logic
+
+    private var appVersion: String {
+        let v = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
+        let b = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—"
+        return "\(v) (\(b))"
+    }
+
+    /// Seed macro targets from the saved profile on first open (they default to 0).
+    private func seedTargetsIfNeeded() {
+        if calorieTarget <= 0, let p = profile, p.dailyCalorieTarget > 0 {
+            calorieTarget = p.dailyCalorieTarget
+        }
+        if proteinTarget <= 0, carbsTarget <= 0, fatTarget <= 0 {
+            if let p = profile, p.proteinTargetG > 0 {
+                proteinTarget = p.proteinTargetG
+                carbsTarget = p.carbsTargetG
+                fatTarget = p.fatTargetG
+            } else {
+                distributeMacros()
+            }
+        }
+    }
+
+    private func distributeMacros() {
+        proteinTarget = (calorieTarget * 0.25 / 4).rounded()
+        carbsTarget   = (calorieTarget * 0.45 / 4).rounded()
+        fatTarget     = (calorieTarget * 0.30 / 9).rounded()
+    }
+
+    private func save() {
+        try? modelContext.save()
+    }
+
+    private func restore() async {
+        isRestoring = true
+        defer { isRestoring = false }
+        _ = await store.restorePurchases()
     }
 }

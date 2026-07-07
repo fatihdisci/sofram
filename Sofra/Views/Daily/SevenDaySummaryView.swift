@@ -16,6 +16,10 @@ import SwiftData
 struct SevenDaySummaryView: View {
     @Environment(\.dismiss) private var dismiss
 
+    /// When true the view is hosted inside the Geçmiş tab (not a sheet): the
+    /// close button and sheet presentation modifiers are dropped.
+    var embedded: Bool = false
+
     @Query(sort: \DailyQuickCounter.date, order: .reverse)
     private var counters: [DailyQuickCounter]
 
@@ -39,7 +43,18 @@ struct SevenDaySummaryView: View {
     private var totalBread: Int { daySummaries.reduce(0) { $0 + $1.breadSlices } }
     private var totalTea: Int { daySummaries.reduce(0) { $0 + $1.teaGlasses } }
 
+    @ViewBuilder
     var body: some View {
+        if embedded {
+            content
+        } else {
+            content
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
+    }
+
+    private var content: some View {
         ZStack {
             Color.bgPage.ignoresSafeArea()
 
@@ -64,8 +79,6 @@ struct SevenDaySummaryView: View {
                 }
             }
         }
-        .presentationDetents([.large])
-        .presentationDragIndicator(.visible)
     }
 
     // MARK: - Header
@@ -76,14 +89,16 @@ struct SevenDaySummaryView: View {
                 .font(.sofraHeading)
                 .foregroundStyle(Color.textPrimary)
             Spacer()
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(Color.textPrimary)
-                    .frame(width: 36, height: 36)
-                    .background(Color.surfaceRaised, in: Circle())
+            if !embedded {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(Color.textPrimary)
+                        .frame(width: 36, height: 36)
+                        .background(Color.surfaceRaised, in: Circle())
+                }
             }
         }
         .padding(.horizontal, Layout.Spacing.lg)
@@ -298,5 +313,19 @@ struct WeekBarChart: View {
         formatter.locale = Locale(identifier: "tr_TR")
         formatter.dateFormat = "EEEEE"   // single-letter day
         return formatter.string(from: date).capitalized
+    }
+}
+
+// MARK: - History tab
+
+/// Geçmiş tab — hosts the 7-day summary as a full screen (no sheet chrome).
+/// Lives here (not its own file) so it compiles against the committed
+/// .xcodeproj without a `xcodegen generate` step.
+struct HistoryView: View {
+    var body: some View {
+        ZStack {
+            Color.bgPage.ignoresSafeArea()
+            SevenDaySummaryView(embedded: true)
+        }
     }
 }

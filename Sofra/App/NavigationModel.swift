@@ -1,30 +1,39 @@
 //
 //  NavigationModel.swift
-//  Sofra — app-wide flow state machine.
+//  Sofra — app-wide flow state.
 //
-//  Camera is the root screen (no tab bar). Navigation flows:
-//   camera → capture → analysis → result → daily
-//   camera → textLog → result → daily
-//   daily → camera (back)
-//   daily → 7-day-summary (sheet)
+//  v2 structure: a persistent 3-tab home (Bugün · Geçmiş · Ayarlar) with the
+//  scan task-flow (camera → analysis → result, or text-log → result) presented
+//  as a full-screen cover over the tabs.
+//
+//  The scan-flow method names are unchanged from v1 so the camera/analysis/
+//  result/text-log screens keep calling the same API — only their effect
+//  changed (they now drive `scanFlow` instead of a single `screen`).
 //
 
 import SwiftUI
 import Observation
 import UIKit
 
-enum AppScreen: Equatable {
+// MARK: - Tabs
+
+enum AppTab: Hashable {
+    case today
+    case history
+    case settings
+}
+
+// MARK: - Scan flow (presented as a full-screen cover)
+
+enum ScanFlow: Equatable {
     case camera
     case analyzing(imageData: Data, uiImage: UIImage)
     case result(uiImage: UIImage, items: [VisionItem], source: ScanSource)
-    case daily
     case textLog
 
-    // Equatable: associated values compared by data/image identity
-    static func == (lhs: AppScreen, rhs: AppScreen) -> Bool {
+    static func == (lhs: ScanFlow, rhs: ScanFlow) -> Bool {
         switch (lhs, rhs) {
         case (.camera, .camera): return true
-        case (.daily, .daily): return true
         case (.textLog, .textLog): return true
         case (.analyzing(let ld, let lu), .analyzing(let rd, let ru)):
             return ld == rd && lu === ru
@@ -38,25 +47,17 @@ enum AppScreen: Equatable {
 @MainActor
 @Observable
 final class NavigationModel {
-    var screen: AppScreen = .daily
 
-    /// Today's total calories (derived from saved ScanEntries for today).
-    var todayCalories: Double = 0
-    var todayProtein: Double = 0
-    var todayCarbs: Double = 0
-    var todayFat: Double = 0
+    /// Selected home tab. `.today` is the launch surface.
+    var selectedTab: AppTab = .today
 
-    /// Quick counter values for today (persisted to DailyQuickCounter).
-    var todayBreadSlices: Int = 0
-    var todayTeaGlasses: Int = 0
+    /// The active scan flow, or nil when the user is on the tabbed home.
+    var scanFlow: ScanFlow? = nil
 
-    /// Whether to show the 7-day summary sheet from daily view.
-    var showSevenDaySummary: Bool = false
-
-    /// Whether to show the free-scan-limit screen.
+    /// Whether to show the free-scan-limit screen (checked when entering a scan).
     var showFreeScanLimit: Bool = false
 
-    /// Where the text-log screen was opened from — its close button returns there.
+    /// Where the text-log screen was opened from — its close returns there.
     enum TextLogOrigin {
         case camera, daily
     }
@@ -65,43 +66,52 @@ final class NavigationModel {
     /// Draft of the text-log input, kept so backing out of a result doesn't lose it.
     var textLogDraft: String = ""
 
-    // MARK: - Navigation methods
+    // MARK: - Scan-flow navigation (names preserved from v1)
 
     func goToCamera() {
-        screen = .camera
+        scanFlow = .camera
     }
 
     func startAnalysis(imageData: Data, uiImage: UIImage) {
-        screen = .analyzing(imageData: imageData, uiImage: uiImage)
+        scanFlow = .analyzing(imageData: imageData, uiImage: uiImage)
     }
 
     func showResult(uiImage: UIImage, items: [VisionItem], source: ScanSource = .photo) {
-        screen = .result(uiImage: uiImage, items: items, source: source)
+        scanFlow = .result(uiImage: uiImage, items: items, source: source)
     }
 
+    /// Finish the scan flow and land back on the Bugün tab (used after logging
+    /// and by the camera close button).
     func goToDaily() {
-        screen = .daily
+        scanFlow = nil
+        selectedTab = .today
     }
 
     func goToTextLog(from origin: TextLogOrigin) {
         textLogOrigin = origin
-        screen = .textLog
+        scanFlow = .textLog
     }
 
-    /// Close the text-log screen back to wherever it was opened from.
+    /// Close the text-log screen. Opened from the camera → back to the camera;
+    /// opened from the home → dismiss the whole flow back to the tabs.
     func closeTextLog() {
         switch textLogOrigin {
-        case .camera: screen = .camera
-        case .daily:  screen = .daily
+        case .camera: scanFlow = .camera
+        case .daily:  scanFlow = nil
         }
     }
 
     /// Dismiss a result without logging. Photo scans return to the camera,
-    /// text scans return to the text-log screen (the draft is preserved).
+    /// text scans return to the text-log editor (the draft is preserved).
     func dismissResult(source: ScanSource) {
         switch source {
-        case .text:  screen = .textLog
-        default:     screen = .camera
+        case .text:  scanFlow = .textLog
+        default:     scanFlow = .camera
         }
+    }
+
+    /// Dismiss any active scan flow back to the tabs.
+    func dismissScanFlow() {
+        scanFlow = nil
     }
 }

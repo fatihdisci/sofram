@@ -23,6 +23,9 @@ struct DailyView: View {
     private var counters: [DailyQuickCounter]
 
     @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("sofra.proteinTarget") private var proteinTargetStored: Double = 0
+    @AppStorage("sofra.carbsTarget") private var carbsTargetStored: Double = 0
+    @AppStorage("sofra.fatTarget") private var fatTargetStored: Double = 0
 
     /// Today's scan entries.
     private var todayScans: [ScanEntry] {
@@ -48,10 +51,11 @@ struct DailyView: View {
         todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.fat } }
     }
 
-    /// Macro gram targets derived from the calorie target (30/40/30 split).
-    private var proteinTarget: Double { calorieTarget * 0.30 / 4 }
-    private var carbsTarget: Double { calorieTarget * 0.40 / 4 }
-    private var fatTarget: Double { calorieTarget * 0.30 / 9 }
+    /// Macro gram targets. User-set values (from Ayarlar) win; otherwise fall
+    /// back to a derived P25 · K45 · Y30 split of the calorie target.
+    private var proteinTarget: Double { proteinTargetStored > 0 ? proteinTargetStored : calorieTarget * 0.25 / 4 }
+    private var carbsTarget: Double { carbsTargetStored > 0 ? carbsTargetStored : calorieTarget * 0.45 / 4 }
+    private var fatTarget: Double { fatTargetStored > 0 ? fatTargetStored : calorieTarget * 0.30 / 9 }
 
     private var weekSummaries: [DaySummary] {
         DaySummaryBuilder.lastSevenDays(scans: scanEntries, counters: counters)
@@ -87,12 +91,6 @@ struct DailyView: View {
                     Spacer(minLength: 40)
                 }
             }
-        }
-        .sheet(isPresented: Binding(
-            get: { nav.showSevenDaySummary },
-            set: { nav.showSevenDaySummary = $0 }
-        )) {
-            SevenDaySummaryView()
         }
         .onAppear { loadTodayCounters() }
         .onChange(of: breadSlices) { _, _ in saveCounters() }
@@ -161,7 +159,7 @@ struct DailyView: View {
 
     private var sevenDayCard: some View {
         Button {
-            nav.showSevenDaySummary = true
+            nav.selectedTab = .history
         } label: {
             HStack(spacing: Layout.Spacing.md) {
                 VStack(alignment: .leading, spacing: 4) {
