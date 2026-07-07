@@ -37,6 +37,7 @@
 		79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */; };
 		806BDB4750F0928CA4DFAF93 /* Color+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */; };
 		8223AA7BEAFD7A352FA5B0D5 /* WidgetDailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */; };
+		822A16CC4B0E1C0B5E07A988 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = E19F8CA13354DB8B97C93C2B /* Secrets.plist */; };
 		88B5B14F618C6D8C047B11ED /* TextLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABEDB088BD86173D15337A9 /* TextLogView.swift */; };
 		8DB29A6B0446E2C7B537A2D1 /* Geist-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */; };
 		92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */; };
@@ -129,6 +130,7 @@
 		D959F549ED125A75211383C7 /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
 		DF6450117D77FE994AEF0FAA /* Geist-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-SemiBold.otf"; sourceTree = "<group>"; };
 		E156CC8B82DB574BEC1B447D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E19F8CA13354DB8B97C93C2B /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Secrets.plist; sourceTree = "<group>"; };
 		E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItemCard.swift; sourceTree = "<group>"; };
 		EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounter.swift; sourceTree = "<group>"; };
 		F147E274CA44406942ADF2E8 /* WidgetDataStore+MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetDataStore+MainApp.swift"; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				B1F0FC49EF3FEA8DFD38ECB0 /* StoreKit */,
 				2CE4BD35B616F3A7BF36F0E3 /* Views */,
 				3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */,
+				E19F8CA13354DB8B97C93C2B /* Secrets.plist */,
 			);
 			path = Sofra;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				0157ABF651A922D23B8CC571 /* GeistMono-Medium.otf in Resources */,
 				E7810ED3DAB4A010F74ADB3B /* GeistMono-Regular.otf in Resources */,
 				3547A3A4E512CA44F0E178A9 /* Products.storekit in Resources */,
+				822A16CC4B0E1C0B5E07A988 /* Secrets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

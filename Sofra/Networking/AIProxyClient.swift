@@ -2,34 +2,27 @@
 //  AIProxyClient.swift
 //  Sofra — networking client for the AI vision proxy.
 //
-//  MODEL-AGNOSTIC BY DESIGN. This client POSTs an image to a configurable endpoint
-//  and gets back the typed `VisionResponse`. It never names a model. The endpoint is
-//  a black box (a Vercel Edge Function). On the backend — out of scope here — the
-//  proxy runs a tier-based model chain (see MODEL_RESEARCH.md):
+//  MODEL-AGNOSTIC BY DESIGN. Resolution order:
+//    1. Vercel Edge Function proxy (production) — configured via Info.plist
+//    2. OpenAI Chat Completions API direct (dev/testing) — key from Secrets.plist
+//    3. Demo data (DEBUG only) — when neither is configured
 //
-//    free tier: Gemini 2.5 Flash-Lite only (no fallback)
-//    pro tier:  Gemini 2.5 Flash-Lite → GPT-4.1 mini (auto-fallback on error/refusal)
+//  Tier-based model selection (see MODEL_RESEARCH.md):
+//    free → GPT-5-nano    ($0.05/$0.005 per 1M)
+//    pro  → GPT-5-mini    ($0.25/$0.025 per 1M, fallback GPT-5-nano)
 //
-//  The tier is determined by StoreKit 2 subscription status and sent as a `tier`
-//  field in the request body. The proxy caches by image hash via Upstash.
-//  The client only ever sees a valid response or a generic failure, so the backend
-//  can swap models with zero client changes.
-//
-//  Transport: JSON body with a base64-encoded JPEG (documented in PHASE_1_NOTES.md).
+//  The client sends {tier: "free"|"pro"} to the proxy or picks the model directly
+//  in direct OpenAI mode. The proxy can override model choice at any time.
 //
 
 import Foundation
 import UIKit
 
+// MARK: - Errors
+
 enum AIProxyError: LocalizedError {
-    /// Endpoint URL missing/malformed in configuration.
     case invalidConfiguration
-    /// The endpoint is still the REPLACE-ME placeholder — the proxy was never
-    /// deployed/configured. Surfaced distinctly so it can't be mistaken for a
-    /// camera or transient network problem.
     case notConfigured
-    /// Anything the user should just retry: transport error, non-2xx, or unparseable body.
-    /// Deliberately generic — the client does not distinguish which model failed.
     case scanFailed
 
     var errorDescription: String? {
@@ -44,65 +37,103 @@ enum AIProxyError: LocalizedError {
     }
 }
 
-/// Request body sent to the proxy.
+// MARK: - Proxy request body
+
 struct AIProxyRequest: Encodable {
-    /// Base64-encoded JPEG bytes (nil for text scans).
     let imageBase64: String?
-    /// Free-text meal description (nil for photo scans).
     let text: String?
-    /// "photo" for image scans, "text" for free-text logging.
     let mode: String
-    /// BCP-47 locale so the backend can bias dish naming (e.g. "tr-TR").
     let locale: String
-    /// Model tier: "free" (Gemini 2.5 Flash-Lite only) or "pro" (Flash-Lite + GPT-4.1 mini fallback).
-    /// Determined by StoreKit subscription status at request time.
     let tier: String
 
     enum CodingKeys: String, CodingKey {
         case imageBase64 = "image_base64"
-        case text
-        case mode
-        case locale
-        case tier
+        case text, mode, locale, tier
     }
 
-    /// Photo-scan request.
     static func photo(imageData: Data, locale: String, tier: String) -> AIProxyRequest {
-        AIProxyRequest(
-            imageBase64: imageData.base64EncodedString(),
-            text: nil,
-            mode: "photo",
-            locale: locale,
-            tier: tier
-        )
+        AIProxyRequest(imageBase64: imageData.base64EncodedString(), text: nil, mode: "photo", locale: locale, tier: tier)
     }
 
-    /// Text-scan request.
     static func text(description: String, locale: String, tier: String) -> AIProxyRequest {
-        AIProxyRequest(
-            imageBase64: nil,
-            text: description,
-            mode: "text",
-            locale: locale,
-            tier: tier
-        )
+        AIProxyRequest(imageBase64: nil, text: description, mode: "text", locale: locale, tier: tier)
     }
 }
+
+// MARK: - OpenAI request/response types (direct API mode)
+
+private struct OpenAIMessage: Encodable {
+    let role: String
+    let content: [OpenAIContentPart]
+}
+
+private struct OpenAIContentPart: Encodable {
+    let type: String
+    let text: String?
+    let imageUrl: OpenAIImageURL?
+
+    enum CodingKeys: String, CodingKey {
+        case type, text
+        case imageUrl = "image_url"
+    }
+
+    static func text(_ string: String) -> OpenAIContentPart {
+        OpenAIContentPart(type: "text", text: string, imageUrl: nil)
+    }
+
+    static func image(base64: String) -> OpenAIContentPart {
+        OpenAIContentPart(type: "image_url", text: nil, imageUrl: OpenAIImageURL(url: "data:image/jpeg;base64,\(base64)"))
+    }
+}
+
+private struct OpenAIImageURL: Encodable {
+    let url: String
+}
+
+private struct OpenAIRequest: Encodable {
+    let model: String
+    let messages: [OpenAIMessage]
+    let maxTokens: Int
+    let temperature: Double
+
+    enum CodingKeys: String, CodingKey {
+        case model, messages
+        case maxTokens = "max_tokens"
+        case temperature
+    }
+}
+
+private struct OpenAIResponse: Decodable {
+    struct Choice: Decodable {
+        struct Message: Decodable {
+            let content: String
+        }
+        let message: Message
+    }
+    let choices: [Choice]
+}
+
+// MARK: - Client
 
 final class AIProxyClient {
 
     struct Configuration {
-        /// The Vercel Edge Function endpoint. Placeholder for this phase — the real
-        /// deployment is out of scope. Overridable via the Info.plist key
-        /// `AIProxyEndpointURL`.
         var endpointURL: URL
-        /// Optional shared secret sent as `x-sofra-key` (device-level, not a user account).
         var apiKey: String?
         var timeout: TimeInterval
 
+        /// OpenAI API key from Secrets.plist (gitignored). Nil if not set up.
+        var openAIKey: String? {
+            guard let secretsURL = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
+                  let secrets = NSDictionary(contentsOf: secretsURL),
+                  let key = secrets["OpenAIAPIKey"] as? String,
+                  !key.isEmpty
+            else { return nil }
+            return key
+        }
+
         static let placeholderEndpoint = URL(string: "https://REPLACE-ME.vercel.app/api/scan")!
 
-        /// Reads configuration from the app bundle, falling back to the placeholder.
         static func fromBundle(_ bundle: Bundle = .main) -> Configuration {
             let url = (bundle.object(forInfoDictionaryKey: "AIProxyEndpointURL") as? String)
                 .flatMap(URL.init(string:)) ?? placeholderEndpoint
@@ -121,63 +152,63 @@ final class AIProxyClient {
         self.session = session
     }
 
-    /// False while the endpoint is still the REPLACE-ME placeholder.
     var isConfigured: Bool {
         configuration.endpointURL.host()?.contains("REPLACE-ME") != true
     }
 
-    /// Debug builds answer scans with local demo data while the proxy is not
-    /// yet deployed, so the full capture → analysis → log flow stays testable.
-    /// Release builds never fake results — they surface `.notConfigured`.
+    /// True when we can call OpenAI directly (API key available, no proxy configured).
+    var canUseDirectOpenAI: Bool {
+        configuration.openAIKey != nil
+    }
+
     var isDemoMode: Bool {
         #if DEBUG
-        return !isConfigured
+        return !isConfigured && !canUseDirectOpenAI
         #else
         return false
         #endif
     }
 
-    /// Sends an image to the proxy and returns the typed result.
-    /// Throws `AIProxyError.scanFailed` for any failure the user should retry.
+    // MARK: - Public API
+
     func scan(imageData: Data) async throws -> VisionResponse {
         if isDemoMode { return try await DemoVisionData.photoResponse() }
-        guard isConfigured else { throw AIProxyError.notConfigured }
-        let payload = ImageDownscaler.jpegForUpload(imageData) ?? imageData
         let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
-        let body = AIProxyRequest.photo(imageData: payload, locale: Locale.current.identifier, tier: tier)
-        return try await performRequest(body: body)
+
+        // 1. Try Vercel proxy (production)
+        if isConfigured {
+            let payload = ImageDownscaler.jpegForUpload(imageData) ?? imageData
+            let body = AIProxyRequest.photo(imageData: payload, locale: Locale.current.identifier, tier: tier)
+            return try await performProxyRequest(body: body)
+        }
+
+        // 2. Try direct OpenAI (dev/testing)
+        if canUseDirectOpenAI {
+            return try await callOpenAIVision(imageData: imageData, tier: tier)
+        }
+
+        throw AIProxyError.notConfigured
     }
 
-    /// Sends free-text description to the proxy and returns the typed result.
     func scanText(_ description: String) async throws -> VisionResponse {
         if isDemoMode { return try await DemoVisionData.textResponse(for: description) }
-        guard isConfigured else { throw AIProxyError.notConfigured }
         let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
-        let body = AIProxyRequest.text(description: description, locale: Locale.current.identifier, tier: tier)
-        return try await performRequest(body: body)
-    }
 
-    // MARK: - Private
-
-    private func performRequest(body: AIProxyRequest) async throws -> VisionResponse {
-        let urlRequest = try makeURLRequest(body: body)
-        do {
-            let (data, response) = try await session.data(for: urlRequest)
-            guard let http = response as? HTTPURLResponse,
-                  (200..<300).contains(http.statusCode) else {
-                throw AIProxyError.scanFailed
-            }
-            return try JSONDecoder().decode(VisionResponse.self, from: data)
-        } catch let error as AIProxyError {
-            throw error
-        } catch is DecodingError {
-            throw AIProxyError.scanFailed
-        } catch {
-            throw AIProxyError.scanFailed
+        if isConfigured {
+            let body = AIProxyRequest.text(description: description, locale: Locale.current.identifier, tier: tier)
+            return try await performProxyRequest(body: body)
         }
+
+        if canUseDirectOpenAI {
+            return try await callOpenAIText(description: description, tier: tier)
+        }
+
+        throw AIProxyError.notConfigured
     }
 
-    private func makeURLRequest(body: AIProxyRequest) throws -> URLRequest {
+    // MARK: - Vercel proxy
+
+    private func performProxyRequest(body: AIProxyRequest) async throws -> VisionResponse {
         var request = URLRequest(url: configuration.endpointURL)
         request.httpMethod = "POST"
         request.timeoutInterval = configuration.timeout
@@ -186,20 +217,208 @@ final class AIProxyClient {
         if let key = configuration.apiKey {
             request.setValue(key, forHTTPHeaderField: "x-sofra-key")
         }
-        do {
-            request.httpBody = try JSONEncoder().encode(body)
-        } catch {
-            throw AIProxyError.invalidConfiguration
+        request.httpBody = try JSONEncoder().encode(body)
+
+        let (data, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse,
+              (200..<300).contains(http.statusCode) else {
+            throw AIProxyError.scanFailed
         }
-        return request
+        return try JSONDecoder().decode(VisionResponse.self, from: data)
     }
+
+    // MARK: - Direct OpenAI API
+
+    private func openAIURL() -> URL {
+        URL(string: "https://api.openai.com/v1/chat/completions")!
+    }
+
+    private func openAIModel(for tier: String) -> String {
+        tier == "pro" ? "gpt-5-mini" : "gpt-5-nano"
+    }
+
+    private func openAIHeaders() -> [String: String] {
+        [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(configuration.openAIKey ?? "")"
+        ]
+    }
+
+    /// Photo → OpenAI Chat Completions (vision).
+    private func callOpenAIVision(imageData: Data, tier: String) async throws -> VisionResponse {
+        let model = openAIModel(for: tier)
+        let base64 = imageData.base64EncodedString()
+        let prompt = visionPrompt(locale: Locale.current.identifier)
+
+        let body = OpenAIRequest(
+            model: model,
+            messages: [
+                OpenAIMessage(role: "user", content: [
+                    .text(prompt),
+                    .image(base64: base64)
+                ])
+            ],
+            maxTokens: 1024,
+            temperature: 0.3
+        )
+
+        return try await performOpenAIRequest(body: body, model: model, tier: tier)
+    }
+
+    /// Text → OpenAI Chat Completions.
+    private func callOpenAIText(description: String, tier: String) async throws -> VisionResponse {
+        let model = openAIModel(for: tier)
+        let prompt = textPrompt(description: description, locale: Locale.current.identifier)
+
+        let body = OpenAIRequest(
+            model: model,
+            messages: [
+                OpenAIMessage(role: "user", content: [.text(prompt)])
+            ],
+            maxTokens: 1024,
+            temperature: 0.3
+        )
+
+        return try await performOpenAIRequest(body: body, model: model, tier: tier)
+    }
+
+    /// Shared: POST to OpenAI, parse JSON response into VisionResponse.
+    private func performOpenAIRequest(body: OpenAIRequest, model: String, tier: String) async throws -> VisionResponse {
+        var request = URLRequest(url: openAIURL())
+        request.httpMethod = "POST"
+        request.timeoutInterval = configuration.timeout
+        for (key, value) in openAIHeaders() {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        request.httpBody = try JSONEncoder().encode(body)
+
+        do {
+            let (data, response) = try await session.data(for: request)
+            guard let http = response as? HTTPURLResponse else { throw AIProxyError.scanFailed }
+
+            // Try GPT-5-nano fallback if GPT-5-mini fails (pro tier only)
+            if http.statusCode >= 400, tier == "pro", model != "gpt-5-nano" {
+                let fallbackBody = OpenAIRequest(
+                    model: "gpt-5-nano",
+                    messages: body.messages,
+                    maxTokens: body.maxTokens,
+                    temperature: body.temperature
+                )
+                var fallbackRequest = URLRequest(url: openAIURL())
+                fallbackRequest.httpMethod = "POST"
+                fallbackRequest.timeoutInterval = configuration.timeout
+                for (key, value) in openAIHeaders() {
+                    fallbackRequest.setValue(value, forHTTPHeaderField: key)
+                }
+                fallbackRequest.httpBody = try JSONEncoder().encode(fallbackBody)
+                let (fallbackData, fallbackResponse) = try await session.data(for: fallbackRequest)
+                guard let fallbackHTTP = fallbackResponse as? HTTPURLResponse,
+                      (200..<300).contains(fallbackHTTP.statusCode) else {
+                    throw AIProxyError.scanFailed
+                }
+                return try parseOpenAIResponse(fallbackData)
+            }
+
+            guard (200..<300).contains(http.statusCode) else {
+                throw AIProxyError.scanFailed
+            }
+            return try parseOpenAIResponse(data)
+        } catch let error as AIProxyError { throw error }
+        catch { throw AIProxyError.scanFailed }
+    }
+
+    /// Parse OpenAI JSON response → VisionResponse, with retry for malformed JSON.
+    private func parseOpenAIResponse(_ data: Data) throws -> VisionResponse {
+        let openAI = try JSONDecoder().decode(OpenAIResponse.self, from: data)
+        guard let jsonString = openAI.choices.first?.message.content else {
+            throw AIProxyError.scanFailed
+        }
+        // OpenAI may wrap JSON in ```json fences
+        let cleaned = jsonString
+            .replacingOccurrences(of: "```json", with: "")
+            .replacingOccurrences(of: "```", with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let jsonData = cleaned.data(using: .utf8) else { throw AIProxyError.scanFailed }
+        return try JSONDecoder().decode(VisionResponse.self, from: jsonData)
+    }
+}
+
+// MARK: - AI Prompts
+
+/// Prompt for photo-based food analysis. Must match VisionResponse JSON schema exactly.
+private func visionPrompt(locale: String) -> String {
+    """
+    You are a food analysis assistant specialized in Turkish cuisine.
+
+    Analyze this food photo and return a JSON object with this exact structure:
+    {
+      "items": [
+        {
+          "name": "Turkish dish name",
+          "name_en": "English dish name",
+          "estimated_grams": 250.0,
+          "household_unit": "kepçe",
+          "household_quantity": 2.0,
+          "calories": 185.0,
+          "protein_g": 11.0,
+          "carbs_g": 27.0,
+          "fat_g": 4.0,
+          "confidence": 0.92,
+          "note": null
+        }
+      ],
+      "no_food_detected": false
+    }
+
+    IMPORTANT RULES:
+    - Use Turkish household units ONLY: "kepçe" (ladle), "yemek kaşığı" (tbsp), "su bardağı" (glass, ~200ml), "çay bardağı" (tea glass, ~100ml), "dilim" (slice), "avuç" (handful), "kase" (bowl), "adet" (piece)
+    - Estimate realistic grams for Turkish portions
+    - Be conservative with calorie estimates
+    - Set confidence between 0.0 and 1.0
+    - If no food is visible, set no_food_detected: true and items: []
+    - Return ONLY valid JSON, no markdown, no explanation
+    """
+}
+
+/// Prompt for text-based meal logging.
+private func textPrompt(description: String, locale: String) -> String {
+    """
+    You are a food analysis assistant specialized in Turkish cuisine.
+
+    The user typed this meal description: "\(description)"
+
+    Parse it and return a JSON object with this exact structure:
+    {
+      "items": [
+        {
+          "name": "Turkish dish name",
+          "name_en": "English dish name",
+          "estimated_grams": 250.0,
+          "household_unit": "kepçe",
+          "household_quantity": 2.0,
+          "calories": 185.0,
+          "protein_g": 11.0,
+          "carbs_g": 27.0,
+          "fat_g": 4.0,
+          "confidence": 0.85,
+          "note": null
+        }
+      ],
+      "no_food_detected": false
+    }
+
+    IMPORTANT RULES:
+    - Extract quantity and unit from the description (e.g. "2 kepçe mercimek" → household_quantity: 2, household_unit: "kepçe")
+    - Use Turkish household units ONLY: "kepçe", "yemek kaşığı", "su bardağı", "çay bardağı", "dilim", "avuç", "kase", "adet"
+    - Estimate realistic grams for Turkish portions
+    - Be conservative with calorie estimates
+    - If you can't parse anything meaningful, set no_food_detected: true and items: []
+    - Return ONLY valid JSON, no markdown, no explanation
+    """
 }
 
 // MARK: - Upload downscaling
 
-/// Full-resolution captures are ~5–10 MB; base64 inflates them another 33%.
-/// The vision models don't need more than ~1280px on the long edge, so uploads
-/// are resized + recompressed (typically to a few hundred KB) before encoding.
 enum ImageDownscaler {
     static let maxDimension: CGFloat = 1280
     static let jpegQuality: CGFloat = 0.7
@@ -222,11 +441,9 @@ enum ImageDownscaler {
     }
 }
 
-// MARK: - Demo data (DEBUG-only, used while the proxy endpoint is unconfigured)
+// MARK: - Demo data (DEBUG fallback)
 
 enum DemoVisionData {
-
-    /// Simulated network+inference latency so the analysis animation is exercised.
     private static let latency: UInt64 = 1_400_000_000
 
     private static let sampleMeals: [[VisionItem]] = [
@@ -269,8 +486,6 @@ enum DemoVisionData {
         return VisionResponse(items: items, noFoodDetected: false)
     }
 
-    /// Builds one plausible item per comma-separated segment of the typed text,
-    /// with a light "2 kepçe mercimek" style quantity+unit parse.
     static func textResponse(for description: String) async throws -> VisionResponse {
         try? await Task.sleep(nanoseconds: latency)
         let segments = description
