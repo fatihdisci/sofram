@@ -78,6 +78,12 @@ struct DailyView: View {
         DaySummaryBuilder.lastSevenDays(scans: scanEntries, items: quickItems, counts: quickCounts)
     }
 
+    /// First-appear entrance choreography for the above-the-fold content
+    /// (ring, then macros/quick-add) — below-the-fold cards get their motion
+    /// from `.scrollTransition` instead (see `sevenDayCard` / `MealEntryCard`).
+    @State private var ringVisible = false
+    @State private var cardsVisible = false
+
     var body: some View {
         ZStack {
             Color.bgPage.ignoresSafeArea()
@@ -88,11 +94,17 @@ struct DailyView: View {
 
                     CalorieRingView(consumed: todayCalories, target: calorieTarget)
                         .padding(.top, Layout.Spacing.sm)
+                        .scaleEffect(ringVisible ? 1 : 0.9)
+                        .opacity(ringVisible ? 1 : 0)
 
                     macroRow
+                        .opacity(cardsVisible ? 1 : 0)
+                        .offset(y: cardsVisible ? 0 : 14)
 
                     QuickCounterView()
                         .padding(.horizontal, Layout.Spacing.lg)
+                        .opacity(cardsVisible ? 1 : 0)
+                        .offset(y: cardsVisible ? 0 : 14)
 
                     sevenDayCard
 
@@ -100,6 +112,14 @@ struct DailyView: View {
 
                     Spacer(minLength: 40)
                 }
+            }
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) {
+                ringVisible = true
+            }
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+                cardsVisible = true
             }
         }
     }
@@ -193,6 +213,12 @@ struct DailyView: View {
         }
         .buttonStyle(.plain)
         .padding(.horizontal, Layout.Spacing.lg)
+        .scrollTransition { content, phase in
+            content
+                .opacity(phase.isIdentity ? 1 : 0.3)
+                .scaleEffect(phase.isIdentity ? 1 : 0.94)
+                .offset(y: phase.isIdentity ? 0 : 16)
+        }
     }
 
     private var weekAverage: Double {
@@ -220,6 +246,12 @@ struct DailyView: View {
                         delete(entry)
                     }
                     .padding(.horizontal, Layout.Spacing.lg)
+                    .scrollTransition { content, phase in
+                        content
+                            .opacity(phase.isIdentity ? 1 : 0.3)
+                            .scaleEffect(phase.isIdentity ? 1 : 0.94)
+                            .offset(y: phase.isIdentity ? 0 : 16)
+                    }
                 }
             }
         }

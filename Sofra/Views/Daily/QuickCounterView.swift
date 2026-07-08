@@ -273,12 +273,21 @@ struct QuickAddEditorView: View {
 
     private let iconColumns = [GridItem(.adaptive(minimum: 52), spacing: Layout.Spacing.sm)]
 
+    /// The numeric keypad has no system "done" key — this drives a keyboard
+    /// toolbar with a dismiss button (see `.toolbar { ... .keyboard }` below).
+    private enum EditorField: Hashable {
+        case name, unit, calories
+    }
+    @FocusState private var focusedField: EditorField?
+
     var body: some View {
         NavigationStack {
             Form {
                 Section("Sayaç") {
                     TextField("Ad (örn. Ekmek)", text: $name)
+                        .focused($focusedField, equals: .name)
                     TextField("Birim (örn. dilim)", text: $unit)
+                        .focused($focusedField, equals: .unit)
                 }
 
                 Section {
@@ -286,6 +295,7 @@ struct QuickAddEditorView: View {
                         TextField("0", text: $caloriesText)
                             .keyboardType(.numberPad)
                             .frame(width: 80)
+                            .focused($focusedField, equals: .calories)
                         Text("kcal / birim")
                             .font(.sofraCaption)
                             .foregroundStyle(Color.textMuted)
@@ -336,6 +346,11 @@ struct QuickAddEditorView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Kaydet") { save() }.disabled(!canSave)
+                }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Tamam") { focusedField = nil }
+                        .font(.sofraLabel)
                 }
             }
             .onAppear(perform: load)

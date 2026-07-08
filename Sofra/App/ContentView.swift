@@ -208,6 +208,13 @@ struct SettingsView: View {
     @State private var showPaywall = false
     @State private var isRestoring = false
 
+    /// The numeric keypad has no system "done" key — this drives a keyboard
+    /// toolbar with a dismiss button (see `.toolbar { ... .keyboard }` below).
+    private enum TargetField: Hashable {
+        case calorie, protein, carbs, fat
+    }
+    @FocusState private var focusedTargetField: TargetField?
+
     private var profile: UserProfile? { profiles.first }
 
     var body: some View {
@@ -222,6 +229,13 @@ struct SettingsView: View {
             .background(Color.bgPage.ignoresSafeArea())
             .navigationTitle("Ayarlar")
             .onAppear { seedTargetsIfNeeded() }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Tamam") { focusedTargetField = nil }
+                        .font(.sofraLabel)
+                }
+            }
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView(onComplete: { showPaywall = false },
@@ -250,8 +264,13 @@ struct SettingsView: View {
                     showPaywall = true
                 } label: {
                     HStack {
-                        Label("Sofra Pro'ya Geç", systemImage: "sparkles")
-                            .foregroundStyle(Color.textPrimary)
+                        Label {
+                            Text("Sofra Pro'ya Geç")
+                                .foregroundStyle(Color.textPrimary)
+                        } icon: {
+                            SofraIconView(icon: .sofra, size: 16)
+                                .foregroundStyle(Color.accentFill)
+                        }
                         Spacer()
                         Text("\(subscriptions.remainingFreeScans) tarama kaldı")
                             .font(.sofraCaption)
@@ -281,10 +300,10 @@ struct SettingsView: View {
 
     private var targetsSection: some View {
         Section {
-            targetRow(title: "Günlük kalori", value: $calorieTarget, unit: "kcal", step: 50)
-            targetRow(title: "Protein", value: $proteinTarget, unit: "g", step: 5)
-            targetRow(title: "Karbonhidrat", value: $carbsTarget, unit: "g", step: 5)
-            targetRow(title: "Yağ", value: $fatTarget, unit: "g", step: 1)
+            targetRow(title: "Günlük kalori", value: $calorieTarget, unit: "kcal", step: 50, field: .calorie)
+            targetRow(title: "Protein", value: $proteinTarget, unit: "g", step: 5, field: .protein)
+            targetRow(title: "Karbonhidrat", value: $carbsTarget, unit: "g", step: 5, field: .carbs)
+            targetRow(title: "Yağ", value: $fatTarget, unit: "g", step: 1, field: .fat)
 
             Button("Kaloriden makro dağıt (P25 · K45 · Y30)") {
                 distributeMacros()
@@ -297,7 +316,7 @@ struct SettingsView: View {
         }
     }
 
-    private func targetRow(title: String, value: Binding<Double>, unit: String, step: Double) -> some View {
+    private func targetRow(title: String, value: Binding<Double>, unit: String, step: Double, field: TargetField) -> some View {
         HStack {
             Text(title)
                 .foregroundStyle(Color.textPrimary)
@@ -309,6 +328,7 @@ struct SettingsView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .font(.sofraNumericSmall)
+                .focused($focusedTargetField, equals: field)
             Text(unit)
                 .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
