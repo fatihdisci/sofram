@@ -51,6 +51,8 @@ struct SevenDaySummaryView: View {
         } else {
             content
                 .presentationDetents([.large])
+                .presentationCornerRadius(24)
+                .presentationBackground(Color.bgPage)
                 .presentationDragIndicator(.visible)
         }
     }

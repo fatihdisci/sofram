@@ -181,10 +181,10 @@ struct TextLogView: View {
         } label: {
             HStack(spacing: Layout.Spacing.sm) {
                 if isScanning {
-                    Image(systemName: "sparkles")
-                        .symbolEffect(.pulse, options: .repeating)
+                    SofraIconView(icon: .kepce, size: 18)
+                        .modifier(KepceWobbleModifier())
                 } else {
-                    Image(systemName: "sparkles")
+                    SofraIconView(icon: .kepce, size: 18)
                 }
                 Text(isScanning ? "Analiz ediliyor..." : "Analiz Et")
                     .font(.sofraLabel)
@@ -219,5 +219,22 @@ struct TextLogView: View {
             errorMessage = (error as? AIProxyError)?.localizedDescription
                 ?? AIProxyError.scanFailed.localizedDescription
         }
+    }
+}
+
+// MARK: - Kepçe wobble (replaces the generic SF sparkles pulse)
+
+/// Gentle side-to-side wobble — "Sofra senin için karıştırıyor" metaphor.
+private struct KepceWobbleModifier: ViewModifier {
+    @State private var angle: Double = 0
+
+    func body(content: Content) -> some View {
+        content
+            .rotationEffect(.degrees(angle), anchor: .bottom)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true)) {
+                    angle = 8
+                }
+            }
     }
 }

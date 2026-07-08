@@ -221,7 +221,7 @@ struct PaywallView: View {
                     : nil
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
     }
 
     private func periodLabel(for productID: String) -> String {

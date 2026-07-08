@@ -56,16 +56,20 @@ struct ContentView: View {
             DailyView()
                 .tabItem { Label("Bugün", systemImage: "sun.max.fill") }
                 .tag(AppTab.today)
+                .transition(.opacity)
 
             HistoryView()
                 .tabItem { Label("Geçmiş", systemImage: "chart.bar.fill") }
                 .tag(AppTab.history)
+                .transition(.opacity)
 
             SettingsView()
                 .tabItem { Label("Ayarlar", systemImage: "gearshape.fill") }
                 .tag(AppTab.settings)
+                .transition(.opacity)
         }
         .tint(Color.accentFill)
+        .animation(.sofraSpring, value: nav.selectedTab)
         .fullScreenCover(isPresented: Binding(
             get: { nav.scanFlow != nil },
             set: { if !$0 { nav.scanFlow = nil } }
@@ -185,6 +189,9 @@ struct FreeScanLimitView: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView(onComplete: { showPaywall = false },
                         skipTitle: "Şimdilik kapat")
+                .presentationCornerRadius(24)
+                .presentationBackground(Color.bgPage)
+                .presentationDragIndicator(.visible)
         }
     }
 }

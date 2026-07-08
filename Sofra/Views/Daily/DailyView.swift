@@ -108,18 +108,23 @@ struct DailyView: View {
                         .opacity(appeared ? 1 : 0)
                         .animation(.spring(response: 0.55, dampingFraction: 0.7).delay(0.08), value: appeared)
 
-                    macroRow
+                    // Consumed / target pill — sits below the ring, outside it
+                    consumedPill
+                        .modifier(entrance(0.12))
+
+                    macroSection
                         .modifier(entrance(0.16))
 
                     QuickCounterView()
                         .padding(.horizontal, Layout.Spacing.lg)
                         .modifier(entrance(0.24))
 
-                    sevenDayCard
+                    sevenDaySection
 
                     todayEntriesSection
 
-                    Spacer(minLength: 40)
+                    // Safe area for tab bar clearance
+                    Spacer(minLength: 96)
                 }
             }
         }
@@ -176,18 +181,54 @@ struct DailyView: View {
         .padding(.top, Layout.Spacing.md)
     }
 
-    // MARK: - Macro row
+    // MARK: - Consumed / target pill (below ring)
 
-    private var macroRow: some View {
-        HStack(spacing: Layout.Spacing.md) {
-            MacroCard(label: "Protein", value: todayProtein, target: proteinTarget, color: .macroProtein)
-            MacroCard(label: "Karb.", value: todayCarbs, target: carbsTarget, color: .macroCarb)
-            MacroCard(label: "Yağ", value: todayFat, target: fatTarget, color: .macroFat)
+    private var consumedPill: some View {
+        Text("\(Int(todayCalories)) / \(Int(calorieTarget)) kcal")
+            .font(.sofraNumericSmall)
+            .foregroundStyle(Color.accentText)
+            .contentTransition(.numericText())
+            .padding(.horizontal, Layout.Spacing.md)
+            .padding(.vertical, 6)
+            .background(Color.accentTintBg, in: Capsule())
+    }
+
+    // MARK: - Macro section (unified card, 3 columns)
+
+    private var macroSection: some View {
+        VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+            Text("MAKROLAR")
+                .font(.sofraEyebrow)
+                .tracking(1.2)
+                .foregroundStyle(Color.textMuted)
+
+            HStack(spacing: 0) {
+                UnifiedMacroColumn(label: "Protein", value: todayProtein, target: proteinTarget, color: .macroProtein)
+                Divider().frame(height: 48).overlay(Color.borderHairline)
+                UnifiedMacroColumn(label: "Karb.", value: todayCarbs, target: carbsTarget, color: .macroCarb)
+                Divider().frame(height: 48).overlay(Color.borderHairline)
+                UnifiedMacroColumn(label: "Yağ", value: todayFat, target: fatTarget, color: .macroFat)
+            }
+            .padding(Layout.Spacing.md)
+            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+            .raisedSurface(cornerRadius: Layout.Radius.card)
         }
         .padding(.horizontal, Layout.Spacing.lg)
     }
 
-    // MARK: - 7-day summary card (with sparkline)
+    // MARK: - 7-day section
+
+    private var sevenDaySection: some View {
+        VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+            Text("BU HAFTA")
+                .font(.sofraEyebrow)
+                .tracking(1.2)
+                .foregroundStyle(Color.textMuted)
+
+            sevenDayCard
+        }
+        .padding(.horizontal, Layout.Spacing.lg)
+    }
 
     private var sevenDayCard: some View {
         Button {
@@ -216,13 +257,12 @@ struct DailyView: View {
             .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
             .raisedSurface(cornerRadius: Layout.Radius.card)
         }
-        .buttonStyle(.plain)
-        .padding(.horizontal, Layout.Spacing.lg)
+        .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
         .scrollTransition { content, phase in
             content
-                .opacity(phase.isIdentity ? 1 : 0.3)
-                .scaleEffect(phase.isIdentity ? 1 : 0.94)
-                .offset(y: phase.isIdentity ? 0 : 16)
+                .opacity(phase.isIdentity ? 1 : 0.4)
+                .scaleEffect(phase.isIdentity ? 1 : 0.96)
+                .offset(y: phase.isIdentity ? 0 : 12)
         }
     }
 
@@ -253,9 +293,9 @@ struct DailyView: View {
                     .padding(.horizontal, Layout.Spacing.lg)
                     .scrollTransition { content, phase in
                         content
-                            .opacity(phase.isIdentity ? 1 : 0.3)
-                            .scaleEffect(phase.isIdentity ? 1 : 0.94)
-                            .offset(y: phase.isIdentity ? 0 : 16)
+                            .opacity(phase.isIdentity ? 1 : 0.4)
+                            .scaleEffect(phase.isIdentity ? 1 : 0.96)
+                            .offset(y: phase.isIdentity ? 0 : 12)
                     }
                 }
             }
@@ -347,15 +387,16 @@ private struct EntranceModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .opacity(appeared ? 1 : 0)
-            .offset(y: appeared ? 0 : 26)
+            .opacity(appeared ? 1 : 0.4)
+            .scaleEffect(appeared ? 1 : 0.96)
+            .offset(y: appeared ? 0 : 12)
             .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(delay), value: appeared)
     }
 }
 
-// MARK: - Macro card (value + progress toward derived target)
+// MARK: - Unified macro column (single card, 3 columns)
 
-struct MacroCard: View {
+struct UnifiedMacroColumn: View {
     let label: String
     let value: Double
     let target: Double
@@ -367,7 +408,7 @@ struct MacroCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+        VStack(alignment: .center, spacing: Layout.Spacing.xs) {
             Text(label)
                 .font(.sofraCaption)
                 .foregroundStyle(Color.textSecondary)
@@ -382,23 +423,20 @@ struct MacroCard: View {
                     .foregroundStyle(Color.textMuted)
             }
 
-            // Progress bar
+            // Mini progress bar
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
                         .fill(Color.surfaceFlat)
                     Capsule()
                         .fill(color)
-                        .frame(width: max(geo.size.width * progress, progress > 0 ? 6 : 0))
+                        .frame(width: max(geo.size.width * progress, progress > 0 ? 4 : 0))
                         .animation(.easeOut(duration: 0.5), value: progress)
                 }
             }
-            .frame(height: 6)
+            .frame(height: 4)
         }
-        .padding(Layout.Spacing.md)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
-        .raisedSurface(cornerRadius: Layout.Radius.card)
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -412,12 +450,17 @@ struct WeekSparkline: View {
         let ordered = Array(summaries.reversed())
         let peak = max(ordered.map(\.calories).max() ?? 0, target, 1)
 
-        HStack(alignment: .bottom, spacing: 4) {
+        HStack(alignment: .bottom, spacing: 5) {
             ForEach(Array(ordered.enumerated()), id: \.offset) { idx, day in
                 let isToday = idx == ordered.count - 1
+                let barHeight = max(8, 36 * day.calories / peak)
                 Capsule()
-                    .fill(isToday ? Color.accentFill : Color.accentFill.opacity(0.35))
-                    .frame(height: max(4, 36 * day.calories / peak))
+                    .fill(isToday
+                        ? AnyShapeStyle(LinearGradient(
+                            colors: [Color.accentFill, Color.accentFillPressed],
+                            startPoint: .top, endPoint: .bottom))
+                        : AnyShapeStyle(Color.accentFill.opacity(0.35)))
+                    .frame(width: isToday ? 6 : 5, height: barHeight)
                     .frame(maxWidth: .infinity, alignment: .bottom)
             }
         }
@@ -454,6 +497,7 @@ struct MealEntryCard: View {
                 Text("\(Int(entryCalories)) kcal")
                     .font(.sofraNumericSmall)
                     .foregroundStyle(Color.accentText)
+                    .contentTransition(.numericText())
             }
 
             Divider().overlay(Color.borderHairline)
@@ -474,6 +518,7 @@ struct MealEntryCard: View {
                     Text("\(Int(item.calories)) kcal")
                         .font(.sofraNumericSmall)
                         .foregroundStyle(Color.textSecondary)
+                        .contentTransition(.numericText())
                 }
             }
         }

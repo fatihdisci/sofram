@@ -197,7 +197,7 @@ struct GoalStepView: View {
                         )
                         .raisedSurface(cornerRadius: Layout.Radius.card)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
                 }
             }
         }
@@ -303,7 +303,7 @@ struct ActivityStepView: View {
                         )
                         .raisedSurface(cornerRadius: Layout.Radius.card)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
                 }
             }
         }
@@ -382,7 +382,7 @@ struct SexStepView: View {
                         )
                         .raisedSurface(cornerRadius: Layout.Radius.card)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
                 }
             }
         }

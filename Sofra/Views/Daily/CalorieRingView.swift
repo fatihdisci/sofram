@@ -18,9 +18,9 @@ struct CalorieRingView: View {
 
     @State private var animatedProgress: Double = 0
 
-    private let ringSize: CGFloat = 264
-    private let stroke: CGFloat = 20
-    private let inset: CGFloat = 24
+    private let ringSize: CGFloat = 220
+    private let stroke: CGFloat = 18
+    private let inset: CGFloat = 22
 
     /// Radius the stroke path is centered on (used to place the end-cap bead).
     private var pathRadius: CGFloat { (ringSize - 2 * inset) / 2 }
@@ -45,7 +45,7 @@ struct CalorieRingView: View {
                 .stroke(Color.surfaceFlat, style: StrokeStyle(lineWidth: stroke, lineCap: .round))
                 .padding(inset)
 
-            // Progress arc
+            // Progress arc — spring fill with gentle overshoot
             Circle()
                 .trim(from: 0, to: animatedProgress)
                 .stroke(
@@ -60,7 +60,7 @@ struct CalorieRingView: View {
                 .rotationEffect(.degrees(-90))
                 .padding(inset)
 
-            // End-cap bead — a small raised dot riding the tip of the arc
+            // End-cap bead — rides the tip of the arc
             if animatedProgress > 0.012 {
                 Circle()
                     .fill(Color.accentFillPressed)
@@ -74,7 +74,7 @@ struct CalorieRingView: View {
                     .rotationEffect(.degrees(animatedProgress * 360))
             }
 
-            // Center readout
+            // Center readout — only remaining kcal, no inner pill
             VStack(spacing: 3) {
                 Text(isOver ? "+\(Int(abs(remaining).rounded()))" : "\(Int(remaining.rounded()))")
                     .font(.sofraDisplayLarge)
@@ -85,22 +85,14 @@ struct CalorieRingView: View {
                 Text(isOver ? "kcal hedef üstü" : "kcal kalan")
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
-
-                Text("\(Int(consumed)) / \(Int(target)) kcal")
-                    .font(.sofraNumericSmall)
-                    .foregroundStyle(Color.accentText)
-                    .padding(.horizontal, Layout.Spacing.md)
-                    .padding(.vertical, 5)
-                    .background(Color.accentTintBg, in: Capsule())
-                    .padding(.top, Layout.Spacing.sm)
             }
         }
         .frame(width: ringSize, height: ringSize)
         .onAppear {
-            withAnimation(.easeOut(duration: 0.5)) { animatedProgress = progress }
+            withAnimation(.sofraSpring) { animatedProgress = progress }
         }
         .onChange(of: consumed) { _, _ in
-            withAnimation(.easeOut(duration: 0.5)) { animatedProgress = progress }
+            withAnimation(.sofraSpring) { animatedProgress = progress }
         }
     }
 }

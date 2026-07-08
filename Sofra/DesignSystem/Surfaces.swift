@@ -73,3 +73,30 @@ extension View {
         modifier(PressedSurfaceModifier(cornerRadius: cornerRadius))
     }
 }
+
+// MARK: - Sofra press button style
+
+/// Shared press feel for all tappable card-buttons.
+/// - scale 0.97 on press
+/// - surface "sinks" via a subtle flat overlay
+/// - light haptic on press-down
+struct SofraPressButtonStyle: ButtonStyle {
+    var cornerRadius: CGFloat = Layout.Radius.card
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .overlay(
+                configuration.isPressed
+                    ? RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .fill(Color.surfaceFlat.opacity(0.35))
+                    : nil
+            )
+            .animation(.easeOut(duration: Layout.Motion.fast), value: configuration.isPressed)
+            .onChange(of: configuration.isPressed) { _, pressed in
+                if pressed {
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                }
+            }
+    }
+}

@@ -28,11 +28,6 @@ struct QuickCounterView: View {
     @State private var editingItem: QuickAddItem?
     @State private var showEditor = false
 
-    private let columns = [
-        GridItem(.flexible(), spacing: Layout.Spacing.md),
-        GridItem(.flexible(), spacing: Layout.Spacing.md)
-    ]
-
     var body: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             HStack {
@@ -58,7 +53,7 @@ struct QuickCounterView: View {
             if items.isEmpty {
                 emptyState
             } else {
-                LazyVGrid(columns: columns, spacing: Layout.Spacing.md) {
+                VStack(spacing: Layout.Spacing.sm) {
                     ForEach(items) { item in
                         QuickChip(
                             item: item,
@@ -75,6 +70,9 @@ struct QuickCounterView: View {
         .onAppear { QuickAddSeed.seedDefaultsIfNeeded(modelContext) }
         .sheet(isPresented: $showEditor) {
             QuickAddEditorView(item: editingItem, nextSortOrder: (items.map(\.sortOrder).max() ?? -1) + 1)
+                .presentationCornerRadius(24)
+                .presentationBackground(Color.bgPage)
+                .presentationDragIndicator(.visible)
         }
     }
 
@@ -162,69 +160,70 @@ private struct QuickChip: View {
     @State private var ghosts: [Ghost] = []
 
     var body: some View {
-        ZStack {
-            HStack(spacing: Layout.Spacing.md) {
-                ZStack {
-                    Circle()
-                        .fill(Color.accentTintBg)
-                        .frame(width: 44, height: 44)
-                    SofraIconView(icon: item.icon, size: 24)
-                        .foregroundStyle(Color.accentFill)
-                }
+        Button {
+            increment()
+        } label: {
+            ZStack {
+                // Full-width row: [icon 40pt] [name + count·unit, stacked] [Spacer] [−] [+]
+                HStack(spacing: Layout.Spacing.md) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.accentTintBg)
+                            .frame(width: 40, height: 40)
+                        SofraIconView(icon: item.icon, size: 22)
+                            .foregroundStyle(Color.accentFill)
+                    }
 
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(item.name)
-                        .font(.sofraCaption)
-                        .foregroundStyle(Color.textSecondary)
-                        .lineLimit(1)
-                    HStack(alignment: .firstTextBaseline, spacing: 3) {
-                        Text("\(count)")
-                            .font(.sofraNumericSmall)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(item.name)
+                            .font(.sofraLabel)
                             .foregroundStyle(Color.textPrimary)
-                            .contentTransition(.numericText())
-                        Text(item.unit)
-                            .font(.system(size: 10))
-                            .foregroundStyle(Color.textMuted)
-                            .lineLimit(1)
+                            .lineLimit(2)
+                        HStack(alignment: .firstTextBaseline, spacing: 3) {
+                            Text("\(count)")
+                                .font(.sofraNumericSmall)
+                                .foregroundStyle(Color.textPrimary)
+                                .contentTransition(.numericText())
+                            Text(item.unit)
+                                .font(.system(size: 11))
+                                .foregroundStyle(Color.textMuted)
+                                .lineLimit(1)
+                        }
                     }
-                }
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer(minLength: 0)
-
-                // Explicit, always-visible undo — a mistaken tap must be
-                // correctable without relying on a hidden long-press gesture.
-                if count > 0 {
-                    Button {
-                        decrement()
-                    } label: {
-                        Image(systemName: "minus")
-                            .font(.system(size: 11, weight: .semibold))
-                            .foregroundStyle(Color.textSecondary)
-                            .frame(width: 26, height: 26)
-                            .background(Color.surfaceFlat, in: Circle())
+                    // Explicit undo — visible only when count > 0
+                    if count > 0 {
+                        Button {
+                            decrement()
+                        } label: {
+                            Image(systemName: "minus")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundStyle(Color.textSecondary)
+                                .frame(width: 28, height: 28)
+                                .background(Color.surfaceFlat, in: Circle())
+                        }
+                        .buttonStyle(.plain)
+                        .transition(.scale.combined(with: .opacity))
                     }
-                    .buttonStyle(.plain)
-                    .transition(.scale.combined(with: .opacity))
+
+                    Image(systemName: "plus")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(Color.onAccent)
+                        .frame(width: 30, height: 30)
+                        .background(Color.accentFill, in: Circle())
                 }
+                .padding(.horizontal, Layout.Spacing.md)
+                .padding(.vertical, Layout.Spacing.sm)
+                .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+                .raisedSurface(cornerRadius: Layout.Radius.card)
 
-                Image(systemName: "plus")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(Color.onAccent)
-                    .frame(width: 26, height: 26)
-                    .background(Color.accentFill, in: Circle())
-            }
-            .padding(.horizontal, Layout.Spacing.md)
-            .padding(.vertical, Layout.Spacing.md)
-            .frame(maxWidth: .infinity)
-            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
-            .raisedSurface(cornerRadius: Layout.Radius.card)
-
-            ForEach(ghosts) { ghost in
-                GhostLabel(text: ghost.text)
+                ForEach(ghosts) { ghost in
+                    GhostLabel(text: ghost.text)
+                }
             }
         }
-        .contentShape(RoundedRectangle(cornerRadius: Layout.Radius.card))
-        .onTapGesture { increment() }
+        .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
         .contextMenu {
             Button { onEdit() } label: { Label("Düzenle", systemImage: "pencil") }
             Button(role: .destructive) { onDelete() } label: { Label("Sil", systemImage: "trash") }
