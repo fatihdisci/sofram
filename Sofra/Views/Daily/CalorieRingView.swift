@@ -4,7 +4,7 @@
 //
 //  Per mikro-etkilesimler.md: single smooth arc animation (ease-out, 500ms)
 //  to the new value — never an incrementing counter, never a hard jump.
-//  Number displayed in the Geist Mono numeric-display token.
+//  Number displayed in the Geist Mono hero-display token.
 //
 //  Over-target is shown as neutral data ("+126 hedef üstü"), never as a
 //  red/shaming state — consistent with the quick-counter philosophy.
@@ -18,71 +18,89 @@ struct CalorieRingView: View {
 
     @State private var animatedProgress: Double = 0
 
+    private let ringSize: CGFloat = 264
+    private let stroke: CGFloat = 20
+    private let inset: CGFloat = 24
+
+    /// Radius the stroke path is centered on (used to place the end-cap bead).
+    private var pathRadius: CGFloat { (ringSize - 2 * inset) / 2 }
+
     private var progress: Double {
         guard target > 0 else { return 0 }
         return min(consumed / target, 1.0)
     }
 
     private var remaining: Double { target - consumed }
+    private var isOver: Bool { remaining < 0 }
 
     var body: some View {
         ZStack {
-            // Background ring container
+            // Raised container disc
             Circle()
                 .fill(Color.surfaceRaised)
                 .raisedSurface(cornerRadius: 999)
 
-            // Track ring — inset look
+            // Recessed track
             Circle()
-                .stroke(
-                    Color.surfaceFlat,
-                    style: StrokeStyle(lineWidth: 16, lineCap: .round)
-                )
-                .padding(24)
+                .stroke(Color.surfaceFlat, style: StrokeStyle(lineWidth: stroke, lineCap: .round))
+                .padding(inset)
 
-            // Progress ring
+            // Progress arc
             Circle()
                 .trim(from: 0, to: animatedProgress)
                 .stroke(
                     AngularGradient(
-                        colors: [Color.accentFill, Color.accentFillPressed],
+                        colors: [Color.accentFill, Color.accentFillPressed, Color.accentFill],
                         center: .center,
                         startAngle: .degrees(-90),
                         endAngle: .degrees(270)
                     ),
-                    style: StrokeStyle(lineWidth: 16, lineCap: .round)
+                    style: StrokeStyle(lineWidth: stroke, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
-                .padding(24)
+                .padding(inset)
 
-            // Center numeric display
-            VStack(spacing: 2) {
-                Text("\(Int(abs(remaining).rounded()))")
-                    .font(.sofraDisplayNumeric)
+            // End-cap bead — a small raised dot riding the tip of the arc
+            if animatedProgress > 0.012 {
+                Circle()
+                    .fill(Color.accentFillPressed)
+                    .frame(width: stroke - 6, height: stroke - 6)
+                    .overlay(
+                        Circle()
+                            .fill(Color.onAccent.opacity(0.55))
+                            .frame(width: 5, height: 5)
+                    )
+                    .offset(y: -pathRadius)
+                    .rotationEffect(.degrees(animatedProgress * 360))
+            }
+
+            // Center readout
+            VStack(spacing: 3) {
+                Text(isOver ? "+\(Int(abs(remaining).rounded()))" : "\(Int(remaining.rounded()))")
+                    .font(.sofraDisplayLarge)
                     .foregroundStyle(Color.textPrimary)
                     .contentTransition(.numericText())
                     .animation(.none, value: remaining) // no incrementing counter
 
-                Text(remaining >= 0 ? "kcal kalan" : "kcal hedef üstü")
+                Text(isOver ? "kcal hedef üstü" : "kcal kalan")
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
 
-                Text("\(Int(consumed)) / \(Int(target))")
+                Text("\(Int(consumed)) / \(Int(target)) kcal")
                     .font(.sofraNumericSmall)
-                    .foregroundStyle(Color.textSecondary)
+                    .foregroundStyle(Color.accentText)
+                    .padding(.horizontal, Layout.Spacing.md)
+                    .padding(.vertical, 5)
+                    .background(Color.accentTintBg, in: Capsule())
                     .padding(.top, Layout.Spacing.sm)
             }
         }
-        .frame(width: 250, height: 250)
+        .frame(width: ringSize, height: ringSize)
         .onAppear {
-            withAnimation(.easeOut(duration: 0.5)) {
-                animatedProgress = progress
-            }
+            withAnimation(.easeOut(duration: 0.5)) { animatedProgress = progress }
         }
         .onChange(of: consumed) { _, _ in
-            withAnimation(.easeOut(duration: 0.5)) {
-                animatedProgress = progress
-            }
+            withAnimation(.easeOut(duration: 0.5)) { animatedProgress = progress }
         }
     }
 }

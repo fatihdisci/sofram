@@ -199,9 +199,10 @@ struct DailyView: View {
     @ViewBuilder
     private var todayEntriesSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
-            Text("Bugünkü Öğünler")
-                .font(.sofraLabel)
-                .foregroundStyle(Color.textSecondary)
+            Text("BUGÜNKÜ ÖĞÜNLER")
+                .font(.sofraEyebrow)
+                .tracking(1.2)
+                .foregroundStyle(Color.textMuted)
                 .padding(.horizontal, Layout.Spacing.lg)
 
             if todayScans.isEmpty {

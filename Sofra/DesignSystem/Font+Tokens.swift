@@ -12,20 +12,24 @@
 import SwiftUI
 
 extension Font {
-    /// mono · 36 · medium — günlük halka merkez değeri (daily ring center number)
-    static let sofraDisplayNumeric = SofraTypography.mono(size: 36, weight: .medium)
-    /// sans · 28 · semibold — onboarding/paywall başlıkları
-    static let sofraTitle          = SofraTypography.sans(size: 28, weight: .semibold)
-    /// sans · 20 · medium — ekran başlıkları
-    static let sofraHeading        = SofraTypography.sans(size: 20, weight: .medium)
+    /// mono · 58 · medium — hero kalori sayısı (daily ring). Büyük, hafif, tabular.
+    static let sofraDisplayLarge   = SofraTypography.mono(size: 58, weight: .medium)
+    /// mono · 34 · medium — ikincil büyük sayılar (result totals, stat cell)
+    static let sofraDisplayNumeric = SofraTypography.mono(size: 34, weight: .medium)
+    /// sans · 30 · semibold — onboarding/paywall başlıkları
+    static let sofraTitle          = SofraTypography.sans(size: 30, weight: .semibold)
+    /// sans · 22 · semibold — ekran başlıkları / greeting
+    static let sofraHeading        = SofraTypography.sans(size: 22, weight: .semibold)
+    /// sans · 12 · semibold · uppercase-tracking — bölüm başlıkları (eyebrow)
+    static let sofraEyebrow        = SofraTypography.sans(size: 12, weight: .semibold)
     /// sans · 16 · regular — gövde metni
     static let sofraBody           = SofraTypography.sans(size: 16, weight: .regular)
     /// sans · 14 · medium — buton/etiket
     static let sofraLabel          = SofraTypography.sans(size: 14, weight: .medium)
     /// sans · 13 · regular — ikincil metin, zaman damgası
     static let sofraCaption        = SofraTypography.sans(size: 13, weight: .regular)
-    /// mono · 14 · medium · tabular — makro gram değerleri, kart içi kalori sayıları
-    static let sofraNumericSmall   = SofraTypography.mono(size: 14, weight: .medium)
+    /// mono · 15 · medium · tabular — makro gram değerleri, kart içi kalori sayıları
+    static let sofraNumericSmall   = SofraTypography.mono(size: 15, weight: .medium)
 }
 
 enum SofraTypography {

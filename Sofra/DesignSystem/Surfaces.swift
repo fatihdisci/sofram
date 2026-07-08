@@ -21,18 +21,19 @@ struct RaisedSurfaceModifier: ViewModifier {
     var cornerRadius: CGFloat
 
     func body(content: Content) -> some View {
-        // shadow_recipe.<mode>.raised
-        let highlightOpacity = scheme == .dark ? 0.8 : 0.9
-        let shadowOpacity    = scheme == .dark ? 0.9 : 0.6
+        // shadow_recipe.<mode>.raised — larger radius/offset than v1 so cards read
+        // as genuinely lifted against the low-contrast bej page.
+        let highlightOpacity = scheme == .dark ? 0.85 : 1.0
+        let shadowOpacity    = scheme == .dark ? 0.9 : 0.7
         content
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(
                         Color.surfaceRaised
                             .shadow(.drop(color: .borderHighlight.opacity(highlightOpacity),
-                                          radius: 5, x: -3, y: -3))
+                                          radius: 7, x: -5, y: -5))
                             .shadow(.drop(color: .borderShadow.opacity(shadowOpacity),
-                                          radius: 5, x: 3, y: 3))
+                                          radius: 8, x: 5, y: 6))
                     )
             )
     }
@@ -43,18 +44,18 @@ struct PressedSurfaceModifier: ViewModifier {
     var cornerRadius: CGFloat
 
     func body(content: Content) -> some View {
-        // shadow_recipe.<mode>.pressed (inset)
-        let shadowOpacity    = scheme == .dark ? 0.7 : 0.5
-        let highlightOpacity = scheme == .dark ? 0.3 : 0.4
+        // shadow_recipe.<mode>.pressed (inset) — sits on the recessed flat tone
+        let shadowOpacity    = scheme == .dark ? 0.8 : 0.6
+        let highlightOpacity = scheme == .dark ? 0.3 : 0.5
         content
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(
-                        Color.surfaceRaised
+                        Color.surfaceFlat
                             .shadow(.inner(color: .borderShadow.opacity(shadowOpacity),
-                                           radius: 4, x: -2, y: -2))
+                                           radius: 5, x: -3, y: -3))
                             .shadow(.inner(color: .borderHighlight.opacity(highlightOpacity),
-                                           radius: 4, x: 2, y: 2))
+                                           radius: 5, x: 3, y: 3))
                     )
             )
     }

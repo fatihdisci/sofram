@@ -3,8 +3,8 @@
   "color": {
     "light": {
       "bg-page": "#F4F1EC",
-      "surface-raised": "#EDE8DE",
-      "surface-flat": "#F4F1EC",
+      "surface-raised": "#F9F6F1",
+      "surface-flat": "#EAE3D6",
       "border-highlight": "#FFFFFF",
       "border-shadow": "#D0C9B9",
       "border-hairline": "#E2DCCC",
@@ -45,13 +45,15 @@
     "fallback-sans": "SF Pro",
     "fallback-mono": "SF Mono",
     "scale": {
-      "display-numeric": { "font": "mono", "size": 36, "weight": "medium", "usage": "günlük halka merkez değeri" },
-      "title": { "font": "sans", "size": 28, "weight": "semibold", "usage": "onboarding/paywall başlıkları" },
-      "heading": { "font": "sans", "size": 20, "weight": "medium", "usage": "ekran başlıkları" },
+      "display-large": { "font": "mono", "size": 58, "weight": "medium", "usage": "hero kalori sayısı (günlük halka)", "tabular": true },
+      "display-numeric": { "font": "mono", "size": 34, "weight": "medium", "usage": "ikincil büyük sayılar (result totals, stat)" },
+      "title": { "font": "sans", "size": 30, "weight": "semibold", "usage": "onboarding/paywall başlıkları" },
+      "heading": { "font": "sans", "size": 22, "weight": "semibold", "usage": "ekran başlıkları / greeting" },
+      "eyebrow": { "font": "sans", "size": 12, "weight": "semibold", "usage": "bölüm başlıkları (uppercase + tracking)" },
       "body": { "font": "sans", "size": 16, "weight": "regular", "usage": "gövde metni" },
       "label": { "font": "sans", "size": 14, "weight": "medium", "usage": "buton/etiket" },
       "caption": { "font": "sans", "size": 13, "weight": "regular", "usage": "ikincil metin, zaman damgası" },
-      "numeric-small": { "font": "mono", "size": 14, "weight": "medium", "usage": "makro gram değerleri, kart içi kalori sayıları", "tabular": true }
+      "numeric-small": { "font": "mono", "size": 15, "weight": "medium", "usage": "makro gram değerleri, kart içi kalori sayıları", "tabular": true }
     }
   },
   "spacing": { "unit": 4, "scale": [4, 8, 12, 16, 20, 24, 32] },
@@ -62,25 +64,25 @@
     "pill": 999
   },
   "shadow_recipe": {
-    "description": "Neomorphism iki-tonlu kenarlık tekniği — gerçek blur shadow değil, SwiftUI çift .shadow() modifier ile",
+    "description": "Neomorphism iki-tonlu kenarlık tekniği — gerçek blur shadow değil, SwiftUI çift .shadow() modifier ile. Raised zemini surface-raised, pressed zemini surface-flat (çökük ton).",
     "light": {
       "raised": [
-        { "color": "border-highlight", "opacity": 0.9, "radius": 5, "x": -3, "y": -3 },
-        { "color": "border-shadow", "opacity": 0.6, "radius": 5, "x": 3, "y": 3 }
+        { "color": "border-highlight", "opacity": 1.0, "radius": 7, "x": -5, "y": -5 },
+        { "color": "border-shadow", "opacity": 0.7, "radius": 8, "x": 5, "y": 6 }
       ],
       "pressed": [
-        { "color": "border-shadow", "opacity": 0.5, "radius": 4, "x": -2, "y": -2, "inset": true },
-        { "color": "border-highlight", "opacity": 0.4, "radius": 4, "x": 2, "y": 2, "inset": true }
+        { "color": "border-shadow", "opacity": 0.6, "radius": 5, "x": -3, "y": -3, "inset": true },
+        { "color": "border-highlight", "opacity": 0.5, "radius": 5, "x": 3, "y": 3, "inset": true }
       ]
     },
     "dark": {
       "raised": [
-        { "color": "border-highlight", "opacity": 0.8, "radius": 5, "x": -3, "y": -3 },
-        { "color": "border-shadow", "opacity": 0.9, "radius": 5, "x": 3, "y": 3 }
+        { "color": "border-highlight", "opacity": 0.85, "radius": 7, "x": -5, "y": -5 },
+        { "color": "border-shadow", "opacity": 0.9, "radius": 8, "x": 5, "y": 6 }
       ],
       "pressed": [
-        { "color": "border-shadow", "opacity": 0.7, "radius": 4, "x": -2, "y": -2, "inset": true },
-        { "color": "border-highlight", "opacity": 0.3, "radius": 4, "x": 2, "y": 2, "inset": true }
+        { "color": "border-shadow", "opacity": 0.8, "radius": 5, "x": -3, "y": -3, "inset": true },
+        { "color": "border-highlight", "opacity": 0.3, "radius": 5, "x": 3, "y": 3, "inset": true }
       ]
     }
   },
