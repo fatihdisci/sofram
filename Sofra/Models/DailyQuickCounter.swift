@@ -32,8 +32,10 @@ final class DailyQuickCounter {
 // MARK: - Customizable quick-add
 
 /// A user-defined quick-add counter (e.g. "Ekmek · dilim", "Su · bardak").
-/// `caloriesPerUnit` is optional (0 = a pure tally that doesn't touch calories);
-/// when > 0, each unit contributes to the day's calorie total and the ring.
+/// Per-unit nutrition is optional (all 0 = a pure tally that doesn't touch the
+/// totals); when set, each tallied unit contributes to the day's calories and
+/// macros (ring + macro cards). New macro fields default to 0, so the schema
+/// change is additive/CloudKit-safe for stores created before this version.
 @Model
 final class QuickAddItem {
     var id: UUID = UUID()
@@ -42,6 +44,9 @@ final class QuickAddItem {
     /// SofraIcon rawValue (e.g. "ekmekDilimi").
     var iconName: String = "tabak"
     var caloriesPerUnit: Double = 0
+    var proteinPerUnit: Double = 0
+    var carbsPerUnit: Double = 0
+    var fatPerUnit: Double = 0
     var sortOrder: Int = 0
     var createdAt: Date = Date()
 
@@ -50,6 +55,9 @@ final class QuickAddItem {
          unit: String = "",
          iconName: String = "tabak",
          caloriesPerUnit: Double = 0,
+         proteinPerUnit: Double = 0,
+         carbsPerUnit: Double = 0,
+         fatPerUnit: Double = 0,
          sortOrder: Int = 0,
          createdAt: Date = Date()) {
         self.id = id
@@ -57,6 +65,9 @@ final class QuickAddItem {
         self.unit = unit
         self.iconName = iconName
         self.caloriesPerUnit = caloriesPerUnit
+        self.proteinPerUnit = proteinPerUnit
+        self.carbsPerUnit = carbsPerUnit
+        self.fatPerUnit = fatPerUnit
         self.sortOrder = sortOrder
         self.createdAt = createdAt
     }
@@ -80,18 +91,68 @@ final class QuickAddCount {
     }
 }
 
+// MARK: - Templates
+
+/// A ready-made quick-add with real per-unit nutrition for common Turkish
+/// items. Used both to seed the defaults and to pre-fill the editor when the
+/// user adds a new counter. Values are per single unit and deliberately
+/// approximate (household portions, not lab-precise).
+struct QuickAddTemplate: Identifiable {
+    let id = UUID()
+    let name: String
+    let unit: String
+    let icon: SofraIcon
+    let calories: Double
+    let protein: Double
+    let carbs: Double
+    let fat: Double
+}
+
+enum QuickAddTemplates {
+    static let all: [QuickAddTemplate] = [
+        .init(name: "Ekmek",        unit: "dilim",  icon: .ekmekDilimi, calories: 80,  protein: 2.7, carbs: 15,  fat: 1),
+        .init(name: "Çay",          unit: "bardak", icon: .cayBardagi,  calories: 2,   protein: 0,   carbs: 0.5, fat: 0),
+        .init(name: "Türk kahvesi", unit: "fincan", icon: .cayBardagi,  calories: 5,   protein: 0.3, carbs: 1,   fat: 0),
+        .init(name: "Su",           unit: "bardak", icon: .cayBardagi,  calories: 0,   protein: 0,   carbs: 0,   fat: 0),
+        .init(name: "Şeker",        unit: "küp",    icon: .kasik,       calories: 20,  protein: 0,   carbs: 5,   fat: 0),
+        .init(name: "Ayran",        unit: "bardak", icon: .cayBardagi,  calories: 60,  protein: 3,   carbs: 5,   fat: 3),
+        .init(name: "Simit",        unit: "adet",   icon: .ekmekDilimi, calories: 270, protein: 8,   carbs: 50,  fat: 4),
+        .init(name: "Yumurta",      unit: "adet",   icon: .tabak,       calories: 70,  protein: 6,   carbs: 0.5, fat: 5),
+        .init(name: "Peynir",       unit: "dilim",  icon: .ekmekDilimi, calories: 80,  protein: 5,   carbs: 1,   fat: 6),
+        .init(name: "Zeytin",       unit: "adet",   icon: .kase,        calories: 5,   protein: 0,   carbs: 0,   fat: 0.5),
+        .init(name: "Muz",          unit: "adet",   icon: .tabak,       calories: 100, protein: 1,   carbs: 27,  fat: 0),
+        .init(name: "Elma",         unit: "adet",   icon: .tabak,       calories: 80,  protein: 0.5, carbs: 21,  fat: 0),
+    ]
+}
+
 // MARK: - Seeding
 
 enum QuickAddSeed {
-    /// Inserts the default Ekmek + Çay counters the first time the app runs
-    /// (preserving v1 behaviour), only if no items exist yet.
+    /// Inserts the default Ekmek + Çay counters the first time the app runs,
+    /// now with real per-unit nutrition, only if no items exist yet.
     static func seedDefaultsIfNeeded(_ context: ModelContext) {
         let existing = (try? context.fetchCount(FetchDescriptor<QuickAddItem>())) ?? 0
         guard existing == 0 else { return }
-        context.insert(QuickAddItem(name: "Ekmek", unit: "dilim",
-                                    iconName: SofraIcon.ekmekDilimi.rawValue, sortOrder: 0))
-        context.insert(QuickAddItem(name: "Çay", unit: "bardak",
-                                    iconName: SofraIcon.cayBardagi.rawValue, sortOrder: 1))
+        for (index, template) in QuickAddTemplates.all.prefix(2).enumerated() {
+            context.insert(QuickAddItem.make(from: template, sortOrder: index))
+        }
         try? context.save()
+    }
+}
+
+extension QuickAddItem {
+    /// Build a counter from a template. A static factory (not a convenience
+    /// init) to sidestep any interaction with the @Model-generated initializer.
+    static func make(from template: QuickAddTemplate, sortOrder: Int) -> QuickAddItem {
+        QuickAddItem(
+            name: template.name,
+            unit: template.unit,
+            iconName: template.icon.rawValue,
+            caloriesPerUnit: template.calories,
+            proteinPerUnit: template.protein,
+            carbsPerUnit: template.carbs,
+            fatPerUnit: template.fat,
+            sortOrder: sortOrder
+        )
     }
 }

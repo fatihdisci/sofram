@@ -47,25 +47,31 @@ struct DailyView: View {
         return quickCounts.filter { $0.date >= today && $0.date < tomorrow }
     }
 
-    private var quickAddCalories: Double {
+    /// Sum of `perUnit(item) × count` over today's quick-add tallies.
+    private func quickAddSum(_ perUnit: (QuickAddItem) -> Double) -> Double {
         todayQuickCounts.reduce(0) { sum, c in
-            let perUnit = quickItems.first { $0.id == c.itemID }?.caloriesPerUnit ?? 0
-            return sum + Double(c.count) * perUnit
+            guard let item = quickItems.first(where: { $0.id == c.itemID }) else { return sum }
+            return sum + Double(c.count) * perUnit(item)
         }
     }
 
-    /// Today's total macros. Calories include scans + calorie-bearing quick-adds.
+    /// Today's totals — scans + calorie/macro-bearing quick-adds contribute to
+    /// both the ring and the macro cards.
     private var todayCalories: Double {
-        todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.calories } } + quickAddCalories
+        todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.calories } }
+            + quickAddSum { $0.caloriesPerUnit }
     }
     private var todayProtein: Double {
         todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.protein } }
+            + quickAddSum { $0.proteinPerUnit }
     }
     private var todayCarbs: Double {
         todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.carbs } }
+            + quickAddSum { $0.carbsPerUnit }
     }
     private var todayFat: Double {
         todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.fat } }
+            + quickAddSum { $0.fatPerUnit }
     }
 
     /// Macro gram targets. User-set values (from Ayarlar) win; otherwise fall
@@ -78,11 +84,14 @@ struct DailyView: View {
         DaySummaryBuilder.lastSevenDays(scans: scanEntries, items: quickItems, counts: quickCounts)
     }
 
-    /// First-appear entrance choreography for the above-the-fold content
-    /// (ring, then macros/quick-add) — below-the-fold cards get their motion
-    /// from `.scrollTransition` instead (see `sevenDayCard` / `MealEntryCard`).
-    @State private var ringVisible = false
-    @State private var cardsVisible = false
+    /// First-appear entrance: one `appeared` trigger, each element animates in
+    /// with its own delay for a clear top-to-bottom cascade. Below-the-fold
+    /// cards get their motion from `.scrollTransition` instead.
+    @State private var appeared = false
+
+    private func entrance(_ delay: Double) -> some ViewModifier {
+        EntranceModifier(appeared: appeared, delay: delay)
+    }
 
     var body: some View {
         ZStack {
@@ -91,20 +100,20 @@ struct DailyView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: Layout.Spacing.xl) {
                     topBar
+                        .modifier(entrance(0))
 
                     CalorieRingView(consumed: todayCalories, target: calorieTarget)
                         .padding(.top, Layout.Spacing.sm)
-                        .scaleEffect(ringVisible ? 1 : 0.9)
-                        .opacity(ringVisible ? 1 : 0)
+                        .scaleEffect(appeared ? 1 : 0.82)
+                        .opacity(appeared ? 1 : 0)
+                        .animation(.spring(response: 0.55, dampingFraction: 0.7).delay(0.08), value: appeared)
 
                     macroRow
-                        .opacity(cardsVisible ? 1 : 0)
-                        .offset(y: cardsVisible ? 0 : 14)
+                        .modifier(entrance(0.16))
 
                     QuickCounterView()
                         .padding(.horizontal, Layout.Spacing.lg)
-                        .opacity(cardsVisible ? 1 : 0)
-                        .offset(y: cardsVisible ? 0 : 14)
+                        .modifier(entrance(0.24))
 
                     sevenDayCard
 
@@ -115,12 +124,8 @@ struct DailyView: View {
             }
         }
         .onAppear {
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) {
-                ringVisible = true
-            }
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
-                cardsVisible = true
-            }
+            guard !appeared else { return }
+            appeared = true
         }
     }
 
@@ -331,6 +336,20 @@ struct DailyView: View {
         formatter.locale = Locale(identifier: "tr_TR")
         formatter.dateFormat = "d MMMM EEEE"
         return formatter.string(from: Date())
+    }
+}
+
+// MARK: - Entrance modifier (fade + rise, with a per-element delay)
+
+private struct EntranceModifier: ViewModifier {
+    let appeared: Bool
+    let delay: Double
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(appeared ? 1 : 0)
+            .offset(y: appeared ? 0 : 26)
+            .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(delay), value: appeared)
     }
 }
 

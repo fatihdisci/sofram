@@ -227,13 +227,14 @@ struct SettingsView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Color.bgPage.ignoresSafeArea())
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle("Ayarlar")
             .onAppear { seedTargetsIfNeeded() }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Tamam") { focusedTargetField = nil }
-                        .font(.sofraLabel)
+                    Button("Bitti") { focusedTargetField = nil }
+                        .fontWeight(.semibold)
                 }
             }
         }

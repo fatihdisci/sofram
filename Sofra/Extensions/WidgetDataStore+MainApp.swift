@@ -39,34 +39,36 @@ extension WidgetDataStore {
         let allScans = (try? modelContext.fetch(scanDescriptor)) ?? []
         let todayScans = allScans.filter { $0.timestamp >= today && $0.timestamp < tomorrow }
 
-        // Sum macros
+        // Sum macros from scans
         let scanCalories = todayScans.reduce(0.0) { total, scan in
             total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.calories }
         }
-        let protein = todayScans.reduce(0.0) { total, scan in
+        let scanProtein = todayScans.reduce(0.0) { total, scan in
             total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.protein }
         }
-        let carbs = todayScans.reduce(0.0) { total, scan in
+        let scanCarbs = todayScans.reduce(0.0) { total, scan in
             total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.carbs }
         }
-        let fat = todayScans.reduce(0.0) { total, scan in
+        let scanFat = todayScans.reduce(0.0) { total, scan in
             total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.fat }
         }
 
-        // Customizable quick-add: fold calorie-bearing items into the total, and
-        // surface the first two items' tallies in the legacy widget slots (so the
-        // default Ekmek/Çay setup keeps rendering as before).
+        // Customizable quick-add: fold each calorie/macro-bearing item into the
+        // totals, and surface the first two items' tallies in the legacy widget
+        // slots (so the default Ekmek/Çay setup keeps rendering as before).
         let itemDescriptor = FetchDescriptor<QuickAddItem>(
             sortBy: [SortDescriptor(\.sortOrder)]
         )
         let items = (try? modelContext.fetch(itemDescriptor)) ?? []
+        let itemsByID = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
         let allCounts = (try? modelContext.fetch(FetchDescriptor<QuickAddCount>())) ?? []
         let todayCounts = allCounts.filter { $0.date >= today && $0.date < tomorrow }
 
-        let caloriesPerItem = Dictionary(items.map { ($0.id, $0.caloriesPerUnit) },
-                                         uniquingKeysWith: { a, _ in a })
-        let quickCalories = todayCounts.reduce(0.0) { sum, c in
-            sum + Double(c.count) * (caloriesPerItem[c.itemID] ?? 0)
+        func quickSum(_ perUnit: (QuickAddItem) -> Double) -> Double {
+            todayCounts.reduce(0.0) { sum, c in
+                guard let item = itemsByID[c.itemID] else { return sum }
+                return sum + Double(c.count) * perUnit(item)
+            }
         }
         func todayTally(for item: QuickAddItem) -> Int {
             todayCounts.first { $0.itemID == item.id }?.count ?? 0
@@ -77,11 +79,11 @@ extension WidgetDataStore {
         // Build and save
         let target = calorieTarget > 0 ? calorieTarget : 2000
         let summary = WidgetDailySummary(
-            calories: scanCalories + quickCalories,
+            calories: scanCalories + quickSum { $0.caloriesPerUnit },
             target: target,
-            protein: protein,
-            carbs: carbs,
-            fat: fat,
+            protein: scanProtein + quickSum { $0.proteinPerUnit },
+            carbs: scanCarbs + quickSum { $0.carbsPerUnit },
+            fat: scanFat + quickSum { $0.fatPerUnit },
             breadSlices: breadSlices,
             teaGlasses: teaGlasses,
             lastUpdated: Date()

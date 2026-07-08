@@ -267,22 +267,29 @@ struct QuickAddEditorView: View {
     @State private var unit: String = ""
     @State private var iconName: String = SofraIcon.tabak.rawValue
     @State private var caloriesText: String = ""
+    @State private var proteinText: String = ""
+    @State private var carbsText: String = ""
+    @State private var fatText: String = ""
 
     private var isEditing: Bool { item != nil }
     private var canSave: Bool { !name.trimmingCharacters(in: .whitespaces).isEmpty }
 
     private let iconColumns = [GridItem(.adaptive(minimum: 52), spacing: Layout.Spacing.sm)]
 
-    /// The numeric keypad has no system "done" key — this drives a keyboard
-    /// toolbar with a dismiss button (see `.toolbar { ... .keyboard }` below).
+    /// The numeric keypad has no system "done" key — this drives both a keyboard
+    /// toolbar button and `.scrollDismissesKeyboard` below.
     private enum EditorField: Hashable {
-        case name, unit, calories
+        case name, unit, calories, protein, carbs, fat
     }
     @FocusState private var focusedField: EditorField?
 
     var body: some View {
         NavigationStack {
             Form {
+                if !isEditing {
+                    templatesSection
+                }
+
                 Section("Sayaç") {
                     TextField("Ad (örn. Ekmek)", text: $name)
                         .focused($focusedField, equals: .name)
@@ -291,19 +298,14 @@ struct QuickAddEditorView: View {
                 }
 
                 Section {
-                    HStack {
-                        TextField("0", text: $caloriesText)
-                            .keyboardType(.numberPad)
-                            .frame(width: 80)
-                            .focused($focusedField, equals: .calories)
-                        Text("kcal / birim")
-                            .font(.sofraCaption)
-                            .foregroundStyle(Color.textMuted)
-                    }
+                    nutrientRow(title: "Kalori", text: $caloriesText, unit: "kcal", field: .calories)
+                    nutrientRow(title: "Protein", text: $proteinText, unit: "g", field: .protein)
+                    nutrientRow(title: "Karbonhidrat", text: $carbsText, unit: "g", field: .carbs)
+                    nutrientRow(title: "Yağ", text: $fatText, unit: "g", field: .fat)
                 } header: {
-                    Text("Kalori (opsiyonel)")
+                    Text("Birim başına besin değeri (opsiyonel)")
                 } footer: {
-                    Text("0 bırakırsan sadece adet sayılır, kaloriye eklenmez. Bir değer girersen her adet günlük kaloriye ve halkaya eklenir.")
+                    Text("Hepsini 0 bırakırsan sadece adet sayılır. Değer girersen her adet günlük toplamlara ve halkaya eklenir.")
                 }
 
                 Section("İkon") {
@@ -338,6 +340,7 @@ struct QuickAddEditorView: View {
             }
             .scrollContentBackground(.hidden)
             .background(Color.bgPage.ignoresSafeArea())
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle(isEditing ? "Sayacı Düzenle" : "Yeni Sayaç")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -349,8 +352,8 @@ struct QuickAddEditorView: View {
                 }
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
-                    Button("Tamam") { focusedField = nil }
-                        .font(.sofraLabel)
+                    Button("Bitti") { focusedField = nil }
+                        .fontWeight(.semibold)
                 }
             }
             .onAppear(perform: load)
@@ -358,35 +361,127 @@ struct QuickAddEditorView: View {
         .tint(Color.accentFill)
     }
 
+    // MARK: Templates
+
+    private var templatesSection: some View {
+        Section {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: Layout.Spacing.sm) {
+                    ForEach(QuickAddTemplates.all) { template in
+                        Button {
+                            apply(template)
+                        } label: {
+                            HStack(spacing: 6) {
+                                SofraIconView(icon: template.icon, size: 16)
+                                    .foregroundStyle(Color.accentFill)
+                                VStack(alignment: .leading, spacing: 0) {
+                                    Text(template.name)
+                                        .font(.sofraCaption)
+                                        .foregroundStyle(Color.textPrimary)
+                                    Text("\(Int(template.calories)) kcal")
+                                        .font(.system(size: 10))
+                                        .foregroundStyle(Color.textMuted)
+                                }
+                            }
+                            .padding(.horizontal, Layout.Spacing.md)
+                            .padding(.vertical, Layout.Spacing.sm)
+                            .background(Color.accentTintBg, in: Capsule())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.vertical, 2)
+            }
+            .listRowInsets(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+        } header: {
+            Text("Şablonlar")
+        } footer: {
+            Text("Birine dokun, değerleri otomatik dolsun — sonra dilediğin gibi düzenle.")
+        }
+    }
+
+    private func nutrientRow(title: String, text: Binding<String>, unit: String, field: EditorField) -> some View {
+        HStack {
+            Text(title)
+                .foregroundStyle(Color.textPrimary)
+            Spacer()
+            TextField("0", text: text)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 72)
+                .font(.sofraNumericSmall)
+                .focused($focusedField, equals: field)
+            Text(unit)
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+        }
+    }
+
+    // MARK: Actions
+
+    private func apply(_ template: QuickAddTemplate) {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        name = template.name
+        unit = template.unit
+        iconName = template.icon.rawValue
+        caloriesText = format(template.calories)
+        proteinText = format(template.protein)
+        carbsText = format(template.carbs)
+        fatText = format(template.fat)
+        focusedField = nil
+    }
+
+    /// Trim ".0" so whole numbers read cleanly (e.g. "80", not "80.0").
+    private func format(_ value: Double) -> String {
+        value == 0 ? "" : (value == value.rounded() ? String(Int(value)) : String(value))
+    }
+
     private func load() {
         guard let item else { return }
         name = item.name
         unit = item.unit
         iconName = item.iconName
-        caloriesText = item.caloriesPerUnit > 0 ? String(Int(item.caloriesPerUnit)) : ""
+        caloriesText = format(item.caloriesPerUnit)
+        proteinText = format(item.proteinPerUnit)
+        carbsText = format(item.carbsPerUnit)
+        fatText = format(item.fatPerUnit)
     }
 
     private func save() {
-        let calories = Double(caloriesText) ?? 0
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
         let trimmedUnit = unit.trimmingCharacters(in: .whitespaces)
+        let calories = parse(caloriesText)
+        let protein = parse(proteinText)
+        let carbs = parse(carbsText)
+        let fat = parse(fatText)
 
         if let item {
             item.name = trimmedName
             item.unit = trimmedUnit
             item.iconName = iconName
             item.caloriesPerUnit = calories
+            item.proteinPerUnit = protein
+            item.carbsPerUnit = carbs
+            item.fatPerUnit = fat
         } else {
             modelContext.insert(QuickAddItem(
                 name: trimmedName,
                 unit: trimmedUnit,
                 iconName: iconName,
                 caloriesPerUnit: calories,
+                proteinPerUnit: protein,
+                carbsPerUnit: carbs,
+                fatPerUnit: fat,
                 sortOrder: nextSortOrder
             ))
         }
         try? modelContext.save()
         dismiss()
+    }
+
+    /// Accepts both "," and "." as the decimal separator (Turkish keyboards).
+    private func parse(_ text: String) -> Double {
+        Double(text.replacingOccurrences(of: ",", with: ".")) ?? 0
     }
 
     private func deleteItem() {
