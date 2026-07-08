@@ -8,7 +8,9 @@
 //  Per mikro-etkilesimler.md:
 //  - Each tap: .impact(light) haptic + "+1" ghost text fades upward (400ms)
 //  - No shaming/warning for high counts — neutral data only.
-//  - Long-press decrements (mis-tap recovery), medium haptic + "-1" ghost.
+//  - An explicit "-" button appears once count > 0 (mis-tap recovery), medium
+//    haptic + "-1" ghost. Not a long-press: a hidden gesture was undiscoverable
+//    and conflicted with the tap-to-increment gesture on the same view.
 //
 
 import SwiftUI
@@ -189,9 +191,27 @@ private struct QuickChip: View {
 
                 Spacer(minLength: 0)
 
+                // Explicit, always-visible undo — a mistaken tap must be
+                // correctable without relying on a hidden long-press gesture.
+                if count > 0 {
+                    Button {
+                        decrement()
+                    } label: {
+                        Image(systemName: "minus")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(Color.textSecondary)
+                            .frame(width: 26, height: 26)
+                            .background(Color.surfaceFlat, in: Circle())
+                    }
+                    .buttonStyle(.plain)
+                    .transition(.scale.combined(with: .opacity))
+                }
+
                 Image(systemName: "plus")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(Color.accentFill)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(Color.onAccent)
+                    .frame(width: 26, height: 26)
+                    .background(Color.accentFill, in: Circle())
             }
             .padding(.horizontal, Layout.Spacing.md)
             .padding(.vertical, Layout.Spacing.md)
@@ -205,7 +225,6 @@ private struct QuickChip: View {
         }
         .contentShape(RoundedRectangle(cornerRadius: Layout.Radius.card))
         .onTapGesture { increment() }
-        .onLongPressGesture(minimumDuration: 0.4) { decrement() }
         .contextMenu {
             Button { onEdit() } label: { Label("Düzenle", systemImage: "pencil") }
             Button(role: .destructive) { onDelete() } label: { Label("Sil", systemImage: "trash") }
