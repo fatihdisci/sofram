@@ -12,6 +12,11 @@
 //  run on one serial queue, so a stop queued by a disappearing view and a start
 //  queued by the next one can never interleave.
 //
+//  Presentation: the camera preview is framed as a raised card centered in the
+//  app's own "Yumuşak Sofra" chrome (bej page, raised-surface controls) rather
+//  than a full-bleed black takeover — the header, capture button and secondary
+//  actions all read as Sofra UI, with only the live feed itself inside the card.
+//
 
 import SwiftUI
 import AVFoundation
@@ -244,6 +249,8 @@ struct CameraView: View {
     @State private var torchOn = false
     @State private var isCapturing = false
     @State private var captureErrorMessage: String?
+    /// Tap-to-focus point, in the camera card's own local coordinate space
+    /// (matches the preview layer's bounds exactly — see `focusTapped`).
     @State private var focusPoint: CGPoint?
     @State private var focusRingVisible = false
     @State private var guideVisible = false
@@ -251,77 +258,30 @@ struct CameraView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.bgPage.ignoresSafeArea()
 
-            if authorization == .authorized {
-                CameraPreview(manager: camera)
-                    .ignoresSafeArea()
-                    .onTapGesture(coordinateSpace: .global) { location in
-                        focusTapped(at: location)
-                    }
-            } else if authorization == .denied || authorization == .restricted {
-                permissionDeniedView
-            }
-
-            // Shutter flash overlay
-            if showShutterFlash {
-                Color.white
-                    .ignoresSafeArea()
-                    .transition(.opacity)
-            }
-
-            // Gradient overlay at top/bottom for readability
-            VStack {
-                LinearGradient(
-                    colors: [.black.opacity(0.45), .clear],
-                    startPoint: .top, endPoint: .bottom
-                )
-                .frame(height: 140)
-                Spacer()
-                LinearGradient(
-                    colors: [.clear, .black.opacity(0.45)],
-                    startPoint: .top, endPoint: .bottom
-                )
-                .frame(height: 220)
-            }
-            .ignoresSafeArea()
-            .allowsHitTesting(false)
-
-            // Plate framing guide
-            if authorization == .authorized {
-                framingGuide
-                    .allowsHitTesting(false)
-            }
-
-            // Tap-to-focus ring
-            if let focusPoint {
-                FocusRing()
-                    .position(focusPoint)
-                    .opacity(focusRingVisible ? 1 : 0)
-                    .allowsHitTesting(false)
-            }
-
-            // UI overlay
             VStack(spacing: 0) {
                 topBar
-                Spacer()
-                bottomControls
-            }
 
-            // Capture error toast
-            if let captureErrorMessage {
-                VStack {
-                    Spacer()
+                Spacer(minLength: Layout.Spacing.md)
+
+                cameraCard
+                    .padding(.horizontal, Layout.Spacing.lg)
+
+                if let captureErrorMessage {
                     Text(captureErrorMessage)
                         .font(.sofraLabel)
                         .foregroundStyle(.white)
                         .padding(.horizontal, Layout.Spacing.lg)
-                        .padding(.vertical, Layout.Spacing.md)
-                        .background(.black.opacity(0.7), in: Capsule())
-                        .padding(.bottom, 180)
+                        .padding(.vertical, Layout.Spacing.sm)
+                        .background(.black.opacity(0.75), in: Capsule())
+                        .padding(.top, Layout.Spacing.md)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
                 }
-                .transition(.opacity.combined(with: .move(edge: .bottom)))
-                .allowsHitTesting(false)
+
+                Spacer(minLength: Layout.Spacing.md)
+
+                bottomControls
             }
         }
         .task {
@@ -353,137 +313,200 @@ struct CameraView: View {
     // MARK: - Top bar
 
     private var topBar: some View {
-        HStack {
-            // Close → daily summary
-            Button {
-                nav.goToDaily()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .frame(width: 42, height: 42)
-                    .background(.ultraThinMaterial, in: Circle())
-            }
+        VStack(spacing: Layout.Spacing.xs) {
+            HStack {
+                Button {
+                    nav.goToDaily()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(Color.textPrimary)
+                        .frame(width: 42, height: 42)
+                        .background(Color.surfaceRaised, in: Circle())
+                        .raisedSurface(cornerRadius: 21)
+                }
 
-            Spacer()
+                Spacer()
+
+                Text("Tabağını Tara")
+                    .font(.sofraHeading)
+                    .foregroundStyle(Color.textPrimary)
+
+                Spacer()
+
+                Button {
+                    torchOn.toggle()
+                    camera.setTorch(torchOn)
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                } label: {
+                    Image(systemName: torchOn ? "bolt.fill" : "bolt.slash")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(torchOn ? Color.accentFill : Color.textPrimary)
+                        .frame(width: 42, height: 42)
+                        .background(Color.surfaceRaised, in: Circle())
+                        .raisedSurface(cornerRadius: 21)
+                }
+                .opacity(authorization == .authorized ? 1 : 0.35)
+                .disabled(authorization != .authorized)
+            }
 
             FreeScanBadge()
-
-            Spacer()
-
-            // Torch toggle
-            Button {
-                torchOn.toggle()
-                camera.setTorch(torchOn)
-                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            } label: {
-                Image(systemName: torchOn ? "bolt.fill" : "bolt.slash")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(torchOn ? Color.accentFill : .white)
-                    .frame(width: 42, height: 42)
-                    .background(.ultraThinMaterial, in: Circle())
-            }
-            .opacity(authorization == .authorized ? 1 : 0)
         }
         .padding(.horizontal, Layout.Spacing.lg)
         .padding(.top, Layout.Spacing.sm)
     }
 
+    // MARK: - Camera card
+
+    /// The live feed, framed as a raised card in the app's own palette — the
+    /// only full-bleed content is the video itself, clipped to the card shape.
+    private var cameraCard: some View {
+        ZStack {
+            cardContent
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            if showShutterFlash {
+                Color.white
+                    .transition(.opacity)
+            }
+
+            if authorization == .authorized {
+                framingGuide
+            }
+
+            if let focusPoint {
+                FocusRing()
+                    .position(focusPoint)
+                    .opacity(focusRingVisible ? 1 : 0)
+                    .allowsHitTesting(false)
+            }
+        }
+        .background(Color.surfaceRaised)
+        .clipShape(RoundedRectangle(cornerRadius: Layout.Radius.raisedContainer, style: .continuous))
+        .raisedSurface(cornerRadius: Layout.Radius.raisedContainer)
+        .aspectRatio(3.0 / 4.0, contentMode: .fit)
+        .frame(maxWidth: .infinity)
+    }
+
+    @ViewBuilder
+    private var cardContent: some View {
+        if authorization == .authorized {
+            CameraPreview(manager: camera)
+                .onTapGesture(coordinateSpace: .local) { location in
+                    focusTapped(at: location)
+                }
+        } else if authorization == .denied || authorization == .restricted {
+            permissionDeniedView
+        } else {
+            cardPlaceholder
+        }
+    }
+
+    private var cardPlaceholder: some View {
+        SofraIconView(icon: .tabak, size: 40)
+            .foregroundStyle(Color.textMuted.opacity(0.4))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
     // MARK: - Framing guide
 
-    /// Four corner brackets + hint — frames where the plate should sit.
+    /// Corner brackets + hint, overlaid on the live feed inside the card.
     private var framingGuide: some View {
-        VStack(spacing: Layout.Spacing.lg) {
+        ZStack {
             CornerBrackets()
                 .stroke(.white.opacity(0.55), style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                .frame(width: 280, height: 280)
+                .padding(28)
 
-            Text("Tabağı çerçeveye al")
-                .font(.sofraLabel)
-                .foregroundStyle(.white.opacity(0.85))
-                .padding(.horizontal, Layout.Spacing.md)
-                .padding(.vertical, Layout.Spacing.xs)
-                .background(.black.opacity(0.35), in: Capsule())
+            VStack {
+                Spacer()
+                Text("Tabağı çerçeveye al")
+                    .font(.sofraLabel)
+                    .foregroundStyle(.white.opacity(0.9))
+                    .padding(.horizontal, Layout.Spacing.md)
+                    .padding(.vertical, Layout.Spacing.xs)
+                    .background(.black.opacity(0.35), in: Capsule())
+                    .padding(.bottom, Layout.Spacing.lg)
+            }
         }
         .opacity(guideVisible ? 1 : 0)
         .scaleEffect(guideVisible ? 1 : 0.92)
-        .offset(y: -20)
+        .allowsHitTesting(false)
     }
 
     // MARK: - Bottom controls
 
     private var bottomControls: some View {
         VStack(spacing: Layout.Spacing.lg) {
-            // Capture button — copper accent ring around the classic white disc
+            // Capture button — raised app-style circle, not a generic shutter ring.
             Button {
                 Task { await capture() }
             } label: {
                 ZStack {
                     Circle()
-                        .strokeBorder(Color.accentFill.opacity(0.9), lineWidth: 3)
-                        .frame(width: 84, height: 84)
+                        .fill(Color.surfaceRaised)
+                        .frame(width: 92, height: 92)
+                        .raisedSurface(cornerRadius: 46)
                     Circle()
-                        .strokeBorder(.white, lineWidth: 4)
+                        .fill(Color.accentFill)
                         .frame(width: 74, height: 74)
-                    Circle()
-                        .fill(.white)
-                        .frame(width: 60, height: 60)
-                        .scaleEffect(isCapturing ? 0.85 : 1)
+                    Image(systemName: "camera.fill")
+                        .font(.system(size: 26, weight: .medium))
+                        .foregroundStyle(Color.onAccent)
                 }
+                .scaleEffect(isCapturing ? 0.88 : 1)
             }
+            .buttonStyle(.plain)
             .disabled(isCapturing || authorization != .authorized)
             .animation(.spring(response: 0.2, dampingFraction: 0.6), value: isCapturing)
 
             HStack(spacing: Layout.Spacing.md) {
-                // Gallery picker
                 PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
                     HStack(spacing: Layout.Spacing.xs) {
                         Image(systemName: "photo.on.rectangle")
-                            .font(.system(size: 15))
+                            .font(.system(size: 14))
                         Text("Galeri")
                             .font(.sofraLabel)
                     }
-                    .foregroundStyle(.white.opacity(0.9))
+                    .foregroundStyle(Color.textPrimary)
                     .padding(.horizontal, Layout.Spacing.lg)
                     .padding(.vertical, Layout.Spacing.sm)
-                    .background(.ultraThinMaterial, in: Capsule())
+                    .background(Color.surfaceFlat, in: Capsule())
                 }
 
-                // Text log alternative
                 Button {
                     nav.goToTextLog(from: .camera)
                 } label: {
                     HStack(spacing: Layout.Spacing.xs) {
                         Image(systemName: "text.alignleft")
-                            .font(.system(size: 15))
+                            .font(.system(size: 14))
                         Text("Yazarak ekle")
                             .font(.sofraLabel)
                     }
-                    .foregroundStyle(.white.opacity(0.9))
+                    .foregroundStyle(Color.textPrimary)
                     .padding(.horizontal, Layout.Spacing.lg)
                     .padding(.vertical, Layout.Spacing.sm)
-                    .background(.ultraThinMaterial, in: Capsule())
+                    .background(Color.surfaceFlat, in: Capsule())
                 }
             }
         }
-        .padding(.bottom, Layout.Spacing.xl)
+        .padding(.bottom, Layout.Spacing.lg)
     }
 
     // MARK: - Permission denied
 
     private var permissionDeniedView: some View {
-        VStack(spacing: Layout.Spacing.lg) {
+        VStack(spacing: Layout.Spacing.md) {
             Image(systemName: "camera.on.rectangle")
-                .font(.system(size: 44))
-                .foregroundStyle(.white.opacity(0.6))
+                .font(.system(size: 40))
+                .foregroundStyle(Color.textMuted)
 
             Text("Kamera izni gerekli")
-                .font(.sofraHeading)
-                .foregroundStyle(.white)
+                .font(.sofraLabel)
+                .foregroundStyle(Color.textPrimary)
 
-            Text("Tabağını tarayabilmek için Ayarlar'dan\nSofra'ya kamera izni ver.")
-                .font(.sofraBody)
-                .foregroundStyle(.white.opacity(0.7))
+            Text("Tabağını tarayabilmek için\nAyarlar'dan izin ver.")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
 
             Button {
@@ -494,17 +517,21 @@ struct CameraView: View {
                 Text("Ayarlar'ı Aç")
                     .font(.sofraLabel)
                     .foregroundStyle(Color.onAccent)
-                    .padding(.horizontal, Layout.Spacing.xl)
-                    .padding(.vertical, Layout.Spacing.md)
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.vertical, Layout.Spacing.sm)
                     .background(Color.accentFill, in: Capsule())
             }
-            .padding(.top, Layout.Spacing.sm)
+            .padding(.top, Layout.Spacing.xs)
         }
-        .padding(Layout.Spacing.xxl)
+        .padding(Layout.Spacing.xl)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     // MARK: - Actions
 
+    /// `location` is in the camera card's local coordinate space, which is
+    /// exactly the preview layer's own bounds (PreviewView keeps
+    /// `previewLayer.frame = bounds` in `layoutSubviews`) — no conversion needed.
     private func focusTapped(at location: CGPoint) {
         camera.focus(atLayerPoint: location)
         focusPoint = location
@@ -547,7 +574,8 @@ struct CameraView: View {
 
 // MARK: - Corner brackets shape
 
-/// Four L-shaped corner brackets, like a viewfinder reticle.
+/// Four L-shaped corner brackets, like a viewfinder reticle. Also used by
+/// AnalysisOverlay's scanning treatment.
 struct CornerBrackets: Shape {
     var cornerLength: CGFloat = 34
     var cornerRadius: CGFloat = 24
@@ -618,16 +646,16 @@ struct FreeScanBadge: View {
         } else {
             HStack(spacing: 4) {
                 Image(systemName: counter.canScanForFree ? "camera.fill" : "lock.fill")
-                    .font(.system(size: 11))
+                    .font(.system(size: 10))
                 Text(counter.canScanForFree
                      ? "\(counter.remainingFreeScans) ücretsiz tarama"
                      : "Limit doldu")
                     .font(.sofraCaption)
             }
-            .foregroundStyle(.white.opacity(0.85))
-            .padding(.horizontal, Layout.Spacing.md)
-            .padding(.vertical, Layout.Spacing.xs)
-            .background(.ultraThinMaterial, in: Capsule())
+            .foregroundStyle(Color.accentText)
+            .padding(.horizontal, Layout.Spacing.sm)
+            .padding(.vertical, 3)
+            .background(Color.accentTintBg, in: Capsule())
         }
     }
 }
