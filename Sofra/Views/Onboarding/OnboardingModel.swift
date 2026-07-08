@@ -164,21 +164,26 @@ final class OnboardingModel {
     /// Total Daily Energy Expenditure = BMR × activity.
     var tdee: Double { bmr * activityMultiplier }
 
-    /// Daily calorie target after goal adjustment.
+    /// Daily calorie target after goal adjustment. Rounded to a whole calorie —
+    /// nothing downstream (ring, Ayarlar fields) needs fractional precision, and
+    /// leaving it unrounded produced long decimal tails that overflowed the
+    /// Ayarlar text fields (e.g. "2507.142857...").
     var dailyCalorieTarget: Double {
         let t = tdee
+        let raw: Double
         switch goal {
-        case .lose:       return max(1200, t - 500)
-        case .maintain:   return t
-        case .gain:       return t + 300
-        case .gainMuscle: return t + 200
+        case .lose:       raw = max(1200, t - 500)
+        case .maintain:   raw = t
+        case .gain:       raw = t + 300
+        case .gainMuscle: raw = t + 200
         }
+        return raw.rounded()
     }
 
-    /// Macro targets (grams).
-    var proteinTargetG: Double { (dailyCalorieTarget * 0.25) / 4 }
-    var carbsTargetG: Double   { (dailyCalorieTarget * 0.45) / 4 }
-    var fatTargetG: Double     { (dailyCalorieTarget * 0.30) / 9 }
+    /// Macro targets (grams), rounded for the same reason as the calorie target.
+    var proteinTargetG: Double { ((dailyCalorieTarget * 0.25) / 4).rounded() }
+    var carbsTargetG: Double   { ((dailyCalorieTarget * 0.45) / 4).rounded() }
+    var fatTargetG: Double     { ((dailyCalorieTarget * 0.30) / 9).rounded() }
 
     /// Build a UserProfile from the answers.
     func makeUserProfile() -> UserProfile {

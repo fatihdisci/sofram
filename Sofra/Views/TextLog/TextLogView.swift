@@ -167,6 +167,14 @@ struct TextLogView: View {
 
     // MARK: - Analyze button
 
+    /// Translucent accentFill over the already-low-contrast bej page nearly
+    /// disappeared in the empty state — a flat surfaceFlat/textMuted "neutral
+    /// disabled" reads as a real button while still looking inactive, matching
+    /// the secondary-button language used elsewhere (e.g. camera's Galeri chip).
+    private var isInputEmpty: Bool {
+        textInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
     private var analyzeButton: some View {
         Button {
             Task { await scan() }
@@ -181,16 +189,15 @@ struct TextLogView: View {
                 Text(isScanning ? "Analiz ediliyor..." : "Analiz Et")
                     .font(.sofraLabel)
             }
-            .foregroundStyle(Color.onAccent)
+            .foregroundStyle(isInputEmpty ? Color.textMuted : Color.onAccent)
             .frame(maxWidth: .infinity)
             .padding(.vertical, Layout.Spacing.md)
             .background(
-                textInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                ? Color.accentFill.opacity(0.4) : Color.accentFill,
+                isInputEmpty ? Color.surfaceFlat : Color.accentFill,
                 in: RoundedRectangle(cornerRadius: Layout.Radius.control)
             )
         }
-        .disabled(textInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isScanning)
+        .disabled(isInputEmpty || isScanning)
         .padding(.horizontal, Layout.Spacing.lg)
     }
 

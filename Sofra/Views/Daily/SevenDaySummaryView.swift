@@ -302,10 +302,12 @@ struct WeekBarChart: View {
 
     private func shortDayLabel(_ date: Date) -> String {
         if Calendar.current.isDateInToday(date) { return "Bugün" }
+        // 3-letter abbreviation (matches the day-rows list below) — a single
+        // Turkish initial is ambiguous (Pazartesi/Perşembe/Pazar all start "P").
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "EEEEE"   // single-letter day
-        return formatter.string(from: date).capitalized
+        formatter.dateFormat = "EEE"
+        return String(formatter.string(from: date).prefix(3)).capitalized
     }
 }
 

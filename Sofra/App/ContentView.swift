@@ -302,10 +302,12 @@ struct SettingsView: View {
             Text(title)
                 .foregroundStyle(Color.textPrimary)
             Spacer()
-            TextField("0", value: value, format: .number)
+            TextField("0", value: value, format: .number.precision(.fractionLength(0)))
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.trailing)
-                .frame(width: 64)
+                .frame(width: 92)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
                 .font(.sofraNumericSmall)
             Text(unit)
                 .font(.sofraCaption)
@@ -395,14 +397,16 @@ struct SettingsView: View {
 
     /// Seed macro targets from the saved profile on first open (they default to 0).
     private func seedTargetsIfNeeded() {
+        // Rounded defensively: profiles saved before OnboardingModel started
+        // rounding its targets may still carry long decimal tails.
         if calorieTarget <= 0, let p = profile, p.dailyCalorieTarget > 0 {
-            calorieTarget = p.dailyCalorieTarget
+            calorieTarget = p.dailyCalorieTarget.rounded()
         }
         if proteinTarget <= 0, carbsTarget <= 0, fatTarget <= 0 {
             if let p = profile, p.proteinTargetG > 0 {
-                proteinTarget = p.proteinTargetG
-                carbsTarget = p.carbsTargetG
-                fatTarget = p.fatTargetG
+                proteinTarget = p.proteinTargetG.rounded()
+                carbsTarget = p.carbsTargetG.rounded()
+                fatTarget = p.fatTargetG.rounded()
             } else {
                 distributeMacros()
             }
