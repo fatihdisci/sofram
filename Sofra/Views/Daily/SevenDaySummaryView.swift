@@ -20,8 +20,10 @@ struct SevenDaySummaryView: View {
     /// close button and sheet presentation modifiers are dropped.
     var embedded: Bool = false
 
-    @Query(sort: \DailyQuickCounter.date, order: .reverse)
-    private var counters: [DailyQuickCounter]
+    @Query(sort: \QuickAddItem.sortOrder)
+    private var quickItems: [QuickAddItem]
+
+    @Query private var quickCounts: [QuickAddCount]
 
     @Query(sort: \ScanEntry.timestamp, order: .reverse)
     private var scanEntries: [ScanEntry]
@@ -30,7 +32,7 @@ struct SevenDaySummaryView: View {
 
     /// Trailing 7 days, today first.
     private var daySummaries: [DaySummary] {
-        DaySummaryBuilder.lastSevenDays(scans: scanEntries, counters: counters)
+        DaySummaryBuilder.lastSevenDays(scans: scanEntries, items: quickItems, counts: quickCounts)
     }
 
     private var loggedDays: [DaySummary] { daySummaries.filter { $0.calories > 0 } }
@@ -40,8 +42,7 @@ struct SevenDaySummaryView: View {
         return loggedDays.reduce(0) { $0 + $1.calories } / Double(loggedDays.count)
     }
 
-    private var totalBread: Int { daySummaries.reduce(0) { $0 + $1.breadSlices } }
-    private var totalTea: Int { daySummaries.reduce(0) { $0 + $1.teaGlasses } }
+    private var totalQuickAdds: Int { daySummaries.reduce(0) { $0 + $1.quickAddTally } }
 
     @ViewBuilder
     var body: some View {
@@ -111,8 +112,8 @@ struct SevenDaySummaryView: View {
     private var statsRow: some View {
         HStack(spacing: Layout.Spacing.md) {
             StatCell(value: "\(Int(averageCalories))", caption: "ort. kcal / gün")
-            StatCell(value: "\(totalBread)", caption: "dilim ekmek", icon: .ekmekDilimi)
-            StatCell(value: "\(totalTea)", caption: "bardak çay", icon: .cayBardagi)
+            StatCell(value: "\(loggedDays.count)", caption: "kayıtlı gün")
+            StatCell(value: "\(totalQuickAdds)", caption: "hızlı ekleme")
         }
     }
 
@@ -168,12 +169,8 @@ struct SevenDaySummaryView: View {
                 Spacer()
                 Text("Kalori")
                     .frame(width: 90, alignment: .trailing)
-                SofraIconView(icon: .ekmekDilimi, size: 14)
-                    .foregroundStyle(Color.textMuted)
-                    .frame(width: 34, alignment: .trailing)
-                SofraIconView(icon: .cayBardagi, size: 14)
-                    .foregroundStyle(Color.textMuted)
-                    .frame(width: 34, alignment: .trailing)
+                Text("Adet")
+                    .frame(width: 56, alignment: .trailing)
             }
             .font(.sofraCaption)
             .foregroundStyle(Color.textMuted)
@@ -191,14 +188,10 @@ struct SevenDaySummaryView: View {
                         .font(.sofraNumericSmall)
                         .foregroundStyle(day.calories > 0 ? Color.textPrimary : Color.textMuted)
                         .frame(width: 90, alignment: .trailing)
-                    Text("\(day.breadSlices)")
+                    Text(day.quickAddTally > 0 ? "\(day.quickAddTally)" : "—")
                         .font(.sofraNumericSmall)
-                        .foregroundStyle(Color.textSecondary)
-                        .frame(width: 34, alignment: .trailing)
-                    Text("\(day.teaGlasses)")
-                        .font(.sofraNumericSmall)
-                        .foregroundStyle(Color.textSecondary)
-                        .frame(width: 34, alignment: .trailing)
+                        .foregroundStyle(day.quickAddTally > 0 ? Color.textSecondary : Color.textMuted)
+                        .frame(width: 56, alignment: .trailing)
                 }
                 .padding(.horizontal, Layout.Spacing.lg)
                 .padding(.vertical, Layout.Spacing.md)

@@ -6,8 +6,8 @@
 //  It imports SwiftData + WidgetKit, which the widget target does not need.
 //
 //  Called from:
-//    • ResultView.save()       — after logging a new scan
-//    • DailyView.saveCounters() — after bread/tea counter change
+//    • ResultView.save()        — after logging a new scan
+//    • QuickCounterView         — after a quick-add tally change
 //    • SofraApp.onChange(scenePhase) — catch-up on foreground
 //
 
@@ -17,7 +17,7 @@ import WidgetKit
 
 extension WidgetDataStore {
 
-    /// Queries today's ScanEntry + DailyQuickCounter from SwiftData, computes totals,
+    /// Queries today's ScanEntry + quick-add tallies from SwiftData, computes totals,
     /// builds a WidgetDailySummary, writes it to shared UserDefaults, and triggers
     /// an immediate widget timeline reload.
     ///
@@ -40,7 +40,7 @@ extension WidgetDataStore {
         let todayScans = allScans.filter { $0.timestamp >= today && $0.timestamp < tomorrow }
 
         // Sum macros
-        let calories = todayScans.reduce(0.0) { total, scan in
+        let scanCalories = todayScans.reduce(0.0) { total, scan in
             total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.calories }
         }
         let protein = todayScans.reduce(0.0) { total, scan in
@@ -53,19 +53,31 @@ extension WidgetDataStore {
             total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.fat }
         }
 
-        // Today's quick counter
-        let counterDescriptor = FetchDescriptor<DailyQuickCounter>(
-            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        // Customizable quick-add: fold calorie-bearing items into the total, and
+        // surface the first two items' tallies in the legacy widget slots (so the
+        // default Ekmek/Çay setup keeps rendering as before).
+        let itemDescriptor = FetchDescriptor<QuickAddItem>(
+            sortBy: [SortDescriptor(\.sortOrder)]
         )
-        let counters = (try? modelContext.fetch(counterDescriptor)) ?? []
-        let todayCounter = counters.first { $0.date >= today && $0.date < tomorrow }
-        let breadSlices = todayCounter?.breadSlices ?? 0
-        let teaGlasses = todayCounter?.teaGlasses ?? 0
+        let items = (try? modelContext.fetch(itemDescriptor)) ?? []
+        let allCounts = (try? modelContext.fetch(FetchDescriptor<QuickAddCount>())) ?? []
+        let todayCounts = allCounts.filter { $0.date >= today && $0.date < tomorrow }
+
+        let caloriesPerItem = Dictionary(items.map { ($0.id, $0.caloriesPerUnit) },
+                                         uniquingKeysWith: { a, _ in a })
+        let quickCalories = todayCounts.reduce(0.0) { sum, c in
+            sum + Double(c.count) * (caloriesPerItem[c.itemID] ?? 0)
+        }
+        func todayTally(for item: QuickAddItem) -> Int {
+            todayCounts.first { $0.itemID == item.id }?.count ?? 0
+        }
+        let breadSlices = items.count > 0 ? todayTally(for: items[0]) : 0
+        let teaGlasses  = items.count > 1 ? todayTally(for: items[1]) : 0
 
         // Build and save
         let target = calorieTarget > 0 ? calorieTarget : 2000
         let summary = WidgetDailySummary(
-            calories: calories,
+            calories: scanCalories + quickCalories,
             target: target,
             protein: protein,
             carbs: carbs,

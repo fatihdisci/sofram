@@ -20,7 +20,9 @@ enum SofraModelContainer {
     static let schema = Schema([
         ScanEntry.self,
         LoggedItem.self,
-        DailyQuickCounter.self,
+        DailyQuickCounter.self,   // legacy — kept for store compatibility
+        QuickAddItem.self,
+        QuickAddCount.self,
         UserProfile.self,
     ])
 

@@ -19,8 +19,10 @@ struct DailyView: View {
     @Query(sort: \ScanEntry.timestamp, order: .reverse)
     private var scanEntries: [ScanEntry]
 
-    @Query(sort: \DailyQuickCounter.date, order: .reverse)
-    private var counters: [DailyQuickCounter]
+    @Query(sort: \QuickAddItem.sortOrder)
+    private var quickItems: [QuickAddItem]
+
+    @Query private var quickCounts: [QuickAddCount]
 
     @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
     @AppStorage("sofra.proteinTarget") private var proteinTargetStored: Double = 0
@@ -37,9 +39,24 @@ struct DailyView: View {
         }
     }
 
-    /// Today's total macros.
+    /// Today's quick-add tallies and the calories they contribute.
+    private var todayQuickCounts: [QuickAddCount] {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: Date())
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: today) ?? Date()
+        return quickCounts.filter { $0.date >= today && $0.date < tomorrow }
+    }
+
+    private var quickAddCalories: Double {
+        todayQuickCounts.reduce(0) { sum, c in
+            let perUnit = quickItems.first { $0.id == c.itemID }?.caloriesPerUnit ?? 0
+            return sum + Double(c.count) * perUnit
+        }
+    }
+
+    /// Today's total macros. Calories include scans + calorie-bearing quick-adds.
     private var todayCalories: Double {
-        todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.calories } }
+        todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.calories } } + quickAddCalories
     }
     private var todayProtein: Double {
         todayScans.reduce(0) { $0 + ($1.itemsOrEmpty).reduce(0) { $0 + $1.protein } }
@@ -58,12 +75,8 @@ struct DailyView: View {
     private var fatTarget: Double { fatTargetStored > 0 ? fatTargetStored : calorieTarget * 0.30 / 9 }
 
     private var weekSummaries: [DaySummary] {
-        DaySummaryBuilder.lastSevenDays(scans: scanEntries, counters: counters)
+        DaySummaryBuilder.lastSevenDays(scans: scanEntries, items: quickItems, counts: quickCounts)
     }
-
-    /// Today's quick counter (fetched or new).
-    @State private var breadSlices: Int = 0
-    @State private var teaGlasses: Int = 0
 
     var body: some View {
         ZStack {
@@ -78,11 +91,8 @@ struct DailyView: View {
 
                     macroRow
 
-                    QuickCounterView(
-                        breadSlices: $breadSlices,
-                        teaGlasses: $teaGlasses
-                    )
-                    .padding(.horizontal, Layout.Spacing.lg)
+                    QuickCounterView()
+                        .padding(.horizontal, Layout.Spacing.lg)
 
                     sevenDayCard
 
@@ -92,9 +102,6 @@ struct DailyView: View {
                 }
             }
         }
-        .onAppear { loadTodayCounters() }
-        .onChange(of: breadSlices) { _, _ in saveCounters() }
-        .onChange(of: teaGlasses) { _, _ in saveCounters() }
     }
 
     // MARK: - Top bar
@@ -273,44 +280,6 @@ struct DailyView: View {
             modelContext.delete(entry)
             try? modelContext.save()
         }
-        WidgetDataStore.saveCurrentDaySummary(
-            modelContext: modelContext,
-            calorieTarget: calorieTarget
-        )
-    }
-
-    // MARK: - Counters persistence
-
-    private func loadTodayCounters() {
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        if let todayCounter = counters.first(where: { counter in
-            counter.date >= today && counter.date < cal.date(byAdding: .day, value: 1, to: today) ?? Date()
-        }) {
-            breadSlices = todayCounter.breadSlices
-            teaGlasses = todayCounter.teaGlasses
-        }
-    }
-
-    private func saveCounters() {
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-
-        // Find existing counter for today or create one
-        if let existing = counters.first(where: { counter in
-            counter.date >= today && counter.date < cal.date(byAdding: .day, value: 1, to: today) ?? Date()
-        }) {
-            guard existing.breadSlices != breadSlices || existing.teaGlasses != teaGlasses else { return }
-            existing.breadSlices = breadSlices
-            existing.teaGlasses = teaGlasses
-        } else {
-            guard breadSlices != 0 || teaGlasses != 0 else { return }
-            let new = DailyQuickCounter(date: today, breadSlices: breadSlices, teaGlasses: teaGlasses)
-            modelContext.insert(new)
-        }
-        try? modelContext.save()
-
-        // Update widget after counter change
         WidgetDataStore.saveCurrentDaySummary(
             modelContext: modelContext,
             calorieTarget: calorieTarget
