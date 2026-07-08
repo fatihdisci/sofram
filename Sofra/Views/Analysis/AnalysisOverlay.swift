@@ -45,13 +45,18 @@ struct AnalysisOverlay: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            // Captured photo as background
+            // Captured photo, shown in full — .fill was cropping/zooming hard
+            // since a 3:4 photo stretched to fill a ~9:19.5 screen loses most
+            // of the frame. .fit letterboxes on the black background instead,
+            // so the whole plate stays visible (camera capture and gallery
+            // picks alike, any aspect ratio).
             Image(uiImage: uiImage)
                 .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(.black.opacity(0.35))
                 .allowsHitTesting(false)
+                .ignoresSafeArea()
 
             // Viewfinder treatment while scanning
             if isScanning {
