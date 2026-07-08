@@ -283,7 +283,12 @@ final class AIProxyClient {
                 ])
             ],
             maxCompletionTokens: 2048,
-            reasoningEffort: "minimal"
+            // Photo identification needs more grounding than text parsing does —
+            // "minimal" was producing confident-sounding but wrong dish names
+            // (e.g. mashed potato + meat sauce misread as "mantı" from color/
+            // shape alone). "low" costs a bit more but meaningfully improves
+            // visual disambiguation.
+            reasoningEffort: "low"
         )
 
         return try await performOpenAIRequest(body: body, model: model, tier: tier)
@@ -405,7 +410,40 @@ private func visionPrompt(locale: String) -> String {
       "no_food_detected": false
     }
 
-    IMPORTANT RULES:
+    STEP 1 — SEGMENT BEFORE YOU NAME:
+    A Turkish plate is almost always several separate foods placed side by side
+    (e.g. a starch, a protein/sauce, a salad or vegetable), not one dish. Look
+    at the plate region by region first — do not describe the whole plate with
+    one name. Return ONE "items" entry per visually distinct food region.
+    Only merge two regions into one item if they are truly a single preparation
+    (e.g. a stew already mixed together, a soup).
+
+    STEP 2 — GROUND EACH NAME IN WHAT YOU ACTUALLY SEE, not in what Turkish
+    dish it "sounds like":
+    - Individual translucent grains you can count, sometimes with orzo/vermicelli
+      flecks → "pirinç pilavı" / "şehriyeli pilav", not a dumpling dish.
+    - A smooth, whipped, spreadable pale-yellow paste with no distinct pieces
+      → "patates püresi" (mashed potato). A sauce or stew spooned on top of it
+      is a SEPARATE item (e.g. "kuşbaşı et sote" / "kırmızı soslu et"), not one
+      fused invented name.
+    - Small (1–2cm) individually foldable dough pieces, each countable, usually
+      under a garlic-yogurt sauce → "mantı". Do NOT default to "mantı" just
+      because a pale base is topped with a reddish sauce — that pattern also
+      matches mashed potato, güveç, or many other dishes. Only use "mantı" when
+      you can actually see discrete folded dumpling shapes.
+    - Loose mixed leaves (lettuce, arugula, radicchio) → "yeşil salata" /
+      "karışık salata", always its own item, never folded into another name.
+    - When genuinely unsure of the specific named dish, describe what you see
+      generically and accurately (e.g. "kırmızı soslu kuşbaşı et") rather than
+      guessing a specific well-known dish name that doesn't match the visual
+      evidence.
+
+    STEP 3 — CONFIDENCE reflects how sure you are of the DISH IDENTITY itself,
+    not just the portion size. If the identity is uncertain, say so honestly
+    with a lower confidence and use "note" to flag the ambiguity — do not
+    compensate for uncertainty by picking a more "recognizable" dish name.
+
+    OTHER RULES:
     - Use Turkish household units ONLY: "kepçe" (ladle), "yemek kaşığı" (tbsp), "su bardağı" (glass, ~200ml), "çay bardağı" (tea glass, ~100ml), "dilim" (slice), "avuç" (handful), "kase" (bowl), "adet" (piece)
     - Estimate realistic grams for Turkish portions
     - Be conservative with calorie estimates
