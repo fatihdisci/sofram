@@ -203,7 +203,8 @@ struct AnalysisOverlay: View {
             .padding(.top, Layout.Spacing.xs)
         }
         .padding(Layout.Spacing.xl)
-        .background(Color.bgPage, in: RoundedRectangle(cornerRadius: Layout.Radius.raisedContainer))
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.raisedContainer))
+        .raisedSurface(cornerRadius: Layout.Radius.raisedContainer)
         .padding(Layout.Spacing.lg)
         .padding(.bottom, Layout.Spacing.lg)
     }

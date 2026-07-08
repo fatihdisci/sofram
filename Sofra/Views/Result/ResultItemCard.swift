@@ -163,9 +163,9 @@ struct ResultItemCard: View {
         HStack(spacing: Layout.Spacing.lg) {
             Spacer()
             macroPill(label: "kcal", value: item.calories, color: .accentText)
-            macroPill(label: "protein", value: item.proteinG, color: .green)
-            macroPill(label: "carbs", value: item.carbsG, color: .orange)
-            macroPill(label: "yağ", value: item.fatG, color: .red.opacity(0.8))
+            macroPill(label: "protein", value: item.proteinG, color: .macroProtein)
+            macroPill(label: "carbs", value: item.carbsG, color: .macroCarb)
+            macroPill(label: "yağ", value: item.fatG, color: .macroFat)
             Spacer()
         }
         .padding(.top, Layout.Spacing.xs)

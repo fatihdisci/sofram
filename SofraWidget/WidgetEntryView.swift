@@ -140,12 +140,12 @@ struct SofraWidgetEntryView: View {
         }
     }
 
-    /// Simple color coding for macro rows.
+    /// Color coding for macro rows — same warm hues DailyView uses.
     private func macroColor(for label: String) -> Color {
         switch label {
-        case "Protein": return .green
-        case "Carbs":   return .orange
-        default:        return .red.opacity(0.8)
+        case "Protein": return .macroProtein
+        case "Carbs":   return .macroCarb
+        default:        return .macroFat
         }
     }
 

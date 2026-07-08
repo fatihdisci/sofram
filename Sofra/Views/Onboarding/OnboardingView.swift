@@ -195,6 +195,7 @@ struct GoalStepView: View {
                             model.goal == goal ? Color.accentTintBg : Color.surfaceRaised,
                             in: RoundedRectangle(cornerRadius: Layout.Radius.card)
                         )
+                        .raisedSurface(cornerRadius: Layout.Radius.card)
                     }
                     .buttonStyle(.plain)
                 }
@@ -300,6 +301,7 @@ struct ActivityStepView: View {
                             model.activityLevel == level ? Color.accentTintBg : Color.surfaceRaised,
                             in: RoundedRectangle(cornerRadius: Layout.Radius.card)
                         )
+                        .raisedSurface(cornerRadius: Layout.Radius.card)
                     }
                     .buttonStyle(.plain)
                 }
@@ -378,6 +380,7 @@ struct SexStepView: View {
                             model.biologicalSex == sex ? Color.accentTintBg : Color.surfaceRaised,
                             in: RoundedRectangle(cornerRadius: Layout.Radius.card)
                         )
+                        .raisedSurface(cornerRadius: Layout.Radius.card)
                     }
                     .buttonStyle(.plain)
                 }
@@ -420,13 +423,14 @@ struct ResultStepView: View {
                     .foregroundStyle(Color.textSecondary)
 
                 HStack(spacing: Layout.Spacing.xl) {
-                    macroPill(label: "Protein", value: model.proteinTargetG, color: .green)
-                    macroPill(label: "Carbs", value: model.carbsTargetG, color: .orange)
-                    macroPill(label: "Yağ", value: model.fatTargetG, color: .red.opacity(0.8))
+                    macroPill(label: "Protein", value: model.proteinTargetG, color: .macroProtein)
+                    macroPill(label: "Carbs", value: model.carbsTargetG, color: .macroCarb)
+                    macroPill(label: "Yağ", value: model.fatTargetG, color: .macroFat)
                 }
             }
             .padding(Layout.Spacing.lg)
             .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+            .raisedSurface(cornerRadius: Layout.Radius.card)
 
             // Start button
             Button {

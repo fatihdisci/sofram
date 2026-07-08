@@ -39,9 +39,10 @@ struct TextLogView: View {
 
                 // Text input area — inset "pressed" surface per the neomorphic language
                 VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
-                    Text("Ne yedin?")
-                        .font(.sofraLabel)
-                        .foregroundStyle(Color.textSecondary)
+                    Text("NE YEDİN?")
+                        .font(.sofraEyebrow)
+                        .tracking(1.2)
+                        .foregroundStyle(Color.textMuted)
 
                     ZStack(alignment: .topLeading) {
                         if textInput.isEmpty {
@@ -124,8 +125,9 @@ struct TextLogView: View {
 
     private var suggestionChips: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
-            Text("Hızlı ekle")
-                .font(.sofraCaption)
+            Text("HIZLI EKLE")
+                .font(.sofraEyebrow)
+                .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
                 .padding(.horizontal, Layout.Spacing.lg)
 

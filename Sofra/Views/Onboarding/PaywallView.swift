@@ -65,8 +65,14 @@ struct PaywallView: View {
 
     private var heroSection: some View {
         VStack(spacing: Layout.Spacing.lg) {
-            SofraIconView(icon: .sofra, size: 56)
-                .foregroundStyle(Color.accentFill)
+            ZStack {
+                Circle()
+                    .fill(Color.surfaceRaised)
+                    .frame(width: 92, height: 92)
+                    .raisedSurface(cornerRadius: 46)
+                SofraIconView(icon: .sofra, size: 42)
+                    .foregroundStyle(Color.accentFill)
+            }
 
             Text("Sofra Premium")
                 .font(.sofraTitle)
@@ -106,6 +112,7 @@ struct PaywallView: View {
             }
             .padding(Layout.Spacing.lg)
             .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+            .raisedSurface(cornerRadius: Layout.Radius.card)
         }
     }
 
@@ -124,7 +131,13 @@ struct PaywallView: View {
     // MARK: - Plan picker
 
     private var planPickerSection: some View {
-        VStack(spacing: Layout.Spacing.sm) {
+        VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+            Text("PLAN SEÇ")
+                .font(.sofraEyebrow)
+                .tracking(1.2)
+                .foregroundStyle(Color.textMuted)
+                .padding(.leading, Layout.Spacing.xs)
+
             // Annual (recommended)
             planCard(
                 product: store.annualProduct,
@@ -200,6 +213,7 @@ struct PaywallView: View {
                 isSelected ? Color.accentTintBg : Color.surfaceRaised,
                 in: RoundedRectangle(cornerRadius: Layout.Radius.card)
             )
+            .raisedSurface(cornerRadius: Layout.Radius.card)
             .overlay(
                 isSelected
                     ? RoundedRectangle(cornerRadius: Layout.Radius.card)

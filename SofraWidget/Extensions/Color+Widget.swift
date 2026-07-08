@@ -17,4 +17,9 @@ extension Color {
     static let textPrimary   = Color("textPrimary")
     static let textSecondary = Color("textSecondary")
     static let textMuted     = Color("textMuted")
+
+    // Macro hues (graphics only — same warm-toned assets DailyView uses).
+    static let macroProtein = Color("macroProtein")
+    static let macroCarb    = Color("macroCarb")
+    static let macroFat     = Color("macroFat")
 }
