@@ -281,7 +281,7 @@ struct QuickAddEditorView: View {
                     TextField("Birim (örn. dilim)", text: $unit)
                 }
 
-                Section("Kalori (opsiyonel)") {
+                Section {
                     HStack {
                         TextField("0", text: $caloriesText)
                             .keyboardType(.numberPad)
@@ -290,6 +290,8 @@ struct QuickAddEditorView: View {
                             .font(.sofraCaption)
                             .foregroundStyle(Color.textMuted)
                     }
+                } header: {
+                    Text("Kalori (opsiyonel)")
                 } footer: {
                     Text("0 bırakırsan sadece adet sayılır, kaloriye eklenmez. Bir değer girersen her adet günlük kaloriye ve halkaya eklenir.")
                 }
