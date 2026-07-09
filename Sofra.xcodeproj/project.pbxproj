@@ -13,6 +13,7 @@
 		0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */; };
 		10D9BE4519BDC183EE6F68DB /* Geist-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 58EB71386FCB3BB93B36C4C4 /* Geist-Regular.otf */; };
 		13174B0AC06670CF9856F448 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */; };
+		167C3B3F92326E1DBBC4386C /* NutritionConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE2D0B35958358EB63D7560 /* NutritionConstants.swift */; };
 		16CAC471A7E6379E5E613E2F /* WidgetDataStore+MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F147E274CA44406942ADF2E8 /* WidgetDataStore+MainApp.swift */; };
 		1F353A3C82D8E6BE17C7D1CC /* DaySummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9601C724990AFBFD75EDD21E /* DaySummaryBuilder.swift */; };
 		268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D959F549ED125A75211383C7 /* LoggedItem.swift */; };
@@ -43,7 +44,7 @@
 		92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */; };
 		9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */; };
 		99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */; };
-		A27C817B5A553F42C52AC50D /* Sofra Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* Sofra Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A27C817B5A553F42C52AC50D /* SofraWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* SofraWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A7BEE3885ED86DF7942169FF /* WidgetDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56C40031CD587A873FC971 /* WidgetDataStore.swift */; };
 		AC5CB5E73C3CFD78D22FF1A0 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567280D677BC253A09E08E4 /* OnboardingModel.swift */; };
 		B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7021E076DC4ED88D26975B /* VisionResponse.swift */; };
@@ -78,7 +79,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A27C817B5A553F42C52AC50D /* Sofra Widget.appex in Embed Foundation Extensions */,
+				A27C817B5A553F42C52AC50D /* SofraWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,7 +90,7 @@
 		00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 		086EBF7CCF553D14C6174559 /* AIProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClient.swift; sourceTree = "<group>"; };
 		0E38887382F74AA55C63EA6C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABEDB088BD86173D15337A9 /* TextLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogView.swift; sourceTree = "<group>"; };
 		1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraApp.swift; sourceTree = "<group>"; };
 		238FF164D03FBE4CB6367536 /* CalorieRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingView.swift; sourceTree = "<group>"; };
@@ -108,7 +109,7 @@
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
 		6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCounterView.swift; sourceTree = "<group>"; };
 		6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
-		768B000219616D415E6478BF /* Sofra Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Sofra Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		768B000219616D415E6478BF /* SofraWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = SofraWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B2F13C99F7C4BFEC48A2347 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		83E136C81E00E88F23205CD9 /* GeistMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.otf"; sourceTree = "<group>"; };
 		84EF2C3A402F676FBFA622EC /* Font+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Widget.swift"; sourceTree = "<group>"; };
@@ -123,7 +124,7 @@
 		99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surfaces.swift; sourceTree = "<group>"; };
 		9CA21E1C27ED51254B60BEDE /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
-		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
+		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
 		C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraModelContainer.swift; sourceTree = "<group>"; };
@@ -137,6 +138,7 @@
 		F39E67471483C60085CF44FB /* GeistMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.otf"; sourceTree = "<group>"; };
 		FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Widget.swift"; sourceTree = "<group>"; };
 		FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenDaySummaryView.swift; sourceTree = "<group>"; };
+		FDE2D0B35958358EB63D7560 /* NutritionConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionConstants.swift; sourceTree = "<group>"; };
 		FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -250,7 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				142093050464BF9252D327F3 /* Sofra.app */,
-				768B000219616D415E6478BF /* Sofra Widget.appex */,
+				768B000219616D415E6478BF /* SofraWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -271,6 +273,7 @@
 				4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */,
 				9601C724990AFBFD75EDD21E /* DaySummaryBuilder.swift */,
 				D959F549ED125A75211383C7 /* LoggedItem.swift */,
+				FDE2D0B35958358EB63D7560 /* NutritionConstants.swift */,
 				61CA283C143DFB3AF113488E /* PortionUnit.swift */,
 				C39394ADA5B6933015390DC8 /* ScanEntry.swift */,
 				2B17F01B847BA24B835B4037 /* UserProfile.swift */,
@@ -405,7 +408,7 @@
 			packageProductDependencies = (
 			);
 			productName = SofraWidgetExtension;
-			productReference = 768B000219616D415E6478BF /* Sofra Widget.appex */;
+			productReference = 768B000219616D415E6478BF /* SofraWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -418,9 +421,11 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					4CEAA32D14A007032EAE0522 = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					B362A874E91C4F058C01DB28 = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -491,6 +496,7 @@
 				526A711DAC33408D9629EAA5 /* LogButton.swift in Sources */,
 				268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */,
 				F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */,
+				167C3B3F92326E1DBBC4386C /* NutritionConstants.swift in Sources */,
 				AC5CB5E73C3CFD78D22FF1A0 /* OnboardingModel.swift in Sources */,
 				E1EED8CCB3177B5560586B87 /* OnboardingView.swift in Sources */,
 				5AE2AA53DAF21C00BCF61DAA /* PaywallView.swift in Sources */,
@@ -547,7 +553,6 @@
 				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sofra/Info.plist;
@@ -569,7 +574,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SofraWidget/SofraWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SofraWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -591,7 +595,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SofraWidget/SofraWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SofraWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -744,7 +747,6 @@
 				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sofra/Info.plist;
