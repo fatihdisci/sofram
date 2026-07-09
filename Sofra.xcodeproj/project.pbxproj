@@ -48,8 +48,10 @@
 		92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */; };
 		9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */; };
 		99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */; };
+		9AB5C410D2AC8E83D06C21DB /* ReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */; };
 		A27C817B5A553F42C52AC50D /* SofraWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* SofraWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */; };
+		A7B7A1FE2461A9B5A530572E /* FoodReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5169E4437D13917D125E3F /* FoodReferenceReconcilerTests.swift */; };
 		A7BEE3885ED86DF7942169FF /* WidgetDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56C40031CD587A873FC971 /* WidgetDataStore.swift */; };
 		AC5CB5E73C3CFD78D22FF1A0 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567280D677BC253A09E08E4 /* OnboardingModel.swift */; };
 		B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7021E076DC4ED88D26975B /* VisionResponse.swift */; };
@@ -121,6 +123,7 @@
 		497CB36C5D07712BBC769BFF /* AnalysisOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisOverlay.swift; sourceTree = "<group>"; };
 		4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyQuickCounter.swift; sourceTree = "<group>"; };
 		58EB71386FCB3BB93B36C4C4 /* Geist-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-Regular.otf"; sourceTree = "<group>"; };
+		5C5169E4437D13917D125E3F /* FoodReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReferenceReconcilerTests.swift; sourceTree = "<group>"; };
 		60A9E8334613F75FF1CA6EAD /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDailySummary.swift; sourceTree = "<group>"; };
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
@@ -134,6 +137,7 @@
 		88393263558BFFF69AB2CBF8 /* WidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntryView.swift; sourceTree = "<group>"; };
 		88B088DADDCE77DB0C23F66F /* SofraWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraWidget.swift; sourceTree = "<group>"; };
 		8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-Medium.otf"; sourceTree = "<group>"; };
+		8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconcilerTests.swift; sourceTree = "<group>"; };
 		8FF0AD775886DE66BC40E360 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		919DEDBF2BEE37B415CA209C /* ReferenceReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconciler.swift; sourceTree = "<group>"; };
 		94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogButton.swift; sourceTree = "<group>"; };
@@ -266,7 +270,9 @@
 		4502606A0FAC8578D476D20E /* SofraTests */ = {
 			isa = PBXGroup;
 			children = (
+				5C5169E4437D13917D125E3F /* FoodReferenceReconcilerTests.swift */,
 				EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */,
+				8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */,
 			);
 			path = SofraTests;
 			sourceTree = "<group>";
@@ -553,7 +559,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7B7A1FE2461A9B5A530572E /* FoodReferenceReconcilerTests.swift in Sources */,
 				A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */,
+				9AB5C410D2AC8E83D06C21DB /* ReferenceReconcilerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

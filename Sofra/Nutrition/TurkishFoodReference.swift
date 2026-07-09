@@ -147,14 +147,19 @@ enum TurkishFoodReference {
     /// Uses the Turkish `name` as the primary key; the `name_en` is a
     /// secondary fallback the reconciler can probe if the Turkish name
     /// doesn't hit.
+    ///
+    /// First-wins on collisions — the JSON has 4 foods whose Turkish name
+    /// and English name normalize to the same key ("menemen", "su boregi",
+    /// "kol boregi", "sigara boregi"). Keeping the first value makes the
+    /// cache deterministic if future aliases collide.
     static func buildIndex(from foods: [FoodReference]) -> [String: FoodReference] {
         var out: [String: FoodReference] = [:]
         out.reserveCapacity(foods.count * 2)
         for food in foods {
             let keyTr = String.Turkish.foodKey(food.name)
-            if !keyTr.isEmpty { out[keyTr] = food }
+            if !keyTr.isEmpty && out[keyTr] == nil { out[keyTr] = food }
             let keyEn = String.Turkish.foodKey(food.nameEn)
-            if !keyEn.isEmpty { out[keyEn] = food }
+            if !keyEn.isEmpty && out[keyEn] == nil { out[keyEn] = food }
         }
         return out
     }
