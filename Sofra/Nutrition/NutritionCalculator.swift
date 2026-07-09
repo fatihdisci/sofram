@@ -145,13 +145,17 @@ enum NutritionCalculator {
 
     /// Clamp a weekly rate to the CDC safety band for the goal direction.
     /// `maintain` is a no-op (no rate). Returns `(clampedKg, wasClamped)`.
+    ///
+    /// Sign convention: negative kg/week = weight loss, positive = weight gain.
+    /// The constants in NutritionConstants are stored as magnitudes — here we
+    /// flip the sign so `.lose` produces a `[-max, -min]` band.
     static func clampWeeklyRate(_ kg: Double, goal: Goal) -> (kg: Double, wasClamped: Bool) {
         let lo: Double
         let hi: Double
         switch goal {
         case .lose:
-            lo = NutritionConstants.weeklyLossMinKg
-            hi = NutritionConstants.weeklyLossMaxKg
+            lo = -NutritionConstants.weeklyLossMaxKg
+            hi = -NutritionConstants.weeklyLossMinKg
         case .gain, .gainMuscle:
             lo = NutritionConstants.weeklyGainMinKg
             hi = NutritionConstants.weeklyGainMaxKg

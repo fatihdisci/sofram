@@ -45,6 +45,7 @@
 		9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */; };
 		99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */; };
 		A27C817B5A553F42C52AC50D /* SofraWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* SofraWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */; };
 		A7BEE3885ED86DF7942169FF /* WidgetDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56C40031CD587A873FC971 /* WidgetDataStore.swift */; };
 		AC5CB5E73C3CFD78D22FF1A0 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567280D677BC253A09E08E4 /* OnboardingModel.swift */; };
 		B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7021E076DC4ED88D26975B /* VisionResponse.swift */; };
@@ -70,6 +71,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = B362A874E91C4F058C01DB28;
 			remoteInfo = SofraWidgetExtension;
+		};
+		8BA66B0944271653BFDB8CBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF3E49C6ACFD5235EBF36E95 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4CEAA32D14A007032EAE0522;
+			remoteInfo = Sofra;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -135,7 +143,9 @@
 		E156CC8B82DB574BEC1B447D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E19F8CA13354DB8B97C93C2B /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Secrets.plist; sourceTree = "<group>"; };
 		E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItemCard.swift; sourceTree = "<group>"; };
+		EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculatorTests.swift; sourceTree = "<group>"; };
 		EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounter.swift; sourceTree = "<group>"; };
+		F0448D0A8FC1CA151A408D7F /* SofraTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SofraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F147E274CA44406942ADF2E8 /* WidgetDataStore+MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetDataStore+MainApp.swift"; sourceTree = "<group>"; };
 		F39E67471483C60085CF44FB /* GeistMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.otf"; sourceTree = "<group>"; };
 		FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Widget.swift"; sourceTree = "<group>"; };
@@ -237,10 +247,19 @@
 			path = Persistence;
 			sourceTree = "<group>";
 		};
+		4502606A0FAC8578D476D20E /* SofraTests */ = {
+			isa = PBXGroup;
+			children = (
+				EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */,
+			);
+			path = SofraTests;
+			sourceTree = "<group>";
+		};
 		57440A81151301AB9257B87B = {
 			isa = PBXGroup;
 			children = (
 				A0DD425CDFDC8FCC829BD940 /* Sofra */,
+				4502606A0FAC8578D476D20E /* SofraTests */,
 				09610E8843C2F7B385B686F3 /* SofraWidget */,
 				718CAD927C385D892256CB2D /* Products */,
 			);
@@ -262,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				142093050464BF9252D327F3 /* Sofra.app */,
+				F0448D0A8FC1CA151A408D7F /* SofraTests.xctest */,
 				768B000219616D415E6478BF /* SofraWidgetExtension.appex */,
 			);
 			name = Products;
@@ -404,6 +424,24 @@
 			productReference = 142093050464BF9252D327F3 /* Sofra.app */;
 			productType = "com.apple.product-type.application";
 		};
+		605330F8AD28E500BD378FF4 /* SofraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 341BD218DE29A9058B1AA01F /* Build configuration list for PBXNativeTarget "SofraTests" */;
+			buildPhases = (
+				9C4B64984869117DEF15D4FA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4793DDDDE3374DC89BD877D /* PBXTargetDependency */,
+			);
+			name = SofraTests;
+			packageProductDependencies = (
+			);
+			productName = SofraTests;
+			productReference = F0448D0A8FC1CA151A408D7F /* SofraTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		B362A874E91C4F058C01DB28 /* SofraWidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 085C637CA206DAE096860495 /* Build configuration list for PBXNativeTarget "SofraWidgetExtension" */;
@@ -435,6 +473,9 @@
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
+					605330F8AD28E500BD378FF4 = {
+						DevelopmentTeam = "";
+					};
 					B362A874E91C4F058C01DB28 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
@@ -456,6 +497,7 @@
 			projectRoot = "";
 			targets = (
 				4CEAA32D14A007032EAE0522 /* Sofra */,
+				605330F8AD28E500BD378FF4 /* SofraTests */,
 				B362A874E91C4F058C01DB28 /* SofraWidgetExtension */,
 			);
 		};
@@ -488,6 +530,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9C4B64984869117DEF15D4FA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A2E48FF7E615621CD8F12959 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -554,6 +604,11 @@
 			target = B362A874E91C4F058C01DB28 /* SofraWidgetExtension */;
 			targetProxy = 7625D93C7346B1BFF88B2B7C /* PBXContainerItemProxy */;
 		};
+		C4793DDDDE3374DC89BD877D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4CEAA32D14A007032EAE0522 /* Sofra */;
+			targetProxy = 8BA66B0944271653BFDB8CBA /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -619,6 +674,42 @@
 				PRODUCT_NAME = "Sofra Widget";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		680446EF6B05DA63DC53ADF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sofra.app/Sofra";
+			};
+			name = Release;
+		};
+		68750A6E997209D1D48AEB52 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sofra.app/Sofra";
 			};
 			name = Debug;
 		};
@@ -782,6 +873,15 @@
 			buildConfigurations = (
 				64F0F7A4E3D46D522FAB13C4 /* Debug */,
 				34C1ED2701ABCCA5A73A191F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		341BD218DE29A9058B1AA01F /* Build configuration list for PBXNativeTarget "SofraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68750A6E997209D1D48AEB52 /* Debug */,
+				680446EF6B05DA63DC53ADF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
