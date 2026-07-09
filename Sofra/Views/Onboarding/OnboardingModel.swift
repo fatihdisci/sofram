@@ -136,54 +136,60 @@ final class OnboardingModel {
         hasCompletedOnboarding = true
     }
 
-    // MARK: - Calculator
+    // MARK: - Calculator (delegates to NutritionCalculator — Phase A3)
 
-    /// Mifflin-St Jeor BMR.
+    /// Mifflin-St Jeor BMR. See `NutritionCalculator.bmr` for the formula.
     var bmr: Double {
-        let w = weightKg
-        let h = heightCm
-        let a = Double(age)
-        let base = 10 * w + 6.25 * h - 5 * a
-        switch biologicalSex {
-        case .male:   return base + 5
-        case .female: return base - 161
-        }
+        NutritionCalculator.bmr(
+            weightKg: weightKg,
+            heightCm: heightCm,
+            age: age,
+            sex: biologicalSex
+        )
     }
 
-    /// Activity multiplier.
+    /// Activity multiplier (NutritionConstants single source).
     var activityMultiplier: Double {
-        switch activityLevel {
-        case .sedentary:  return 1.2
-        case .light:      return 1.375
-        case .moderate:   return 1.55
-        case .active:     return 1.725
-        case .veryActive: return 1.9
-        }
+        NutritionConstants.activityMultiplier(activityLevel)
     }
 
     /// Total Daily Energy Expenditure = BMR × activity.
-    var tdee: Double { bmr * activityMultiplier }
+    var tdee: Double {
+        NutritionCalculator.tdee(bmr: bmr, activity: activityLevel)
+    }
 
     /// Daily calorie target after goal adjustment. Rounded to a whole calorie —
     /// nothing downstream (ring, Ayarlar fields) needs fractional precision, and
     /// leaving it unrounded produced long decimal tails that overflowed the
     /// Ayarlar text fields (e.g. "2507.142857...").
+    ///
+    /// Floor policy: only `.lose` floors, and at 1200 for both sexes — matches
+    /// the pre-refactor behaviour exactly (Phase A3 parity). Phase A4 introduces
+    /// the sex-aware floor; the UI calls `dailyTargetResult.floorApplied` to
+    /// show a "taban devreye girdi" hint.
     var dailyCalorieTarget: Double {
-        let t = tdee
-        let raw: Double
-        switch goal {
-        case .lose:       raw = max(1200, t - 500)
-        case .maintain:   raw = t
-        case .gain:       raw = t + 300
-        case .gainMuscle: raw = t + 200
-        }
-        return raw.rounded()
+        NutritionCalculator.dailyCalorieTarget(
+            tdee: tdee,
+            goal: goal,
+            sex: biologicalSex
+        )
+    }
+
+    /// Same target as `dailyCalorieTarget` plus the floor-applied flag — UI
+    /// uses this on the onboarding result screen to render the "klinik alt
+    /// sınır" hint. Phase A4.
+    var dailyTargetResult: DailyTargetResult {
+        NutritionCalculator.dailyCalorieTargetResult(
+            tdee: tdee,
+            goal: goal,
+            sex: biologicalSex
+        )
     }
 
     /// Macro targets (grams), rounded for the same reason as the calorie target.
-    var proteinTargetG: Double { ((dailyCalorieTarget * 0.25) / 4).rounded() }
-    var carbsTargetG: Double   { ((dailyCalorieTarget * 0.45) / 4).rounded() }
-    var fatTargetG: Double     { ((dailyCalorieTarget * 0.30) / 9).rounded() }
+    var proteinTargetG: Double { NutritionCalculator.macros(calories: dailyCalorieTarget, goal: goal).protein }
+    var carbsTargetG: Double   { NutritionCalculator.macros(calories: dailyCalorieTarget, goal: goal).carbs }
+    var fatTargetG: Double     { NutritionCalculator.macros(calories: dailyCalorieTarget, goal: goal).fat }
 
     /// Build a UserProfile from the answers.
     func makeUserProfile() -> UserProfile {

@@ -55,6 +55,7 @@
 		C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EBF7CCF553D14C6174559 /* AIProxyClient.swift */; };
 		C6589D98D126F801A9DE3673 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A9E8334613F75FF1CA6EAD /* Layout.swift */; };
 		DCE5F2979EB9B548C6CF2AEE /* Font+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF2C3A402F676FBFA622EC /* Font+Widget.swift */; };
+		E01AA21BDA85222C9DD22D1B /* NutritionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2661881718055D067FBDA2 /* NutritionCalculator.swift */; };
 		E1EED8CCB3177B5560586B87 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E38887382F74AA55C63EA6C /* OnboardingView.swift */; };
 		E7810ED3DAB4A010F74ADB3B /* GeistMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F39E67471483C60085CF44FB /* GeistMono-Regular.otf */; };
 		F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */; };
@@ -129,6 +130,7 @@
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
 		C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraModelContainer.swift; sourceTree = "<group>"; };
 		D959F549ED125A75211383C7 /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
+		DA2661881718055D067FBDA2 /* NutritionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculator.swift; sourceTree = "<group>"; };
 		DF6450117D77FE994AEF0FAA /* Geist-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-SemiBold.otf"; sourceTree = "<group>"; };
 		E156CC8B82DB574BEC1B447D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E19F8CA13354DB8B97C93C2B /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Secrets.plist; sourceTree = "<group>"; };
@@ -154,6 +156,14 @@
 				88393263558BFFF69AB2CBF8 /* WidgetEntryView.swift */,
 			);
 			path = SofraWidget;
+			sourceTree = "<group>";
+		};
+		0DDABFE76DE4E32F5D1419C5 /* Nutrition */ = {
+			isa = PBXGroup;
+			children = (
+				DA2661881718055D067FBDA2 /* NutritionCalculator.swift */,
+			);
+			path = Nutrition;
 			sourceTree = "<group>";
 		};
 		2532FDAFB72DA18C110BBADD /* Daily */ = {
@@ -299,6 +309,7 @@
 				9566A4D5F370CD0EC38D8257 /* Extensions */,
 				87522F40CDC496FAEF7D4EEF /* Models */,
 				3CE869EBA21DE36DE94948C7 /* Networking */,
+				0DDABFE76DE4E32F5D1419C5 /* Nutrition */,
 				40BC61BE2D2C595666C68E47 /* Persistence */,
 				A393E1770736058EF5CB308A /* Resources */,
 				B1F0FC49EF3FEA8DFD38ECB0 /* StoreKit */,
@@ -496,6 +507,7 @@
 				526A711DAC33408D9629EAA5 /* LogButton.swift in Sources */,
 				268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */,
 				F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */,
+				E01AA21BDA85222C9DD22D1B /* NutritionCalculator.swift in Sources */,
 				167C3B3F92326E1DBBC4386C /* NutritionConstants.swift in Sources */,
 				AC5CB5E73C3CFD78D22FF1A0 /* OnboardingModel.swift in Sources */,
 				E1EED8CCB3177B5560586B87 /* OnboardingView.swift in Sources */,
