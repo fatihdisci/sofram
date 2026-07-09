@@ -87,15 +87,18 @@ enum NutritionCalculator {
     /// Daily macro grams from a (rounded) calorie target. Returns
     /// `(protein, carbs, fat)` — each already rounded to whole grams.
     ///
-    /// Phase A3 uses a fixed balanced split (P25 · K45 · Y30) to match the
-    /// pre-refactor `OnboardingModel` exactly. Phase A5 replaces this with
-    /// `NutritionConstants.macroSplit(goal)` so e.g. `.gainMuscle` gets
-    /// higher protein.
+    /// Phase A5: split is goal-specific via `NutritionConstants.macroSplit`:
+    ///   • .lose       → P30 · K40 · Y30  (higher protein, satiety)
+    ///   • .maintain   → P25 · K45 · Y30  (balanced Mediterranean default)
+    ///   • .gain       → P25 · K50 · Y25
+    ///   • .gainMuscle → P30 · K45 · Y25  (highest protein)
+    /// All four stay inside the TÜBER 2022 acceptable ranges
+    /// (carbs 45–60%, fat 20–35%, protein 10–20%).
     static func macros(calories: Double, goal: Goal) -> (protein: Double, carbs: Double, fat: Double) {
-        _ = goal // accepted for forward-compat with Phase A5
-        let p = (calories * 0.25 / 4).rounded()
-        let c = (calories * 0.45 / 4).rounded()
-        let f = (calories * 0.30 / 9).rounded()
+        let split = NutritionConstants.macroSplit(goal)
+        let p = (calories * split.protein / 4).rounded()
+        let c = (calories * split.carbs / 4).rounded()
+        let f = (calories * split.fat / 9).rounded()
         return (p, c, f)
     }
 
