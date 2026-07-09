@@ -100,4 +100,44 @@ final class UserProfile {
         self.fatTargetG = fatTargetG
         self.createdAt = createdAt
     }
+
+    // MARK: - Recompute
+
+    /// Recompute `dailyCalorieTarget` + macros from the persisted inputs and
+    /// write them back to this profile. Returns the new target.
+    ///
+    /// **Do not call on legacy beta profiles.** Pre-A2 users may have `age == 0`,
+    /// in which case BMR collapses to 100-ish and the recomputed target is
+    /// wildly wrong. This helper is intended for:
+    ///   • fresh onboarding (already covered by `OnboardingModel.makeUserProfile`), and
+    ///   • future Ayarlar inputs once age/sex are surfaced there.
+    ///
+    /// Safe-noop if any required input is zero/non-positive.
+    @discardableResult
+    func recomputeDailyTarget() -> Double {
+        guard age > 0,
+              weightKg > 0,
+              heightCm > 0 else {
+            return dailyCalorieTarget
+        }
+        let result = NutritionCalculator.dailyCalorieTargetResult(
+            tdee: NutritionCalculator.tdee(
+                bmr: NutritionCalculator.bmr(
+                    weightKg: weightKg,
+                    heightCm: heightCm,
+                    age: age,
+                    sex: biologicalSex
+                ),
+                activity: activityLevel
+            ),
+            goal: goal,
+            sex: biologicalSex
+        )
+        let macros = NutritionCalculator.macros(calories: result.target, goal: goal)
+        dailyCalorieTarget = result.target
+        proteinTargetG = macros.protein
+        carbsTargetG = macros.carbs
+        fatTargetG = macros.fat
+        return result.target
+    }
 }

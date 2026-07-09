@@ -320,7 +320,13 @@ struct SettingsView: View {
         } header: {
             Text("Günlük Hedefler")
         } footer: {
-            Text("Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır.")
+            VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+                Text("Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır.")
+                // Medical disclaimer (Phase A4) — required wherever a computed
+                // calorie target is rendered.
+                Text(NutritionConstants.medicalDisclaimerTR)
+                    .foregroundStyle(Color.textMuted)
+            }
         }
     }
 

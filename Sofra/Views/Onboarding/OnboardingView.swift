@@ -416,6 +416,24 @@ struct ResultStepView: View {
             .background(Color.surfaceRaised, in: Circle())
             .raisedSurface(cornerRadius: 999)
 
+            // Floor-applied hint (Phase A4): shown only when the sex-aware
+            // safety minimum clipped the raw target upward.
+            if model.dailyTargetResult.floorApplied {
+                HStack(alignment: .top, spacing: Layout.Spacing.sm) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color.accentFill)
+                    Text(floorHintText)
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textSecondary)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(Layout.Spacing.md)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.accentTintBg, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+            }
+
             // Macro breakdown
             VStack(spacing: Layout.Spacing.md) {
                 Text("Makro Dağılımı")
@@ -448,9 +466,28 @@ struct ResultStepView: View {
                 .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
 
+            // Medical disclaimer (Phase A4): required alongside every computed
+            // target. Sits below the fold but above the final spacer.
+            Text(NutritionConstants.medicalDisclaimerTR)
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, Layout.Spacing.sm)
+
             Spacer()
         }
         .padding(.horizontal, Layout.Spacing.xl)
+    }
+
+    /// Hint shown when the sex-aware floor clipped the raw target. Always
+    /// references the actual minimum applied so future floor tweaks don't
+    /// silently change copy.
+    private var floorHintText: String {
+        let min = Int(model.dailyTargetResult.minCalories)
+        let target = Int(model.dailyTargetResult.target)
+        return "Bilgi: Hesaplanan hedefin klinik alt sınırın altına düşüyordu. " +
+               "Güvenliğin için hedefin \(target) kcal'de sabitlendi (alt sınır: \(min) kcal)."
     }
 
     private func macroPill(label: String, value: Double, color: Color) -> some View {

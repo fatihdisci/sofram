@@ -51,27 +51,16 @@ enum NutritionCalculator {
         bmr * NutritionConstants.activityMultiplier(activity)
     }
 
-    /// Daily calorie target — rounded to whole kcal.
+    /// Daily calorie target — rounded to whole kcal. Convenience wrapper over
+    /// `dailyCalorieTargetResult` for callers that only need the number.
     ///
-    /// Floor policy in Phase A3: only `.lose` floors, and floors at 1200 for
-    /// both sexes (mirrors the pre-refactor `OnboardingModel.dailyCalorieTarget`
-    /// exactly so existing beta users' targets don't shift). Phase A4 replaces
-    /// this with a sex-aware floor that applies to every goal — see
-    /// `dailyCalorieTargetResult` for the new code path.
+    /// Floor policy (Phase A4): `raw = tdee + goalDelta(goal)` is clipped UP to
+    /// `NutritionConstants.minCalories(for: sex)` (female 1200 / male 1500).
+    /// Applied to **every** goal — losing, maintaining, gaining, muscle —
+    /// because the floor represents the clinical minimum daily intake, not
+    /// a weight-loss-specific limit.
     static func dailyCalorieTarget(tdee: Double, goal: Goal, sex: BiologicalSex) -> Double {
-        let raw: Double
-        switch goal {
-        case .lose:
-            raw = max(NutritionConstants.minCaloriesFemale, tdee + NutritionConstants.goalDelta(.lose))
-        case .maintain:
-            raw = tdee
-        case .gain:
-            raw = tdee + NutritionConstants.goalDelta(.gain)
-        case .gainMuscle:
-            raw = tdee + NutritionConstants.goalDelta(.gainMuscle)
-        }
-        _ = sex // accepted for forward-compat with Phase A4
-        return raw.rounded()
+        dailyCalorieTargetResult(tdee: tdee, goal: goal, sex: sex).target
     }
 
     /// Daily calorie target with floor-applied metadata.
