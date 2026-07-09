@@ -35,6 +35,7 @@
 		600B95BBBA35A630EECF81BD /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */; };
 		60E892F92E0887DAC479A39E /* ResultItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */; };
 		625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF0AD775886DE66BC40E360 /* CameraView.swift */; };
+		74E71F51C46C76029C23714B /* turkish_food_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */; };
 		79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */; };
 		806BDB4750F0928CA4DFAF93 /* Color+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */; };
 		8223AA7BEAFD7A352FA5B0D5 /* WidgetDailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */; };
@@ -97,6 +98,7 @@
 
 /* Begin PBXFileReference section */
 		00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
+		05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = turkish_food_reference.json; sourceTree = "<group>"; };
 		086EBF7CCF553D14C6174559 /* AIProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClient.swift; sourceTree = "<group>"; };
 		0E38887382F74AA55C63EA6C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -344,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				6A0393DD2B432C82CCCE5378 /* Fonts */,
+				05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				E7810ED3DAB4A010F74ADB3B /* GeistMono-Regular.otf in Resources */,
 				3547A3A4E512CA44F0E178A9 /* Products.storekit in Resources */,
 				822A16CC4B0E1C0B5E07A988 /* Secrets.plist in Resources */,
+				74E71F51C46C76029C23714B /* turkish_food_reference.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
