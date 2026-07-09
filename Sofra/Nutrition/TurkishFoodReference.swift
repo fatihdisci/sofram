@@ -58,7 +58,7 @@ enum TurkishFoodReference {
         if let cached = cachedFoods { return cached }
         return try queue.sync {
             if let cached = cachedFoods { return cached }
-            guard let url = Bundle.main.url(forResource: bundleName, withExtension: ext) else {
+            guard let url = resourceURL() else {
                 throw LoadError.fileMissing(name: bundleName, ext: ext)
             }
             do {
@@ -124,6 +124,23 @@ enum TurkishFoodReference {
         }
     }
 
+    // MARK: - Resource lookup
+
+    /// In app runs the JSON is in `Bundle.main`; in XCTest it can be exposed via
+    /// the app module bundle. Probe both plus loaded bundles so `load()` remains
+    /// the single production/test entry point.
+    static func resourceURL() -> URL? {
+        let candidates = [Bundle.main, Bundle(for: BundleMarker.self)] + Bundle.allBundles + Bundle.allFrameworks
+        var seen = Set<String>()
+
+        for bundle in candidates where seen.insert(bundle.bundlePath).inserted {
+            if let url = bundle.url(forResource: bundleName, withExtension: ext) {
+                return url
+            }
+        }
+        return nil
+    }
+
     // MARK: - Index builder
 
     /// Build the lowercase + diacritic-folded name → food lookup table.
@@ -134,9 +151,9 @@ enum TurkishFoodReference {
         var out: [String: FoodReference] = [:]
         out.reserveCapacity(foods.count * 2)
         for food in foods {
-            let keyTr = String.Turkish.normalize(food.name)
+            let keyTr = String.Turkish.foodKey(food.name)
             if !keyTr.isEmpty { out[keyTr] = food }
-            let keyEn = String.Turkish.normalize(food.nameEn)
+            let keyEn = String.Turkish.foodKey(food.nameEn)
             if !keyEn.isEmpty { out[keyEn] = food }
         }
         return out

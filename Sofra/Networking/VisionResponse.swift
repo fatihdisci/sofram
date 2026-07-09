@@ -74,13 +74,11 @@ extension VisionItem {
     /// override the AI's calories/protein/carbs/fat; otherwise the AI's
     /// numbers are kept.
     ///
-    /// Pass `TurkishFoodReference.index()` here for the production path.
+    /// Pass `TurkishFoodReference.foods()` here for the production path.
     /// Passing `[]` is the safe "AI fallback everywhere" path used by the
     /// legacy `makeLoggedItem()` overload.
     ///
-    /// Phase B4 commit 4 will plumb `reconciled.source / referenceName /
-    /// confidenceNote` into the new `LoggedItem.valueSource + referenceName +
-    /// confidenceNote` fields. This commit only routes the macro numbers.
+    /// Also writes `valueSource` ("reference" | "ai") onto the LoggedItem.
     func makeLoggedItem(references: [FoodReference]) -> LoggedItem {
         let reconciled = ReferenceReconciler.reconcile(item: self, in: references)
         return LoggedItem(
@@ -94,7 +92,8 @@ extension VisionItem {
             carbs: reconciled.carbs,
             fat: reconciled.fat,
             confidence: confidence,
-            note: note
+            note: note,
+            valueSource: reconciled.source.rawValue
         )
     }
 }

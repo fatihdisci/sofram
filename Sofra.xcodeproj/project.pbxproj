@@ -42,6 +42,7 @@
 		806BDB4750F0928CA4DFAF93 /* Color+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */; };
 		8223AA7BEAFD7A352FA5B0D5 /* WidgetDailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */; };
 		822A16CC4B0E1C0B5E07A988 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = E19F8CA13354DB8B97C93C2B /* Secrets.plist */; };
+		844170B51DF055D71FA038F1 /* CategorySlugMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7579E16F68EF88FA80D3D8F /* CategorySlugMap.swift */; };
 		88B5B14F618C6D8C047B11ED /* TextLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABEDB088BD86173D15337A9 /* TextLogView.swift */; };
 		8DB29A6B0446E2C7B537A2D1 /* Geist-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */; };
 		92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */; };
@@ -141,6 +142,7 @@
 		99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surfaces.swift; sourceTree = "<group>"; };
 		9CA21E1C27ED51254B60BEDE /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
+		A7579E16F68EF88FA80D3D8F /* CategorySlugMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlugMap.swift; sourceTree = "<group>"; };
 		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 		0DDABFE76DE4E32F5D1419C5 /* Nutrition */ = {
 			isa = PBXGroup;
 			children = (
+				A7579E16F68EF88FA80D3D8F /* CategorySlugMap.swift */,
 				DA2661881718055D067FBDA2 /* NutritionCalculator.swift */,
 				919DEDBF2BEE37B415CA209C /* ReferenceReconciler.swift */,
 				FC1A6FC2CC0CF53D63B39DF1 /* String+TurkishNormalize.swift */,
@@ -562,6 +565,7 @@
 				5E2E74169EB20BB3FA006060 /* AnalysisOverlay.swift in Sources */,
 				57955CD4F69C53B723E74FA2 /* CalorieRingView.swift in Sources */,
 				625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */,
+				844170B51DF055D71FA038F1 /* CategorySlugMap.swift in Sources */,
 				3B70C192B418CF2B2E2F4888 /* Color+Tokens.swift in Sources */,
 				3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */,
 				0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */,
