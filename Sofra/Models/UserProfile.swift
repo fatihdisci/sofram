@@ -57,6 +57,16 @@ final class UserProfile {
     var weightKg: Double = 0
     var activityLevel: ActivityLevel = ActivityLevel.moderate
 
+    // Onboarding inputs that previously weren't persisted. Needed so we can
+    // recompute calorie/macro targets when the user updates weight (or any
+    // other input) from Ayarlar later.
+    var age: Int = 0
+    var biologicalSexRaw: String = BiologicalSex.male.rawValue
+    var biologicalSex: BiologicalSex {
+        get { BiologicalSex(rawValue: biologicalSexRaw) ?? .male }
+        set { biologicalSexRaw = newValue.rawValue }
+    }
+
     /// Targets (dailyMacroTargets broken into the three macros for storage).
     var dailyCalorieTarget: Double = 0
     var proteinTargetG: Double = 0
@@ -70,6 +80,8 @@ final class UserProfile {
         heightCm: Double = 0,
         weightKg: Double = 0,
         activityLevel: ActivityLevel = .moderate,
+        age: Int = 0,
+        biologicalSex: BiologicalSex = .male,
         dailyCalorieTarget: Double = 0,
         proteinTargetG: Double = 0,
         carbsTargetG: Double = 0,
@@ -80,6 +92,8 @@ final class UserProfile {
         self.heightCm = heightCm
         self.weightKg = weightKg
         self.activityLevel = activityLevel
+        self.age = age
+        self.biologicalSex = biologicalSex
         self.dailyCalorieTarget = dailyCalorieTarget
         self.proteinTargetG = proteinTargetG
         self.carbsTargetG = carbsTargetG

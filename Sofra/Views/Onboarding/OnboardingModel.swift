@@ -192,6 +192,8 @@ final class OnboardingModel {
             heightCm: heightCm,
             weightKg: weightKg,
             activityLevel: activityLevel,
+            age: age,
+            biologicalSex: biologicalSex,
             dailyCalorieTarget: dailyCalorieTarget,
             proteinTargetG: proteinTargetG,
             carbsTargetG: carbsTargetG,
