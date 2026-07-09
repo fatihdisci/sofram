@@ -46,6 +46,8 @@ enum TurkishFoodReference {
     private static var cachedFoods: [FoodReference]?
     private static var cachedIndex: [String: FoodReference]?
 
+    private final class BundleMarker {}
+
     // MARK: - Public API
 
     /// Decode the bundled JSON. Cached after the first successful call.
@@ -81,6 +83,16 @@ enum TurkishFoodReference {
         if let cached = cachedIndex { return cached }
         _ = try? load()
         return cachedIndex ?? [:]
+    }
+
+    /// Convenience: return the full food array (same shape as `load()` but
+    /// without throwing). Returns `[]` on bundle-missing / decode-fail.
+    /// Use this when you want to iterate every food (e.g. the reconciler
+    /// path), not look up by name.
+    static func foods() -> [FoodReference] {
+        if let cached = cachedFoods { return cached }
+        _ = try? load()
+        return cachedFoods ?? []
     }
 
     /// Test seam: install an in-memory dataset so XCTest can exercise

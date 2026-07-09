@@ -61,17 +61,38 @@ extension VisionItem {
     var portionUnit: PortionUnit { PortionUnit(apiValue: householdUnit) }
 
     /// Builds a `LoggedItem` (unattached — caller inserts it into a ScanEntry).
+    ///
+    /// **Phase B4:** this is the legacy zero-arg form kept for any test code
+    /// that builds `LoggedItem`s without a reference set. It produces
+    /// `valueSource == "ai"` because no reconciliation happens.
     func makeLoggedItem() -> LoggedItem {
-        LoggedItem(
+        makeLoggedItem(references: [])
+    }
+
+    /// Reference-aware variant. Runs the item through `ReferenceReconciler`:
+    /// if a well-established DB row matches, the reference's per-100g values
+    /// override the AI's calories/protein/carbs/fat; otherwise the AI's
+    /// numbers are kept.
+    ///
+    /// Pass `TurkishFoodReference.index()` here for the production path.
+    /// Passing `[]` is the safe "AI fallback everywhere" path used by the
+    /// legacy `makeLoggedItem()` overload.
+    ///
+    /// Phase B4 commit 4 will plumb `reconciled.source / referenceName /
+    /// confidenceNote` into the new `LoggedItem.valueSource + referenceName +
+    /// confidenceNote` fields. This commit only routes the macro numbers.
+    func makeLoggedItem(references: [FoodReference]) -> LoggedItem {
+        let reconciled = ReferenceReconciler.reconcile(item: self, in: references)
+        return LoggedItem(
             name: name,
             nameEn: nameEn,
             portionUnit: portionUnit,
             quantity: householdQuantity,
             estimatedGrams: estimatedGrams,
-            calories: calories,
-            protein: proteinG,
-            carbs: carbsG,
-            fat: fatG,
+            calories: reconciled.calories,
+            protein: reconciled.protein,
+            carbs: reconciled.carbs,
+            fat: reconciled.fat,
             confidence: confidence,
             note: note
         )
@@ -81,9 +102,17 @@ extension VisionItem {
 extension VisionResponse {
     /// Convenience: build a persisted `ScanEntry` from this response.
     /// `rawJSON` should be the exact bytes returned by the proxy (kept for debugging).
+    ///
+    /// **Phase B4:** every item goes through the reference-aware
+    /// `makeLoggedItem(references:)` path. The reference index is loaded
+    /// once here from `TurkishFoodReference.index()`; if the bundle JSON is
+    /// missing or the decode fails, `index()` returns `[:]` and the
+    /// reconciler falls back to AI values for every item (graceful
+    /// degradation — no throw, no crash).
     func makeScanEntry(source: ScanSource, rawJSON: String) -> ScanEntry {
         let entry = ScanEntry(source: source, rawAIResponse: rawJSON)
-        let logged = items.map { $0.makeLoggedItem() }
+        let references = TurkishFoodReference.foods()
+        let logged = items.map { $0.makeLoggedItem(references: references) }
         logged.forEach { $0.scanEntry = entry }
         entry.items = logged
         return entry

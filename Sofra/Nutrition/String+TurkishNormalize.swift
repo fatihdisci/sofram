@@ -28,12 +28,21 @@ extension String {
             guard !s.isEmpty else { return s }
             return s
                 .lowercased()
+                .replacingOccurrences(of: "\u{0307}", with: "")     // combining dot from capital İ
                 .replacingOccurrences(of: "\u{0131}", with: "i")   // ı
                 .replacingOccurrences(of: "\u{011f}", with: "g")   // ğ
                 .replacingOccurrences(of: "\u{00fc}", with: "u")   // ü
                 .replacingOccurrences(of: "\u{015f}", with: "s")   // ş
                 .replacingOccurrences(of: "\u{00f6}", with: "o")   // ö
                 .replacingOccurrences(of: "\u{00e7}", with: "c")   // ç
+        }
+
+        /// Canonical key used for food-reference matching.
+        /// Keeps the fold deterministic and collapses accidental extra spaces.
+        static func foodKey(_ s: String) -> String {
+            normalize(s)
+                .split(whereSeparator: { $0.isWhitespace })
+                .joined(separator: " ")
         }
 
         // MARK: Synonym table
@@ -45,11 +54,11 @@ extension String {
         /// ~100 items or when the AI proxy starts emitting new dish variants.
         /// Each pair is bidirectional — `aliases(for:)` returns the OTHER side.
         static let synonymPairs: [(from: String, to: String)] = [
-            ("beyaz ekmek",    "ekmek"),
-            ("kasar peyniri",  "kasar"),
-            ("yogurt corbasi", "yayla corbasi"),
-            ("patates salata", "patates"),
-            ("yesil mercimek","mercimek"),
+            ("beyaz ekmek",                "ekmek"),
+            ("kirmizi mercimek corbasi",   "mercimek corbasi"),
+            ("kasar",                      "kasar peyniri"),
+            ("yogurt corbasi",             "yayla corbasi"),
+            ("feta peyniri",               "beyaz peynir"),
         ]
 
         /// Returns the matching aliases for a normalized query, or empty array
