@@ -30,7 +30,7 @@ enum CalorisorIcon: String, CaseIterable, Identifiable {
     case ekmekDilimi    // bread slice
     case kase           // bowl
     case kasik          // spoon
-    case sofra          // shared table (top-down)
+    case calorisor      // shared table (top-down) — brand mark
     case tencere        // pot
     case bugun          // today tab: plate + morning rays
     case gecmis         // history tab: notebook calendar
