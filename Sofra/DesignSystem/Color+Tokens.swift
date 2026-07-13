@@ -1,6 +1,6 @@
 //
 //  Color+Tokens.swift
-//  Sofra — Yumuşak Sofra (Soft Native) design system
+//  Calorisor — flat, typography-led visual system.
 //
 //  Typed accessors for every color token in design-tokens.json.
 //  Each accessor resolves to a Color Set in Assets.xcassets/Colors, which carries
@@ -21,7 +21,7 @@ extension Color {
     static let surfaceRaised = Color("surfaceRaised", bundle: .main)
     static let surfaceFlat   = Color("surfaceFlat", bundle: .main)
 
-    // MARK: Borders (neomorphism dual-tone technique — see shadow recipe / Surfaces.swift)
+    // MARK: Borders
     static let borderHighlight = Color("borderHighlight", bundle: .main)
     static let borderShadow    = Color("borderShadow", bundle: .main)
     static let borderHairline  = Color("borderHairline", bundle: .main)
@@ -31,14 +31,14 @@ extension Color {
     static let textSecondary = Color("textSecondary", bundle: .main)
     static let textMuted     = Color("textMuted", bundle: .main)
 
-    // MARK: Accent (copper)
+    // MARK: Accent (Calorisor red)
     static let accentFill        = Color("accentFill", bundle: .main)        // fills/icons/graphics only
     static let accentFillPressed = Color("accentFillPressed", bundle: .main)
     static let accentText        = Color("accentText", bundle: .main)        // emphasized text/numbers
     static let onAccent          = Color("onAccent", bundle: .main)          // label on an accentFill surface
     static let accentTintBg      = Color("accentTintBg", bundle: .main)      // subtle tinted background
 
-    // MARK: Macro hues (graphics only — warm-toned to sit on the bej palette)
+    // MARK: Macro hues (graphics only)
     static let macroProtein = Color("macroProtein", bundle: .main)  // sage green
     static let macroCarb    = Color("macroCarb", bundle: .main)     // warm amber
     static let macroFat     = Color("macroFat", bundle: .main)      // muted terracotta

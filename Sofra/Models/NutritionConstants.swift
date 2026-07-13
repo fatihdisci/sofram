@@ -15,9 +15,9 @@ import Foundation
 
 enum LegalLinks {
     // TODO(fatih): gerçek URL
-    static let privacyPolicy = URL(string: "https://sofra.app/gizlilik")!
+    static let privacyPolicy = URL(string: "https://calorisor.app/privacy")!
     // TODO(fatih): gerçek URL
-    static let termsOfUse = URL(string: "https://sofra.app/kosullar")!
+    static let termsOfUse = URL(string: "https://calorisor.app/terms")!
 }
 
 enum NutritionConstants {

@@ -45,9 +45,6 @@ struct CalorieRingView: View {
     private let stroke: CGFloat = 18
     private let inset: CGFloat = 22
 
-    /// Radius the stroke path is centered on (used to place the end-cap bead).
-    private var pathRadius: CGFloat { (ringSize - 2 * inset) / 2 }
-
     private var progress: Double {
         guard target > 0 else { return 0 }
         return min(consumed / target, 1.0)
@@ -83,26 +80,16 @@ struct CalorieRingView: View {
 
     var body: some View {
         ZStack {
-            // Raised container disc
+            // Deliberately flat: one quiet track and one data-colour arc.
             Circle()
-                .fill(Color.surfaceRaised)
-                .raisedSurface(cornerRadius: 999)
-
-            // Recessed track
-            Circle()
-                .stroke(Color.surfaceFlat, style: StrokeStyle(lineWidth: stroke, lineCap: .round))
+                .stroke(Color.borderHairline, style: StrokeStyle(lineWidth: stroke, lineCap: .round))
                 .padding(inset)
 
-            // Progress arc — spring fill with gentle overshoot
+            // Progress is a single solid colour — no decorative gradient or bead.
             Circle()
                 .trim(from: 0, to: animatedProgress)
                 .stroke(
-                    AngularGradient(
-                        colors: [Color.accentFill, Color.accentFillPressed, Color.accentFill],
-                        center: .center,
-                        startAngle: .degrees(-90),
-                        endAngle: .degrees(270)
-                    ),
+                    Color.accentFill,
                     style: StrokeStyle(lineWidth: stroke, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
@@ -120,21 +107,7 @@ struct CalorieRingView: View {
                     .padding(inset + 6)
             }
 
-            // End-cap bead — rides the tip of the arc
-            if animatedProgress > 0.012 {
-                Circle()
-                    .fill(Color.accentFillPressed)
-                    .frame(width: stroke - 6, height: stroke - 6)
-                    .overlay(
-                        Circle()
-                            .fill(Color.onAccent.opacity(0.55))
-                            .frame(width: 5, height: 5)
-                    )
-                    .offset(y: -pathRadius)
-                    .rotationEffect(.degrees(animatedProgress * 360))
-            }
-
-            // Center readout — only remaining kcal, no inner pill
+            // Center readout stays visually quiet so the number leads.
             VStack(spacing: 3) {
                 Text(displayValue)
                     .font(.sofraDisplayLarge)

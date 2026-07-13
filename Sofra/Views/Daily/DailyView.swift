@@ -177,12 +177,7 @@ struct DailyView: View {
                     .font(.system(size: 18))
                     .foregroundStyle(Color.onAccent)
                     .frame(width: 52, height: 52)
-                    .background(
-                        Circle().fill(
-                            Color.accentFill
-                                .shadow(.drop(color: .borderShadow.opacity(0.6), radius: 5, x: 3, y: 3))
-                        )
-                    )
+                    .background(Circle().fill(Color.accentFill))
             }
         }
         .padding(.horizontal, Layout.Spacing.lg)
@@ -325,7 +320,7 @@ struct DailyView: View {
                 .font(.sofraBody)
                 .foregroundStyle(Color.textPrimary)
 
-            Text("Tabağının fotoğrafını çek, gerisini Sofra halletsin.")
+            Text("Tabağının fotoğrafını çek, gerisini Calorisor halletsin.")
                 .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
                 .multilineTextAlignment(.center)
@@ -471,9 +466,7 @@ struct WeekSparkline: View {
                 let barHeight = max(8, 36 * day.calories / peak)
                 Capsule()
                     .fill(isToday
-                        ? AnyShapeStyle(LinearGradient(
-                            colors: [Color.accentFill, Color.accentFillPressed],
-                            startPoint: .top, endPoint: .bottom))
+                        ? AnyShapeStyle(Color.accentFill)
                         : AnyShapeStyle(Color.accentFill.opacity(0.35)))
                     .frame(width: isToday ? 6 : 5, height: barHeight)
                     .frame(maxWidth: .infinity, alignment: .bottom)

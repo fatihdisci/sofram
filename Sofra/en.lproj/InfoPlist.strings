@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Calorisor";
+"NSCameraUsageDescription" = "Calorisor uses your camera to recognise food on your plate and estimate calories and macros.";
+"NSPhotoLibraryUsageDescription" = "You can share food photos with Calorisor for analysis.";

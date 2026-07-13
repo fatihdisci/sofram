@@ -51,7 +51,7 @@ enum OnboardingStep: Int, CaseIterable {
         case .age:      "Yaşın kaç?"
         case .sex:      "Biyolojik cinsiyetin?"
         case .result:   "Günlük Hedefin"
-        case .paywall:  "Sofra'ya Başla"
+        case .paywall:  "Calorisor'a Başla"
         }
     }
 

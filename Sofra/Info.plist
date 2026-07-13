@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Sofra</string>
+	<string>Calorisor</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -42,9 +42,9 @@
 
 	<!-- Purpose strings -->
 	<key>NSCameraUsageDescription</key>
-	<string>Sofra, tabağınızdaki yemekleri tanıyıp kalori ve makro tahmini yapmak için kameranızı kullanır.</string>
+	<string>Calorisor, tabağınızdaki yemekleri tanıyıp kalori ve makro tahmini yapmak için kameranızı kullanır.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Yemek fotoğraflarınızı analiz için Sofra ile paylaşabilirsiniz.</string>
+	<string>Yemek fotoğraflarınızı analiz için Calorisor ile paylaşabilirsiniz.</string>
 
 	<!-- Widget deep link: sofra://daily → günlük özet -->
 	<key>CFBundleURLTypes</key>

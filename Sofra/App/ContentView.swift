@@ -362,7 +362,7 @@ struct SettingsView: View {
         Section {
             if subscriptions.isSubscribed {
                 HStack {
-                    Label("Sofra Pro", systemImage: "checkmark.seal.fill")
+                    Label("Calorisor Pro", systemImage: "checkmark.seal.fill")
                         .foregroundStyle(Color.accentFill)
                     Spacer()
                     Text("Aktif")
@@ -376,7 +376,7 @@ struct SettingsView: View {
                 } label: {
                     HStack {
                         Label {
-                            Text("Sofra Pro'ya Geç")
+                            Text("Calorisor Pro'ya Geç")
                                 .foregroundStyle(Color.textPrimary)
                         } icon: {
                             SofraIconView(icon: .sofra, size: 16)
@@ -709,7 +709,7 @@ struct SettingsView: View {
         components.scheme = "mailto"
         components.path = "av.fatihdisci@gmail.com"
         components.queryItems = [
-            URLQueryItem(name: "subject", value: "Sofra Geri Bildirim v\(appShortVersion)")
+            URLQueryItem(name: "subject", value: "Calorisor Geri Bildirim v\(appShortVersion)")
         ]
 
         guard let url = components.url else {

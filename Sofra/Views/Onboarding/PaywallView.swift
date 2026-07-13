@@ -85,7 +85,7 @@ struct PaywallView: View {
                     .foregroundStyle(Color.accentFill)
             }
 
-            Text("Sofra Premium")
+            Text("Calorisor Pro")
                 .font(.sofraTitle)
                 .foregroundStyle(Color.textPrimary)
 

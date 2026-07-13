@@ -35,7 +35,7 @@ xcodebuild test -scheme Sofra -destination 'platform=iOS Simulator,name=iPhone 1
 3. Her `@Model` property'si default değerli veya optional; ilişkiler optional; `@Attribute(.unique)` yasak (CloudKit).
 4. Tasarım tokenları (`design-tokens.json`, `Color+Tokens.swift`, `Font+Tokens.swift`, `Layout.swift`) dışında renk/font/spacing hardcode etme. `accent-fill` renginde **metin yazma** (yalnızca ikon/dolgu).
 5. Sayısal her gösterim **Geist Mono** token'ları ile (`.sofraNumeric*`, `.sofraDisplay*`).
-6. Tüm kullanıcı kopyası **Türkçe**. UI'da İngilizce kelime kalmayacak (bkz. SF-303, SF-701).
+6. Tüm kullanıcı kopyası **Türkçe ve İngilizce** olarak yerelleştirilmeli. Yeni kullanıcı metni hard-code edilmez; String Catalog anahtarıyla eklenir. Türkçe ve İngilizce dışında dil varsayımı yapılmaz (bkz. FAZ 10).
 7. Porsiyon dili Türkçe ev ölçüleri: kepçe, yemek kaşığı, su bardağı, çay bardağı, dilim, avuç, kase, adet. Kullanıcıya ham gram slider'ı sunma (gram sadece ikincil bilgi etiketi).
 8. Aşırıya kaçan animasyon yok; mikro-etkileşimler `mikro-etkilesimler.md`'ye uyar. Utanç/suçlama kopyası yasak ("hedef üstü" nötr veridir).
 
@@ -370,11 +370,11 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Talimat:** Fatih'ten Bodymovin JSON gelene kadar: LottieFiles'tan lisans-uyumlu bir asset ARAMA (marka dışı). Bunun yerine fallback'i kasıtlı hale getir: `SofraPulseShine` (Motion+Patterns'te hazır, wired değil) ile SofraIcon'a 1.8s nefes efekti ver — boş durum "canlı" hisseder, dış bağımlılık sıfır. Lottie çağrısı ve wrapper kalsın (asset düşünce otomatik devreye girer); README'ye beklenen asset adlarını yaz: `sofra_empty_plate.json`, `sofra_paywall_hero.json`, `sofra_onboarding_intro.json`.
   **Kabul kriterleri:** Boş durum ikonu nefes alıyor; Lottie yolu asset eklenince çalışır durumda.
 
-- [ ] **SF-803 · Uygulama ikonu üretim hattı (tasarım Fatih+Claude, entegrasyon Codex)**
+- [ ] **SF-803 · Calorisor uygulama ikonu entegrasyonu**
   **Dosyalar:** `Sofra/Assets.xcassets/AppIcon.appiconset/`
-  **Talimat:** İkon görseli hazır olduğunda: 1024×1024 master'ı `AppIcon` set'ine yerleştir (tek boyut, Xcode 15 auto-generate), dark/tinted varyantlarını (iOS 18) ekle. Yerleşene kadar bu görev `⏸ NOT: ikon tasarımı bekleniyor` kalır. **Tasarım brief'i (Claude/Fatih için not):** bakır (#B4… accent-fill) zemin üzerinde tabak/sofra üstten görünüm çizgi ikonu, "Yumuşak Sofra" çift-kenar kabartma hissi, metin yok.
+  **Talimat:** Onaylı 1024×1024 Calorisor master'ını `AppIcon` set'ine yerleştir (tek boyut, Xcode 15 auto-generate). İkon: canvas'ı tamamen kaplayan düz domates kırmızısı zemin, ortada asimetrik kırık siyah `C`, merkezde kırık beyaz nokta. Uygulama maskeyi kendisi uygulayacağı için dosyada rounded-square çerçeve, dış boşluk, gradient, gölge veya 3D efekt YOK. Dark/tinted varyant ihtiyacını Xcode/App Store doğrulamasına göre ayrıca değerlendir.
   **Kabul kriterleri:** Cihazda ikon; App Store Connect uyarısı yok.
-  ⏸ **NOT:** İkon tasarımı bekleniyor.
+  ⏸ **NOT:** Master onaylandı; cihaz ve archive doğrulaması bekliyor.
 
 - [x] **SF-804 · Onboarding sonuç ekranında güven detayları** `[bağımsız]` ✅ 2026-07-13
   **Dosya:** `Sofra/Views/Onboarding/OnboardingView.swift` (result step)
@@ -408,6 +408,54 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   - [ ] App Store Connect aboneliklerinde 3 günlük trial — hesap erişimi bekliyor.
   - [x] `proxy/README.md` gizlilik etiketi taslağı gerçek saklama davranışıyla belgelendi. ⚠️ Yedi günlük normalize yanıt cache'i nedeniyle App Store'da koşulsuz “veri toplanmıyor” seçilmemeli; son politika kararı bekliyor. ✅ 2026-07-13
   - [x] `MARKETING_VERSION` 1.0.0 yapıldı. ✅ 2026-07-13
+
+---
+
+## FAZ 10 — CALORISOR: MARKA, DÜZ UX VE EN/TR GLOBALLEŞME
+
+> **Karar kaydı · 2026-07-13:** Çalışma markası **Calorisor**. Tasarım dili “visual nutrition intelligence”: Arc/Search kadar karakterli ve doğrudan; düz renkli, tipografi öncelikli, gradient/glass/3D/neo-morphic yüzey yok. İkon dili onaylı master'daki kırık `C`dir. Bu çalışma adı public release öncesi resmi marka ve alan adı kontrolünden geçmelidir; Foodvisor ile kategori/isim yakınlığı nedeniyle bu kontrol yayın engelidir.
+>
+> **Dil kararı:** Uygulama cihaz diline göre Türkçe veya İngilizce çalışır; kullanıcı verisi otomatik çevrilmez. Mevcut Türkçe besin referansları korunur, İngilizce destek ayrı alias/veri politikasıyla eklenir. Bundle ID, SwiftData model adları, App Group, CloudKit container ve StoreKit product ID'leri bu fazda değiştirilmeyecek; isim değişikliği veri/satın alma sürekliliğini bozmamalı.
+
+- [ ] **SF-1001 · Calorisor marka yüzeyi ve app icon'ı**
+  **Dosyalar:** `Sofra/Assets.xcassets/AppIcon.appiconset/`, `Sofra/Info.plist`, `project.yml`, yasal link/metadata kaynakları.
+  **Talimat:** SF-803 master'ını entegre et. Kullanıcıya görünen ürün adı, onboarding/paywall/Ayarlar başlıkları, destek e-postası konusu ve placeholder yasal URL'leri Calorisor ile tutarlı hale getir. Bundle ID (`com.fatih.sofra`), URL scheme, CloudKit/App Group ve StoreKit product ID'lerini değiştirme. App Store/alan adı/marka kullanılabilirliği için resmi kontrol listesi oluştur; sonucu olmadan public release işaretleme.
+  **Kabul kriterleri:** Uygulama ikonu cihazda doğru maskelenir; eski “Sofra” kullanıcıya görünen marka kopyasında kalmaz; kimlik/satın alma sürekliliği bozulmaz.
+
+- [ ] **SF-1002 · Düz Calorisor tasarım sistemi** `[bağımsız]`
+  **Dosyalar:** `Sofra/DesignSystem/`, `design-tokens.md`, ilgili SwiftUI modifier'ları.
+  **Talimat:** Tasarım tokenlarını tek katmanlı sisteme geçir: düz kırık beyaz/near-black yüzeyler, tek düz domates kırmızısı vurgu, ince sınır veya boşlukla hiyerarşi. Gradient, glass, kabartı, çift kenar, raised/inset shadow ve dekoratif halka dili kaldırılır. Geist/Geist Mono korunur; tipografi, ölçüm değerleri ve boşluk ürünün ana karakteridir. Renk/spacing/font hard-code edilmez.
+  **Kabul kriterleri:** Token dokümanı ve uygulama aynı dili kullanır; ana ekranlarda eski soft/neomorphic modifier kalmaz; light/dark contrast erişilebilir.
+
+- [ ] **SF-1003 · Search-benzeri uygulama kabuğu ve Bugün ekranı**
+  **Dosyalar:** `Sofra/App/ContentView.swift`, `Sofra/Views/Daily/`, `Sofra/DesignSystem/SofraIcon.swift`.
+  **Talimat:** Ana akışı dashboard değil “yediğini anlama” aracı olarak kur. Kamera/yazılı giriş net birincil eylem olur; günlük kalori ve makrolar güçlü tipografik bilgi bloklarıdır. Kırık `C` marka işareti ikon/boş durumlarda ölçülü kullanılır; tab bar sade, düz ve okunur kalır. Yeni ekran düzeni mevcut günlük kayıt, quick-add ve hedef davranışlarını korur.
+  **Kabul kriterleri:** Kullanıcı ilk bakışta fotoğrafla veya metinle öğün eklemeyi bulur; kayıt/toplam/widget akışları regress etmez; iPhone küçük ekranında taşma yok.
+
+- [ ] **SF-1004 · Kamera, analiz ve sonuç deneyiminin Calorisor revizyonu**
+  **Dosyalar:** `Sofra/Views/Camera/`, `Sofra/Views/Analysis/`, `Sofra/Views/Result/`, `Sofra/Views/TextLog/`.
+  **Talimat:** Capture → analiz → düzelt → logla akışını tek görsel dilde yenile. Analiz durumu “AI sihir” klişesi değil, anlaşılır işlem geri bildirimi verir. Sonuç listesi Search sonucu gibi hızlı taranır ve düzenleme önceliklidir; hata, offline ve rate-limit durumları tasarım sistemiyle uyumlu kalır.
+  **Kabul kriterleri:** Fotoğraf ve metin akışları aynı tasarım kalitesinde; silme/düzenleme/kaydetmeden çıkış davranışları korunur; Dynamic Type temel kontrolleri geçer.
+
+- [ ] **SF-1005 · Geçmiş, Ayarlar, onboarding ve paywall'ın küresel görsel dönüşümü**
+  **Dosyalar:** `Sofra/Views/History/`, `Sofra/App/ContentView.swift`, `Sofra/Views/Onboarding/`, `SofraWidget/`.
+  **Talimat:** Kalan kullanıcı yolculuğunu SF-1002 sistemine geçir. Onboarding kısa, doğrudan ve kamera değerini öne çıkarır; paywall abonelik şartlarını açık tutar; Geçmiş/Ayarlar bilgi yoğun ama sakin olur. Widget'lar yeni logo/renk sistemini kullanır, fakat okunabilirlik için platform tint kurallarına uyar.
+  **Kabul kriterleri:** Tüm ana tablar, onboarding, paywall, geçmiş detayı ve widget aynı ürün gibi görünür; veri silme/export/subscription yolları kaybolmaz.
+
+- [ ] **SF-1006 · EN/TR yerelleştirme altyapısı ve locale biçimlendirme** `[bağımsız]`
+  **Dosyalar:** `Sofra/Resources/Localizable.xcstrings`, `Sofra/*`, `Sofra/en.lproj/InfoPlist.strings`, `Sofra/tr.lproj/InfoPlist.strings`.
+  **Talimat:** Hard-coded kullanıcı metnini anahtarlı String Catalog'a taşı. Sistem dili Türkçe/İngilizce için eksiksiz kaynaklar oluştur; Ayarlar'a isteğe bağlı dil seçimi (System / Türkçe / English) ekle. Tarih, sayı, para, aylık fiyat eşdeğeri ve birimler seçili locale'e göre formatlanır. Kamera/fotoğraf purpose string'leri dahil Info.plist metinleri iki dilde olur. Model raw değerleri, SwiftData verisi ve deep-link'ler çevrilmez.
+  **Kabul kriterleri:** Aynı build TR ve EN modunda yeniden başlatmadan değişir; kullanıcıya görünen Türkçe hard-code metin kalmaz; eksik key/English fallback bulunmaz; en az bir format testi TR ve EN'i doğrular.
+
+- [ ] **SF-1007 · AI ve besin referanslarının global dil politikası**
+  **Dosyalar:** `Sofra/Networking/AIProxyClient.swift`, `proxy/prompts.ts`, `Sofra/Nutrition/`, referans veri/testleri.
+  **Talimat:** Prompt ve hata/sonuç metinleri isteğin locale'ine göre doğru dilde üretilir. Türkçe referans DB'yi İngilizceye körlemesine çevirmek YASAK: İngilizce well-established alias/isimler ayrı veri ve kaynak politikasıyla eklenir; yalnız doğrulanmış eşleşmeler referans değeri alır. Eski Türkçe kayıt isimleri/ham AI verisi otomatik değiştirilmez.
+  **Kabul kriterleri:** TR ve EN prompt snapshot/kontrat testleri yeşil; “chicken soup” gibi İngilizce eşleşme yalnız tanımlı alias varsa reference kaynaklıdır; yanlış substring eşleşmesi geri gelmez.
+
+- [ ] **SF-1008 · Calorisor global QA, erişilebilirlik ve yayın kapısı**
+  **Dosyalar:** `PHASE_QA_NOTES.md`, yeni screenshot/locale testleri, App Store hazırlık notları.
+  **Talimat:** TR/EN için onboarding → kamera → analiz → düzelt → log → geçmiş → Ayarlar → widget → silme tam turunu çalıştır. Light/dark, Dynamic Type, VoiceOver temel etiketleri, küçük iPhone ve gerçek cihaz ikon maskesi kontrol edilir. App Store listing, privacy metni, abonelik ürün isimleri ve screenshot'lar marka/dil ile senkronlanır. Resmi Calorisor marka/alan adı kontrolü tamamlanmadan yayın onayı verilmez.
+  **Kabul kriterleri:** Her dilde kritik ❌ yok; testler yeşil; release checklist'te marka kullanılabilirliği, icon ve metadata tek tek işaretli.
 
 ---
 

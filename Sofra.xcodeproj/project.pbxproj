@@ -13,6 +13,7 @@
 		0AF6FEBF2EC509B74055940C /* SevenDaySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */; };
 		0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */; };
 		10D9BE4519BDC183EE6F68DB /* Geist-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 58EB71386FCB3BB93B36C4C4 /* Geist-Regular.otf */; };
+		10EF0386BBB0E51156143FA2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AF33938C2AF7067CEA9AA9B1 /* InfoPlist.strings */; };
 		12C83ADD5BA0F41D92C7F727 /* AIProxyRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E779E8983043AC16D6FE8E /* AIProxyRequestTests.swift */; };
 		13174B0AC06670CF9856F448 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */; };
 		167C3B3F92326E1DBBC4386C /* NutritionConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE2D0B35958358EB63D7560 /* NutritionConstants.swift */; };
@@ -49,6 +50,7 @@
 		625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF0AD775886DE66BC40E360 /* CameraView.swift */; };
 		64FCDE8A0383D75485EB0903 /* VisionResponseValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */; };
 		65399651FDE23A9A6E635F15 /* RawAIResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4B72320685EF2B0B1B2B46 /* RawAIResponseTests.swift */; };
+		71B0C62E71C0D318F4673BB7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52BBFB06F7C66440A4665CC3 /* InfoPlist.strings */; };
 		74E71F51C46C76029C23714B /* turkish_food_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */; };
 		78F51218DA0EF4D4D672F701 /* AIProxyClientErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D987C0340FEE4009B58A1EA6 /* AIProxyClientErrorTests.swift */; };
 		79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */; };
@@ -172,6 +174,7 @@
 		88B088DADDCE77DB0C23F66F /* SofraWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraWidget.swift; sourceTree = "<group>"; };
 		8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-Medium.otf"; sourceTree = "<group>"; };
 		8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconcilerTests.swift; sourceTree = "<group>"; };
+		8F76138538D2FC56E4B85D73 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8FF0AD775886DE66BC40E360 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		91002469968093CB5EAD8EE6 /* ImageDownscalerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownscalerTests.swift; sourceTree = "<group>"; };
 		919DEDBF2BEE37B415CA209C /* ReferenceReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconciler.swift; sourceTree = "<group>"; };
@@ -194,6 +197,7 @@
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
 		C416069E68BBBF6E8DDE2958 /* DataExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExporterTests.swift; sourceTree = "<group>"; };
 		C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraModelContainer.swift; sourceTree = "<group>"; };
+		C814866475D7F65D8C76EA67 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CB00F92C537B260370B739B5 /* ReconcilerNegativeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerNegativeTests.swift; sourceTree = "<group>"; };
 		CCB810BF61C02917F98B012C /* PortionRecalculationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionRecalculationTests.swift; sourceTree = "<group>"; };
 		D959F549ED125A75211383C7 /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 		DA2661881718055D067FBDA2 /* NutritionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculator.swift; sourceTree = "<group>"; };
 		DF6450117D77FE994AEF0FAA /* Geist-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-SemiBold.otf"; sourceTree = "<group>"; };
 		E156CC8B82DB574BEC1B447D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E4378BB9A08D5C36C848C3BA /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItemCard.swift; sourceTree = "<group>"; };
 		E7E779E8983043AC16D6FE8E /* AIProxyRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyRequestTests.swift; sourceTree = "<group>"; };
 		EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculatorTests.swift; sourceTree = "<group>"; };
@@ -212,6 +217,7 @@
 		F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurkishFoodReference.swift; sourceTree = "<group>"; };
 		F39E67471483C60085CF44FB /* GeistMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.otf"; sourceTree = "<group>"; };
 		F737E22CCA18A4784BE99B3F /* .gitkeep */ = {isa = PBXFileReference; path = .gitkeep; sourceTree = "<group>"; };
+		F926CC1E99F52D8622D10D52 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F96F2406E759FD86227F44C6 /* FreeScanCounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounterTests.swift; sourceTree = "<group>"; };
 		FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Widget.swift"; sourceTree = "<group>"; };
 		FB74F4E0EC9C9FA5A6B5B984 /* UserProfileRecomputeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRecomputeTests.swift; sourceTree = "<group>"; };
@@ -240,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				2C207BF09448E5C2FAC4DE27 /* Extensions */,
+				52BBFB06F7C66440A4665CC3 /* InfoPlist.strings */,
 				E156CC8B82DB574BEC1B447D /* Info.plist */,
 				7B2F13C99F7C4BFEC48A2347 /* Provider.swift */,
 				42BA68BE72D1A41D934F0208 /* SofraWidget.entitlements */,
@@ -447,6 +454,7 @@
 				3AF8F5ACF117AC000E8F31E3 /* App */,
 				ABCC4EF4F95D5007CC7AB31C /* DesignSystem */,
 				9566A4D5F370CD0EC38D8257 /* Extensions */,
+				AF33938C2AF7067CEA9AA9B1 /* InfoPlist.strings */,
 				87522F40CDC496FAEF7D4EEF /* Models */,
 				3CE869EBA21DE36DE94948C7 /* Networking */,
 				0DDABFE76DE4E32F5D1419C5 /* Nutrition */,
@@ -621,6 +629,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				en,
 				tr,
 			);
 			mainGroup = 57440A81151301AB9257B87B;
@@ -652,6 +661,7 @@
 				3EF8A428E5298AE8C03FE4CA /* Geist-SemiBold.otf in Resources */,
 				0157ABF651A922D23B8CC571 /* GeistMono-Medium.otf in Resources */,
 				E7810ED3DAB4A010F74ADB3B /* GeistMono-Regular.otf in Resources */,
+				10EF0386BBB0E51156143FA2 /* InfoPlist.strings in Resources */,
 				3547A3A4E512CA44F0E178A9 /* Products.storekit in Resources */,
 				74E71F51C46C76029C23714B /* turkish_food_reference.json in Resources */,
 			);
@@ -662,6 +672,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13174B0AC06670CF9856F448 /* Assets.xcassets in Resources */,
+				71B0C62E71C0D318F4673BB7 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,6 +792,27 @@
 			targetProxy = 8BA66B0944271653BFDB8CBA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		52BBFB06F7C66440A4665CC3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F926CC1E99F52D8622D10D52 /* en */,
+				E4378BB9A08D5C36C848C3BA /* tr */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		AF33938C2AF7067CEA9AA9B1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C814866475D7F65D8C76EA67 /* en */,
+				8F76138538D2FC56E4B85D73 /* tr */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		11E6BB4A31D76D40EE1953BB /* Debug */ = {

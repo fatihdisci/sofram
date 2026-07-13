@@ -1,0 +1,3 @@
+"CFBundleDisplayName" = "Calorisor";
+"NSCameraUsageDescription" = "Calorisor, tabağınızdaki yemekleri tanıyıp kalori ve makro tahmini yapmak için kameranızı kullanır.";
+"NSPhotoLibraryUsageDescription" = "Yemek fotoğraflarınızı analiz için Calorisor ile paylaşabilirsiniz.";

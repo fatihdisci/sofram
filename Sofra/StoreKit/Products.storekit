@@ -8,7 +8,7 @@
     {
       "id" : "B6C75F4E",
       "localizations" : [],
-      "name" : "Sofra Premium",
+      "name" : "Calorisor Pro",
       "subscriptions" : [
         {
           "adHocOffers" : [],
@@ -21,13 +21,13 @@
           "localizations" : [
             {
               "description" : "Sınırsız fotoğrafla kalori takibi, tüm Pro özellikler.",
-              "displayName" : "Sofra Aylık",
+              "displayName" : "Calorisor Aylık",
               "locale" : "tr_TR"
             }
           ],
           "productID" : "com.fatih.sofra.monthly",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Sofra Aylık",
+          "referenceName" : "Calorisor Aylık",
           "subscriptionGroupID" : "B6C75F4E",
           "type" : "RecurringSubscription",
           "winBackOffers" : []
@@ -47,13 +47,13 @@
           "localizations" : [
             {
               "description" : "Sınırsız fotoğrafla kalori takibi, en uygun fiyat. 7 gün ücretsiz deneme.",
-              "displayName" : "Sofra Yıllık",
+              "displayName" : "Calorisor Yıllık",
               "locale" : "tr_TR"
             }
           ],
           "productID" : "com.fatih.sofra.annual",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Sofra Yıllık",
+          "referenceName" : "Calorisor Yıllık",
           "subscriptionGroupID" : "B6C75F4E",
           "type" : "RecurringSubscription",
           "winBackOffers" : []
