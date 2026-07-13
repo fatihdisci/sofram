@@ -14,6 +14,8 @@ import SwiftData
 enum ScanSource: String, Codable, CaseIterable {
     case photo
     case text
+    /// A one-off meal the user typed in by hand (calories/macros), no AI.
+    case manual
 }
 
 @Model

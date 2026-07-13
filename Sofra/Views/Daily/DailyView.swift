@@ -88,6 +88,7 @@ struct DailyView: View {
     /// with its own delay for a clear top-to-bottom cascade. Below-the-fold
     /// cards get their motion from `.scrollTransition` instead.
     @State private var appeared = false
+    @State private var showManualEntry = false
 
     private func entrance(_ delay: Double) -> some ViewModifier {
         EntranceModifier(appeared: appeared, delay: delay)
@@ -142,6 +143,12 @@ struct DailyView: View {
             if newPhase == .active {
                 refreshDayAnchor()
             }
+        }
+        .sheet(isPresented: $showManualEntry) {
+            ManualEntryView(calorieTarget: calorieTarget)
+                .presentationCornerRadius(24)
+                .presentationBackground(Color.bgPage)
+                .presentationDragIndicator(.visible)
         }
     }
 
@@ -301,11 +308,25 @@ struct DailyView: View {
     @ViewBuilder
     private var todayEntriesSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
-            Text("BUGÜNKÜ ÖĞÜNLER")
-                .font(.sofraEyebrow)
-                .tracking(1.2)
-                .foregroundStyle(Color.textMuted)
-                .padding(.horizontal, Layout.Spacing.lg)
+            HStack {
+                Text("BUGÜNKÜ ÖĞÜNLER")
+                    .font(.sofraEyebrow)
+                    .tracking(1.2)
+                    .foregroundStyle(Color.textMuted)
+                Spacer()
+                Button {
+                    showManualEntry = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "square.and.pencil")
+                            .font(.system(size: 11, weight: .semibold))
+                        Text("Elle gir")
+                            .font(.sofraCaption)
+                    }
+                    .foregroundStyle(Color.accentText)
+                }
+            }
+            .padding(.horizontal, Layout.Spacing.lg)
 
             if todayScans.isEmpty {
                 emptyMealsCard
@@ -374,6 +395,14 @@ struct DailyView: View {
                 }
             }
             .padding(.top, Layout.Spacing.xs)
+
+            Button {
+                showManualEntry = true
+            } label: {
+                Text("Ya da kalori/makroyu elle gir")
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.accentText)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(Layout.Spacing.xl)
@@ -510,11 +539,19 @@ struct MealEntryCard: View {
         SofraFormatters.time.string(from: entry.timestamp)
     }
 
+    private var sourceIcon: String {
+        switch entry.source {
+        case .photo:  return "camera.fill"
+        case .text:   return "text.alignleft"
+        case .manual: return "square.and.pencil"
+        }
+    }
+
     var body: some View {
         VStack(spacing: Layout.Spacing.sm) {
             // Entry header: time + source + total
             HStack(spacing: Layout.Spacing.xs) {
-                Image(systemName: entry.source == .photo ? "camera.fill" : "text.alignleft")
+                Image(systemName: sourceIcon)
                     .font(.system(size: 10))
                     .foregroundStyle(Color.textMuted)
                 Text(timeLabel)
@@ -559,5 +596,123 @@ struct MealEntryCard: View {
                 Label("Öğünü Sil", systemImage: "trash")
             }
         }
+    }
+}
+
+// MARK: - Manual entry (one-off meal — free, no scan consumed)
+
+/// Type calories (+ optional macros) and it writes a `.manual` ScanEntry into
+/// today. No AI scan is consumed and no persistent counter is created; the entry
+/// shows up in Today and History like any other and is deletable there.
+///
+/// Lives in this file (like SettingsView in ContentView) so it compiles against
+/// the committed .xcodeproj without a `xcodegen generate` step.
+struct ManualEntryView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+
+    /// Today's calorie target, forwarded to the widget snapshot after saving.
+    let calorieTarget: Double
+
+    @State private var name: String = ""
+    @State private var caloriesText: String = ""
+    @State private var proteinText: String = ""
+    @State private var carbsText: String = ""
+    @State private var fatText: String = ""
+
+    private enum Field: Hashable { case name, calories, protein, carbs, fat }
+    @FocusState private var focusedField: Field?
+
+    private var calories: Double { parse(caloriesText) }
+    private var canSave: Bool { calories > 0 }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Ad (opsiyonel, örn. akşam yemeği)", text: $name)
+                        .focused($focusedField, equals: .name)
+                } footer: {
+                    Text("Boş bırakırsan “Elle giriş” olarak kaydedilir.")
+                }
+
+                Section {
+                    nutrientRow(title: "Kalori", text: $caloriesText, unit: "kcal", field: .calories)
+                    nutrientRow(title: "Protein", text: $proteinText, unit: "g", field: .protein)
+                    nutrientRow(title: "Karbonhidrat", text: $carbsText, unit: "g", field: .carbs)
+                    nutrientRow(title: "Yağ", text: $fatText, unit: "g", field: .fat)
+                } header: {
+                    Text("Besin değeri")
+                } footer: {
+                    Text("Yalnız kalori zorunlu. Bugüne eklenir — ücretsizdir, tarama hakkından düşmez.")
+                }
+            }
+            .scrollContentBackground(.hidden)
+            .background(Color.bgPage.ignoresSafeArea())
+            .scrollDismissesKeyboard(.interactively)
+            .navigationTitle("Elle Ekle")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Vazgeç") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Ekle") { save() }.disabled(!canSave)
+                }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Bitti") { focusedField = nil }
+                        .fontWeight(.semibold)
+                }
+            }
+        }
+        .tint(Color.accentFill)
+    }
+
+    private func nutrientRow(title: String, text: Binding<String>, unit: String, field: Field) -> some View {
+        HStack {
+            Text(title)
+                .foregroundStyle(Color.textPrimary)
+            Spacer()
+            TextField("0", text: text)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 72)
+                .font(.sofraNumericSmall)
+                .focused($focusedField, equals: field)
+            Text(unit)
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+        }
+    }
+
+    private func save() {
+        guard canSave else { return }
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        let entry = ScanEntry(source: .manual)
+        let item = LoggedItem(
+            name: trimmed.isEmpty ? "Elle giriş" : trimmed,
+            portionUnit: .adet,
+            quantity: 1,
+            calories: calories,
+            protein: parse(proteinText),
+            carbs: parse(carbsText),
+            fat: parse(fatText),
+            confidence: 1,
+            valueSource: "manual"
+        )
+        item.scanEntry = entry
+        entry.items = [item]
+        modelContext.insert(entry)
+        try? modelContext.save()
+
+        WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        dismiss()
+    }
+
+    /// Accepts both "," and "." as the decimal separator (Turkish keyboards).
+    private func parse(_ text: String) -> Double {
+        Double(text.replacingOccurrences(of: ",", with: ".")) ?? 0
     }
 }
