@@ -1,4138 +1,4125 @@
 {
-  "emitGeneratedSymbols" : false,
-  "sourceLanguage" : "tr",
-  "strings" : {
-    "Günaydın" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Good morning"
+  "emitGeneratedSymbols": false,
+  "sourceLanguage": "tr",
+  "strings": {
+    "Günaydın": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good morning"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Günaydın"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günaydın"
           }
         }
       }
     },
-    "İyi günler" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Good afternoon"
+    "İyi günler": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good afternoon"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İyi günler"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İyi günler"
           }
         }
       }
     },
-    "İyi akşamlar" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Good evening"
+    "İyi akşamlar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good evening"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İyi akşamlar"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İyi akşamlar"
           }
         }
       }
     },
-    "Tabağını çek, kalorisini gör" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Snap your plate, see its calories"
+    "Tabağını çek, kalorisini gör": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snap your plate, see its calories"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tabağını çek, kalorisini gör"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tabağını çek, kalorisini gör"
           }
         }
       }
     },
-    "MAKROLAR" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MACROS"
+    "MAKROLAR": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MACROS"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MAKROLAR"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAKROLAR"
           }
         }
       }
     },
-    "Protein" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protein"
+    "Protein": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protein"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein"
           }
         }
       }
     },
-    "Karb." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carbs"
+    "Karb.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carbs"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Karb."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karb."
           }
         }
       }
     },
-    "Yağ" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fat"
+    "Yağ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fat"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yağ"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yağ"
           }
         }
       }
     },
-    "BU HAFTA" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "THIS WEEK"
+    "BU HAFTA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "THIS WEEK"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BU HAFTA"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BU HAFTA"
           }
         }
       }
     },
-    "7 Günlük Özet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7-Day Summary"
+    "7 Günlük Özet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7-Day Summary"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7 Günlük Özet"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 Günlük Özet"
           }
         }
       }
     },
-    "Ortalama %lld kcal" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Average %lld kcal"
+    "Ortalama %lld kcal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average %lld kcal"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ortalama %lld kcal"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ortalama %lld kcal"
           }
         }
       }
     },
-    "Henüz veri yok" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No data yet"
+    "Henüz veri yok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No data yet"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Henüz veri yok"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz veri yok"
           }
         }
       }
     },
-    "BUGÜNKÜ ÖĞÜNLER" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TODAY'S MEALS"
+    "BUGÜNKÜ ÖĞÜNLER": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TODAY'S MEALS"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BUGÜNKÜ ÖĞÜNLER"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BUGÜNKÜ ÖĞÜNLER"
           }
         }
       }
     },
-    "Elle gir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manual"
+    "Elle gir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manual"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elle gir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elle gir"
           }
         }
       }
     },
-    "Bugün henüz öğün eklemedin" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You haven't logged any meals today"
+    "Bugün henüz öğün eklemedin": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You haven't logged any meals today"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bugün henüz öğün eklemedin"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugün henüz öğün eklemedin"
           }
         }
       }
     },
-    "Tabağının fotoğrafını çek, gerisini Calorisor halletsin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Take a photo of your plate — Calorisor handles the rest."
+    "Tabağının fotoğrafını çek, gerisini Calorisor halletsin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take a photo of your plate — Calorisor handles the rest."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tabağının fotoğrafını çek, gerisini Calorisor halletsin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tabağının fotoğrafını çek, gerisini Calorisor halletsin."
           }
         }
       }
     },
-    "Fotoğrafla ekle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add with photo"
+    "Fotoğrafla ekle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add with photo"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fotoğrafla ekle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğrafla ekle"
           }
         }
       }
     },
-    "Yazarak ekle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add by text"
+    "Yazarak ekle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add by text"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yazarak ekle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazarak ekle"
           }
         }
       }
     },
-    "Ya da kalori/makroyu elle gir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Or enter calories/macros manually"
+    "Ya da kalori/makroyu elle gir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Or enter calories/macros manually"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ya da kalori/makroyu elle gir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya da kalori/makroyu elle gir"
           }
         }
       }
     },
-    "Öğünü Sil" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete Meal"
+    "Öğünü Sil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Meal"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öğünü Sil"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öğünü Sil"
           }
         }
       }
     },
-    "Kalori" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calories"
+    "Kalori": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calories"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kalori"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalori"
           }
         }
       }
     },
-    "Karbonhidrat" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carbs"
+    "Karbonhidrat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carbs"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Karbonhidrat"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karbonhidrat"
           }
         }
       }
     },
-    "Ad (opsiyonel, örn. akşam yemeği)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name (optional, e.g. dinner)"
+    "Ad (opsiyonel, örn. akşam yemeği)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name (optional, e.g. dinner)"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ad (opsiyonel, örn. akşam yemeği)"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad (opsiyonel, örn. akşam yemeği)"
           }
         }
       }
     },
-    "Boş bırakırsan “Elle giriş” olarak kaydedilir." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leave blank to save as “Manual entry”."
+    "Boş bırakırsan “Elle giriş” olarak kaydedilir.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave blank to save as “Manual entry”."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Boş bırakırsan “Elle giriş” olarak kaydedilir."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş bırakırsan “Elle giriş” olarak kaydedilir."
           }
         }
       }
     },
-    "Besin değeri" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nutrition"
+    "Besin değeri": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Besin değeri"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Besin değeri"
           }
         }
       }
     },
-    "Yalnız kalori zorunlu. Bugüne eklenir — ücretsizdir, tarama hakkından düşmez." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Only calories are required. Added to today — free, doesn't count toward your scan limit."
+    "Yalnız kalori zorunlu. Bugüne eklenir — ücretsizdir, tarama hakkından düşmez.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only calories are required. Added to today — free, doesn't count toward your scan limit."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yalnız kalori zorunlu. Bugüne eklenir — ücretsizdir, tarama hakkından düşmez."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnız kalori zorunlu. Bugüne eklenir — ücretsizdir, tarama hakkından düşmez."
           }
         }
       }
     },
-    "Elle Ekle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manual Entry"
+    "Elle Ekle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manual Entry"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elle Ekle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elle Ekle"
           }
         }
       }
     },
-    "Vazgeç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
+    "Vazgeç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vazgeç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
           }
         }
       }
     },
-    "Ekle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add"
+    "Ekle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ekle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekle"
           }
         }
       }
     },
-    "Bitti" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Done"
+    "Bitti": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bitti"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitti"
           }
         }
       }
     },
-    "Bugün" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Today"
+    "Bugün": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bugün"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugün"
           }
         }
       }
     },
-    "Geçmiş" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "History"
+    "Geçmiş": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geçmiş"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş"
           }
         }
       }
     },
-    "Ayarlar" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+    "Ayarlar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ayarlar"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar"
           }
         }
       }
     },
-    "Bu haftaki taramaların bitti" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You're out of scans this week"
+    "Bu haftaki taramaların bitti": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're out of scans this week"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu haftaki taramaların bitti"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu haftaki taramaların bitti"
           }
         }
       }
     },
-    "Haftalık %lld ücretsiz taraman doldu — %@.\nÖğününü elle de ekleyebilirsin (her zaman ücretsiz) ya da sınırsız taramaya geçebilirsin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your %lld free weekly scans are used up — %@.\nYou can still log meals manually (always free) or upgrade to unlimited scans."
+    "Haftalık %lld ücretsiz taraman doldu — %@.\nÖğününü elle de ekleyebilirsin (her zaman ücretsiz) ya da sınırsız taramaya geçebilirsin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your %lld free weekly scans are used up — %@.\nYou can still log meals manually (always free) or upgrade to unlimited scans."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haftalık %lld ücretsiz taraman doldu — %@.\nÖğününü elle de ekleyebilirsin (her zaman ücretsiz) ya da sınırsız taramaya geçebilirsin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftalık %lld ücretsiz taraman doldu — %@.\nÖğününü elle de ekleyebilirsin (her zaman ücretsiz) ya da sınırsız taramaya geçebilirsin."
           }
         }
       }
     },
-    "Sınırsız Taramaya Geç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade to Unlimited Scans"
+    "Sınırsız Taramaya Geç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade to Unlimited Scans"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sınırsız Taramaya Geç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız Taramaya Geç"
           }
         }
       }
     },
-    "yakında yenilenir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "refills soon"
+    "yakında yenilenir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "refills soon"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "yakında yenilenir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yakında yenilenir"
           }
         }
       }
     },
-    "yarın yenilenir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "refills tomorrow"
+    "yarın yenilenir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "refills tomorrow"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "yarın yenilenir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yarın yenilenir"
           }
         }
       }
     },
-    "%lld gün sonra yenilenir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "refills in %lld days"
+    "%lld gün sonra yenilenir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "refills in %lld days"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld gün sonra yenilenir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld gün sonra yenilenir"
           }
         }
       }
     },
-    "Şimdilik kapat" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close for now"
+    "Şimdilik kapat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close for now"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Şimdilik kapat"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şimdilik kapat"
           }
         }
       }
     },
-    "Calorisor Pro" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorisor Pro"
+    "Calorisor Pro": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calorisor Pro"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorisor Pro"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calorisor Pro"
           }
         }
       }
     },
-    "Aktif" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active"
+    "Aktif": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktif"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktif"
           }
         }
       }
     },
-    "Aboneliği Yönet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manage Subscription"
+    "Aboneliği Yönet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage Subscription"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aboneliği Yönet"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aboneliği Yönet"
           }
         }
       }
     },
-    "Calorisor Pro'ya Geç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upgrade to Calorisor Pro"
+    "Calorisor Pro'ya Geç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade to Calorisor Pro"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorisor Pro'ya Geç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calorisor Pro'ya Geç"
           }
         }
       }
     },
-    "%lld tarama kaldı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld scans left"
+    "%lld tarama kaldı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld scans left"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld tarama kaldı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld tarama kaldı"
           }
         }
       }
     },
-    "Satın Alımları Geri Yükle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restore Purchases"
+    "Satın Alımları Geri Yükle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Purchases"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Satın Alımları Geri Yükle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın Alımları Geri Yükle"
           }
         }
       }
     },
-    "Abonelik" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subscription"
+    "Abonelik": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abonelik"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonelik"
           }
         }
       }
     },
-    "Günlük kalori" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daily calories"
+    "Günlük kalori": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily calories"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Günlük kalori"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük kalori"
           }
         }
       }
     },
-    "Kalan, yenen ve hedef kalorileri arasında geçiş yapar" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Switches between remaining, consumed, and target calories"
+    "Kalan, yenen ve hedef kalorileri arasında geçiş yapar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switches between remaining, consumed, and target calories"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kalan, yenen ve hedef kalorileri arasında geçiş yapar"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalan, yenen ve hedef kalorileri arasında geçiş yapar"
           }
         }
       }
     },
-    "kcal hedef" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal target"
+    "kcal hedef": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal target"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal hedef"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal hedef"
           }
         }
       }
     },
-    "kcal hedef üstü" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal over target"
+    "kcal hedef üstü": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal over target"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal hedef üstü"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal hedef üstü"
           }
         }
       }
     },
-    "kcal kalan" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal remaining"
+    "kcal kalan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal remaining"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal kalan"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal kalan"
           }
         }
       }
     },
-    "kcal yenen" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal consumed"
+    "kcal yenen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal consumed"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal yenen"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal yenen"
           }
         }
       }
     },
-    "Kaloriden makro dağıt (P25 · K45 · Y30)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Distribute macros from calories (P25 · C45 · F30)"
+    "Kaloriden makro dağıt (P25 · K45 · Y30)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distribute macros from calories (P25 · C45 · F30)"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kaloriden makro dağıt (P25 · K45 · Y30)"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaloriden makro dağıt (P25 · K45 · Y30)"
           }
         }
       }
     },
-    "Günlük Hedefler" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daily Targets"
+    "Günlük Hedefler": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily Targets"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Günlük Hedefler"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük Hedefler"
           }
         }
       }
     },
-    "Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Changes instantly update the ring and macro cards on the Today screen."
+    "Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes instantly update the ring and macro cards on the Today screen."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır."
           }
         }
       }
     },
-    "Hedef" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Goal"
+    "Hedef": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goal"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hedef"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hedef"
           }
         }
       }
     },
-    "Aktivite" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activity"
+    "Aktivite": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activity"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktivite"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivite"
           }
         }
       }
     },
-    "Boy" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Height"
+    "Boy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Height"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Boy"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boy"
           }
         }
       }
     },
-    "Kilo" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weight"
+    "Kilo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weight"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kilo"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilo"
           }
         }
       }
     },
-    "Yaş" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Age"
+    "Yaş": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Age"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yaş"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaş"
           }
         }
       }
     },
-    "Belirtilmedi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not specified"
+    "Belirtilmedi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not specified"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Belirtilmedi"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belirtilmedi"
           }
         }
       }
     },
-    "Biyolojik cinsiyet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biological sex"
+    "Biyolojik cinsiyet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biological sex"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biyolojik cinsiyet"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biyolojik cinsiyet"
           }
         }
       }
     },
-    "Profil bulunamadı." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile not found."
+    "Profil bulunamadı.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profile not found."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profil bulunamadı."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil bulunamadı."
           }
         }
       }
     },
-    "Profil" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile"
+    "Profil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profile"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profil"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil"
           }
         }
       }
     },
-    "Verilerimi Dışa Aktar" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Export My Data"
+    "Verilerimi Dışa Aktar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export My Data"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verilerimi Dışa Aktar"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verilerimi Dışa Aktar"
           }
         }
       }
     },
-    "Tüm Verilerimi Sil" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete All My Data"
+    "Tüm Verilerimi Sil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete All My Data"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tüm Verilerimi Sil"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm Verilerimi Sil"
           }
         }
-      }
-    },
-    "Veri" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veri"
-          }
-        }
-      }
+      },
+      "shouldGenerateSymbol": false
     },
-    "Geri Bildirim Gönder" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Send Feedback"
+    "Veri": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geri Bildirim Gönder"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veri"
           }
         }
       }
     },
-    "Gizlilik Politikası" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy Policy"
+    "Geri Bildirim Gönder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send Feedback"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gizlilik Politikası"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri Bildirim Gönder"
           }
         }
       }
     },
-    "Kullanım Koşulları" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Terms of Use"
+    "Gizlilik Politikası": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kullanım Koşulları"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizlilik Politikası"
           }
         }
       }
     },
-    "Sürüm" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version"
+    "Kullanım Koşulları": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of Use"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sürüm"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanım Koşulları"
           }
         }
       }
     },
-    "Hakkında" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About"
+    "Sürüm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hakkında"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sürüm"
           }
         }
       }
     },
-    "Profil değişti. Günlük hedefler yeniden hesaplansın mı?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile changed. Recalculate daily targets?"
+    "Hakkında": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profil değişti. Günlük hedefler yeniden hesaplansın mı?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hakkında"
           }
         }
       }
     },
-    "Evet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yes"
+    "Profil değişti. Günlük hedefler yeniden hesaplansın mı?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profile changed. Recalculate daily targets?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Evet"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil değişti. Günlük hedefler yeniden hesaplansın mı?"
           }
         }
       }
     },
-    "Hayır" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No"
+    "Evet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yes"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hayır"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evet"
           }
         }
       }
     },
-    "Tüm verilerimi sil?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete all my data?"
+    "Hayır": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tüm verilerimi sil?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hayır"
           }
         }
       }
     },
-    "Tüm öğünler, sayaçlar ve profil kalıcı olarak silinir. iCloud kopyası da dahil. Bu geri alınamaz." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All meals, counters, and profile will be permanently deleted — including the iCloud copy. This cannot be undone."
+    "Tüm verilerimi sil?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete all my data?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tüm öğünler, sayaçlar ve profil kalıcı olarak silinir. iCloud kopyası da dahil. Bu geri alınamaz."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm verilerimi sil?"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol": false
     },
-    "Veriler silinemedi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not delete data"
+    "Tüm öğünler, sayaçlar ve profil kalıcı olarak silinir. iCloud kopyası da dahil. Bu geri alınamaz.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All meals, counters, and profile will be permanently deleted — including the iCloud copy. This cannot be undone."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veriler silinemedi"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm öğünler, sayaçlar ve profil kalıcı olarak silinir. iCloud kopyası da dahil. Bu geri alınamaz."
           }
         }
       }
     },
-    "Tamam" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
+    "Veriler silinemedi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not delete data"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tamam"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veriler silinemedi"
           }
         }
       }
     },
-    "Bilinmeyen bir hata oluştu." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "An unknown error occurred."
+    "Tamam": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bilinmeyen bir hata oluştu."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamam"
           }
         }
       }
     },
-    "Veriler dışa aktarılamadı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not export data"
+    "Bilinmeyen bir hata oluştu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An unknown error occurred."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veriler dışa aktarılamadı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilinmeyen bir hata oluştu."
           }
         }
       }
     },
-    "E-posta uygulaması açılamadı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not open email app"
+    "Veriler dışa aktarılamadı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not export data"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-posta uygulaması açılamadı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veriler dışa aktarılamadı"
           }
         }
       }
     },
-    "Geri bildiriminizi av.fatihdisci@gmail.com adresine gönderebilirsiniz." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You can send your feedback to av.fatihdisci@gmail.com."
+    "E-posta uygulaması açılamadı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not open email app"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geri bildiriminizi av.fatihdisci@gmail.com adresine gönderebilirsiniz."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-posta uygulaması açılamadı"
           }
         }
       }
     },
-    "Kapat" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
+    "Geri bildiriminizi av.fatihdisci@gmail.com adresine gönderebilirsiniz.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can send your feedback to av.fatihdisci@gmail.com."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kapat"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri bildiriminizi av.fatihdisci@gmail.com adresine gönderebilirsiniz."
           }
         }
       }
     },
-    "Tabağını Tara" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan Your Plate"
+    "Kapat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tabağını Tara"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
           }
         }
       }
     },
-    "Tabağı çerçeveye al" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Frame your plate"
+    "Tabağını Tara": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Your Plate"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tabağı çerçeveye al"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tabağını Tara"
           }
         }
       }
     },
-    "Galeri" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gallery"
+    "Tabağı çerçeveye al": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frame your plate"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Galeri"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tabağı çerçeveye al"
           }
         }
       }
     },
-    "Kamera izni gerekli" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Camera permission needed"
+    "Galeri": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gallery"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kamera izni gerekli"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Galeri"
           }
         }
       }
     },
-    "Tabağını tarayabilmek için\nAyarlar'dan izin ver." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Grant camera access in\nSettings to scan your plate."
+    "Kamera izni gerekli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera permission needed"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tabağını tarayabilmek için\nAyarlar'dan izin ver."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kamera izni gerekli"
           }
         }
       }
     },
-    "Ayarlar'ı Aç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open Settings"
+    "Tabağını tarayabilmek için\nAyarlar'dan izin ver.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grant camera access in\nSettings to scan your plate."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ayarlar'ı Aç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tabağını tarayabilmek için\nAyarlar'dan izin ver."
           }
         }
       }
     },
-    "Fotoğraf yüklenemedi." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not load photo."
+    "Ayarlar'ı Aç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fotoğraf yüklenemedi."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar'ı Aç"
           }
         }
       }
     },
-    "%lld ücretsiz tarama" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld free scans"
+    "Fotoğraf yüklenemedi.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not load photo."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld ücretsiz tarama"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf yüklenemedi."
           }
         }
       }
     },
-    "Limit doldu" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limit reached"
+    "%lld ücretsiz tarama": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld free scans"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limit doldu"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ücretsiz tarama"
           }
         }
       }
     },
-    "Çekim zaten sürüyor." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Capture already in progress."
+    "Limit doldu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit reached"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çekim zaten sürüyor."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit doldu"
           }
         }
       }
     },
-    "Kamera hazır değil, bir saniye bekleyin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Camera not ready — wait a moment."
+    "Çekim zaten sürüyor.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capture already in progress."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kamera hazır değil, bir saniye bekleyin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çekim zaten sürüyor."
           }
         }
       }
     },
-    "Fotoğraf çekilemedi, tekrar deneyin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not take photo — try again."
+    "Kamera hazır değil, bir saniye bekleyin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera not ready — wait a moment."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fotoğraf çekilemedi, tekrar deneyin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kamera hazır değil, bir saniye bekleyin."
           }
         }
       }
     },
-    "NE YEDİN?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WHAT DID YOU EAT?"
+    "Fotoğraf çekilemedi, tekrar deneyin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not take photo — try again."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NE YEDİN?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf çekilemedi, tekrar deneyin."
           }
         }
       }
     },
-    "Örn: 2 kepçe mercimek çorbası, 1 dilim ekmek, 1 kase yoğurt" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "e.g. 2 bowls of lentil soup, 1 slice of bread, 1 cup of yogurt"
+    "NE YEDİN?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WHAT DID YOU EAT?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Örn: 2 kepçe mercimek çorbası, 1 dilim ekmek, 1 kase yoğurt"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NE YEDİN?"
           }
         }
       }
     },
-    "HIZLI EKLE" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "QUICK ADD"
+    "Örn: 2 kepçe mercimek çorbası, 1 dilim ekmek, 1 kase yoğurt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. 2 bowls of lentil soup, 1 slice of bread, 1 cup of yogurt"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HIZLI EKLE"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Örn: 2 kepçe mercimek çorbası, 1 dilim ekmek, 1 kase yoğurt"
           }
         }
       }
     },
-    "Analiz ediliyor..." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analyzing..."
+    "HIZLI EKLE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QUICK ADD"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analiz ediliyor..."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HIZLI EKLE"
           }
         }
       }
     },
-    "Analiz Et" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analyze"
+    "Analiz ediliyor...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyzing..."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analiz Et"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analiz ediliyor..."
           }
         }
       }
     },
-    "Analiz başarısız" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analysis failed"
+    "Analiz Et": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyze"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analiz başarısız"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analiz Et"
           }
         }
       }
     },
-    "Sonuçlar" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Results"
+    "Analiz başarısız": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis failed"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sonuçlar"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analiz başarısız"
           }
         }
       }
     },
-    "%lld öğe tanındı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld item recognized"
+    "Sonuçlar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Results"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld öğe tanındı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuçlar"
           }
         }
       }
     },
-    "1 öğe tanındı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 item recognized"
+    "%lld öğe tanındı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld item recognized"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 öğe tanındı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld öğe tanındı"
           }
         }
       }
     },
-    "Fotoğrafta yemek bulunamadı." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No food found in the photo."
+    "1 öğe tanındı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 item recognized"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fotoğrafta yemek bulunamadı."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 öğe tanındı"
           }
         }
       }
     },
-    "Yazdıklarından yemek çıkaramadık." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We couldn't identify food from your text."
+    "Fotoğrafta yemek bulunamadı.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No food found in the photo."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yazdıklarından yemek çıkaramadık."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğrafta yemek bulunamadı."
           }
         }
       }
     },
-    "Farklı bir açıyla tekrar deneyin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Try again from a different angle."
+    "Yazdıklarından yemek çıkaramadık.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We couldn't identify food from your text."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Farklı bir açıyla tekrar deneyin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazdıklarından yemek çıkaramadık."
           }
         }
       }
     },
-    "Biraz daha ayrıntı ekleyip tekrar dene." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add more detail and try again."
+    "Farklı bir açıyla tekrar deneyin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again from a different angle."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biraz daha ayrıntı ekleyip tekrar dene."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farklı bir açıyla tekrar deneyin."
           }
         }
       }
     },
-    "Tekrar çek" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Retake"
+    "Biraz daha ayrıntı ekleyip tekrar dene.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add more detail and try again."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tekrar çek"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biraz daha ayrıntı ekleyip tekrar dene."
           }
         }
       }
     },
-    "Düzenle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit"
+    "Tekrar çek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retake"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Düzenle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tekrar çek"
           }
         }
       }
     },
-    "Düzenlemeler kaydedilmedi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Changes not saved"
+    "Düzenle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Düzenlemeler kaydedilmedi"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzenle"
           }
         }
       }
     },
-    "Çıkış" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exit"
+    "Düzenlemeler kaydedilmedi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes not saved"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çıkış"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzenlemeler kaydedilmedi"
           }
         }
       }
     },
-    "Tabak inceleniyor…" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inspecting plate…"
+    "Çıkış": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exit"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tabak inceleniyor…"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çıkış"
           }
         }
       }
     },
-    "Porsiyonlar ölçülüyor…" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Measuring portions…"
+    "Tabak inceleniyor…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspecting plate…"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Porsiyonlar ölçülüyor…"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tabak inceleniyor…"
           }
         }
       }
     },
-    "Kaloriler hesaplanıyor…" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculating calories…"
+    "Porsiyonlar ölçülüyor…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measuring portions…"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kaloriler hesaplanıyor…"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porsiyonlar ölçülüyor…"
           }
         }
       }
     },
-    "Demo verisi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Demo data"
+    "Kaloriler hesaplanıyor…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculating calories…"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Demo verisi"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaloriler hesaplanıyor…"
           }
         }
       }
     },
-    "Sunucu bağlı değil" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Server not connected"
+    "Demo verisi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo data"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sunucu bağlı değil"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo verisi"
           }
         }
       }
     },
-    "Biraz bekle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wait a moment"
+    "Sunucu bağlı değil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server not connected"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biraz bekle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu bağlı değil"
           }
         }
       }
     },
-    "Bağlantı yok" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No connection"
+    "Biraz bekle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wait a moment"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bağlantı yok"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biraz bekle"
           }
         }
       }
     },
-    "Sunucu sorunu" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Server issue"
+    "Bağlantı yok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No connection"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sunucu sorunu"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı yok"
           }
         }
       }
     },
-    "Tekrar dene" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Try again"
+    "Sunucu sorunu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Server issue"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tekrar dene"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucu sorunu"
           }
         }
       }
     },
-    "Geri" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Back"
+    "Tekrar dene": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geri"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tekrar dene"
           }
         }
       }
     },
-    "İleri" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Next"
+    "Geri": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İleri"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri"
           }
         }
       }
     },
-    "Günlük Hedefin" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your Daily Target"
+    "İleri": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Günlük Hedefin"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İleri"
           }
         }
       }
     },
-    "kalori/gün" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "calories/day"
+    "Günlük Hedefin": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Daily Target"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kalori/gün"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük Hedefin"
           }
         }
       }
     },
-    "Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You're ready. From here, all you need to do is photograph your plate."
+    "kalori/gün": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "calories/day"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kalori/gün"
           }
         }
       }
     },
-    "Makro Dağılımı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Macro Breakdown"
+    "Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're ready. From here, all you need to do is photograph your plate."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Makro Dağılımı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek."
           }
         }
       }
     },
-    "Devam Et" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue"
+    "Makro Dağılımı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Macro Breakdown"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devam Et"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Makro Dağılımı"
           }
         }
       }
     },
-    "Nasıl hesapladık?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How did we calculate this?"
+    "Devam Et": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nasıl hesapladık?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devam Et"
           }
         }
       }
     },
-    "BMR (Mifflin-St Jeor)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BMR (Mifflin-St Jeor)"
+    "Nasıl hesapladık?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How did we calculate this?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BMR (Mifflin-St Jeor)"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nasıl hesapladık?"
           }
         }
       }
     },
-    "Aktivite çarpanı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activity multiplier"
+    "BMR (Mifflin-St Jeor)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BMR (Mifflin-St Jeor)"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktivite çarpanı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BMR (Mifflin-St Jeor)"
           }
         }
       }
     },
-    "Hedef düzeltmesi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Goal adjustment"
+    "Aktivite çarpanı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activity multiplier"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hedef düzeltmesi"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivite çarpanı"
           }
         }
       }
     },
-    "PLAN SEÇ" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CHOOSE PLAN"
+    "Hedef düzeltmesi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goal adjustment"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PLAN SEÇ"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hedef düzeltmesi"
           }
         }
       }
     },
-    "En Uygun" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Best Value"
+    "PLAN SEÇ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CHOOSE PLAN"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En Uygun"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PLAN SEÇ"
           }
         }
       }
     },
-    "Yıllık" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annual"
+    "En Uygun": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Best Value"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yıllık"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Uygun"
           }
         }
       }
     },
-    "Aylık" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monthly"
+    "Yıllık": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annual"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aylık"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yıllık"
           }
         }
       }
     },
-    "Sınırsız fotoğrafla kalori takibi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlimited photo calorie tracking"
+    "Aylık": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monthly"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sınırsız fotoğrafla kalori takibi"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aylık"
           }
         }
       }
     },
-    "Sınırsız yazarak öğün ekleme" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlimited text meal logging"
+    "Sınırsız fotoğrafla kalori takibi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited photo calorie tracking"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sınırsız yazarak öğün ekleme"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız fotoğrafla kalori takibi"
           }
         }
       }
     },
-    "Daha akıllı AI ile daha isabetli tanıma" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smarter AI for more accurate recognition"
+    "Sınırsız yazarak öğün ekleme": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlimited text meal logging"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daha akıllı AI ile daha isabetli tanıma"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız yazarak öğün ekleme"
           }
         }
       }
     },
-    "Yeni Pro özelliklerine ilk erişim" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "First access to new Pro features"
+    "Daha akıllı AI ile daha isabetli tanıma": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smarter AI for more accurate recognition"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yeni Pro özelliklerine ilk erişim"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha akıllı AI ile daha isabetli tanıma"
           }
         }
       }
     },
-    "İşlem yapılıyor..." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Processing..."
+    "Yeni Pro özelliklerine ilk erişim": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First access to new Pro features"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İşlem yapılıyor..."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Pro özelliklerine ilk erişim"
           }
         }
       }
     },
-    "%@ Ücretsiz Dene" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Try Free for %@"
+    "İşlem yapılıyor...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Processing..."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ Ücretsiz Dene"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşlem yapılıyor..."
           }
         }
       }
     },
-    "Abone Ol" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subscribe"
+    "%@ Ücretsiz Dene": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try Free for %@"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abone Ol"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Ücretsiz Dene"
           }
         }
       }
     },
-    "Abonelik Yönetimi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subscription Management"
+    "Abone Ol": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscribe"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abonelik Yönetimi"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abone Ol"
           }
         }
       }
     },
-    "%@ ücretsiz deneme" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ free trial"
+    "Abonelik Yönetimi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription Management"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ ücretsiz deneme"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonelik Yönetimi"
           }
         }
       }
     },
-    "Sonra %@ · istediğin an iptal" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Then %@ · cancel anytime"
+    "%@ ücretsiz deneme": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ free trial"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sonra %@ · istediğin an iptal"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ücretsiz deneme"
           }
         }
       }
     },
-    "İstediğin an iptal edebilirsin" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You can cancel anytime"
+    "Sonra %@ · istediğin an iptal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Then %@ · cancel anytime"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İstediğin an iptal edebilirsin"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonra %@ · istediğin an iptal"
           }
         }
       }
     },
-    "3 ücretsiz tarama ile devam et" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Continue with 3 free scans"
+    "İstediğin an iptal edebilirsin": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can cancel anytime"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "3 ücretsiz tarama ile devam et"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İstediğin an iptal edebilirsin"
           }
         }
       }
     },
-    "%@ ücretsiz" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ free"
+    "3 ücretsiz tarama ile devam et": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue with 3 free scans"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ ücretsiz"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 ücretsiz tarama ile devam et"
           }
         }
       }
     },
-    "TÜM GÜNLER" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALL DAYS"
+    "%@ ücretsiz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ free"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TÜM GÜNLER"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ücretsiz"
           }
         }
       }
     },
-    "Henüz kayıtlı gün yok" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No recorded days yet"
+    "TÜM GÜNLER": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALL DAYS"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Henüz kayıtlı gün yok"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TÜM GÜNLER"
           }
         }
       }
     },
-    "ÖĞÜNLER" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MEALS"
+    "Henüz kayıtlı gün yok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No recorded days yet"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ÖĞÜNLER"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz kayıtlı gün yok"
           }
         }
       }
     },
-    "HIZLI EKLEMELER" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "QUICK ADDS"
+    "ÖĞÜNLER": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MEALS"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HIZLI EKLEMELER"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ÖĞÜNLER"
           }
         }
       }
     },
-    "Bugün" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Today"
+    "HIZLI EKLEMELER": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QUICK ADDS"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bugün"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HIZLI EKLEMELER"
           }
         }
       }
     },
-    "Dün" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yesterday"
+    "Dün": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yesterday"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dün"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dün"
           }
         }
       }
     },
-    "kalan" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "left"
+    "kalan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "left"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kalan"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kalan"
           }
         }
       }
     },
-    "kcal kaldı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal left"
+    "kcal kaldı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal left"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kcal kaldı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kcal kaldı"
           }
         }
       }
     },
-    "Elle giriş" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manual entry"
+    "Elle giriş": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manual entry"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elle giriş"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elle giriş"
           }
         }
       }
     },
-    "Lütfen tekrar deneyin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please try again."
+    "Lütfen tekrar deneyin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please try again."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lütfen tekrar deneyin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lütfen tekrar deneyin."
           }
         }
       }
     },
-    "Calorisor Geri Bildirim v%@" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorisor Feedback v%@"
+    "Calorisor Geri Bildirim v%@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calorisor Feedback v%@"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorisor Geri Bildirim v%@"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calorisor Geri Bildirim v%@"
           }
         }
       }
     },
-    "Dil" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Language"
+    "Dil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dil"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dil"
           }
         }
       }
     },
-    "Sistem" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "System"
+    "Sistem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sistem"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem"
           }
         }
       }
     },
-    "Türkçe" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Turkish"
+    "Türkçe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turkish"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Türkçe"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Türkçe"
           }
         }
       }
     },
-    "English" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "English"
+    "English": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "English"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "English"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "English"
           }
         }
       }
     },
-    "Şablonlar" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Templates"
+    "Şablonlar": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Templates"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Şablonlar"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şablonlar"
           }
         }
       }
     },
-    "Birine dokun, değerleri otomatik dolsun…" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap one to auto-fill values…"
+    "Birine dokun, değerleri otomatik dolsun…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap one to auto-fill values…"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Birine dokun, değerleri otomatik dolsun…"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birine dokun, değerleri otomatik dolsun…"
           }
         }
       }
     },
-    "Hedefin ne?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "What's your goal?"
+    "Hedefin ne?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What's your goal?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hedefin ne?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hedefin ne?"
           }
         }
       }
     },
-    "Boyun kaç cm?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How tall are you?"
+    "Boyun kaç cm?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How tall are you?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Boyun kaç cm?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boyun kaç cm?"
           }
         }
       }
     },
-    "Kilon kaç kg?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How much do you weigh?"
+    "Kilon kaç kg?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How much do you weigh?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kilon kaç kg?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilon kaç kg?"
           }
         }
       }
     },
-    "Günlük aktivite seviyen?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your daily activity level?"
+    "Günlük aktivite seviyen?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your daily activity level?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Günlük aktivite seviyen?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük aktivite seviyen?"
           }
         }
       }
     },
-    "Yaşın kaç?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How old are you?"
+    "Yaşın kaç?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How old are you?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yaşın kaç?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaşın kaç?"
           }
         }
       }
     },
-    "Biyolojik cinsiyetin?" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your biological sex?"
+    "Biyolojik cinsiyetin?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your biological sex?"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biyolojik cinsiyetin?"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biyolojik cinsiyetin?"
           }
         }
       }
     },
-    "7 gün" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7 days"
+    "7 gün": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 days"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7 gün"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 gün"
           }
         }
       }
     },
-    "ortalama" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "average"
+    "ortalama": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "average"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ortalama"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ortalama"
           }
         }
       }
     },
-    "gün kayıtlı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "days logged"
+    "gün kayıtlı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "days logged"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "gün kayıtlı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gün kayıtlı"
           }
         }
       }
     },
-    "sayaç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "counter"
+    "sayaç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "counter"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "sayaç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sayaç"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol": false
     },
-    "Erkek" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Male"
+    "Erkek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Male"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erkek"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erkek"
           }
         }
       }
     },
-    "Kadın" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Female"
+    "Kadın": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Female"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kadın"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kadın"
           }
         }
       }
     },
-    "Kilo vermek" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lose weight"
+    "Kilo vermek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lose weight"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kilo vermek"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilo vermek"
           }
         }
       }
     },
-    "Kilo almak" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gain weight"
+    "Kilo almak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gain weight"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kilo almak"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilo almak"
           }
         }
       }
     },
-    "Kilosunu korumak" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Maintain weight"
+    "Kilosunu korumak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintain weight"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kilosunu korumak"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilosunu korumak"
           }
         }
       }
     },
-    "Hareketsiz" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sedentary"
+    "Hareketsiz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sedentary"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hareketsiz"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hareketsiz"
           }
         }
       }
     },
-    "Az hareketli" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lightly active"
+    "Az hareketli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lightly active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Az hareketli"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Az hareketli"
           }
         }
       }
     },
-    "Orta hareketli" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moderately active"
+    "Orta hareketli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moderately active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Orta hareketli"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orta hareketli"
           }
         }
       }
     },
-    "Çok hareketli" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Very active"
+    "Çok hareketli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Very active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çok hareketli"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çok hareketli"
           }
         }
       }
     },
-    "Aşırı hareketli" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Extremely active"
+    "Aşırı hareketli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extremely active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aşırı hareketli"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aşırı hareketli"
           }
         }
       }
     },
-    "Masa başı çalışma, az günlük yürüyüş." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desk job, limited daily walking."
+    "Masa başı çalışma, az günlük yürüyüş.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desk job, limited daily walking."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Masa başı çalışma, az günlük yürüyüş."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masa başı çalışma, az günlük yürüyüş."
           }
         }
       }
     },
-    "Haftada 1–3 gün hafif egzersiz." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Light exercise 1–3 days/week."
+    "Haftada 1–3 gün hafif egzersiz.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light exercise 1–3 days/week."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haftada 1–3 gün hafif egzersiz."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada 1–3 gün hafif egzersiz."
           }
         }
       }
     },
-    "Haftada 3–5 gün düzenli egzersiz." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Regular exercise 3–5 days/week."
+    "Haftada 3–5 gün düzenli egzersiz.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regular exercise 3–5 days/week."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haftada 3–5 gün düzenli egzersiz."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada 3–5 gün düzenli egzersiz."
           }
         }
       }
     },
-    "Haftada 6–7 gün yoğun egzersiz." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Intense exercise 6–7 days/week."
+    "Haftada 6–7 gün yoğun egzersiz.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intense exercise 6–7 days/week."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haftada 6–7 gün yoğun egzersiz."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada 6–7 gün yoğun egzersiz."
           }
         }
       }
     },
-    "Günde 2 kez yoğun antrenman veya fiziksel iş." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Twice-daily intense training or physical labor."
+    "Günde 2 kez yoğun antrenman veya fiziksel iş.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Twice-daily intense training or physical labor."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Günde 2 kez yoğun antrenman veya fiziksel iş."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günde 2 kez yoğun antrenman veya fiziksel iş."
           }
         }
       }
     },
-    "Korumak" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Maintain"
+    "Korumak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintain"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Korumak"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Korumak"
           }
         }
       }
     },
-    "Kas yapmak" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Build muscle"
+    "Kas yapmak": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Build muscle"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kas yapmak"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kas yapmak"
           }
         }
       }
     },
-    "Hafif aktif" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lightly active"
+    "Hafif aktif": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lightly active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hafif aktif"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hafif aktif"
           }
         }
       }
     },
-    "Orta aktif" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moderately active"
+    "Orta aktif": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moderately active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Orta aktif"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orta aktif"
           }
         }
       }
     },
-    "Çok aktif" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Very active"
+    "Çok aktif": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Very active"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çok aktif"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çok aktif"
           }
         }
       }
     },
-    "Masa başı çalışma, az hareket" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desk job, little movement"
+    "Masa başı çalışma, az hareket": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desk job, little movement"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Masa başı çalışma, az hareket"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masa başı çalışma, az hareket"
           }
         }
       }
     },
-    "Haftada 1-2 gün hafif egzersiz" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Light exercise 1–2 days/week"
+    "Haftada 1-2 gün hafif egzersiz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light exercise 1–2 days/week"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haftada 1-2 gün hafif egzersiz"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada 1-2 gün hafif egzersiz"
           }
         }
       }
     },
-    "Haftada 3-5 gün egzersiz" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exercise 3–5 days/week"
+    "Haftada 3-5 gün egzersiz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise 3–5 days/week"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haftada 3-5 gün egzersiz"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada 3-5 gün egzersiz"
           }
         }
       }
     },
-    "Haftada 6-7 gün egzersiz" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exercise 6–7 days/week"
+    "Haftada 6-7 gün egzersiz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise 6–7 days/week"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Haftada 6-7 gün egzersiz"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada 6-7 gün egzersiz"
           }
         }
       }
     },
-    "Yoğun antrenman / fiziksel iş" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Intense training / physical work"
+    "Yoğun antrenman / fiziksel iş": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intense training / physical work"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yoğun antrenman / fiziksel iş"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yoğun antrenman / fiziksel iş"
           }
         }
       }
     },
-    "Sana özel bir plan oluşturacağız" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We'll create a personalized plan for you"
+    "Sana özel bir plan oluşturacağız": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We'll create a personalized plan for you"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sana özel bir plan oluşturacağız"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sana özel bir plan oluşturacağız"
           }
         }
       }
     },
-    "Boyunu santimetre cinsinden gir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter your height in centimeters"
+    "Boyunu santimetre cinsinden gir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your height in centimeters"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Boyunu santimetre cinsinden gir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boyunu santimetre cinsinden gir"
           }
         }
       }
     },
-    "Kilonu kilogram cinsinden gir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter your weight in kilograms"
+    "Kilonu kilogram cinsinden gir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your weight in kilograms"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kilonu kilogram cinsinden gir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kilonu kilogram cinsinden gir"
           }
         }
       }
     },
-    "Ortalama bir gününü düşün" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Think about an average day"
+    "Ortalama bir gününü düşün": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Think about an average day"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ortalama bir gününü düşün"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ortalama bir gününü düşün"
           }
         }
       }
     },
-    "Yaşını tam sayı olarak gir" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter your age as a whole number"
+    "Yaşını tam sayı olarak gir": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your age as a whole number"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yaşını tam sayı olarak gir"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaşını tam sayı olarak gir"
           }
         }
       }
     },
-    "Kalori hesaplaması için gerekli" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Required for calorie calculation"
+    "Kalori hesaplaması için gerekli": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Required for calorie calculation"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kalori hesaplaması için gerekli"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalori hesaplaması için gerekli"
           }
         }
       }
     },
-    "Yapılandırma hatası." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuration error."
+    "Yapılandırma hatası.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuration error."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yapılandırma hatası."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yapılandırma hatası."
           }
         }
       }
     },
-    "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil -- sunucu adresi yapılandırılınca tarama çalışacak." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI server not connected yet. This is not an app error — scanning will work once the server address is configured."
+    "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil -- sunucu adresi yapılandırılınca tarama çalışacak.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI server not connected yet. This is not an app error — scanning will work once the server address is configured."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil -- sunucu adresi yapılandırılınca tarama çalışacak."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil -- sunucu adresi yapılandırılınca tarama çalışacak."
           }
         }
       }
     },
-    "Çok sık denedin -- bir dakika sonra tekrar dene." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Too many attempts — try again in a minute."
+    "Çok sık denedin -- bir dakika sonra tekrar dene.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Too many attempts — try again in a minute."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Çok sık denedin -- bir dakika sonra tekrar dene."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çok sık denedin -- bir dakika sonra tekrar dene."
           }
         }
       }
     },
-    "İnternet bağlantısı yok görünüyor." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No internet connection detected."
+    "İnternet bağlantısı yok görünüyor.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No internet connection detected."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İnternet bağlantısı yok görünüyor."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İnternet bağlantısı yok görünüyor."
           }
         }
       }
     },
-    "Sunucuda geçici bir sorun var, birazdan düzelir." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Temporary server issue — should resolve shortly."
+    "Sunucuda geçici bir sorun var, birazdan düzelir.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporary server issue — should resolve shortly."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sunucuda geçici bir sorun var, birazdan düzelir."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunucuda geçici bir sorun var, birazdan düzelir."
           }
         }
       }
     },
-    "Tarama başarısız oldu, lütfen tekrar deneyin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan failed — please try again."
+    "Tarama başarısız oldu, lütfen tekrar deneyin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan failed — please try again."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarama başarısız oldu, lütfen tekrar deneyin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama başarısız oldu, lütfen tekrar deneyin."
           }
         }
       }
     },
-    "Sayacı Düzenle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit Counter"
+    "Sayacı Düzenle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Counter"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sayacı Düzenle"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sayacı Düzenle"
           }
         }
       }
     },
-    "Yeni Sayaç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Counter"
+    "Yeni Sayaç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Counter"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yeni Sayaç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Sayaç"
           }
         }
       }
     },
-    "Ad (örn. Ekmek)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name (e.g. Bread)"
+    "Ad (örn. Ekmek)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name (e.g. Bread)"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ad (örn. Ekmek)"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad (örn. Ekmek)"
           }
         }
       }
     },
-    "Birim (örn. dilim)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unit (e.g. slice)"
+    "Birim (örn. dilim)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unit (e.g. slice)"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Birim (örn. dilim)"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birim (örn. dilim)"
           }
         }
       }
     },
-    "Sayacı Sil" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete Counter"
+    "Sayacı Sil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Counter"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sayacı Sil"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sayacı Sil"
           }
         }
       }
     },
-    "İlk hızlı ekleme sayacını oluştur" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create your first quick-add counter"
+    "İlk hızlı ekleme sayacını oluştur": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create your first quick-add counter"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İlk hızlı ekleme sayacını oluştur"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İlk hızlı ekleme sayacını oluştur"
           }
         }
       }
     },
-    "Birim başına besin değeri (opsiyonel)" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nutrition per unit (optional)"
+    "Birim başına besin değeri (opsiyonel)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutrition per unit (optional)"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Birim başına besin değeri (opsiyonel)"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birim başına besin değeri (opsiyonel)"
           }
         }
       }
     },
-    "Hepsini 0 bırakırsan sadece adet sayılır. Değer girersen her adet günlük toplamlara ve halkaya eklenir." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leave all at 0 for a pure tally. Enter values and each count contributes to daily totals and the ring."
+    "Hepsini 0 bırakırsan sadece adet sayılır. Değer girersen her adet günlük toplamlara ve halkaya eklenir.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave all at 0 for a pure tally. Enter values and each count contributes to daily totals and the ring."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hepsini 0 bırakırsan sadece adet sayılır. Değer girersen her adet günlük toplamlara ve halkaya eklenir."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hepsini 0 bırakırsan sadece adet sayılır. Değer girersen her adet günlük toplamlara ve halkaya eklenir."
           }
         }
       }
     },
-    "İkon" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Icon"
+    "İkon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Icon"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "İkon"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İkon"
           }
         }
       }
     },
-    "Kaydet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
+    "Kaydet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kaydet"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaydet"
           }
         }
       }
     },
-    "Birine dokun, değerleri otomatik dolsun -- sonra dilediğin gibi düzenle." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap one to auto-fill values — then customize as you like."
+    "Birine dokun, değerleri otomatik dolsun -- sonra dilediğin gibi düzenle.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap one to auto-fill values — then customize as you like."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Birine dokun, değerleri otomatik dolsun -- sonra dilediğin gibi düzenle."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birine dokun, değerleri otomatik dolsun -- sonra dilediğin gibi düzenle."
           }
         }
       }
     },
-    "kepçe" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ladle"
+    "kepçe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ladle"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kepçe"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kepçe"
           }
         }
       }
     },
-    "yemek kaşığı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "tbsp"
+    "yemek kaşığı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tbsp"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "yemek kaşığı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yemek kaşığı"
           }
         }
       }
     },
-    "su bardağı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "glass"
+    "su bardağı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "glass"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "su bardağı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "su bardağı"
           }
         }
       }
     },
-    "çay bardağı" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "tea glass"
+    "çay bardağı": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tea glass"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "çay bardağı"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "çay bardağı"
           }
         }
       }
     },
-    "avuç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "handful"
+    "avuç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "handful"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "avuç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "avuç"
           }
         }
       }
     },
-    "kase" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "bowl"
+    "kase": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bowl"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "kase"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kase"
           }
         }
       }
     },
-    "tencere" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pot"
+    "tencere": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pot"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "tencere"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tencere"
           }
         }
       }
     },
-    "adet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "piece"
+    "adet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "piece"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "adet"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "adet"
           }
         }
       }
     },
-    "gram" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "gram"
+    "gram": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gram"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "gram"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gram"
           }
         }
       }
     },
-    "Bu değerler genel rehberlik içindir, tıbbi tavsiye değildir. Hamilelik, kronik hastalık veya yeme bozukluğu gibi özel durumlarda bir hekime veya diyetisyene danışın." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "These values are for general guidance only, not medical advice. Consult a doctor or dietitian for special conditions such as pregnancy, chronic illness, or eating disorders."
+    "Bu değerler genel rehberlik içindir, tıbbi tavsiye değildir. Hamilelik, kronik hastalık veya yeme bozukluğu gibi özel durumlarda bir hekime veya diyetisyene danışın.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These values are for general guidance only, not medical advice. Consult a doctor or dietitian for special conditions such as pregnancy, chronic illness, or eating disorders."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu değerler genel rehberlik içindir, tıbbi tavsiye değildir. Hamilelik, kronik hastalık veya yeme bozukluğu gibi özel durumlarda bir hekime veya diyetisyene danışın."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu değerler genel rehberlik içindir, tıbbi tavsiye değildir. Hamilelik, kronik hastalık veya yeme bozukluğu gibi özel durumlarda bir hekime veya diyetisyene danışın."
           }
         }
       }
     },
-    "Değişiklik bir sonraki açılışta uygulanır." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Change takes effect on next launch."
+    "Değişiklik bir sonraki açılışta uygulanır.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change takes effect on next launch."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Değişiklik bir sonraki açılışta uygulanır."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değişiklik bir sonraki açılışta uygulanır."
           }
         }
       }
     },
-    "Calorisor'a Başla" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start Calorisor"
+    "Calorisor'a Başla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Calorisor"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calorisor'a Başla"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calorisor'a Başla"
           }
         }
       }
     },
-    "Sil" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
+    "Sil": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sil"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sil"
           }
         }
       }
     },
-    "Sayaç" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Counter"
+    "Sayaç": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Counter"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sayaç"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sayaç"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol": false
     },
-    "Öğün ekledikçe geçmişin burada görünecek." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your history will appear here as you log meals."
+    "Öğün ekledikçe geçmişin burada görünecek.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your history will appear here as you log meals."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öğün ekledikçe geçmişin burada görünecek."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öğün ekledikçe geçmişin burada görünecek."
           }
         }
       }
     },
-    "öğün" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "meal"
+    "öğün": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "meal"
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "öğün"
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "öğün"
           }
         }
       }
     },
-    "App Store hesabından dilediğin an iptal edebilirsin." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You can cancel anytime from your App Store account."
+    "App Store hesabından dilediğin an iptal edebilirsin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can cancel anytime from your App Store account."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store hesabından dilediğin an iptal edebilirsin."
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store hesabından dilediğin an iptal edebilirsin."
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }
