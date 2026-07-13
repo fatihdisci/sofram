@@ -87,6 +87,8 @@
 		BDF12A127E07BB7FB8B0E5C9 /* DataExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416069E68BBBF6E8DDE2958 /* DataExporterTests.swift */; };
 		C188F2E65D68966E4F8C99A3 /* TurkishFoodReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */; };
 		C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39394ADA5B6933015390DC8 /* ScanEntry.swift */; };
+		C0D3A001C0D3A001C0D3A001 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3A003C0D3A003C0D3A003 /* AppLanguage.swift */; };
+		C0D3A002C0D3A002C0D3A002 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C0D3A004C0D3A004C0D3A004 /* Localizable.xcstrings */; };
 		C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EBF7CCF553D14C6174559 /* AIProxyClient.swift */; };
 		C6589D98D126F801A9DE3673 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A9E8334613F75FF1CA6EAD /* Layout.swift */; };
 		D4DB6EC5D9E7C553A4301514 /* SofraLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71968B769E47DAC3842D651 /* SofraLottieView.swift */; };
@@ -193,6 +195,8 @@
 		B71968B769E47DAC3842D651 /* SofraLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraLottieView.swift; sourceTree = "<group>"; };
 		BB6C71F50507B7A6609A2DEB /* AIProxyClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClientTests.swift; sourceTree = "<group>"; };
 		C0B62D9FDF67DCD06DCFC744 /* WidgetDailySummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDailySummaryTests.swift; sourceTree = "<group>"; };
+		C0D3A003C0D3A003C0D3A003 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
+		C0D3A004C0D3A004C0D3A004 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		C2D85027ED00E9227BD62D53 /* UserDataDeletionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataDeletionTests.swift; sourceTree = "<group>"; };
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
 		C416069E68BBBF6E8DDE2958 /* DataExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExporterTests.swift; sourceTree = "<group>"; };
@@ -315,6 +319,7 @@
 		3AF8F5ACF117AC000E8F31E3 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				C0D3A003C0D3A003C0D3A003 /* AppLanguage.swift */,
 				385DF247D014F9EF0BDF72D6 /* ContentView.swift */,
 				00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */,
 				1E4EC8FB1EBDB96EAFB72A87 /* SofraApp.swift */,
@@ -472,6 +477,7 @@
 			children = (
 				FB60A97711EE2C147C7C5F59 /* Animations */,
 				6A0393DD2B432C82CCCE5378 /* Fonts */,
+				C0D3A004C0D3A004C0D3A004 /* Localizable.xcstrings */,
 				05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */,
 			);
 			path = Resources;
@@ -656,6 +662,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58EA6A2261AFD526DD213D2C /* Assets.xcassets in Resources */,
+				C0D3A002C0D3A002C0D3A002 /* Localizable.xcstrings in Resources */,
 				8DB29A6B0446E2C7B537A2D1 /* Geist-Medium.otf in Resources */,
 				10D9BE4519BDC183EE6F68DB /* Geist-Regular.otf in Resources */,
 				3EF8A428E5298AE8C03FE4CA /* Geist-SemiBold.otf in Resources */,
@@ -714,6 +721,7 @@
 			files = (
 				C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */,
 				5E2E74169EB20BB3FA006060 /* AnalysisOverlay.swift in Sources */,
+				C0D3A001C0D3A001C0D3A001 /* AppLanguage.swift in Sources */,
 				57955CD4F69C53B723E74FA2 /* CalorieRingView.swift in Sources */,
 				625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */,
 				844170B51DF055D71FA038F1 /* CategorySlugMap.swift in Sources */,
@@ -831,7 +839,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor;
 				PRODUCT_NAME = Sofra;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -852,7 +860,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.widget;
 				PRODUCT_NAME = "Sofra Widget";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -873,7 +881,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.widget;
 				PRODUCT_NAME = "Sofra Widget";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -891,7 +899,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sofra.app/Sofra";
@@ -909,7 +917,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sofra.app/Sofra";
@@ -1061,7 +1069,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.sofra;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor;
 				PRODUCT_NAME = Sofra;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;

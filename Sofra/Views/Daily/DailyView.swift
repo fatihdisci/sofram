@@ -74,6 +74,26 @@ struct DailyView: View {
             + quickAddSum { $0.fatPerUnit }
     }
 
+    /// Calorie-bearing log groups become the quiet registration marks on the
+    /// open Calorisor C. Scan entries preserve meal order; quick-add totals are
+    /// appended as compact groups because their model stores a day, not a time.
+    private var calorieSegments: [Double] {
+        let scanSegments = todayScans
+            .sorted { $0.timestamp < $1.timestamp }
+            .map { entry in entry.itemsOrEmpty.reduce(0) { $0 + $1.calories } }
+            .filter { $0 > 0 }
+
+        let quickAddSegments = todayQuickCounts.compactMap { count -> Double? in
+            guard count.count > 0,
+                  let item = quickItems.first(where: { $0.id == count.itemID })
+            else { return nil }
+            let calories = Double(count.count) * item.caloriesPerUnit
+            return calories > 0 ? calories : nil
+        }
+
+        return scanSegments + quickAddSegments
+    }
+
     /// Macro gram targets. User-set values (from Ayarlar) win; otherwise fall
     /// back to a derived P25 · K45 · Y30 split of the calorie target.
     private var proteinTarget: Double { proteinTargetStored > 0 ? proteinTargetStored : calorieTarget * 0.25 / 4 }
@@ -106,7 +126,11 @@ struct DailyView: View {
                     captureBar
                         .modifier(entrance(0.06))
 
-                    CalorieRingView(consumed: todayCalories, target: calorieTarget)
+                    CalorieRingView(
+                        consumed: todayCalories,
+                        target: calorieTarget,
+                        calorieSegments: calorieSegments
+                    )
                         .padding(.top, Layout.Spacing.sm)
                         .scaleEffect(appeared ? 1 : 0.82)
                         .opacity(appeared ? 1 : 0)

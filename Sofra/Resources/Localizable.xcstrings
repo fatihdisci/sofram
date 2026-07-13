@@ -817,6 +817,91 @@
         }
       }
     },
+    "Kalan, yenen ve hedef kalorileri arasında geçiş yapar" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switches between remaining, consumed, and target calories"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalan, yenen ve hedef kalorileri arasında geçiş yapar"
+          }
+        }
+      }
+    },
+    "kcal hedef" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal target"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal hedef"
+          }
+        }
+      }
+    },
+    "kcal hedef üstü" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal over target"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal hedef üstü"
+          }
+        }
+      }
+    },
+    "kcal kalan" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal remaining"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal kalan"
+          }
+        }
+      }
+    },
+    "kcal yenen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal consumed"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal yenen"
+          }
+        }
+      }
+    },
     "Kaloriden makro dağıt (P25 · K45 · Y30)" : {
       "extractionState" : "manual",
       "localizations" : {
