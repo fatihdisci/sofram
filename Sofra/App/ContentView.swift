@@ -69,21 +69,21 @@ struct ContentView: View {
         TabView(selection: $nav.selectedTab) {
             DailyView()
                 .tabItem {
-                    tabItemLabel("Bugün", icon: .bugun, isSelected: nav.selectedTab == .today)
+                    tabItemLabel("Bugün", icon: .bugun)
                 }
                 .tag(AppTab.today)
                 .transition(.opacity)
 
             HistoryView()
                 .tabItem {
-                    tabItemLabel("Geçmiş", icon: .gecmis, isSelected: nav.selectedTab == .history)
+                    tabItemLabel("Geçmiş", icon: .gecmis)
                 }
                 .tag(AppTab.history)
                 .transition(.opacity)
 
             SettingsView()
                 .tabItem {
-                    tabItemLabel("Ayarlar", icon: .ayarlar, isSelected: nav.selectedTab == .settings)
+                    tabItemLabel("Ayarlar", icon: .ayarlar)
                 }
                 .tag(AppTab.settings)
                 .transition(.opacity)
@@ -99,13 +99,30 @@ struct ContentView: View {
         }
     }
 
-    private func tabItemLabel(_ title: String, icon: SofraIcon, isSelected: Bool) -> some View {
+    @MainActor
+    private func tabItemLabel(_ title: String, icon: SofraIcon) -> some View {
         Label {
             Text(title)
         } icon: {
-            SofraIconView(icon: icon, size: 24)
-                .foregroundStyle(isSelected ? Color.accentFill : Color.textMuted)
+            tabBarImage(for: icon)
         }
+    }
+
+    /// UIKit-backed tab bars extract only `Image` and `Text` from a `tabItem`.
+    /// Render the custom Sofra shape into a template image so the native tab bar
+    /// can display it and apply its selected/unselected tint normally.
+    @MainActor
+    private func tabBarImage(for icon: SofraIcon) -> Image {
+        let renderer = ImageRenderer(
+            content: SofraIconView(icon: icon, size: 24)
+                .foregroundStyle(Color.black)
+        )
+        renderer.scale = 3
+
+        guard let image = renderer.uiImage else {
+            return Image(uiImage: UIImage())
+        }
+        return Image(uiImage: image.withRenderingMode(.alwaysTemplate))
     }
 }
 
