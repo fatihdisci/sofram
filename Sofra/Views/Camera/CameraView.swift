@@ -12,10 +12,10 @@
 //  run on one serial queue, so a stop queued by a disappearing view and a start
 //  queued by the next one can never interleave.
 //
-//  Presentation: the camera preview is framed as a raised card centered in the
-//  app's own "Yumuşak Sofra" chrome (bej page, raised-surface controls) rather
-//  than a full-bleed black takeover — the header, capture button and secondary
-//  actions all read as Sofra UI, with only the live feed itself inside the card.
+//  Presentation: the camera preview is framed as a flat bordered card centered in
+//  the app's own Calorisor chrome (flat page, bordered controls) rather than a
+//  full-bleed black takeover — the header, capture button and secondary actions
+//  all read as Calorisor UI, with only the live feed itself inside the card.
 //
 
 import SwiftUI

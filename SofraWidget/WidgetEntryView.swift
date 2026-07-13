@@ -2,8 +2,8 @@
 //  WidgetEntryView.swift
 //  SofraWidgetExtension — small and medium widget layouts.
 //
-//  Design follows the "Yumuşak Sofra" palette but simplified for WidgetKit:
-//  - No neomorphic dual-tone shadows (WidgetKit doesn't support complex shadows well)
+//  Design follows the flat Calorisor palette, simplified for WidgetKit:
+//  - Flat surfaces, no shadows (matches the app's flat design system)
 //  - No animations (WidgetKit renders static snapshots)
 //  - Solid bgPage background with containerBackground for system compositing
 //  - Progress ring with accentFill arc on surfaceFlat track

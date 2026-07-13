@@ -421,6 +421,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Dosyalar:** `Sofra/Assets.xcassets/AppIcon.appiconset/`, `Sofra/Info.plist`, `project.yml`, yasal link/metadata kaynakları.
   **Talimat:** SF-803 master'ını entegre et. Kullanıcıya görünen ürün adı, onboarding/paywall/Ayarlar başlıkları, destek e-postası konusu ve placeholder yasal URL'leri Calorisor ile tutarlı hale getir. Bundle ID (`com.fatih.sofra`), URL scheme, CloudKit/App Group ve StoreKit product ID'lerini değiştirme. App Store/alan adı/marka kullanılabilirliği için resmi kontrol listesi oluştur; sonucu olmadan public release işaretleme.
   **Kabul kriterleri:** Uygulama ikonu cihazda doğru maskelenir; eski “Sofra” kullanıcıya görünen marka kopyasında kalmaz; kimlik/satın alma sürekliliği bozulmaz.
+  ⏸ **NOT:** Kod tarafı hazır — `CFBundleDisplayName`=Calorisor, purpose string'ler, destek e-postası konusu, yasal linkler (`calorisor.app`) ve app icon (`AppIcon-1024.png`) yerinde; kullanıcıya görünen kopyada eski marka kalmadı; bundle ID/URL scheme/CloudKit/StoreKit ID'leri korundu. Resmi marka/alan-adı/hukuk kontrolü ve cihaz ikon-maske doğrulaması `CALORISOR_BRAND_CHECK.md`'de izleniyor (Fatih'in hesap/hukuk erişimini bekliyor).
 
 - [ ] **SF-1002 · Düz Calorisor tasarım sistemi** `[bağımsız]`
   **Dosyalar:** `Sofra/DesignSystem/`, `design-tokens.md`, ilgili SwiftUI modifier'ları.
