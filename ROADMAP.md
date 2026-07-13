@@ -423,7 +423,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Kabul kriterleri:** Uygulama ikonu cihazda doğru maskelenir; eski “Sofra” kullanıcıya görünen marka kopyasında kalmaz; kimlik/satın alma sürekliliği bozulmaz.
   ⏸ **NOT:** Kod tarafı hazır — `CFBundleDisplayName`=Calorisor, purpose string'ler, destek e-postası konusu, yasal linkler (`calorisor.app`) ve app icon (`AppIcon-1024.png`) yerinde; kullanıcıya görünen kopyada eski marka kalmadı; bundle ID/URL scheme/CloudKit/StoreKit ID'leri korundu. Resmi marka/alan-adı/hukuk kontrolü ve cihaz ikon-maske doğrulaması `CALORISOR_BRAND_CHECK.md`'de izleniyor (Fatih'in hesap/hukuk erişimini bekliyor).
 
-- [ ] **SF-1002 · Düz Calorisor tasarım sistemi** `[bağımsız]`
+- [x] **SF-1002 · Düz Calorisor tasarım sistemi** `[bağımsız]` ✅ 2026-07-13
   **Dosyalar:** `Sofra/DesignSystem/`, `design-tokens.md`, ilgili SwiftUI modifier'ları.
   **Talimat:** Tasarım tokenlarını tek katmanlı sisteme geçir: düz kırık beyaz/near-black yüzeyler, tek düz domates kırmızısı vurgu, ince sınır veya boşlukla hiyerarşi. Gradient, glass, kabartı, çift kenar, raised/inset shadow ve dekoratif halka dili kaldırılır. Geist/Geist Mono korunur; tipografi, ölçüm değerleri ve boşluk ürünün ana karakteridir. Renk/spacing/font hard-code edilmez.
   **Kabul kriterleri:** Token dokümanı ve uygulama aynı dili kullanır; ana ekranlarda eski soft/neomorphic modifier kalmaz; light/dark contrast erişilebilir.

@@ -312,10 +312,8 @@ struct WeekBarChart: View {
                             Spacer(minLength: 0)
                             Capsule()
                                 .fill(isToday
-                                      ? AnyShapeStyle(LinearGradient(
-                                            colors: [Color.accentFill, Color.accentFillPressed],
-                                            startPoint: .top, endPoint: .bottom))
-                                      : AnyShapeStyle(Color.accentFill.opacity(0.35)))
+                                      ? Color.accentFill
+                                      : Color.accentFill.opacity(0.35))
                                 .frame(height: max(6, chartHeight * day.calories / peak))
                             Text(shortDayLabel(day.date))
                                 .font(.system(size: 10))
