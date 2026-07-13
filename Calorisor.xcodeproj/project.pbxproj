@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0157ABF651A922D23B8CC571 /* GeistMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 83E136C81E00E88F23205CD9 /* GeistMono-Medium.otf */; };
 		05B879A966638B877A1299BB /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD36F99BF9F15BC3DA0299 /* DayDetailView.swift */; };
-		08C902A05C178611CD8BA616 /* SofraWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B088DADDCE77DB0C23F66F /* SofraWidget.swift */; };
+		08C902A05C178611CD8BA616 /* CalorisorWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B088DADDCE77DB0C23F66F /* CalorisorWidget.swift */; };
 		0AF6FEBF2EC509B74055940C /* SevenDaySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */; };
 		0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */; };
 		10D9BE4519BDC183EE6F68DB /* Geist-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 58EB71386FCB3BB93B36C4C4 /* Geist-Regular.otf */; };
@@ -67,7 +67,7 @@
 		9AB5C410D2AC8E83D06C21DB /* ReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */; };
 		9DA956A393108E1719E5CBB4 /* CalorisorFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF173AC7FEF260AD502A7A29 /* CalorisorFormatters.swift */; };
 		A034580CE4614A3B94D32B5B /* PortionRecalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB810BF61C02917F98B012C /* PortionRecalculationTests.swift */; };
-		A27C817B5A553F42C52AC50D /* SofraWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* SofraWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A27C817B5A553F42C52AC50D /* CalorisorWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A3707C461463E7DB88E43DC3 /* CalorieRingViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17DE019D6734175BC22974A /* CalorieRingViewTests.swift */; };
 		A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */; };
 		A664A1CEC57056B0B0B5726D /* UserDataDeletionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D85027ED00E9227BD62D53 /* UserDataDeletionTests.swift */; };
@@ -85,10 +85,10 @@
 		BABBBF429BC9E1A04F1E9BE0 /* Surfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */; };
 		BDBB9B674BEB8923D1BA5065 /* CalorisorIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8E2BAB0C43BFA9637B6040 /* CalorisorIcon.swift */; };
 		BDF12A127E07BB7FB8B0E5C9 /* DataExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416069E68BBBF6E8DDE2958 /* DataExporterTests.swift */; };
-		C188F2E65D68966E4F8C99A3 /* TurkishFoodReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */; };
-		C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39394ADA5B6933015390DC8 /* ScanEntry.swift */; };
 		C0D3A001C0D3A001C0D3A001 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D3A003C0D3A003C0D3A003 /* AppLanguage.swift */; };
 		C0D3A002C0D3A002C0D3A002 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C0D3A004C0D3A004C0D3A004 /* Localizable.xcstrings */; };
+		C188F2E65D68966E4F8C99A3 /* TurkishFoodReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */; };
+		C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39394ADA5B6933015390DC8 /* ScanEntry.swift */; };
 		C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EBF7CCF553D14C6174559 /* AIProxyClient.swift */; };
 		C6589D98D126F801A9DE3673 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A9E8334613F75FF1CA6EAD /* Layout.swift */; };
 		D4DB6EC5D9E7C553A4301514 /* CalorisorLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71968B769E47DAC3842D651 /* CalorisorLottieView.swift */; };
@@ -109,14 +109,14 @@
 			containerPortal = BF3E49C6ACFD5235EBF36E95 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B362A874E91C4F058C01DB28;
-			remoteInfo = SofraWidgetExtension;
+			remoteInfo = CalorisorWidgetExtension;
 		};
 		8BA66B0944271653BFDB8CBA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BF3E49C6ACFD5235EBF36E95 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 4CEAA32D14A007032EAE0522;
-			remoteInfo = Sofra;
+			remoteInfo = Calorisor;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -127,7 +127,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A27C817B5A553F42C52AC50D /* SofraWidgetExtension.appex in Embed Foundation Extensions */,
+				A27C817B5A553F42C52AC50D /* CalorisorWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,7 +141,7 @@
 		086EBF7CCF553D14C6174559 /* AIProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClient.swift; sourceTree = "<group>"; };
 		0ABD36F99BF9F15BC3DA0299 /* DayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayDetailView.swift; sourceTree = "<group>"; };
 		0E38887382F74AA55C63EA6C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		142093050464BF9252D327F3 /* Calorisor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calorisor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABEDB088BD86173D15337A9 /* TextLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogView.swift; sourceTree = "<group>"; };
 		1E4EC8FB1EBDB96EAFB72A87 /* CalorisorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorApp.swift; sourceTree = "<group>"; };
 		238FF164D03FBE4CB6367536 /* CalorieRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingView.swift; sourceTree = "<group>"; };
@@ -154,7 +154,7 @@
 		3D4B72320685EF2B0B1B2B46 /* RawAIResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawAIResponseTests.swift; sourceTree = "<group>"; };
 		3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F43AEF8082A2E562C2842E4 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
-		42BA68BE72D1A41D934F0208 /* SofraWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SofraWidget.entitlements; sourceTree = "<group>"; };
+		42BA68BE72D1A41D934F0208 /* CalorisorWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CalorisorWidget.entitlements; sourceTree = "<group>"; };
 		497CB36C5D07712BBC769BFF /* AnalysisOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisOverlay.swift; sourceTree = "<group>"; };
 		4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyQuickCounter.swift; sourceTree = "<group>"; };
 		58EB71386FCB3BB93B36C4C4 /* Geist-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-Regular.otf"; sourceTree = "<group>"; };
@@ -165,7 +165,7 @@
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
 		6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCounterView.swift; sourceTree = "<group>"; };
 		6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
-		768B000219616D415E6478BF /* SofraWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = SofraWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; name = CalorisorWidgetExtension.appex; path = "Calorisor Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B2F13C99F7C4BFEC48A2347 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		7FA01550B4154909969504A1 /* DaySummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryBuilderTests.swift; sourceTree = "<group>"; };
 		83E136C81E00E88F23205CD9 /* GeistMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.otf"; sourceTree = "<group>"; };
@@ -173,7 +173,7 @@
 		87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Tokens.swift"; sourceTree = "<group>"; };
 		88393263558BFFF69AB2CBF8 /* WidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntryView.swift; sourceTree = "<group>"; };
 		889BD89F90EF087B95CE8499 /* DataExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExporter.swift; sourceTree = "<group>"; };
-		88B088DADDCE77DB0C23F66F /* SofraWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraWidget.swift; sourceTree = "<group>"; };
+		88B088DADDCE77DB0C23F66F /* CalorisorWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorWidget.swift; sourceTree = "<group>"; };
 		8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-Medium.otf"; sourceTree = "<group>"; };
 		8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconcilerTests.swift; sourceTree = "<group>"; };
 		8F76138538D2FC56E4B85D73 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -189,7 +189,7 @@
 		9CA21E1C27ED51254B60BEDE /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
 		A7579E16F68EF88FA80D3D8F /* CategorySlugMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlugMap.swift; sourceTree = "<group>"; };
-		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
+		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = file; path = Products.storekit; sourceTree = "<group>"; };
 		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
 		AF173AC7FEF260AD502A7A29 /* CalorisorFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorFormatters.swift; sourceTree = "<group>"; };
 		B71968B769E47DAC3842D651 /* CalorisorLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorLottieView.swift; sourceTree = "<group>"; };
@@ -215,12 +215,12 @@
 		EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculatorTests.swift; sourceTree = "<group>"; };
 		EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounter.swift; sourceTree = "<group>"; };
 		F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponseValidatorTests.swift; sourceTree = "<group>"; };
-		F0448D0A8FC1CA151A408D7F /* SofraTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SofraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0448D0A8FC1CA151A408D7F /* CalorisorTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CalorisorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F147E274CA44406942ADF2E8 /* WidgetDataStore+MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetDataStore+MainApp.swift"; sourceTree = "<group>"; };
 		F17DE019D6734175BC22974A /* CalorieRingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingViewTests.swift; sourceTree = "<group>"; };
 		F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurkishFoodReference.swift; sourceTree = "<group>"; };
 		F39E67471483C60085CF44FB /* GeistMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.otf"; sourceTree = "<group>"; };
-		F737E22CCA18A4784BE99B3F /* .gitkeep */ = {isa = PBXFileReference; path = .gitkeep; sourceTree = "<group>"; };
+		F737E22CCA18A4784BE99B3F /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		F926CC1E99F52D8622D10D52 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F96F2406E759FD86227F44C6 /* FreeScanCounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounterTests.swift; sourceTree = "<group>"; };
 		FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Widget.swift"; sourceTree = "<group>"; };
@@ -246,18 +246,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09610E8843C2F7B385B686F3 /* SofraWidget */ = {
+		09610E8843C2F7B385B686F3 /* CalorisorWidget */ = {
 			isa = PBXGroup;
 			children = (
 				2C207BF09448E5C2FAC4DE27 /* Extensions */,
 				52BBFB06F7C66440A4665CC3 /* InfoPlist.strings */,
 				E156CC8B82DB574BEC1B447D /* Info.plist */,
 				7B2F13C99F7C4BFEC48A2347 /* Provider.swift */,
-				42BA68BE72D1A41D934F0208 /* SofraWidget.entitlements */,
-				88B088DADDCE77DB0C23F66F /* SofraWidget.swift */,
+				42BA68BE72D1A41D934F0208 /* CalorisorWidget.entitlements */,
+				88B088DADDCE77DB0C23F66F /* CalorisorWidget.swift */,
 				88393263558BFFF69AB2CBF8 /* WidgetEntryView.swift */,
 			);
-			path = SofraWidget;
+			path = CalorisorWidget;
 			sourceTree = "<group>";
 		};
 		0DDABFE76DE4E32F5D1419C5 /* Nutrition */ = {
@@ -346,7 +346,7 @@
 			path = Persistence;
 			sourceTree = "<group>";
 		};
-		4502606A0FAC8578D476D20E /* SofraTests */ = {
+		4502606A0FAC8578D476D20E /* CalorisorTests */ = {
 			isa = PBXGroup;
 			children = (
 				D987C0340FEE4009B58A1EA6 /* AIProxyClientErrorTests.swift */,
@@ -372,15 +372,15 @@
 				F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */,
 				C0B62D9FDF67DCD06DCFC744 /* WidgetDailySummaryTests.swift */,
 			);
-			path = SofraTests;
+			path = CalorisorTests;
 			sourceTree = "<group>";
 		};
 		57440A81151301AB9257B87B = {
 			isa = PBXGroup;
 			children = (
-				A0DD425CDFDC8FCC829BD940 /* Sofra */,
-				4502606A0FAC8578D476D20E /* SofraTests */,
-				09610E8843C2F7B385B686F3 /* SofraWidget */,
+				A0DD425CDFDC8FCC829BD940 /* Calorisor */,
+				4502606A0FAC8578D476D20E /* CalorisorTests */,
+				09610E8843C2F7B385B686F3 /* CalorisorWidget */,
 				718CAD927C385D892256CB2D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -409,9 +409,9 @@
 		718CAD927C385D892256CB2D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				142093050464BF9252D327F3 /* Sofra.app */,
-				F0448D0A8FC1CA151A408D7F /* SofraTests.xctest */,
-				768B000219616D415E6478BF /* SofraWidgetExtension.appex */,
+				142093050464BF9252D327F3 /* Calorisor.app */,
+				F0448D0A8FC1CA151A408D7F /* CalorisorTests.xctest */,
+				768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -453,7 +453,7 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		A0DD425CDFDC8FCC829BD940 /* Sofra */ = {
+		A0DD425CDFDC8FCC829BD940 /* Calorisor */ = {
 			isa = PBXGroup;
 			children = (
 				3AF8F5ACF117AC000E8F31E3 /* App */,
@@ -469,7 +469,7 @@
 				2CE4BD35B616F3A7BF36F0E3 /* Views */,
 				3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */,
 			);
-			path = Sofra;
+			path = Calorisor;
 			sourceTree = "<group>";
 		};
 		A393E1770736058EF5CB308A /* Resources */ = {
@@ -549,9 +549,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4CEAA32D14A007032EAE0522 /* Sofra */ = {
+		4CEAA32D14A007032EAE0522 /* Calorisor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7219B26090424D715395726C /* Build configuration list for PBXNativeTarget "Sofra" */;
+			buildConfigurationList = 7219B26090424D715395726C /* Build configuration list for PBXNativeTarget "Calorisor" */;
 			buildPhases = (
 				A2E48FF7E615621CD8F12959 /* Sources */,
 				F56156FBF86B8DBBB3656AAF /* Resources */,
@@ -563,18 +563,18 @@
 			dependencies = (
 				A1A91F68BEDBDD34FD6C622F /* PBXTargetDependency */,
 			);
-			name = Sofra;
+			name = Calorisor;
 			packageProductDependencies = (
 				2F447F5E147B0DD18A2B758F /* Pow */,
 				15856C02BB80CEBFCFEA547B /* Lottie */,
 			);
-			productName = Sofra;
-			productReference = 142093050464BF9252D327F3 /* Sofra.app */;
+			productName = Calorisor;
+			productReference = 142093050464BF9252D327F3 /* Calorisor.app */;
 			productType = "com.apple.product-type.application";
 		};
-		605330F8AD28E500BD378FF4 /* SofraTests */ = {
+		605330F8AD28E500BD378FF4 /* CalorisorTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 341BD218DE29A9058B1AA01F /* Build configuration list for PBXNativeTarget "SofraTests" */;
+			buildConfigurationList = 341BD218DE29A9058B1AA01F /* Build configuration list for PBXNativeTarget "CalorisorTests" */;
 			buildPhases = (
 				9C4B64984869117DEF15D4FA /* Sources */,
 			);
@@ -583,16 +583,16 @@
 			dependencies = (
 				C4793DDDDE3374DC89BD877D /* PBXTargetDependency */,
 			);
-			name = SofraTests;
+			name = CalorisorTests;
 			packageProductDependencies = (
 			);
-			productName = SofraTests;
-			productReference = F0448D0A8FC1CA151A408D7F /* SofraTests.xctest */;
+			productName = CalorisorTests;
+			productReference = F0448D0A8FC1CA151A408D7F /* CalorisorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		B362A874E91C4F058C01DB28 /* SofraWidgetExtension */ = {
+		B362A874E91C4F058C01DB28 /* CalorisorWidgetExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 085C637CA206DAE096860495 /* Build configuration list for PBXNativeTarget "SofraWidgetExtension" */;
+			buildConfigurationList = 085C637CA206DAE096860495 /* Build configuration list for PBXNativeTarget "CalorisorWidgetExtension" */;
 			buildPhases = (
 				E655AD9504B6D7A9FC669CA3 /* Sources */,
 				F64E8940793C3003CCBEB38A /* Resources */,
@@ -601,11 +601,11 @@
 			);
 			dependencies = (
 			);
-			name = SofraWidgetExtension;
+			name = CalorisorWidgetExtension;
 			packageProductDependencies = (
 			);
-			productName = SofraWidgetExtension;
-			productReference = 768B000219616D415E6478BF /* SofraWidgetExtension.appex */;
+			productName = CalorisorWidgetExtension;
+			productReference = 768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -618,7 +618,6 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					4CEAA32D14A007032EAE0522 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					605330F8AD28E500BD378FF4 = {
@@ -630,7 +629,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8437586D20BCD59A001B4817 /* Build configuration list for PBXProject "Sofra" */;
+			buildConfigurationList = 8437586D20BCD59A001B4817 /* Build configuration list for PBXProject "Calorisor" */;
 			developmentRegion = tr;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -649,9 +648,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4CEAA32D14A007032EAE0522 /* Sofra */,
-				605330F8AD28E500BD378FF4 /* SofraTests */,
-				B362A874E91C4F058C01DB28 /* SofraWidgetExtension */,
+				4CEAA32D14A007032EAE0522 /* Calorisor */,
+				605330F8AD28E500BD378FF4 /* CalorisorTests */,
+				B362A874E91C4F058C01DB28 /* CalorisorWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -779,7 +778,7 @@
 				806BDB4750F0928CA4DFAF93 /* Color+Widget.swift in Sources */,
 				DCE5F2979EB9B548C6CF2AEE /* Font+Widget.swift in Sources */,
 				51DE94496F47F97F1DFC5252 /* Provider.swift in Sources */,
-				08C902A05C178611CD8BA616 /* SofraWidget.swift in Sources */,
+				08C902A05C178611CD8BA616 /* CalorisorWidget.swift in Sources */,
 				8223AA7BEAFD7A352FA5B0D5 /* WidgetDailySummary.swift in Sources */,
 				5F970A89C896B4B8395094A8 /* WidgetDataStore.swift in Sources */,
 				FDA2A9A072724EA01D21210D /* WidgetEntryView.swift in Sources */,
@@ -791,12 +790,12 @@
 /* Begin PBXTargetDependency section */
 		A1A91F68BEDBDD34FD6C622F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = B362A874E91C4F058C01DB28 /* SofraWidgetExtension */;
+			target = B362A874E91C4F058C01DB28 /* CalorisorWidgetExtension */;
 			targetProxy = 7625D93C7346B1BFF88B2B7C /* PBXContainerItemProxy */;
 		};
 		C4793DDDDE3374DC89BD877D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4CEAA32D14A007032EAE0522 /* Sofra */;
+			target = 4CEAA32D14A007032EAE0522 /* Calorisor */;
 			targetProxy = 8BA66B0944271653BFDB8CBA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -828,19 +827,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Calorisor/Calorisor.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Sofra/Info.plist;
+				INFOPLIST_FILE = Calorisor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor;
-				PRODUCT_NAME = Sofra;
+				PRODUCT_NAME = Calorisor;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -850,10 +850,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SofraWidget/SofraWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CalorisorWidget/CalorisorWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = SofraWidget/Info.plist;
+				INFOPLIST_FILE = CalorisorWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -861,7 +861,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.widget;
-				PRODUCT_NAME = "Sofra Widget";
+				PRODUCT_NAME = "Calorisor Widget";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -871,10 +871,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SofraWidget/SofraWidget.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CalorisorWidget/CalorisorWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = SofraWidget/Info.plist;
+				INFOPLIST_FILE = CalorisorWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -882,7 +882,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.widget;
-				PRODUCT_NAME = "Sofra Widget";
+				PRODUCT_NAME = "Calorisor Widget";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -902,7 +902,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sofra.app/Sofra";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calorisor.app/Calorisor";
 			};
 			name = Release;
 		};
@@ -920,7 +920,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor.tests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sofra.app/Sofra";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Calorisor.app/Calorisor";
 			};
 			name = Debug;
 		};
@@ -1058,19 +1058,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Sofra/Sofra.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Calorisor/Calorisor.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Sofra/Info.plist;
+				INFOPLIST_FILE = Calorisor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fatih.calorisor;
-				PRODUCT_NAME = Sofra;
+				PRODUCT_NAME = Calorisor;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1079,7 +1080,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		085C637CA206DAE096860495 /* Build configuration list for PBXNativeTarget "SofraWidgetExtension" */ = {
+		085C637CA206DAE096860495 /* Build configuration list for PBXNativeTarget "CalorisorWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				64F0F7A4E3D46D522FAB13C4 /* Debug */,
@@ -1088,7 +1089,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		341BD218DE29A9058B1AA01F /* Build configuration list for PBXNativeTarget "SofraTests" */ = {
+		341BD218DE29A9058B1AA01F /* Build configuration list for PBXNativeTarget "CalorisorTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				68750A6E997209D1D48AEB52 /* Debug */,
@@ -1097,7 +1098,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		7219B26090424D715395726C /* Build configuration list for PBXNativeTarget "Sofra" */ = {
+		7219B26090424D715395726C /* Build configuration list for PBXNativeTarget "Calorisor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				11E6BB4A31D76D40EE1953BB /* Debug */,
@@ -1106,7 +1107,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		8437586D20BCD59A001B4817 /* Build configuration list for PBXProject "Sofra" */ = {
+		8437586D20BCD59A001B4817 /* Build configuration list for PBXProject "Calorisor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A96DF400C0A6507B618CD9A2 /* Debug */,
