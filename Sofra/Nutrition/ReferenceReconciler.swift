@@ -86,15 +86,19 @@ private extension ReferenceReconciler {
             }
         }
 
-        for candidate in candidates {
-            if let started = referenceKeys.first(where: { startsWithMatch(candidate, $0.key) }) {
-                return started.food
+        let aliases = uniqueKeys(candidates.flatMap(String.Turkish.aliases(for:)))
+        for alias in aliases {
+            if let exact = exactIndex[alias] {
+                return exact
             }
         }
 
         for candidate in candidates {
-            if let contained = referenceKeys.first(where: { containsMatch(candidate, $0.key) }) {
-                return contained.food
+            let candidateTokens = tokenSet(for: candidate)
+            if let tokenSetMatch = referenceKeys.first(where: {
+                !candidateTokens.isEmpty && candidateTokens == tokenSet(for: $0.key)
+            }) {
+                return tokenSetMatch.food
             }
         }
 
@@ -105,9 +109,7 @@ private extension ReferenceReconciler {
         uniqueKeys([
             String.Turkish.foodKey(item.name),
             String.Turkish.foodKey(item.nameEn),
-        ].flatMap { key in
-            [key] + String.Turkish.aliases(for: key)
-        })
+        ])
     }
 
     static func keys(for food: FoodReference) -> [ReferenceKey] {
@@ -126,11 +128,7 @@ private extension ReferenceReconciler {
         return out
     }
 
-    static func startsWithMatch(_ lhs: String, _ rhs: String) -> Bool {
-        lhs.hasPrefix(rhs) || rhs.hasPrefix(lhs)
-    }
-
-    static func containsMatch(_ lhs: String, _ rhs: String) -> Bool {
-        lhs.contains(rhs) || rhs.contains(lhs)
+    static func tokenSet(for key: String) -> Set<String> {
+        Set(key.split(separator: " ").map(String.init))
     }
 }

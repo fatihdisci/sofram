@@ -29,7 +29,7 @@ struct SofraDailyWidget: Widget {
         }
         .configurationDisplayName("Günlük Özet")
         .description("Bugünkü kalori ve makro durumunuz.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular, .accessoryInline])
         .contentMarginsDisabled()
     }
 }

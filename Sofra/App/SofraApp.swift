@@ -20,8 +20,13 @@ struct SofraApp: App {
         .modelContainer(SofraModelContainer.shared)
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                // Catch-up widget update for CloudKit sync or midnight rollover
                 let context = SofraModelContainer.shared.mainContext
+
+                // Repair any legacy quick-add rows stuck at 0 macros before
+                // totals are recomputed below.
+                QuickAddSeed.backfillMissingNutrition(context)
+
+                // Catch-up widget update for CloudKit sync or midnight rollover
                 let target = UserDefaults.standard.object(forKey: "sofra.dailyCalorieTarget") as? Double ?? 2000
                 WidgetDataStore.saveCurrentDaySummary(
                     modelContext: context,

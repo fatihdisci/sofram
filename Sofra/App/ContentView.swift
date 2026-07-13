@@ -17,6 +17,20 @@
 
 import SwiftUI
 import SwiftData
+import UIKit
+import WidgetKit
+
+enum UserDataDeletion {
+    static func deleteModels(in modelContext: ModelContext) throws {
+        try modelContext.delete(model: LoggedItem.self)
+        try modelContext.delete(model: ScanEntry.self)
+        try modelContext.delete(model: QuickAddCount.self)
+        try modelContext.delete(model: QuickAddItem.self)
+        try modelContext.delete(model: DailyQuickCounter.self)
+        try modelContext.delete(model: UserProfile.self)
+        try modelContext.save()
+    }
+}
 
 struct ContentView: View {
     @Environment(NavigationModel.self) private var nav
@@ -54,17 +68,23 @@ struct ContentView: View {
 
         TabView(selection: $nav.selectedTab) {
             DailyView()
-                .tabItem { Label("Bugün", systemImage: "sun.max.fill") }
+                .tabItem {
+                    tabItemLabel("Bugün", icon: .bugun, isSelected: nav.selectedTab == .today)
+                }
                 .tag(AppTab.today)
                 .transition(.opacity)
 
             HistoryView()
-                .tabItem { Label("Geçmiş", systemImage: "chart.bar.fill") }
+                .tabItem {
+                    tabItemLabel("Geçmiş", icon: .gecmis, isSelected: nav.selectedTab == .history)
+                }
                 .tag(AppTab.history)
                 .transition(.opacity)
 
             SettingsView()
-                .tabItem { Label("Ayarlar", systemImage: "gearshape.fill") }
+                .tabItem {
+                    tabItemLabel("Ayarlar", icon: .ayarlar, isSelected: nav.selectedTab == .settings)
+                }
                 .tag(AppTab.settings)
                 .transition(.opacity)
         }
@@ -76,6 +96,15 @@ struct ContentView: View {
         )) {
             ScanFlowContainer()
                 .environment(nav)
+        }
+    }
+
+    private func tabItemLabel(_ title: String, icon: SofraIcon, isSelected: Bool) -> some View {
+        Label {
+            Text(title)
+        } icon: {
+            SofraIconView(icon: icon, size: 24)
+                .foregroundStyle(isSelected ? Color.accentFill : Color.textMuted)
         }
     }
 }
@@ -100,8 +129,8 @@ struct ScanFlowContainer: View {
             case .analyzing(let imageData, let uiImage):
                 AnalysisOverlay(imageData: imageData, uiImage: uiImage)
 
-            case .result(let uiImage, let items, let source):
-                ResultView(uiImage: uiImage, items: items, source: source)
+            case .result(let uiImage, let items, let source, let rawJSON):
+                ResultView(uiImage: uiImage, items: items, source: source, rawJSON: rawJSON)
 
             case .textLog:
                 if FreeScanCounter.shared.canScanForFree {
@@ -203,17 +232,26 @@ struct FreeScanLimitView: View {
 /// here immediately drive the daily ring and macro cards.
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.openURL) private var openURL
     @Query private var profiles: [UserProfile]
+    @Query(sort: \ScanEntry.timestamp) private var exportScanEntries: [ScanEntry]
 
     @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
     @AppStorage("sofra.proteinTarget") private var proteinTarget: Double = 0
     @AppStorage("sofra.carbsTarget") private var carbsTarget: Double = 0
     @AppStorage("sofra.fatTarget") private var fatTarget: Double = 0
+    @AppStorage("sofra.onboardingCompleted") private var onboardingCompleted = false
 
     @State private var store = StoreKitManager.shared
     @State private var subscriptions = FreeScanCounter.shared
     @State private var showPaywall = false
     @State private var isRestoring = false
+    @State private var showTargetRecomputeConfirmation = false
+    @State private var showDeleteAllDataConfirmation = false
+    @State private var dataDeletionError: String?
+    @State private var exportedFile: ExportedFile?
+    @State private var exportError: String?
+    @State private var showFeedbackUnavailableAlert = false
 
     /// The numeric keypad has no system "done" key — this drives a keyboard
     /// toolbar with a dismiss button (see `.toolbar { ... .keyboard }` below).
@@ -230,6 +268,7 @@ struct SettingsView: View {
                 proSection
                 targetsSection
                 profileSection
+                dataSection
                 aboutSection
             }
             .scrollContentBackground(.hidden)
@@ -248,6 +287,53 @@ struct SettingsView: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView(onComplete: { showPaywall = false },
                         skipTitle: "Kapat")
+        }
+        .sheet(item: $exportedFile) { file in
+            ActivityView(activityItems: [file.url])
+        }
+        .confirmationDialog(
+            "Profil değişti. Günlük hedefler yeniden hesaplansın mı?",
+            isPresented: $showTargetRecomputeConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Evet") {
+                guard let profile else { return }
+                recomputeAndSyncTargets(for: profile)
+            }
+            Button("Hayır", role: .cancel) {}
+        }
+        .confirmationDialog(
+            "Tüm verilerimi sil?",
+            isPresented: $showDeleteAllDataConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Tüm Verilerimi Sil", role: .destructive) {
+                deleteAllData()
+            }
+            Button("Vazgeç", role: .cancel) {}
+        } message: {
+            Text("Tüm öğünler, sayaçlar ve profil kalıcı olarak silinir. iCloud kopyası da dahil. Bu geri alınamaz.")
+        }
+        .alert("Veriler silinemedi", isPresented: Binding(
+            get: { dataDeletionError != nil },
+            set: { if !$0 { dataDeletionError = nil } }
+        )) {
+            Button("Tamam", role: .cancel) {}
+        } message: {
+            Text(dataDeletionError ?? "Bilinmeyen bir hata oluştu.")
+        }
+        .alert("Veriler dışa aktarılamadı", isPresented: Binding(
+            get: { exportError != nil },
+            set: { if !$0 { exportError = nil } }
+        )) {
+            Button("Tamam", role: .cancel) {}
+        } message: {
+            Text(exportError ?? "Bilinmeyen bir hata oluştu.")
+        }
+        .alert("E-posta uygulaması açılamadı", isPresented: $showFeedbackUnavailableAlert) {
+            Button("Tamam", role: .cancel) {}
+        } message: {
+            Text("Geri bildiriminizi av.fatihdisci@gmail.com adresine gönderebilirsiniz.")
         }
         .tint(Color.accentFill)
     }
@@ -359,21 +445,27 @@ struct SettingsView: View {
             if let profile {
                 Picker("Hedef", selection: Binding(
                     get: { profile.goal },
-                    set: { profile.goal = $0; save() }
+                    set: { newValue in
+                        updateProfile(profile) { $0.goal = newValue }
+                    }
                 )) {
                     ForEach(Goal.allCases, id: \.self) { Text($0.displayName).tag($0) }
                 }
 
                 Picker("Aktivite", selection: Binding(
                     get: { profile.activityLevel },
-                    set: { profile.activityLevel = $0; save() }
+                    set: { newValue in
+                        updateProfile(profile) { $0.activityLevel = newValue }
+                    }
                 )) {
                     ForEach(ActivityLevel.allCases, id: \.self) { Text($0.displayName).tag($0) }
                 }
 
                 Stepper(value: Binding(
                     get: { profile.heightCm },
-                    set: { profile.heightCm = $0; save() }
+                    set: { newValue in
+                        updateProfile(profile) { $0.heightCm = newValue }
+                    }
                 ), in: 100...250, step: 1) {
                     HStack {
                         Text("Boy")
@@ -386,7 +478,9 @@ struct SettingsView: View {
 
                 Stepper(value: Binding(
                     get: { profile.weightKg },
-                    set: { profile.weightKg = $0; save() }
+                    set: { newValue in
+                        updateProfile(profile) { $0.weightKg = newValue }
+                    }
                 ), in: 30...300, step: 0.5) {
                     HStack {
                         Text("Kilo")
@@ -394,6 +488,32 @@ struct SettingsView: View {
                         Text("\(profile.weightKg, specifier: "%.1f") kg")
                             .font(.sofraNumericSmall)
                             .foregroundStyle(Color.textSecondary)
+                    }
+                }
+
+                Stepper(value: Binding(
+                    get: { max(profile.age, 10) },
+                    set: { newValue in
+                        updateProfile(profile) { $0.age = newValue }
+                    }
+                ), in: 10...100, step: 1) {
+                    HStack {
+                        Text("Yaş")
+                        Spacer()
+                        Text(profile.age > 0 ? "\(profile.age)" : "Belirtilmedi")
+                            .font(.sofraNumericSmall)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                }
+
+                Picker("Biyolojik cinsiyet", selection: Binding(
+                    get: { profile.biologicalSex },
+                    set: { newValue in
+                        updateProfile(profile) { $0.biologicalSex = newValue }
+                    }
+                )) {
+                    ForEach(BiologicalSex.allCases, id: \.self) {
+                        Text($0.rawValue).tag($0)
                     }
                 }
             } else {
@@ -405,10 +525,42 @@ struct SettingsView: View {
         }
     }
 
+    // MARK: Data
+
+    private var dataSection: some View {
+        Section {
+            Button {
+                exportData()
+            } label: {
+                Label("Verilerimi Dışa Aktar", systemImage: "square.and.arrow.up")
+            }
+
+            Button("Tüm Verilerimi Sil", role: .destructive) {
+                showDeleteAllDataConfirmation = true
+            }
+        } header: {
+            Text("Veri")
+        }
+    }
+
     // MARK: About
 
     private var aboutSection: some View {
         Section {
+            Button {
+                sendFeedback()
+            } label: {
+                Label("Geri Bildirim Gönder", systemImage: "envelope")
+            }
+
+            Link(destination: LegalLinks.privacyPolicy) {
+                Label("Gizlilik Politikası", systemImage: "hand.raised")
+            }
+
+            Link(destination: LegalLinks.termsOfUse) {
+                Label("Kullanım Koşulları", systemImage: "doc.text")
+            }
+
             HStack {
                 Text("Sürüm")
                 Spacer()
@@ -424,9 +576,13 @@ struct SettingsView: View {
     // MARK: Logic
 
     private var appVersion: String {
-        let v = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
+        let v = appShortVersion
         let b = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—"
         return "\(v) (\(b))"
+    }
+
+    private var appShortVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
     }
 
     /// Seed macro targets from the saved profile on first open (they default to 0).
@@ -457,9 +613,111 @@ struct SettingsView: View {
         try? modelContext.save()
     }
 
+    private func updateProfile(
+        _ profile: UserProfile,
+        mutation: (UserProfile) -> Void
+    ) {
+        let targetsWereCustomized = appTargetsDiffer(from: profile)
+        mutation(profile)
+
+        guard profile.age > 0 else {
+            save()
+            return
+        }
+
+        if targetsWereCustomized {
+            save()
+            showTargetRecomputeConfirmation = true
+        } else {
+            recomputeAndSyncTargets(for: profile)
+        }
+    }
+
+    private func appTargetsDiffer(from profile: UserProfile) -> Bool {
+        abs(calorieTarget - profile.dailyCalorieTarget) > 0.5
+            || abs(proteinTarget - profile.proteinTargetG) > 0.5
+            || abs(carbsTarget - profile.carbsTargetG) > 0.5
+            || abs(fatTarget - profile.fatTargetG) > 0.5
+    }
+
+    private func recomputeAndSyncTargets(for profile: UserProfile) {
+        profile.recomputeDailyTarget()
+        calorieTarget = profile.dailyCalorieTarget
+        proteinTarget = profile.proteinTargetG
+        carbsTarget = profile.carbsTargetG
+        fatTarget = profile.fatTargetG
+        save()
+    }
+
     private func restore() async {
         isRestoring = true
         defer { isRestoring = false }
         _ = await store.restorePurchases()
     }
+
+    private func deleteAllData() {
+        do {
+            try UserDataDeletion.deleteModels(in: modelContext)
+
+            let defaults = UserDefaults.standard
+            [
+                "sofra.dailyCalorieTarget",
+                "sofra.proteinTarget",
+                "sofra.carbsTarget",
+                "sofra.fatTarget",
+                "sofra.onboardingCompleted",
+            ].forEach(defaults.removeObject(forKey:))
+
+            WidgetDataStore.save(.empty)
+            WidgetCenter.shared.reloadAllTimelines()
+            onboardingCompleted = false
+        } catch {
+            modelContext.rollback()
+            dataDeletionError = "Lütfen tekrar deneyin. (\(error.localizedDescription))"
+        }
+    }
+
+    private func exportData() {
+        do {
+            exportedFile = ExportedFile(
+                url: try DataExporter.writeTemporaryCSV(scans: exportScanEntries)
+            )
+        } catch {
+            exportError = "Lütfen tekrar deneyin. (\(error.localizedDescription))"
+        }
+    }
+
+    private func sendFeedback() {
+        var components = URLComponents()
+        components.scheme = "mailto"
+        components.path = "av.fatihdisci@gmail.com"
+        components.queryItems = [
+            URLQueryItem(name: "subject", value: "Sofra Geri Bildirim v\(appShortVersion)")
+        ]
+
+        guard let url = components.url else {
+            showFeedbackUnavailableAlert = true
+            return
+        }
+        openURL(url) { accepted in
+            if !accepted {
+                showFeedbackUnavailableAlert = true
+            }
+        }
+    }
+}
+
+private struct ExportedFile: Identifiable {
+    let id = UUID()
+    let url: URL
+}
+
+private struct ActivityView: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

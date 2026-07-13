@@ -44,16 +44,35 @@ struct SevenDaySummaryView: View {
 
     private var totalQuickAdds: Int { daySummaries.reduce(0) { $0 + $1.quickAddTally } }
 
+    private func averageMacro(_ value: (DaySummary) -> Double) -> Double {
+        guard !loggedDays.isEmpty else { return 0 }
+        return loggedDays.reduce(0) { $0 + value($1) } / Double(loggedDays.count)
+    }
+
     @ViewBuilder
     var body: some View {
         if embedded {
-            content
+            embeddedContent
         } else {
             content
                 .presentationDetents([.large])
                 .presentationCornerRadius(24)
                 .presentationBackground(Color.bgPage)
                 .presentationDragIndicator(.visible)
+        }
+    }
+
+    private var embeddedContent: some View {
+        VStack(spacing: Layout.Spacing.lg) {
+            statsRow
+
+            if loggedDays.isEmpty {
+                emptyState
+            } else {
+                chartCard
+            }
+
+            macroStatsRow
         }
     }
 
@@ -73,6 +92,8 @@ struct SevenDaySummaryView: View {
                         } else {
                             chartCard
                         }
+
+                        macroStatsRow
 
                         dayRows
                     }
@@ -116,6 +137,14 @@ struct SevenDaySummaryView: View {
             StatCell(value: "\(Int(averageCalories))", caption: "ort. kcal / gün")
             StatCell(value: "\(loggedDays.count)", caption: "kayıtlı gün")
             StatCell(value: "\(totalQuickAdds)", caption: "hızlı ekleme")
+        }
+    }
+
+    private var macroStatsRow: some View {
+        HStack(spacing: Layout.Spacing.md) {
+            StatCell(value: "\(Int(averageMacro(\.protein))) g", caption: "ort. protein / gün")
+            StatCell(value: "\(Int(averageMacro(\.carbs))) g", caption: "ort. karb. / gün")
+            StatCell(value: "\(Int(averageMacro(\.fat))) g", caption: "ort. yağ / gün")
         }
     }
 
@@ -171,8 +200,8 @@ struct SevenDaySummaryView: View {
                 Spacer()
                 Text("Kalori")
                     .frame(width: 90, alignment: .trailing)
-                Text("Adet")
-                    .frame(width: 56, alignment: .trailing)
+                Text("Hızlı ekleme")
+                    .frame(width: 88, alignment: .trailing)
             }
             .font(.sofraCaption)
             .foregroundStyle(Color.textMuted)
@@ -193,7 +222,7 @@ struct SevenDaySummaryView: View {
                     Text(day.quickAddTally > 0 ? "\(day.quickAddTally)" : "—")
                         .font(.sofraNumericSmall)
                         .foregroundStyle(day.quickAddTally > 0 ? Color.textSecondary : Color.textMuted)
-                        .frame(width: 56, alignment: .trailing)
+                        .frame(width: 88, alignment: .trailing)
                 }
                 .padding(.horizontal, Layout.Spacing.lg)
                 .padding(.vertical, Layout.Spacing.md)
@@ -217,10 +246,7 @@ struct SevenDaySummaryView: View {
         let cal = Calendar.current
         if cal.isDateInToday(date) { return "Bugün" }
         if cal.isDateInYesterday(date) { return "Dün" }
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "EEE"
-        return formatter.string(from: date).prefix(3).capitalized
+        return SofraFormatters.turkishShortWeekday.string(from: date).prefix(3).capitalized
     }
 }
 
@@ -306,23 +332,6 @@ struct WeekBarChart: View {
         if Calendar.current.isDateInToday(date) { return "Bugün" }
         // 3-letter abbreviation (matches the day-rows list below) — a single
         // Turkish initial is ambiguous (Pazartesi/Perşembe/Pazar all start "P").
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "EEE"
-        return String(formatter.string(from: date).prefix(3)).capitalized
-    }
-}
-
-// MARK: - History tab
-
-/// Geçmiş tab — hosts the 7-day summary as a full screen (no sheet chrome).
-/// Lives here (not its own file) so it compiles against the committed
-/// .xcodeproj without a `xcodegen generate` step.
-struct HistoryView: View {
-    var body: some View {
-        ZStack {
-            Color.bgPage.ignoresSafeArea()
-            SevenDaySummaryView(embedded: true)
-        }
+        return String(SofraFormatters.turkishShortWeekday.string(from: date).prefix(3)).capitalized
     }
 }

@@ -166,13 +166,11 @@ struct AnalysisOverlay: View {
 
     private func errorCard(for error: AIProxyError) -> some View {
         VStack(spacing: Layout.Spacing.md) {
-            Image(systemName: error == .notConfigured
-                  ? "antenna.radiowaves.left.and.right.slash"
-                  : "wifi.exclamationmark")
+            Image(systemName: errorPresentation(for: error).icon)
                 .font(.system(size: 30))
                 .foregroundStyle(Color.accentFill)
 
-            Text(error == .notConfigured ? "Sunucu bağlı değil" : "Analiz başarısız")
+            Text(errorPresentation(for: error).title)
                 .font(.sofraHeading)
                 .foregroundStyle(Color.textPrimary)
 
@@ -214,6 +212,21 @@ struct AnalysisOverlay: View {
         .padding(.bottom, Layout.Spacing.lg)
     }
 
+    private func errorPresentation(for error: AIProxyError) -> (icon: String, title: String) {
+        switch error {
+        case .notConfigured:
+            return ("antenna.radiowaves.left.and.right.slash", "Sunucu bağlı değil")
+        case .rateLimited:
+            return ("clock.fill", "Biraz bekle")
+        case .offline:
+            return ("wifi.slash", "Bağlantı yok")
+        case .serverError:
+            return ("server.rack", "Sunucu sorunu")
+        case .invalidConfiguration, .scanFailed:
+            return ("wifi.exclamationmark", "Analiz başarısız")
+        }
+    }
+
     // MARK: - Scan flow
 
     private func startScan() {
@@ -235,10 +248,13 @@ struct AnalysisOverlay: View {
             defer { captionTask.cancel() }
 
             do {
-                let response = try await client.scan(imageData: imageData)
+                let result = try await client.scan(imageData: imageData)
                 guard !Task.isCancelled else { return }
+                if !client.isDemoMode {
+                    FreeScanCounter.shared.recordScan()
+                }
                 captionTask.cancel()
-                await revealItems(response.items)
+                await revealItems(result.response.items, rawJSON: result.rawJSON)
             } catch {
                 guard !Task.isCancelled else { return }
                 captionTask.cancel()
@@ -249,12 +265,12 @@ struct AnalysisOverlay: View {
         }
     }
 
-    private func revealItems(_ items: [VisionItem]) async {
+    private func revealItems(_ items: [VisionItem], rawJSON: String) async {
         guard !items.isEmpty else {
             // No food detected — go to result with empty items
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             try? await Task.sleep(nanoseconds: 200_000_000)
-            nav.showResult(uiImage: uiImage, items: [])
+            nav.showResult(uiImage: uiImage, items: [], rawJSON: rawJSON)
             return
         }
 
@@ -275,7 +291,7 @@ struct AnalysisOverlay: View {
         // Brief pause before transitioning to result
         try? await Task.sleep(nanoseconds: 300_000_000)
         guard !Task.isCancelled else { return }
-        nav.showResult(uiImage: uiImage, items: items)
+        nav.showResult(uiImage: uiImage, items: items, rawJSON: rawJSON)
     }
 }
 

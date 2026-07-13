@@ -20,17 +20,22 @@ struct ResultView: View {
     let uiImage: UIImage
     let items: [VisionItem]
     let source: ScanSource
+    let rawJSON: String
 
     /// Editable copies of each item (index-matched to `items`).
     @State private var editableItems: [EditableVisionItem]
     @State private var isSaving = false
     @State private var cardsVisible = false
+    @State private var hasEdits = false
+    @State private var showsDiscardConfirmation = false
 
-    init(uiImage: UIImage, items: [VisionItem], source: ScanSource = .photo) {
+    init(uiImage: UIImage, items: [VisionItem], source: ScanSource = .photo, rawJSON: String,
+         foodReferences: [FoodReference] = TurkishFoodReference.foods()) {
         self.uiImage = uiImage
         self.items = items
         self.source = source
-        _editableItems = State(initialValue: items.map { EditableVisionItem(from: $0) })
+        self.rawJSON = rawJSON
+        _editableItems = State(initialValue: items.map { EditableVisionItem(from: $0, references: foodReferences) })
     }
 
     private var totalCalories: Double { editableItems.reduce(0) { $0 + $1.calories } }
@@ -46,23 +51,36 @@ struct ResultView: View {
                 // Header with captured image thumbnail
                 headerView
 
-                if items.isEmpty {
+                if editableItems.isEmpty {
                     emptyResultView
                 } else {
                     // Scrollable item cards — spring from bottom (catalog)
                     ScrollView(showsIndicators: false) {
                         if cardsVisible {
                             VStack(spacing: Layout.Spacing.md) {
-                                ForEach(Array(editableItems.enumerated()), id: \.offset) { idx, item in
+                                ForEach(editableItems) { item in
                                     ResultItemCard(
                                         item: item,
                                         onUnitChange: { newUnit in
-                                            editableItems[idx].householdUnit = newUnit
+                                            guard item.householdUnit != newUnit else { return }
+                                            item.householdUnit = newUnit
+                                            hasEdits = true
                                         },
                                         onQuantityChange: { newQty in
-                                            editableItems[idx].householdQuantity = newQty
+                                            guard item.householdQuantity != newQty else { return }
+                                            item.householdQuantity = newQty
+                                            hasEdits = true
+                                        },
+                                        onNameChange: { newName in
+                                            guard item.name != newName else { return }
+                                            item.rename(to: newName)
+                                            hasEdits = true
+                                        },
+                                        onDelete: {
+                                            deleteItem(id: item.id)
                                         }
                                     )
+                                    .transition(.scale(scale: 0.92).combined(with: .opacity))
                                 }
                             }
                             .padding(.horizontal, Layout.Spacing.lg)
@@ -75,7 +93,7 @@ struct ResultView: View {
             }
 
             // Bottom bar overlays the scroll content
-            if !items.isEmpty {
+            if !editableItems.isEmpty {
                 VStack {
                     Spacer()
                     bottomBar
@@ -87,6 +105,16 @@ struct ResultView: View {
                 cardsVisible = true
             }
         }
+        .confirmationDialog(
+            "Düzenlemeler kaydedilmedi",
+            isPresented: $showsDiscardConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Çıkış", role: .destructive) {
+                nav.dismissResult(source: source)
+            }
+            Button("Vazgeç", role: .cancel) {}
+        }
     }
 
     // MARK: - Header
@@ -95,7 +123,7 @@ struct ResultView: View {
         HStack(spacing: Layout.Spacing.md) {
             // Dismiss — photo scans return to the camera, text scans to the editor
             Button {
-                nav.dismissResult(source: source)
+                requestDismiss()
             } label: {
                 Image(systemName: source == .text ? "chevron.left" : "xmark")
                     .font(.system(size: 16, weight: .medium))
@@ -118,7 +146,7 @@ struct ResultView: View {
                 Text("Sonuçlar")
                     .font(.sofraHeading)
                     .foregroundStyle(Color.textPrimary)
-                Text(items.count == 1 ? "1 öğe tanındı" : "\(items.count) öğe tanındı")
+                Text(editableItems.count == 1 ? "1 öğe tanındı" : "\(editableItems.count) öğe tanındı")
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textSecondary)
             }
@@ -146,7 +174,7 @@ struct ResultView: View {
                 .font(.sofraBody)
                 .foregroundStyle(Color.textSecondary)
             Button {
-                nav.dismissResult(source: source)
+                requestDismiss()
             } label: {
                 Text(source == .text ? "Düzenle" : "Tekrar çek")
                     .font(.sofraLabel)
@@ -208,7 +236,7 @@ struct ResultView: View {
     // MARK: - Save
 
     private func save() async {
-        let entry = ScanEntry(source: source)
+        let entry = ScanEntry(source: source, rawAIResponse: rawJSON)
         let loggedItems = editableItems.map { item in
             let logged = LoggedItem(
                 name: item.name,
@@ -221,7 +249,8 @@ struct ResultView: View {
                 carbs: item.carbsG,
                 fat: item.fatG,
                 confidence: item.confidence,
-                note: item.note
+                note: item.note,
+                valueSource: item.valueSource
             )
             logged.scanEntry = entry
             return logged
@@ -229,7 +258,6 @@ struct ResultView: View {
         entry.items = loggedItems
         modelContext.insert(entry)
         try? modelContext.save()
-        FreeScanCounter.shared.recordScan()
 
         // A logged text entry consumes its draft
         if source == .text {
@@ -243,6 +271,22 @@ struct ResultView: View {
             calorieTarget: target
         )
     }
+
+    private func deleteItem(id: UUID) {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        withAnimation(.sofraSpring) {
+            editableItems.removeAll { $0.id == id }
+            hasEdits = true
+        }
+    }
+
+    private func requestDismiss() {
+        if hasEdits {
+            showsDiscardConfirmation = true
+        } else {
+            nav.dismissResult(source: source)
+        }
+    }
 }
 
 // MARK: - Editable copy
@@ -251,44 +295,139 @@ struct ResultView: View {
 /// baseline; corrected quantities scale calories, macros and grams from it —
 /// changing "2 kepçe" to "4 kepçe" doubles the item's nutrition.
 @Observable
-final class EditableVisionItem {
+final class EditableVisionItem: Identifiable {
+    let id = UUID()
     var name: String
     var nameEn: String
-    var householdUnit: PortionUnit
+    var householdUnit: PortionUnit {
+        didSet {
+            guard householdUnit != oldValue else { return }
+            selectedUnitWasChanged = true
+            gramsPerSelectedUnit = gramsPerUnit(for: householdUnit)
+        }
+    }
     var householdQuantity: Double
     var confidence: Double
     var note: String?
 
-    /// The AI's original estimate (baseline for scaling).
+    /// Where calories/macros came from — "reference" (deterministic DB match)
+    /// or "ai" (kept the model's own estimate). Drives the Sonuçlar badge.
+    private(set) var valueSource: String
+    private(set) var confidenceNote: String?
+    private(set) var referenceName: String?
+
+    /// The reconciled estimate (reference values when matched, otherwise the
+    /// AI's own numbers) — baseline for scaling as quantity is corrected.
     private let baseQuantity: Double
     private let baseGrams: Double
-    private let baseCalories: Double
-    private let baseProtein: Double
-    private let baseCarbs: Double
-    private let baseFat: Double
+    private var baseCalories: Double
+    private var baseProtein: Double
+    private var baseCarbs: Double
+    private var baseFat: Double
+    private var matchedReference: FoodReference?
+    private var gramsPerSelectedUnit: Double?
+    private var selectedUnitWasChanged = false
+    private let references: [FoodReference]
+    private let originalAICalories: Double
+    private let originalAIProtein: Double
+    private let originalAICarbs: Double
+    private let originalAIFat: Double
 
-    init(from item: VisionItem) {
+    init(from item: VisionItem, references: [FoodReference] = []) {
+        let reconciled = ReferenceReconciler.reconcile(item: item, in: references)
+
         self.name = item.name
         self.nameEn = item.nameEn
         self.householdUnit = item.portionUnit
         self.householdQuantity = item.householdQuantity
         self.confidence = item.confidence
         self.note = item.note
+        self.valueSource = reconciled.source.rawValue
+        self.confidenceNote = reconciled.confidenceNote
+        self.referenceName = reconciled.referenceName
         self.baseQuantity = max(item.householdQuantity, 0.001)
         self.baseGrams = item.estimatedGrams
-        self.baseCalories = item.calories
-        self.baseProtein = item.proteinG
-        self.baseCarbs = item.carbsG
-        self.baseFat = item.fatG
+        self.baseCalories = reconciled.calories
+        self.baseProtein = reconciled.protein
+        self.baseCarbs = reconciled.carbs
+        self.baseFat = reconciled.fat
+        self.matchedReference = references.first { $0.name == reconciled.referenceName }
+        self.gramsPerSelectedUnit = nil
+        self.references = references
+        self.originalAICalories = item.calories
+        self.originalAIProtein = item.proteinG
+        self.originalAICarbs = item.carbsG
+        self.originalAIFat = item.fatG
     }
 
     private var scale: Double { householdQuantity / baseQuantity }
+    private var calorieDensity: Double { baseCalories / max(baseGrams, 1) }
+    private var proteinDensity: Double { baseProtein / max(baseGrams, 1) }
+    private var carbsDensity: Double { baseCarbs / max(baseGrams, 1) }
+    private var fatDensity: Double { baseFat / max(baseGrams, 1) }
 
-    var estimatedGrams: Double { baseGrams * scale }
-    var calories: Double { baseCalories * scale }
-    var proteinG: Double { baseProtein * scale }
-    var carbsG: Double { baseCarbs * scale }
-    var fatG: Double { baseFat * scale }
+    var estimatedGrams: Double {
+        if let gramsPerSelectedUnit {
+            return householdQuantity * gramsPerSelectedUnit
+        }
+        return baseGrams * scale
+    }
+
+    var calories: Double { calorieDensity * estimatedGrams }
+    var proteinG: Double { proteinDensity * estimatedGrams }
+    var carbsG: Double { carbsDensity * estimatedGrams }
+    var fatG: Double { fatDensity * estimatedGrams }
 
     var portionUnit: PortionUnit { householdUnit }
+
+    func rename(to newName: String) {
+        let cleanedName = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanedName.isEmpty else { return }
+
+        let candidate = VisionItem(
+            name: cleanedName,
+            nameEn: nameEn,
+            estimatedGrams: baseGrams,
+            householdUnit: householdUnit.rawValue,
+            householdQuantity: baseQuantity,
+            calories: originalAICalories,
+            proteinG: originalAIProtein,
+            carbsG: originalAICarbs,
+            fatG: originalAIFat,
+            confidence: confidence,
+            note: note
+        )
+        let reconciled = ReferenceReconciler.reconcile(item: candidate, in: references)
+
+        name = cleanedName
+        valueSource = reconciled.source.rawValue
+        confidenceNote = reconciled.confidenceNote
+        referenceName = reconciled.referenceName
+        baseCalories = reconciled.calories
+        baseProtein = reconciled.protein
+        baseCarbs = reconciled.carbs
+        baseFat = reconciled.fat
+        matchedReference = references.first { $0.name == reconciled.referenceName }
+
+        if matchedReference != nil {
+            gramsPerSelectedUnit = gramsPerUnit(for: householdUnit)
+        } else {
+            gramsPerSelectedUnit = selectedUnitWasChanged
+                ? NutritionConstants.defaultGrams(for: householdUnit)
+                : nil
+        }
+    }
+
+    private func gramsPerUnit(for unit: PortionUnit) -> Double? {
+        if let referencePortion = referencePortion(for: unit) {
+            return referencePortion.grams / max(referencePortion.householdQuantity, 0.001)
+        }
+        return NutritionConstants.defaultGrams(for: unit)
+    }
+
+    private func referencePortion(for unit: PortionUnit) -> RefPortion? {
+        guard let matchedReference else { return nil }
+        return ([matchedReference.typicalPortion] + matchedReference.alternatePortions)
+            .first { $0.householdUnit == unit.rawValue }
+    }
 }

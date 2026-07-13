@@ -8,27 +8,37 @@
 
 /* Begin PBXBuildFile section */
 		0157ABF651A922D23B8CC571 /* GeistMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 83E136C81E00E88F23205CD9 /* GeistMono-Medium.otf */; };
+		05B879A966638B877A1299BB /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD36F99BF9F15BC3DA0299 /* DayDetailView.swift */; };
 		08C902A05C178611CD8BA616 /* SofraWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B088DADDCE77DB0C23F66F /* SofraWidget.swift */; };
 		0AF6FEBF2EC509B74055940C /* SevenDaySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */; };
 		0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */; };
 		10D9BE4519BDC183EE6F68DB /* Geist-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 58EB71386FCB3BB93B36C4C4 /* Geist-Regular.otf */; };
+		12C83ADD5BA0F41D92C7F727 /* AIProxyRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E779E8983043AC16D6FE8E /* AIProxyRequestTests.swift */; };
 		13174B0AC06670CF9856F448 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */; };
 		167C3B3F92326E1DBBC4386C /* NutritionConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE2D0B35958358EB63D7560 /* NutritionConstants.swift */; };
 		16CAC471A7E6379E5E613E2F /* WidgetDataStore+MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F147E274CA44406942ADF2E8 /* WidgetDataStore+MainApp.swift */; };
+		1AC10C749A301E96B8BFC648 /* DataExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889BD89F90EF087B95CE8499 /* DataExporter.swift */; };
+		1E934699D7DE2C736F1B2C92 /* VisionResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9A8C2BECC7C56922DC9D38 /* VisionResponseValidator.swift */; };
 		1F353A3C82D8E6BE17C7D1CC /* DaySummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9601C724990AFBFD75EDD21E /* DaySummaryBuilder.swift */; };
+		204E17A79BDD63ECE8EBE3F3 /* ReconcilerNegativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB00F92C537B260370B739B5 /* ReconcilerNegativeTests.swift */; };
 		268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D959F549ED125A75211383C7 /* LoggedItem.swift */; };
 		292857E472561F3AFA14B3CF /* FoodReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3446E6A2D8985E142BAB2041 /* FoodReference.swift */; };
 		2A58A36E41E7E46DAEEE40C1 /* ReferenceReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919DEDBF2BEE37B415CA209C /* ReferenceReconciler.swift */; };
 		2FABEA2D5A210D794CF519D8 /* PortionUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61CA283C143DFB3AF113488E /* PortionUnit.swift */; };
+		31E4FA6C66FAF9DDED392EC3 /* Motion+Patterns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFAB3CE3A9C0A4709D47DB4 /* Motion+Patterns.swift */; };
 		3547A3A4E512CA44F0E178A9 /* Products.storekit in Resources */ = {isa = PBXBuildFile; fileRef = AA5EC66D7882786D07D37B17 /* Products.storekit */; };
 		3AC2C367F7B791A1EE285299 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987B7D2B180F46B008B29D3A /* ResultView.swift */; };
+		3AEA4E7D3A251B80A1D41CAA /* BreadReferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF230264D9562F7427116FA2 /* BreadReferenceTests.swift */; };
 		3B70C192B418CF2B2E2F4888 /* Color+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */; };
 		3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385DF247D014F9EF0BDF72D6 /* ContentView.swift */; };
+		3D8BDCFC09F5568F3981DAE7 /* Pow in Frameworks */ = {isa = PBXBuildFile; productRef = 2F447F5E147B0DD18A2B758F /* Pow */; };
 		3EF8A428E5298AE8C03FE4CA /* Geist-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = DF6450117D77FE994AEF0FAA /* Geist-SemiBold.otf */; };
 		4194A98747DEEE37227513C9 /* Font+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */; };
+		486A4EC09ADCC806C1DDE3F0 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AB9ADB825333DBF473BC9A /* HistoryView.swift */; };
 		4F161E3B39AD0D2F8CAE8DB1 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F43AEF8082A2E562C2842E4 /* DailyView.swift */; };
 		51DE94496F47F97F1DFC5252 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2F13C99F7C4BFEC48A2347 /* Provider.swift */; };
 		526A711DAC33408D9629EAA5 /* LogButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */; };
+		571AF56CA0474C48D1C796C1 /* HistoryDaySummaryBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06D4D8739F9A29B3461B26DA /* HistoryDaySummaryBuilderTests.swift */; };
 		57955CD4F69C53B723E74FA2 /* CalorieRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238FF164D03FBE4CB6367536 /* CalorieRingView.swift */; };
 		58EA6A2261AFD526DD213D2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */; };
 		5AE2AA53DAF21C00BCF61DAA /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA21E1C27ED51254B60BEDE /* PaywallView.swift */; };
@@ -37,8 +47,13 @@
 		600B95BBBA35A630EECF81BD /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */; };
 		60E892F92E0887DAC479A39E /* ResultItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */; };
 		625A3C89AC6653EDCB345899 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FF0AD775886DE66BC40E360 /* CameraView.swift */; };
+		64FCDE8A0383D75485EB0903 /* VisionResponseValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */; };
+		65399651FDE23A9A6E635F15 /* RawAIResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D4B72320685EF2B0B1B2B46 /* RawAIResponseTests.swift */; };
 		74E71F51C46C76029C23714B /* turkish_food_reference.json in Resources */ = {isa = PBXBuildFile; fileRef = 05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */; };
+		78F51218DA0EF4D4D672F701 /* AIProxyClientErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D987C0340FEE4009B58A1EA6 /* AIProxyClientErrorTests.swift */; };
 		79CEBC67E80766B3FEB1008E /* QuickCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */; };
+		7B25EB86033380F13AFCF8FF /* DaySummaryBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA01550B4154909969504A1 /* DaySummaryBuilderTests.swift */; };
+		7D16B19CC9F67D20630871E5 /* WidgetDailySummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B62D9FDF67DCD06DCFC744 /* WidgetDailySummaryTests.swift */; };
 		806BDB4750F0928CA4DFAF93 /* Color+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */; };
 		8223AA7BEAFD7A352FA5B0D5 /* WidgetDailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */; };
 		822A16CC4B0E1C0B5E07A988 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = E19F8CA13354DB8B97C93C2B /* Secrets.plist */; };
@@ -49,23 +64,36 @@
 		9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */; };
 		99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */; };
 		9AB5C410D2AC8E83D06C21DB /* ReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */; };
+		9DA956A393108E1719E5CBB4 /* SofraFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF173AC7FEF260AD502A7A29 /* SofraFormatters.swift */; };
+		A034580CE4614A3B94D32B5B /* PortionRecalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB810BF61C02917F98B012C /* PortionRecalculationTests.swift */; };
 		A27C817B5A553F42C52AC50D /* SofraWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* SofraWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A3707C461463E7DB88E43DC3 /* CalorieRingViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17DE019D6734175BC22974A /* CalorieRingViewTests.swift */; };
 		A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */; };
+		A664A1CEC57056B0B0B5726D /* UserDataDeletionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D85027ED00E9227BD62D53 /* UserDataDeletionTests.swift */; };
+		A6EF69200A2C240480FFD0D7 /* UserProfileRecomputeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB74F4E0EC9C9FA5A6B5B984 /* UserProfileRecomputeTests.swift */; };
 		A7B7A1FE2461A9B5A530572E /* FoodReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5169E4437D13917D125E3F /* FoodReferenceReconcilerTests.swift */; };
 		A7BEE3885ED86DF7942169FF /* WidgetDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A56C40031CD587A873FC971 /* WidgetDataStore.swift */; };
+		A87F615710AC6258EBA2280F /* FreeScanCounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F2406E759FD86227F44C6 /* FreeScanCounterTests.swift */; };
+		AC1711361F29D569C54F5C23 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 15856C02BB80CEBFCFEA547B /* Lottie */; };
 		AC5CB5E73C3CFD78D22FF1A0 /* OnboardingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3567280D677BC253A09E08E4 /* OnboardingModel.swift */; };
+		AF771A705D9DF951FC418363 /* AIProxyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C71F50507B7A6609A2DEB /* AIProxyClientTests.swift */; };
 		B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7021E076DC4ED88D26975B /* VisionResponse.swift */; };
+		B63DCF18E9BFA9180EC8FA05 /* RenameReconciliationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5450361CF129367245855D /* RenameReconciliationTests.swift */; };
+		B66A652F2DB5E33687CD963C /* TextLogInputPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A65FFF0F0CBF7A8AB1BF6E /* TextLogInputPolicyTests.swift */; };
 		B9744D5660C9C7FA9F6EB2A7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17F01B847BA24B835B4037 /* UserProfile.swift */; };
 		BABBBF429BC9E1A04F1E9BE0 /* Surfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */; };
 		BDBB9B674BEB8923D1BA5065 /* SofraIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */; };
+		BDF12A127E07BB7FB8B0E5C9 /* DataExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C416069E68BBBF6E8DDE2958 /* DataExporterTests.swift */; };
 		C188F2E65D68966E4F8C99A3 /* TurkishFoodReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */; };
 		C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39394ADA5B6933015390DC8 /* ScanEntry.swift */; };
 		C226F186EE012459F20A7A66 /* AIProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EBF7CCF553D14C6174559 /* AIProxyClient.swift */; };
 		C6589D98D126F801A9DE3673 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A9E8334613F75FF1CA6EAD /* Layout.swift */; };
+		D4DB6EC5D9E7C553A4301514 /* SofraLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71968B769E47DAC3842D651 /* SofraLottieView.swift */; };
 		DCE5F2979EB9B548C6CF2AEE /* Font+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF2C3A402F676FBFA622EC /* Font+Widget.swift */; };
 		E01AA21BDA85222C9DD22D1B /* NutritionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA2661881718055D067FBDA2 /* NutritionCalculator.swift */; };
 		E1EED8CCB3177B5560586B87 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E38887382F74AA55C63EA6C /* OnboardingView.swift */; };
 		E7810ED3DAB4A010F74ADB3B /* GeistMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F39E67471483C60085CF44FB /* GeistMono-Regular.otf */; };
+		EBD7A9ABDE0EC0EC207EBA68 /* ImageDownscalerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91002469968093CB5EAD8EE6 /* ImageDownscalerTests.swift */; };
 		F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */; };
 		F70AEB91CC6049E2911A555F /* String+TurkishNormalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1A6FC2CC0CF53D63B39DF1 /* String+TurkishNormalize.swift */; };
 		FDA2A9A072724EA01D21210D /* WidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88393263558BFFF69AB2CBF8 /* WidgetEntryView.swift */; };
@@ -106,7 +134,9 @@
 /* Begin PBXFileReference section */
 		00C3D4D418D9A0757BAB3F9A /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 		05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = turkish_food_reference.json; sourceTree = "<group>"; };
+		06D4D8739F9A29B3461B26DA /* HistoryDaySummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDaySummaryBuilderTests.swift; sourceTree = "<group>"; };
 		086EBF7CCF553D14C6174559 /* AIProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClient.swift; sourceTree = "<group>"; };
+		0ABD36F99BF9F15BC3DA0299 /* DayDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayDetailView.swift; sourceTree = "<group>"; };
 		0E38887382F74AA55C63EA6C /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		142093050464BF9252D327F3 /* Sofra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Sofra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABEDB088BD86173D15337A9 /* TextLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogView.swift; sourceTree = "<group>"; };
@@ -117,6 +147,8 @@
 		3446E6A2D8985E142BAB2041 /* FoodReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReference.swift; sourceTree = "<group>"; };
 		3567280D677BC253A09E08E4 /* OnboardingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModel.swift; sourceTree = "<group>"; };
 		385DF247D014F9EF0BDF72D6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3B9A8C2BECC7C56922DC9D38 /* VisionResponseValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponseValidator.swift; sourceTree = "<group>"; };
+		3D4B72320685EF2B0B1B2B46 /* RawAIResponseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawAIResponseTests.swift; sourceTree = "<group>"; };
 		3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F43AEF8082A2E562C2842E4 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
 		42BA68BE72D1A41D934F0208 /* SofraWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SofraWidget.entitlements; sourceTree = "<group>"; };
@@ -126,49 +158,84 @@
 		5C5169E4437D13917D125E3F /* FoodReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReferenceReconcilerTests.swift; sourceTree = "<group>"; };
 		60A9E8334613F75FF1CA6EAD /* Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDailySummary.swift; sourceTree = "<group>"; };
+		61A65FFF0F0CBF7A8AB1BF6E /* TextLogInputPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogInputPolicyTests.swift; sourceTree = "<group>"; };
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
 		6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCounterView.swift; sourceTree = "<group>"; };
 		6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
 		768B000219616D415E6478BF /* SofraWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = SofraWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B2F13C99F7C4BFEC48A2347 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
+		7FA01550B4154909969504A1 /* DaySummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryBuilderTests.swift; sourceTree = "<group>"; };
 		83E136C81E00E88F23205CD9 /* GeistMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.otf"; sourceTree = "<group>"; };
 		84EF2C3A402F676FBFA622EC /* Font+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Widget.swift"; sourceTree = "<group>"; };
 		87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Tokens.swift"; sourceTree = "<group>"; };
 		88393263558BFFF69AB2CBF8 /* WidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntryView.swift; sourceTree = "<group>"; };
+		889BD89F90EF087B95CE8499 /* DataExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExporter.swift; sourceTree = "<group>"; };
 		88B088DADDCE77DB0C23F66F /* SofraWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraWidget.swift; sourceTree = "<group>"; };
 		8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-Medium.otf"; sourceTree = "<group>"; };
 		8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconcilerTests.swift; sourceTree = "<group>"; };
 		8FF0AD775886DE66BC40E360 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		91002469968093CB5EAD8EE6 /* ImageDownscalerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownscalerTests.swift; sourceTree = "<group>"; };
 		919DEDBF2BEE37B415CA209C /* ReferenceReconciler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconciler.swift; sourceTree = "<group>"; };
 		94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogButton.swift; sourceTree = "<group>"; };
 		9601C724990AFBFD75EDD21E /* DaySummaryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryBuilder.swift; sourceTree = "<group>"; };
 		987B7D2B180F46B008B29D3A /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		98AB9ADB825333DBF473BC9A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Surfaces.swift; sourceTree = "<group>"; };
+		9AFAB3CE3A9C0A4709D47DB4 /* Motion+Patterns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Motion+Patterns.swift"; sourceTree = "<group>"; };
 		9CA21E1C27ED51254B60BEDE /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
 		A7579E16F68EF88FA80D3D8F /* CategorySlugMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlugMap.swift; sourceTree = "<group>"; };
 		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; path = Products.storekit; sourceTree = "<group>"; };
 		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
+		AF173AC7FEF260AD502A7A29 /* SofraFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraFormatters.swift; sourceTree = "<group>"; };
+		B71968B769E47DAC3842D651 /* SofraLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraLottieView.swift; sourceTree = "<group>"; };
+		BB6C71F50507B7A6609A2DEB /* AIProxyClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClientTests.swift; sourceTree = "<group>"; };
+		C0B62D9FDF67DCD06DCFC744 /* WidgetDailySummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDailySummaryTests.swift; sourceTree = "<group>"; };
+		C2D85027ED00E9227BD62D53 /* UserDataDeletionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataDeletionTests.swift; sourceTree = "<group>"; };
 		C39394ADA5B6933015390DC8 /* ScanEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanEntry.swift; sourceTree = "<group>"; };
+		C416069E68BBBF6E8DDE2958 /* DataExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExporterTests.swift; sourceTree = "<group>"; };
 		C448BA48575AFBC9374C7C1F /* SofraModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraModelContainer.swift; sourceTree = "<group>"; };
+		CB00F92C537B260370B739B5 /* ReconcilerNegativeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconcilerNegativeTests.swift; sourceTree = "<group>"; };
+		CCB810BF61C02917F98B012C /* PortionRecalculationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionRecalculationTests.swift; sourceTree = "<group>"; };
 		D959F549ED125A75211383C7 /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
+		D987C0340FEE4009B58A1EA6 /* AIProxyClientErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyClientErrorTests.swift; sourceTree = "<group>"; };
 		DA2661881718055D067FBDA2 /* NutritionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculator.swift; sourceTree = "<group>"; };
 		DF6450117D77FE994AEF0FAA /* Geist-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-SemiBold.otf"; sourceTree = "<group>"; };
 		E156CC8B82DB574BEC1B447D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E19F8CA13354DB8B97C93C2B /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Secrets.plist; sourceTree = "<group>"; };
 		E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItemCard.swift; sourceTree = "<group>"; };
+		E7E779E8983043AC16D6FE8E /* AIProxyRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyRequestTests.swift; sourceTree = "<group>"; };
 		EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculatorTests.swift; sourceTree = "<group>"; };
 		EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounter.swift; sourceTree = "<group>"; };
+		F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponseValidatorTests.swift; sourceTree = "<group>"; };
 		F0448D0A8FC1CA151A408D7F /* SofraTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SofraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F147E274CA44406942ADF2E8 /* WidgetDataStore+MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetDataStore+MainApp.swift"; sourceTree = "<group>"; };
+		F17DE019D6734175BC22974A /* CalorieRingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingViewTests.swift; sourceTree = "<group>"; };
 		F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurkishFoodReference.swift; sourceTree = "<group>"; };
 		F39E67471483C60085CF44FB /* GeistMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Regular.otf"; sourceTree = "<group>"; };
+		F737E22CCA18A4784BE99B3F /* .gitkeep */ = {isa = PBXFileReference; path = .gitkeep; sourceTree = "<group>"; };
+		F96F2406E759FD86227F44C6 /* FreeScanCounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounterTests.swift; sourceTree = "<group>"; };
 		FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Widget.swift"; sourceTree = "<group>"; };
+		FB74F4E0EC9C9FA5A6B5B984 /* UserProfileRecomputeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRecomputeTests.swift; sourceTree = "<group>"; };
 		FB7E294B7CA4C6699C4ECCD5 /* SevenDaySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenDaySummaryView.swift; sourceTree = "<group>"; };
 		FC1A6FC2CC0CF53D63B39DF1 /* String+TurkishNormalize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TurkishNormalize.swift"; sourceTree = "<group>"; };
+		FC5450361CF129367245855D /* RenameReconciliationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameReconciliationTests.swift; sourceTree = "<group>"; };
 		FDE2D0B35958358EB63D7560 /* NutritionConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionConstants.swift; sourceTree = "<group>"; };
 		FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SofraIcon.swift; sourceTree = "<group>"; };
+		FF230264D9562F7427116FA2 /* BreadReferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadReferenceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		61ECD97884AFEE36E827883A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D8BDCFC09F5568F3981DAE7 /* Pow in Frameworks */,
+				AC1711361F29D569C54F5C23 /* Lottie in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		09610E8843C2F7B385B686F3 /* SofraWidget */ = {
@@ -223,6 +290,7 @@
 				B37A30B44021471D12663445 /* Camera */,
 				FE15C10253716DD32F01C20E /* Components */,
 				2532FDAFB72DA18C110BBADD /* Daily */,
+				6A4C5F9FABDA29607ED706CA /* History */,
 				75808114E99ADC5ECD071222 /* Onboarding */,
 				2D324E050984C4336380B8B0 /* Result */,
 				A74D09E2D17E4836C57FAF7D /* TextLog */,
@@ -255,6 +323,7 @@
 				086EBF7CCF553D14C6174559 /* AIProxyClient.swift */,
 				EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */,
 				9D7021E076DC4ED88D26975B /* VisionResponse.swift */,
+				3B9A8C2BECC7C56922DC9D38 /* VisionResponseValidator.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -270,9 +339,28 @@
 		4502606A0FAC8578D476D20E /* SofraTests */ = {
 			isa = PBXGroup;
 			children = (
+				D987C0340FEE4009B58A1EA6 /* AIProxyClientErrorTests.swift */,
+				BB6C71F50507B7A6609A2DEB /* AIProxyClientTests.swift */,
+				E7E779E8983043AC16D6FE8E /* AIProxyRequestTests.swift */,
+				FF230264D9562F7427116FA2 /* BreadReferenceTests.swift */,
+				F17DE019D6734175BC22974A /* CalorieRingViewTests.swift */,
+				C416069E68BBBF6E8DDE2958 /* DataExporterTests.swift */,
+				7FA01550B4154909969504A1 /* DaySummaryBuilderTests.swift */,
 				5C5169E4437D13917D125E3F /* FoodReferenceReconcilerTests.swift */,
+				F96F2406E759FD86227F44C6 /* FreeScanCounterTests.swift */,
+				06D4D8739F9A29B3461B26DA /* HistoryDaySummaryBuilderTests.swift */,
+				91002469968093CB5EAD8EE6 /* ImageDownscalerTests.swift */,
 				EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */,
+				CCB810BF61C02917F98B012C /* PortionRecalculationTests.swift */,
+				3D4B72320685EF2B0B1B2B46 /* RawAIResponseTests.swift */,
+				CB00F92C537B260370B739B5 /* ReconcilerNegativeTests.swift */,
 				8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */,
+				FC5450361CF129367245855D /* RenameReconciliationTests.swift */,
+				61A65FFF0F0CBF7A8AB1BF6E /* TextLogInputPolicyTests.swift */,
+				C2D85027ED00E9227BD62D53 /* UserDataDeletionTests.swift */,
+				FB74F4E0EC9C9FA5A6B5B984 /* UserProfileRecomputeTests.swift */,
+				F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */,
+				C0B62D9FDF67DCD06DCFC744 /* WidgetDailySummaryTests.swift */,
 			);
 			path = SofraTests;
 			sourceTree = "<group>";
@@ -299,6 +387,15 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		6A4C5F9FABDA29607ED706CA /* History */ = {
+			isa = PBXGroup;
+			children = (
+				0ABD36F99BF9F15BC3DA0299 /* DayDetailView.swift */,
+				98AB9ADB825333DBF473BC9A /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
 		718CAD927C385D892256CB2D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,12 +420,14 @@
 			isa = PBXGroup;
 			children = (
 				4C0922CC61DD4E4D87BAB267 /* DailyQuickCounter.swift */,
+				889BD89F90EF087B95CE8499 /* DataExporter.swift */,
 				9601C724990AFBFD75EDD21E /* DaySummaryBuilder.swift */,
 				3446E6A2D8985E142BAB2041 /* FoodReference.swift */,
 				D959F549ED125A75211383C7 /* LoggedItem.swift */,
 				FDE2D0B35958358EB63D7560 /* NutritionConstants.swift */,
 				61CA283C143DFB3AF113488E /* PortionUnit.swift */,
 				C39394ADA5B6933015390DC8 /* ScanEntry.swift */,
+				AF173AC7FEF260AD502A7A29 /* SofraFormatters.swift */,
 				2B17F01B847BA24B835B4037 /* UserProfile.swift */,
 				60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */,
 				2A56C40031CD587A873FC971 /* WidgetDataStore.swift */,
@@ -366,6 +465,7 @@
 		A393E1770736058EF5CB308A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FB60A97711EE2C147C7C5F59 /* Animations */,
 				6A0393DD2B432C82CCCE5378 /* Fonts */,
 				05911A510FE8E8D8B0D80CA4 /* turkish_food_reference.json */,
 			);
@@ -386,6 +486,7 @@
 				87B97BFEB5D5BC2A075FDBFF /* Color+Tokens.swift */,
 				ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */,
 				60A9E8334613F75FF1CA6EAD /* Layout.swift */,
+				9AFAB3CE3A9C0A4709D47DB4 /* Motion+Patterns.swift */,
 				FE8E2BAB0C43BFA9637B6040 /* SofraIcon.swift */,
 				99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */,
 			);
@@ -417,10 +518,19 @@
 			path = Analysis;
 			sourceTree = "<group>";
 		};
+		FB60A97711EE2C147C7C5F59 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				F737E22CCA18A4784BE99B3F /* .gitkeep */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		FE15C10253716DD32F01C20E /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				94A6AB40E7FBC8397D0B5FCC /* LogButton.swift */,
+				B71968B769E47DAC3842D651 /* SofraLottieView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -434,6 +544,7 @@
 			buildPhases = (
 				A2E48FF7E615621CD8F12959 /* Sources */,
 				F56156FBF86B8DBBB3656AAF /* Resources */,
+				61ECD97884AFEE36E827883A /* Frameworks */,
 				8A7559BC378FD5B1ED35A246 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -443,6 +554,8 @@
 			);
 			name = Sofra;
 			packageProductDependencies = (
+				2F447F5E147B0DD18A2B758F /* Pow */,
+				15856C02BB80CEBFCFEA547B /* Lottie */,
 			);
 			productName = Sofra;
 			productReference = 142093050464BF9252D327F3 /* Sofra.app */;
@@ -515,6 +628,10 @@
 			);
 			mainGroup = 57440A81151301AB9257B87B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D9FCE8DF66A21E99AC4F2850 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				F189D66B157677AF0E7274C0 /* XCRemoteSwiftPackageReference "Pow" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 718CAD927C385D892256CB2D /* Products */;
 			projectDirPath = "";
@@ -559,9 +676,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78F51218DA0EF4D4D672F701 /* AIProxyClientErrorTests.swift in Sources */,
+				AF771A705D9DF951FC418363 /* AIProxyClientTests.swift in Sources */,
+				12C83ADD5BA0F41D92C7F727 /* AIProxyRequestTests.swift in Sources */,
+				3AEA4E7D3A251B80A1D41CAA /* BreadReferenceTests.swift in Sources */,
+				A3707C461463E7DB88E43DC3 /* CalorieRingViewTests.swift in Sources */,
+				BDF12A127E07BB7FB8B0E5C9 /* DataExporterTests.swift in Sources */,
+				7B25EB86033380F13AFCF8FF /* DaySummaryBuilderTests.swift in Sources */,
 				A7B7A1FE2461A9B5A530572E /* FoodReferenceReconcilerTests.swift in Sources */,
+				A87F615710AC6258EBA2280F /* FreeScanCounterTests.swift in Sources */,
+				571AF56CA0474C48D1C796C1 /* HistoryDaySummaryBuilderTests.swift in Sources */,
+				EBD7A9ABDE0EC0EC207EBA68 /* ImageDownscalerTests.swift in Sources */,
 				A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */,
+				A034580CE4614A3B94D32B5B /* PortionRecalculationTests.swift in Sources */,
+				65399651FDE23A9A6E635F15 /* RawAIResponseTests.swift in Sources */,
+				204E17A79BDD63ECE8EBE3F3 /* ReconcilerNegativeTests.swift in Sources */,
 				9AB5C410D2AC8E83D06C21DB /* ReferenceReconcilerTests.swift in Sources */,
+				B63DCF18E9BFA9180EC8FA05 /* RenameReconciliationTests.swift in Sources */,
+				B66A652F2DB5E33687CD963C /* TextLogInputPolicyTests.swift in Sources */,
+				A664A1CEC57056B0B0B5726D /* UserDataDeletionTests.swift in Sources */,
+				A6EF69200A2C240480FFD0D7 /* UserProfileRecomputeTests.swift in Sources */,
+				64FCDE8A0383D75485EB0903 /* VisionResponseValidatorTests.swift in Sources */,
+				7D16B19CC9F67D20630871E5 /* WidgetDailySummaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,13 +714,17 @@
 				3D4000010D7C0FA114671A2F /* ContentView.swift in Sources */,
 				0B26A1FF638EC60D429667C8 /* DailyQuickCounter.swift in Sources */,
 				4F161E3B39AD0D2F8CAE8DB1 /* DailyView.swift in Sources */,
+				1AC10C749A301E96B8BFC648 /* DataExporter.swift in Sources */,
+				05B879A966638B877A1299BB /* DayDetailView.swift in Sources */,
 				1F353A3C82D8E6BE17C7D1CC /* DaySummaryBuilder.swift in Sources */,
 				4194A98747DEEE37227513C9 /* Font+Tokens.swift in Sources */,
 				292857E472561F3AFA14B3CF /* FoodReference.swift in Sources */,
 				99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */,
+				486A4EC09ADCC806C1DDE3F0 /* HistoryView.swift in Sources */,
 				C6589D98D126F801A9DE3673 /* Layout.swift in Sources */,
 				526A711DAC33408D9629EAA5 /* LogButton.swift in Sources */,
 				268FCD0C0F4E1AF5583E7C5F /* LoggedItem.swift in Sources */,
+				31E4FA6C66FAF9DDED392EC3 /* Motion+Patterns.swift in Sources */,
 				F6E9F43ECD8B80DB6FBADB80 /* NavigationModel.swift in Sources */,
 				E01AA21BDA85222C9DD22D1B /* NutritionCalculator.swift in Sources */,
 				167C3B3F92326E1DBBC4386C /* NutritionConstants.swift in Sources */,
@@ -599,7 +739,9 @@
 				C1FFF53E6CBD29D01C106132 /* ScanEntry.swift in Sources */,
 				0AF6FEBF2EC509B74055940C /* SevenDaySummaryView.swift in Sources */,
 				92E51425D18DF71D48BE63C6 /* SofraApp.swift in Sources */,
+				9DA956A393108E1719E5CBB4 /* SofraFormatters.swift in Sources */,
 				BDBB9B674BEB8923D1BA5065 /* SofraIcon.swift in Sources */,
+				D4DB6EC5D9E7C553A4301514 /* SofraLottieView.swift in Sources */,
 				9518412FD393A19F2FDDA9EC /* SofraModelContainer.swift in Sources */,
 				600B95BBBA35A630EECF81BD /* StoreKitManager.swift in Sources */,
 				F70AEB91CC6049E2911A555F /* String+TurkishNormalize.swift in Sources */,
@@ -608,6 +750,7 @@
 				C188F2E65D68966E4F8C99A3 /* TurkishFoodReference.swift in Sources */,
 				B9744D5660C9C7FA9F6EB2A7 /* UserProfile.swift in Sources */,
 				B4F4644F634E36A42F9F2CB7 /* VisionResponse.swift in Sources */,
+				1E934699D7DE2C736F1B2C92 /* VisionResponseValidator.swift in Sources */,
 				FFB14B30C352C77FA054C93B /* WidgetDailySummary.swift in Sources */,
 				16CAC471A7E6379E5E613E2F /* WidgetDataStore+MainApp.swift in Sources */,
 				A7BEE3885ED86DF7942169FF /* WidgetDataStore.swift in Sources */,
@@ -800,7 +943,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -862,7 +1005,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -937,6 +1080,38 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D9FCE8DF66A21E99AC4F2850 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		F189D66B157677AF0E7274C0 /* XCRemoteSwiftPackageReference "Pow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EmergeTools/Pow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		15856C02BB80CEBFCFEA547B /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D9FCE8DF66A21E99AC4F2850 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+		2F447F5E147B0DD18A2B758F /* Pow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F189D66B157677AF0E7274C0 /* XCRemoteSwiftPackageReference "Pow" */;
+			productName = Pow;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF3E49C6ACFD5235EBF36E95 /* Project object */;
 }

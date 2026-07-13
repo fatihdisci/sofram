@@ -1,6 +1,6 @@
 //
 //  SofraIcon.swift
-//  Sofra — the 8 custom line icons as SwiftUI Shape views.
+//  Sofra — custom line icons as SwiftUI Shape views.
 //
 //  Approach (see PHASE_1_NOTES.md): the original SVGs are simple single-color
 //  stroked line icons (24×24 viewBox, 1.5px stroke, round caps/joins) using only
@@ -32,6 +32,9 @@ enum SofraIcon: String, CaseIterable, Identifiable {
     case kasik          // spoon
     case sofra          // shared table (top-down)
     case tencere        // pot
+    case bugun          // today tab: plate + morning rays
+    case gecmis         // history tab: notebook calendar
+    case ayarlar        // settings tab: low flame
 
     var id: String { rawValue }
 
@@ -87,6 +90,28 @@ enum SofraIcon: String, CaseIterable, Identifiable {
                 .path("M21.5 8.7 19 10"),
                 .path("M9.5 10V7.5"),
                 .path("M14.5 10V7.5"),
+            ]
+        case .bugun:
+            return [
+                .circle(cx: 12, cy: 13.5, r: 6.5),
+                .path("M12 3v2"),
+                .path("M5.5 5.5 7 7"),
+                .path("M18.5 5.5 17 7"),
+                .path("M7.5 15.5h9"),
+            ]
+        case .gecmis:
+            return [
+                .path("M6 4.5h12c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2v-12c0-1.1.9-2 2-2Z"),
+                .path("M8 3v3"),
+                .path("M16 3v3"),
+                .path("M7.5 10h9"),
+                .path("M7.5 13.5h9"),
+                .path("M7.5 17h6"),
+            ]
+        case .ayarlar:
+            return [
+                .path("M12 3c.8 3-1 4.2-1 6.2 0 1 .7 1.8 1.7 2.4-.2-1.6.8-2.8 2-4 2.2 1.9 3.3 4.2 3.3 6.6 0 3.5-2.7 6.2-6 6.2s-6-2.7-6-6.2c0-3 1.8-5.7 5-8.1-.5 2.4.2 3.6 1.4 4.7C10.5 6 11.7 4.6 12 3Z"),
+                .path("M12 13c1.4 1.1 2 2.2 2 3.3 0 1.2-.9 2.2-2 2.2s-2-1-2-2.2c0-1.1.6-2.2 2-3.3Z"),
             ]
         }
     }

@@ -23,9 +23,47 @@ struct SofraWidgetEntryView: View {
             smallLayout
         case .systemMedium:
             mediumLayout
+        case .accessoryCircular:
+            accessoryCircularLayout
+        case .accessoryInline:
+            accessoryInlineLayout
         default:
             smallLayout
         }
+    }
+
+    // MARK: - Lock screen widgets
+
+    private var accessoryCircularLayout: some View {
+        ZStack {
+            AccessoryWidgetBackground()
+
+            Circle()
+                .trim(from: 0, to: CGFloat(entry.summary.progress))
+                .stroke(
+                    Color.accentFill,
+                    style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                )
+                .rotationEffect(.degrees(-90))
+                .padding(3)
+                .widgetAccentable()
+
+            Text("\(Int(entry.summary.remaining))")
+                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .minimumScaleFactor(0.6)
+        }
+        .widgetURL(URL(string: "sofra://daily")!)
+    }
+
+    private var accessoryInlineLayout: some View {
+        Text("\(formattedRemaining) kcal kaldı")
+            .widgetURL(URL(string: "sofra://daily")!)
+    }
+
+    private var formattedRemaining: String {
+        Int(entry.summary.remaining).formatted(
+            .number.locale(Locale(identifier: "tr_TR"))
+        )
     }
 
     // MARK: - Small Widget (calorie ring + remaining)
@@ -61,15 +99,15 @@ struct SofraWidgetEntryView: View {
                 // Right: macros + counters
                 VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
                     macroRow(label: "Protein", value: entry.summary.protein)
-                    macroRow(label: "Carbs", value: entry.summary.carbs)
+                    macroRow(label: "Karb.", value: entry.summary.carbs)
                     macroRow(label: "Yağ", value: entry.summary.fat)
 
                     Spacer().frame(height: Layout.Spacing.xs)
 
-                    // Bread & tea quick counters
                     HStack(spacing: Layout.Spacing.lg) {
-                        counterPill(icon: "🍞", count: entry.summary.breadSlices, unit: "dilim")
-                        counterPill(icon: "🍵", count: entry.summary.teaGlasses, unit: "bardak")
+                        ForEach(Array(entry.summary.topQuickAdds.prefix(2).enumerated()), id: \.offset) { _, item in
+                            counterPill(count: item.count, unit: item.unit)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -144,20 +182,15 @@ struct SofraWidgetEntryView: View {
     private func macroColor(for label: String) -> Color {
         switch label {
         case "Protein": return .macroProtein
-        case "Carbs":   return .macroCarb
+        case "Karb.":   return .macroCarb
         default:        return .macroFat
         }
     }
 
-    /// Bread/tea counter pill with emoji icon.
-    private func counterPill(icon: String, count: Int, unit: String) -> some View {
-        HStack(spacing: 3) {
-            Text(icon)
-                .font(.system(size: 11))
-            Text("\(count) \(unit)")
-                .font(.sofraCaption)
-                .foregroundStyle(Color.textSecondary)
-        }
+    private func counterPill(count: Int, unit: String) -> some View {
+        Text("\(count) × \(unit)")
+            .font(.sofraCaption)
+            .foregroundStyle(Color.textSecondary)
     }
 }
 

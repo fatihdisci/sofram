@@ -138,6 +138,39 @@ enum QuickAddSeed {
         }
         try? context.save()
     }
+
+    /// Repairs `QuickAddItem` rows created before per-unit nutrition fields
+    /// carried real values — an additive SwiftData schema change left them at
+    /// the column default (0), and `seedDefaultsIfNeeded`'s `existing == 0`
+    /// guard never revisits a store that already has rows, so those stale
+    /// zero-macro rows (e.g. a pre-migration "Ekmek") were never backfilled.
+    ///
+    /// Matches by exact name against `QuickAddTemplates.all` and only touches
+    /// rows whose 4 macro fields are ALL currently 0 — never touches
+    /// user-edited, user-renamed, or custom items. Safe to call every launch:
+    /// a legitimately-all-zero template (e.g. "Su") just rewrites 0 → 0.
+    static func backfillMissingNutrition(_ context: ModelContext) {
+        guard let items = try? context.fetch(FetchDescriptor<QuickAddItem>()), !items.isEmpty else { return }
+        let templatesByName = Dictionary(QuickAddTemplates.all.map { ($0.name, $0) }, uniquingKeysWith: { a, _ in a })
+
+        var didChange = false
+        for item in items {
+            guard let template = templatesByName[item.name] else { continue }
+            let isZero = item.caloriesPerUnit == 0 && item.proteinPerUnit == 0
+                && item.carbsPerUnit == 0 && item.fatPerUnit == 0
+            guard isZero else { continue }
+
+            item.caloriesPerUnit = template.calories
+            item.proteinPerUnit = template.protein
+            item.carbsPerUnit = template.carbs
+            item.fatPerUnit = template.fat
+            if item.iconName == SofraIcon.tabak.rawValue {
+                item.iconName = template.icon.rawValue
+            }
+            didChange = true
+        }
+        if didChange { try? context.save() }
+    }
 }
 
 extension QuickAddItem {

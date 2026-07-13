@@ -10,6 +10,9 @@ struct DaySummary {
     let date: Date
     /// Total intake: scan calories + calorie-bearing quick-adds.
     let calories: Double
+    let protein: Double
+    let carbs: Double
+    let fat: Double
     /// Sum of all quick-add tallies for the day (any item, calorie-bearing or not).
     let quickAddTally: Int
 }
@@ -22,8 +25,12 @@ enum DaySummaryBuilder {
                               items: [QuickAddItem],
                               counts: [QuickAddCount],
                               calendar: Calendar = .current) -> [DaySummary] {
-        let caloriesPerItem = Dictionary(items.map { ($0.id, $0.caloriesPerUnit) },
-                                         uniquingKeysWith: { a, _ in a })
+        let nutritionPerItem = Dictionary(
+            items.map {
+                ($0.id, ($0.caloriesPerUnit, $0.proteinPerUnit, $0.carbsPerUnit, $0.fatPerUnit))
+            },
+            uniquingKeysWith: { first, _ in first }
+        )
         let today = calendar.startOfDay(for: Date())
         return (0..<7).map { offset in
             let date = calendar.date(byAdding: .day, value: -offset, to: today) ?? today
@@ -33,16 +40,33 @@ enum DaySummaryBuilder {
             let scanCalories = dayScans.reduce(0.0) { total, scan in
                 total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.calories }
             }
+            let scanProtein = dayScans.reduce(0.0) { total, scan in
+                total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.protein }
+            }
+            let scanCarbs = dayScans.reduce(0.0) { total, scan in
+                total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.carbs }
+            }
+            let scanFat = dayScans.reduce(0.0) { total, scan in
+                total + scan.itemsOrEmpty.reduce(0.0) { $0 + $1.fat }
+            }
 
             let dayCounts = counts.filter { $0.date >= date && $0.date < dayEnd }
-            let quickCalories = dayCounts.reduce(0.0) { sum, c in
-                sum + Double(c.count) * (caloriesPerItem[c.itemID] ?? 0)
+            let quickNutrition = dayCounts.reduce(into: (calories: 0.0, protein: 0.0, carbs: 0.0, fat: 0.0)) { total, count in
+                guard let values = nutritionPerItem[count.itemID] else { return }
+                let quantity = Double(count.count)
+                total.calories += quantity * values.0
+                total.protein += quantity * values.1
+                total.carbs += quantity * values.2
+                total.fat += quantity * values.3
             }
             let tally = dayCounts.reduce(0) { $0 + $1.count }
 
             return DaySummary(
                 date: date,
-                calories: scanCalories + quickCalories,
+                calories: scanCalories + quickNutrition.calories,
+                protein: scanProtein + quickNutrition.protein,
+                carbs: scanCarbs + quickNutrition.carbs,
+                fat: scanFat + quickNutrition.fat,
                 quickAddTally: tally
             )
         }

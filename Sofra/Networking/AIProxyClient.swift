@@ -15,14 +15,18 @@
 //  in direct OpenAI mode. The proxy can override model choice at any time.
 //
 
+import CryptoKit
 import Foundation
 import UIKit
 
 // MARK: - Errors
 
-enum AIProxyError: LocalizedError {
+enum AIProxyError: LocalizedError, Equatable {
     case invalidConfiguration
     case notConfigured
+    case rateLimited
+    case offline
+    case serverError
     case scanFailed
 
     var errorDescription: String? {
@@ -31,6 +35,12 @@ enum AIProxyError: LocalizedError {
             return "Yapılandırma hatası."
         case .notConfigured:
             return "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil — sunucu adresi yapılandırılınca tarama çalışacak."
+        case .rateLimited:
+            return "Çok sık denedin — bir dakika sonra tekrar dene."
+        case .offline:
+            return "İnternet bağlantısı yok görünüyor."
+        case .serverError:
+            return "Sunucuda geçici bir sorun var, birazdan düzelir."
         case .scanFailed:
             return "Tarama başarısız oldu, lütfen tekrar deneyin."
         }
@@ -45,18 +55,52 @@ struct AIProxyRequest: Encodable {
     let mode: String
     let locale: String
     let tier: String
+    let schemaVersion: Int
+    let appVersion: String
 
     enum CodingKeys: String, CodingKey {
         case imageBase64 = "image_base64"
+        case schemaVersion = "schema_version"
+        case appVersion = "app_version"
         case text, mode, locale, tier
     }
 
-    static func photo(imageData: Data, locale: String, tier: String) -> AIProxyRequest {
-        AIProxyRequest(imageBase64: imageData.base64EncodedString(), text: nil, mode: "photo", locale: locale, tier: tier)
+    static func photo(
+        imageData: Data,
+        locale: String,
+        tier: String,
+        appVersion: String? = nil
+    ) -> AIProxyRequest {
+        AIProxyRequest(
+            imageBase64: imageData.base64EncodedString(),
+            text: nil,
+            mode: "photo",
+            locale: locale,
+            tier: tier,
+            schemaVersion: 1,
+            appVersion: appVersion ?? currentAppVersion()
+        )
     }
 
-    static func text(description: String, locale: String, tier: String) -> AIProxyRequest {
-        AIProxyRequest(imageBase64: nil, text: description, mode: "text", locale: locale, tier: tier)
+    static func text(
+        description: String,
+        locale: String,
+        tier: String,
+        appVersion: String? = nil
+    ) -> AIProxyRequest {
+        AIProxyRequest(
+            imageBase64: nil,
+            text: description,
+            mode: "text",
+            locale: locale,
+            tier: tier,
+            schemaVersion: 1,
+            appVersion: appVersion ?? currentAppVersion()
+        )
+    }
+
+    private static func currentAppVersion(bundle: Bundle = .main) -> String {
+        bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown"
     }
 }
 
@@ -101,11 +145,21 @@ private struct OpenAIRequest: Encodable {
     /// returns HTTP 400, so we omit temperature entirely and steer accuracy with
     /// `reasoning_effort` instead — "minimal" keeps latency low for a structured task.
     let reasoningEffort: String
+    /// Best-effort reproducibility: a stable hash of the input (text or image
+    /// bytes), so identical input always sends the same seed. OpenAI doesn't
+    /// guarantee bit-identical completions even with a fixed seed, but this
+    /// removes one source of run-to-run variance for free.
+    let seed: Int
+    /// Structured Outputs (strict `json_schema`) — constrains the model to emit
+    /// exactly the `VisionResponse` shape (including a closed `household_unit`
+    /// enum), so parsing never depends on prose instructions being followed.
+    let responseFormat: OpenAIResponseFormat
 
     enum CodingKeys: String, CodingKey {
-        case model, messages
+        case model, messages, seed
         case maxCompletionTokens = "max_completion_tokens"
         case reasoningEffort = "reasoning_effort"
+        case responseFormat = "response_format"
     }
 }
 
@@ -119,7 +173,104 @@ private struct OpenAIResponse: Decodable {
     let choices: [Choice]
 }
 
+// MARK: - Structured Outputs (strict json_schema for VisionResponse)
+
+/// Minimal JSON-value box so a fixed, arbitrarily-nested `json_schema` payload
+/// can be embedded in an `Encodable` request body without hand-writing a
+/// dedicated struct per schema node — the shape never varies at runtime.
+private indirect enum JSONValue: Encodable {
+    case string(String)
+    case bool(Bool)
+    case array([JSONValue])
+    case object([String: JSONValue])
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .string(let value): try container.encode(value)
+        case .bool(let value): try container.encode(value)
+        case .array(let values): try container.encode(values)
+        case .object(let values): try container.encode(values)
+        }
+    }
+}
+
+private struct OpenAIResponseFormat: Encodable {
+    let type = "json_schema"
+    let jsonSchema: JSONValue
+
+    enum CodingKeys: String, CodingKey {
+        case type
+        case jsonSchema = "json_schema"
+    }
+
+    /// Mirrors `VisionResponse`/`VisionItem` (Sofra/Networking/VisionResponse.swift)
+    /// field-for-field. `household_unit`'s enum matches the vocabulary both
+    /// prompts already restrict the model to (see `textPrompt`/`visionPrompt`).
+    static let visionResponse = OpenAIResponseFormat(jsonSchema: .object([
+        "name": .string("vision_response"),
+        "strict": .bool(true),
+        "schema": .object([
+            "type": .string("object"),
+            "additionalProperties": .bool(false),
+            "properties": .object([
+                "items": .object([
+                    "type": .string("array"),
+                    "items": .object([
+                        "type": .string("object"),
+                        "additionalProperties": .bool(false),
+                        "properties": .object([
+                            "name": .object(["type": .string("string")]),
+                            "name_en": .object(["type": .string("string")]),
+                            "estimated_grams": .object(["type": .string("number")]),
+                            "household_unit": .object([
+                                "type": .string("string"),
+                                "enum": .array([
+                                    "kepçe", "yemek kaşığı", "su bardağı", "çay bardağı",
+                                    "dilim", "avuç", "kase", "adet",
+                                ].map(JSONValue.string)),
+                            ]),
+                            "household_quantity": .object(["type": .string("number")]),
+                            "calories": .object(["type": .string("number")]),
+                            "protein_g": .object(["type": .string("number")]),
+                            "carbs_g": .object(["type": .string("number")]),
+                            "fat_g": .object(["type": .string("number")]),
+                            "confidence": .object(["type": .string("number")]),
+                            "note": .object(["type": .array([.string("string"), .string("null")])]),
+                        ]),
+                        "required": .array([
+                            "name", "name_en", "estimated_grams", "household_unit",
+                            "household_quantity", "calories", "protein_g", "carbs_g",
+                            "fat_g", "confidence", "note",
+                        ].map(JSONValue.string)),
+                    ]),
+                ]),
+                "no_food_detected": .object(["type": .string("boolean")]),
+            ]),
+            "required": .array(["items", "no_food_detected"].map(JSONValue.string)),
+        ]),
+    ]))
+}
+
+/// Stable (cross-launch) hash — `String`/`Data`'s own `hashValue`/`Hasher` are
+/// per-process-salted in Swift and would silently stop reproducing between
+/// app runs, defeating the point of a seed.
+private func stableSeed(for data: Data) -> Int {
+    let digest = SHA256.hash(data: data)
+    let value = digest.prefix(8).reduce(UInt64(0)) { ($0 << 8) | UInt64($1) }
+    return Int(value & 0x7FFF_FFFF_FFFF_FFFF)
+}
+
 // MARK: - Client
+
+struct ScanResult: Equatable {
+    let response: VisionResponse
+    let rawJSON: String
+}
+
+private struct ProxyErrorResponse: Decodable {
+    let error: String
+}
 
 final class AIProxyClient {
 
@@ -127,25 +278,23 @@ final class AIProxyClient {
         var endpointURL: URL
         var apiKey: String?
         var timeout: TimeInterval
+        /// Direct-development credentials loaded by `fromBundle`. Stored here
+        /// so tests can explicitly keep direct networking disabled.
+        var openAIKey: String?
+        var openAIOrgID: String?
 
-        /// OpenAI API key from Secrets.plist (gitignored). Nil if not set up.
-        var openAIKey: String? {
-            guard let secretsURL = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
-                  let secrets = NSDictionary(contentsOf: secretsURL),
-                  let key = secrets["OpenAIAPIKey"] as? String,
-                  !key.isEmpty
-            else { return nil }
-            return key
-        }
-
-        /// OpenAI organization ID from Secrets.plist (optional — project-scoped keys may need it).
-        var openAIOrgID: String? {
-            guard let secretsURL = Bundle.main.url(forResource: "Secrets", withExtension: "plist"),
-                  let secrets = NSDictionary(contentsOf: secretsURL),
-                  let orgID = secrets["OpenAIOrgID"] as? String,
-                  !orgID.isEmpty
-            else { return nil }
-            return orgID
+        init(
+            endpointURL: URL,
+            apiKey: String?,
+            timeout: TimeInterval,
+            openAIKey: String? = nil,
+            openAIOrgID: String? = nil
+        ) {
+            self.endpointURL = endpointURL
+            self.apiKey = apiKey
+            self.timeout = timeout
+            self.openAIKey = openAIKey
+            self.openAIOrgID = openAIOrgID
         }
 
         static let placeholderEndpoint = URL(string: "https://REPLACE-ME.vercel.app/api/scan")!
@@ -154,9 +303,15 @@ final class AIProxyClient {
             let url = (bundle.object(forInfoDictionaryKey: "AIProxyEndpointURL") as? String)
                 .flatMap(URL.init(string:)) ?? placeholderEndpoint
             let key = bundle.object(forInfoDictionaryKey: "AIProxyAPIKey") as? String
+            let secrets = bundle.url(forResource: "Secrets", withExtension: "plist")
+                .flatMap(NSDictionary.init(contentsOf:))
+            let openAIKey = (secrets?["OpenAIAPIKey"] as? String).flatMap { $0.isEmpty ? nil : $0 }
+            let openAIOrgID = (secrets?["OpenAIOrgID"] as? String).flatMap { $0.isEmpty ? nil : $0 }
             return Configuration(endpointURL: url,
                                  apiKey: (key?.isEmpty == false) ? key : nil,
-                                 timeout: 30)
+                                 timeout: 30,
+                                 openAIKey: openAIKey,
+                                 openAIOrgID: openAIOrgID)
         }
     }
 
@@ -187,27 +342,34 @@ final class AIProxyClient {
 
     // MARK: - Public API
 
-    func scan(imageData: Data) async throws -> VisionResponse {
-        if isDemoMode { return try await DemoVisionData.photoResponse() }
+    func scan(imageData: Data) async throws -> ScanResult {
+        if isDemoMode {
+            return ScanResult(response: try await DemoVisionData.photoResponse(), rawJSON: "demo")
+        }
         let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
+        let payload = ImageDownscaler.jpegForUpload(imageData) ?? imageData
 
         // 1. Try Vercel proxy (production)
         if isConfigured {
-            let payload = ImageDownscaler.jpegForUpload(imageData) ?? imageData
             let body = AIProxyRequest.photo(imageData: payload, locale: Locale.current.identifier, tier: tier)
             return try await performProxyRequest(body: body)
         }
 
         // 2. Try direct OpenAI (dev/testing)
         if canUseDirectOpenAI {
-            return try await callOpenAIVision(imageData: imageData, tier: tier)
+            return try await callOpenAIVision(imageData: payload, tier: tier)
         }
 
         throw AIProxyError.notConfigured
     }
 
-    func scanText(_ description: String) async throws -> VisionResponse {
-        if isDemoMode { return try await DemoVisionData.textResponse(for: description) }
+    func scanText(_ description: String) async throws -> ScanResult {
+        if isDemoMode {
+            return ScanResult(
+                response: try await DemoVisionData.textResponse(for: description),
+                rawJSON: "demo"
+            )
+        }
         let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
 
         if isConfigured {
@@ -224,7 +386,7 @@ final class AIProxyClient {
 
     // MARK: - Vercel proxy
 
-    private func performProxyRequest(body: AIProxyRequest) async throws -> VisionResponse {
+    private func performProxyRequest(body: AIProxyRequest) async throws -> ScanResult {
         var request = URLRequest(url: configuration.endpointURL)
         request.httpMethod = "POST"
         request.timeoutInterval = configuration.timeout
@@ -235,12 +397,30 @@ final class AIProxyClient {
         }
         request.httpBody = try JSONEncoder().encode(body)
 
-        let (data, response) = try await session.data(for: request)
-        guard let http = response as? HTTPURLResponse,
-              (200..<300).contains(http.statusCode) else {
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch {
+            throw mappedNetworkError(error)
+        }
+        guard let http = response as? HTTPURLResponse else {
             throw AIProxyError.scanFailed
         }
-        return try JSONDecoder().decode(VisionResponse.self, from: data)
+        if let responseError = mappedProxyError(statusCode: http.statusCode, data: data) {
+            throw responseError
+        }
+        guard let rawJSON = String(data: data, encoding: .utf8) else {
+            throw AIProxyError.scanFailed
+        }
+        do {
+            return ScanResult(
+                response: try JSONDecoder().decode(VisionResponse.self, from: data).sanitized(),
+                rawJSON: rawJSON
+            )
+        } catch {
+            throw AIProxyError.scanFailed
+        }
     }
 
     // MARK: - Direct OpenAI API
@@ -269,7 +449,7 @@ final class AIProxyClient {
     }
 
     /// Photo → OpenAI Chat Completions (vision).
-    private func callOpenAIVision(imageData: Data, tier: String) async throws -> VisionResponse {
+    private func callOpenAIVision(imageData: Data, tier: String) async throws -> ScanResult {
         let model = openAIModel(for: tier)
         let base64 = imageData.base64EncodedString()
         let prompt = visionPrompt(locale: Locale.current.identifier)
@@ -288,14 +468,16 @@ final class AIProxyClient {
             // (e.g. mashed potato + meat sauce misread as "mantı" from color/
             // shape alone). "low" costs a bit more but meaningfully improves
             // visual disambiguation.
-            reasoningEffort: "low"
+            reasoningEffort: "low",
+            seed: stableSeed(for: imageData),
+            responseFormat: .visionResponse
         )
 
         return try await performOpenAIRequest(body: body, model: model, tier: tier)
     }
 
     /// Text → OpenAI Chat Completions.
-    private func callOpenAIText(description: String, tier: String) async throws -> VisionResponse {
+    private func callOpenAIText(description: String, tier: String) async throws -> ScanResult {
         let model = openAIModel(for: tier)
         let prompt = textPrompt(description: description, locale: Locale.current.identifier)
 
@@ -305,14 +487,16 @@ final class AIProxyClient {
                 OpenAIMessage(role: "user", content: [.text(prompt)])
             ],
             maxCompletionTokens: 2048,
-            reasoningEffort: "minimal"
+            reasoningEffort: "minimal",
+            seed: stableSeed(for: Data(description.utf8)),
+            responseFormat: .visionResponse
         )
 
         return try await performOpenAIRequest(body: body, model: model, tier: tier)
     }
 
     /// Shared: POST to OpenAI, parse JSON response into VisionResponse.
-    private func performOpenAIRequest(body: OpenAIRequest, model: String, tier: String) async throws -> VisionResponse {
+    private func performOpenAIRequest(body: OpenAIRequest, model: String, tier: String) async throws -> ScanResult {
         var request = URLRequest(url: openAIURL())
         request.httpMethod = "POST"
         request.timeoutInterval = configuration.timeout
@@ -324,6 +508,10 @@ final class AIProxyClient {
         do {
             let (data, response) = try await session.data(for: request)
             guard let http = response as? HTTPURLResponse else { throw AIProxyError.scanFailed }
+
+            if http.statusCode == 429 {
+                throw AIProxyError.rateLimited
+            }
 
             if http.statusCode >= 400 {
                 // Log the actual error for debugging
@@ -337,7 +525,9 @@ final class AIProxyClient {
                     model: "gpt-5-nano",
                     messages: body.messages,
                     maxCompletionTokens: body.maxCompletionTokens,
-                    reasoningEffort: body.reasoningEffort
+                    reasoningEffort: body.reasoningEffort,
+                    seed: body.seed,
+                    responseFormat: body.responseFormat
                 )
                 var fallbackRequest = URLRequest(url: openAIURL())
                 fallbackRequest.httpMethod = "POST"
@@ -347,68 +537,120 @@ final class AIProxyClient {
                 }
                 fallbackRequest.httpBody = try JSONEncoder().encode(fallbackBody)
                 let (fallbackData, fallbackResponse) = try await session.data(for: fallbackRequest)
-                guard let fallbackHTTP = fallbackResponse as? HTTPURLResponse,
-                      (200..<300).contains(fallbackHTTP.statusCode) else {
+                guard let fallbackHTTP = fallbackResponse as? HTTPURLResponse else {
+                    throw AIProxyError.scanFailed
+                }
+                if let fallbackError = mappedHTTPError(statusCode: fallbackHTTP.statusCode) {
                     let fb = String(data: fallbackData, encoding: .utf8) ?? "<no body>"
                     print("[AIProxyClient] Fallback also failed: \(fb)")
-                    throw AIProxyError.scanFailed
+                    throw fallbackError
                 }
                 return try parseOpenAIResponse(fallbackData)
             }
 
-            guard (200..<300).contains(http.statusCode) else {
-                throw AIProxyError.scanFailed
+            if let responseError = mappedHTTPError(statusCode: http.statusCode) {
+                throw responseError
             }
             return try parseOpenAIResponse(data)
         } catch let error as AIProxyError { throw error }
         catch {
             print("[AIProxyClient] Unexpected error: \(error.localizedDescription)")
-            throw AIProxyError.scanFailed
+            throw mappedNetworkError(error)
         }
     }
 
-    /// Parse OpenAI JSON response → VisionResponse, with retry for malformed JSON.
-    private func parseOpenAIResponse(_ data: Data) throws -> VisionResponse {
+    /// Parse OpenAI JSON response → VisionResponse. Strict `json_schema` mode
+    /// (see `OpenAIResponseFormat.visionResponse`) guarantees `content` is
+    /// schema-valid JSON with no markdown fences, so no cleanup is needed.
+    private func parseOpenAIResponse(_ data: Data) throws -> ScanResult {
         let openAI = try JSONDecoder().decode(OpenAIResponse.self, from: data)
-        guard let jsonString = openAI.choices.first?.message.content else {
+        guard let jsonString = openAI.choices.first?.message.content,
+              let jsonData = jsonString.data(using: .utf8) else {
             throw AIProxyError.scanFailed
         }
-        // OpenAI may wrap JSON in ```json fences
-        let cleaned = jsonString
-            .replacingOccurrences(of: "```json", with: "")
-            .replacingOccurrences(of: "```", with: "")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let jsonData = cleaned.data(using: .utf8) else { throw AIProxyError.scanFailed }
-        return try JSONDecoder().decode(VisionResponse.self, from: jsonData)
+        return ScanResult(
+            response: try JSONDecoder().decode(VisionResponse.self, from: jsonData).sanitized(),
+            rawJSON: jsonString
+        )
+    }
+}
+
+private func mappedHTTPError(statusCode: Int) -> AIProxyError? {
+    switch statusCode {
+    case 200..<300: return nil
+    case 429: return .rateLimited
+    case 500..<600: return .serverError
+    default: return .scanFailed
+    }
+}
+
+private func mappedProxyError(statusCode: Int, data: Data) -> AIProxyError? {
+    guard !(200..<300).contains(statusCode) else { return nil }
+
+    if let proxyError = try? JSONDecoder().decode(ProxyErrorResponse.self, from: data) {
+        switch proxyError.error {
+        case "rate_limited": return .rateLimited
+        case "upstream_error": return .serverError
+        case "invalid_request": return .scanFailed
+        default: break
+        }
+    }
+
+    return mappedHTTPError(statusCode: statusCode)
+}
+
+private func mappedNetworkError(_ error: Error) -> AIProxyError {
+    guard let urlError = error as? URLError else { return .scanFailed }
+    switch urlError.code {
+    case .notConnectedToInternet, .timedOut:
+        return .offline
+    default:
+        return .scanFailed
     }
 }
 
 // MARK: - AI Prompts
+
+private func commonPromptContract(locale: String) -> String {
+    """
+    USER LOCALE: \(locale). Use this locale only to interpret number and portion
+    wording. Turkish output rules below always take precedence.
+
+    RESPONSE CONTRACT:
+    Return one JSON object with "items" (an array) and "no_food_detected" (a
+    boolean). Every item must contain: Turkish "name", English "name_en",
+    numeric "estimated_grams", "household_unit", numeric
+    "household_quantity", "calories", "protein_g", "carbs_g", "fat_g",
+    "confidence", and nullable "note". Structured Outputs enforces the shape;
+    do not include sample or placeholder values.
+
+    COMMON RULES:
+    - "note", if present, MUST be in Turkish.
+    - "name" must be lowercase Turkish except proper nouns (e.g. "mercimek çorbası", "İskender").
+    - Keep "name" the canonical dish name ONLY — no size, packaging, or brand
+      annotations (e.g. "ton balığı", never "ton balığı (80 gramlık kutu)").
+      Put that kind of detail in "note" instead. A stray annotation in "name"
+      stops it from matching known foods and makes the same dish look like a
+      different one every time.
+    - calories MUST be consistent with macros: calories ≈ 4·protein_g + 4·carbs_g + 9·fat_g (±15%).
+    - Report visible drinks (tea, ayran, cola) as separate items. Report visible bread separately.
+    - Use Turkish household units ONLY: "kepçe", "yemek kaşığı", "su bardağı", "çay bardağı", "dilim", "avuç", "kase", "adet".
+    - household_quantity must be between 0.25 and 20; estimated_grams between 5 and 2500.
+    - Estimate realistic grams for Turkish portions.
+    - Be conservative with calorie estimates.
+    - Set confidence between 0.0 and 1.0.
+    - Return ONLY valid JSON, no markdown, no explanation.
+    """
+}
 
 /// Prompt for photo-based food analysis. Must match VisionResponse JSON schema exactly.
 private func visionPrompt(locale: String) -> String {
     """
     You are a food analysis assistant specialized in Turkish cuisine.
 
-    Analyze this food photo and return a JSON object with this exact structure:
-    {
-      "items": [
-        {
-          "name": "Turkish dish name",
-          "name_en": "English dish name",
-          "estimated_grams": 250.0,
-          "household_unit": "kepçe",
-          "household_quantity": 2.0,
-          "calories": 185.0,
-          "protein_g": 11.0,
-          "carbs_g": 27.0,
-          "fat_g": 4.0,
-          "confidence": 0.92,
-          "note": null
-        }
-      ],
-      "no_food_detected": false
-    }
+    Analyze this food photo.
+
+    \(commonPromptContract(locale: locale))
 
     STEP 1 — SEGMENT BEFORE YOU NAME:
     A Turkish plate is almost always several separate foods placed side by side
@@ -443,13 +685,7 @@ private func visionPrompt(locale: String) -> String {
     with a lower confidence and use "note" to flag the ambiguity — do not
     compensate for uncertainty by picking a more "recognizable" dish name.
 
-    OTHER RULES:
-    - Use Turkish household units ONLY: "kepçe" (ladle), "yemek kaşığı" (tbsp), "su bardağı" (glass, ~200ml), "çay bardağı" (tea glass, ~100ml), "dilim" (slice), "avuç" (handful), "kase" (bowl), "adet" (piece)
-    - Estimate realistic grams for Turkish portions
-    - Be conservative with calorie estimates
-    - Set confidence between 0.0 and 1.0
-    - If no food is visible, set no_food_detected: true and items: []
-    - Return ONLY valid JSON, no markdown, no explanation
+    If no food is visible, set no_food_detected: true and items: [].
     """
 }
 
@@ -460,33 +696,13 @@ private func textPrompt(description: String, locale: String) -> String {
 
     The user typed this meal description: "\(description)"
 
-    Parse it and return a JSON object with this exact structure:
-    {
-      "items": [
-        {
-          "name": "Turkish dish name",
-          "name_en": "English dish name",
-          "estimated_grams": 250.0,
-          "household_unit": "kepçe",
-          "household_quantity": 2.0,
-          "calories": 185.0,
-          "protein_g": 11.0,
-          "carbs_g": 27.0,
-          "fat_g": 4.0,
-          "confidence": 0.85,
-          "note": null
-        }
-      ],
-      "no_food_detected": false
-    }
+    Parse the description into food items.
+
+    \(commonPromptContract(locale: locale))
 
     IMPORTANT RULES:
     - Extract quantity and unit from the description (e.g. "2 kepçe mercimek" → household_quantity: 2, household_unit: "kepçe")
-    - Use Turkish household units ONLY: "kepçe", "yemek kaşığı", "su bardağı", "çay bardağı", "dilim", "avuç", "kase", "adet"
-    - Estimate realistic grams for Turkish portions
-    - Be conservative with calorie estimates
-    - If you can't parse anything meaningful, set no_food_detected: true and items: []
-    - Return ONLY valid JSON, no markdown, no explanation
+    - If you can't parse anything meaningful, set no_food_detected: true and items: [].
     """
 }
 

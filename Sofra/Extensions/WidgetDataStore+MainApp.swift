@@ -63,6 +63,8 @@ extension WidgetDataStore {
         let itemsByID = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
         let allCounts = (try? modelContext.fetch(FetchDescriptor<QuickAddCount>())) ?? []
         let todayCounts = allCounts.filter { $0.date >= today && $0.date < tomorrow }
+        let talliesByItemID = Dictionary(grouping: todayCounts, by: \.itemID)
+            .mapValues { counts in counts.reduce(0) { $0 + $1.count } }
 
         func quickSum(_ perUnit: (QuickAddItem) -> Double) -> Double {
             todayCounts.reduce(0.0) { sum, c in
@@ -71,10 +73,27 @@ extension WidgetDataStore {
             }
         }
         func todayTally(for item: QuickAddItem) -> Int {
-            todayCounts.first { $0.itemID == item.id }?.count ?? 0
+            talliesByItemID[item.id] ?? 0
         }
         let breadSlices = items.count > 0 ? todayTally(for: items[0]) : 0
         let teaGlasses  = items.count > 1 ? todayTally(for: items[1]) : 0
+        let topQuickAdds = talliesByItemID
+            .compactMap { itemID, count -> (QuickAddItem, Int)? in
+                guard count > 0, let item = itemsByID[itemID] else { return nil }
+                return (item, count)
+            }
+            .sorted { lhs, rhs in
+                lhs.1 == rhs.1 ? lhs.0.sortOrder < rhs.0.sortOrder : lhs.1 > rhs.1
+            }
+            .prefix(2)
+            .map { item, count in
+                QuickAddSnapshot(
+                    name: item.name,
+                    unit: item.unit,
+                    count: count,
+                    iconName: item.iconName
+                )
+            }
 
         // Build and save
         let target = calorieTarget > 0 ? calorieTarget : 2000
@@ -84,6 +103,7 @@ extension WidgetDataStore {
             protein: scanProtein + quickSum { $0.proteinPerUnit },
             carbs: scanCarbs + quickSum { $0.carbsPerUnit },
             fat: scanFat + quickSum { $0.fatPerUnit },
+            topQuickAdds: topQuickAdds,
             breadSlices: breadSlices,
             teaGlasses: teaGlasses,
             lastUpdated: Date()

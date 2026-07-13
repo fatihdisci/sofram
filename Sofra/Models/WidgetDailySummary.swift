@@ -11,6 +11,13 @@
 
 import Foundation
 
+struct QuickAddSnapshot: Codable, Equatable {
+    var name: String
+    var unit: String
+    var count: Int
+    var iconName: String
+}
+
 /// Lightweight, precomputed daily summary for the home screen widget.
 /// Pure Foundation — no SwiftData, SwiftUI, or WidgetKit imports.
 struct WidgetDailySummary: Codable, Equatable {
@@ -32,11 +39,12 @@ struct WidgetDailySummary: Codable, Equatable {
     /// Today's total fat (grams).
     var fat: Double
 
-    /// Today's bread slice count from DailyQuickCounter.
-    var breadSlices: Int
+    /// The two most-used quick-add counters for today.
+    var topQuickAdds: [QuickAddSnapshot]
 
-    /// Today's tea glass count from DailyQuickCounter.
-    var teaGlasses: Int
+    /// Legacy fields remain optional so previously saved widget JSON decodes.
+    var breadSlices: Int?
+    var teaGlasses: Int?
 
     /// When this summary was written. Used for diagnostics; not displayed.
     var lastUpdated: Date
@@ -57,8 +65,9 @@ struct WidgetDailySummary: Codable, Equatable {
         protein: Double = 0,
         carbs: Double = 0,
         fat: Double = 0,
-        breadSlices: Int = 0,
-        teaGlasses: Int = 0,
+        topQuickAdds: [QuickAddSnapshot] = [],
+        breadSlices: Int? = nil,
+        teaGlasses: Int? = nil,
         lastUpdated: Date = Date()
     ) {
         self.calories = calories
@@ -66,6 +75,7 @@ struct WidgetDailySummary: Codable, Equatable {
         self.protein = protein
         self.carbs = carbs
         self.fat = fat
+        self.topQuickAdds = topQuickAdds
         self.breadSlices = breadSlices
         self.teaGlasses = teaGlasses
         self.lastUpdated = lastUpdated
@@ -77,4 +87,27 @@ struct WidgetDailySummary: Codable, Equatable {
 
     /// Fallback for first launch or when no data has been written yet.
     static let empty = WidgetDailySummary()
+
+    private enum CodingKeys: String, CodingKey {
+        case calories, target, protein, carbs, fat
+        case topQuickAdds, breadSlices, teaGlasses
+        case lastUpdated, progress, remaining
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        calories = try container.decodeIfPresent(Double.self, forKey: .calories) ?? 0
+        target = try container.decodeIfPresent(Double.self, forKey: .target) ?? 2000
+        protein = try container.decodeIfPresent(Double.self, forKey: .protein) ?? 0
+        carbs = try container.decodeIfPresent(Double.self, forKey: .carbs) ?? 0
+        fat = try container.decodeIfPresent(Double.self, forKey: .fat) ?? 0
+        topQuickAdds = try container.decodeIfPresent([QuickAddSnapshot].self, forKey: .topQuickAdds) ?? []
+        breadSlices = try container.decodeIfPresent(Int.self, forKey: .breadSlices)
+        teaGlasses = try container.decodeIfPresent(Int.self, forKey: .teaGlasses)
+        lastUpdated = try container.decodeIfPresent(Date.self, forKey: .lastUpdated) ?? .now
+        progress = try container.decodeIfPresent(Double.self, forKey: .progress)
+            ?? min(calories / max(target, 1), 1)
+        remaining = try container.decodeIfPresent(Double.self, forKey: .remaining)
+            ?? max(target - calories, 0)
+    }
 }

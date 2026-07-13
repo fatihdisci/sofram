@@ -15,6 +15,7 @@ import WidgetKit
 struct DailyView: View {
     @Environment(NavigationModel.self) private var nav
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
 
     @Query(sort: \ScanEntry.timestamp, order: .reverse)
     private var scanEntries: [ScanEntry]
@@ -28,23 +29,22 @@ struct DailyView: View {
     @AppStorage("sofra.proteinTarget") private var proteinTargetStored: Double = 0
     @AppStorage("sofra.carbsTarget") private var carbsTargetStored: Double = 0
     @AppStorage("sofra.fatTarget") private var fatTargetStored: Double = 0
+    @State private var dayAnchor = Calendar.current.startOfDay(for: .now)
 
     /// Today's scan entries.
     private var todayScans: [ScanEntry] {
         let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        let tomorrow = cal.date(byAdding: .day, value: 1, to: today) ?? Date()
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: dayAnchor) ?? dayAnchor
         return scanEntries.filter { entry in
-            entry.timestamp >= today && entry.timestamp < tomorrow
+            entry.timestamp >= dayAnchor && entry.timestamp < tomorrow
         }
     }
 
     /// Today's quick-add tallies and the calories they contribute.
     private var todayQuickCounts: [QuickAddCount] {
         let cal = Calendar.current
-        let today = cal.startOfDay(for: Date())
-        let tomorrow = cal.date(byAdding: .day, value: 1, to: today) ?? Date()
-        return quickCounts.filter { $0.date >= today && $0.date < tomorrow }
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: dayAnchor) ?? dayAnchor
+        return quickCounts.filter { $0.date >= dayAnchor && $0.date < tomorrow }
     }
 
     /// Sum of `perUnit(item) × count` over today's quick-add tallies.
@@ -129,8 +129,16 @@ struct DailyView: View {
             }
         }
         .onAppear {
-            guard !appeared else { return }
-            appeared = true
+            refreshDayAnchor()
+            if !appeared { appeared = true }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+            refreshDayAnchor()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .active {
+                refreshDayAnchor()
+            }
         }
     }
 
@@ -304,8 +312,14 @@ struct DailyView: View {
 
     private var emptyMealsCard: some View {
         VStack(spacing: Layout.Spacing.md) {
-            SofraIconView(icon: .sofra, size: 44)
-                .foregroundStyle(Color.accentFill)
+            // Lottie asset'i gelene kadar marka ikonunun kasıtlı nefes fallback'i.
+            SofraLottieView("sofra_empty_plate", speed: 0.85) {
+                SofraPulseShine {
+                    SofraIconView(icon: .sofra, size: 44)
+                        .foregroundStyle(Color.accentFill)
+                }
+            }
+            .frame(width: 80, height: 80)
 
             Text("Bugün henüz öğün eklemedin")
                 .font(.sofraBody)
@@ -372,10 +386,11 @@ struct DailyView: View {
     }
 
     private var todayLabel: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "d MMMM EEEE"
-        return formatter.string(from: Date())
+        SofraFormatters.turkishFullDay.string(from: dayAnchor)
+    }
+
+    private func refreshDayAnchor() {
+        dayAnchor = Calendar.current.startOfDay(for: .now)
     }
 }
 
@@ -478,9 +493,7 @@ struct MealEntryCard: View {
     }
 
     private var timeLabel: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: entry.timestamp)
+        SofraFormatters.time.string(from: entry.timestamp)
     }
 
     var body: some View {

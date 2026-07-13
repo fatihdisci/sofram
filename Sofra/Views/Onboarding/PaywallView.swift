@@ -322,6 +322,13 @@ struct PaywallView: View {
                     .foregroundStyle(Color.textMuted)
             }
 
+            HStack(spacing: Layout.Spacing.lg) {
+                Link("Gizlilik Politikası", destination: LegalLinks.privacyPolicy)
+                Link("Kullanım Koşulları", destination: LegalLinks.termsOfUse)
+            }
+            .font(.sofraCaption)
+            .foregroundStyle(Color.textSecondary)
+
             // Terms
             Text(termsText)
                 .font(.system(size: 10))

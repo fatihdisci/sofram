@@ -38,9 +38,12 @@ extension String {
         }
 
         /// Canonical key used for food-reference matching.
-        /// Keeps the fold deterministic and collapses accidental extra spaces.
+        /// Keeps the fold deterministic, treats parentheses as word separators,
+        /// and collapses accidental extra spaces.
         static func foodKey(_ s: String) -> String {
             normalize(s)
+                .replacingOccurrences(of: "(", with: " ")
+                .replacingOccurrences(of: ")", with: " ")
                 .split(whereSeparator: { $0.isWhitespace })
                 .joined(separator: " ")
         }
@@ -49,16 +52,57 @@ extension String {
 
         /// Manual synonym pairs (both sides already Turkish-normalized).
         ///
-        /// Phase v1 size: 5 pairs covering the most common AI mis-classifications
-        /// observed against the 32-item DB. Expand when the DB grows beyond
-        /// ~100 items or when the AI proxy starts emitting new dish variants.
         /// Each pair is bidirectional — `aliases(for:)` returns the OTHER side.
         static let synonymPairs: [(from: String, to: String)] = [
             ("beyaz ekmek",                "ekmek"),
+            ("1 dilim ekmek",              "beyaz ekmek"),
             ("kirmizi mercimek corbasi",   "mercimek corbasi"),
             ("kasar",                      "kasar peyniri"),
             ("yogurt corbasi",             "yayla corbasi"),
             ("feta peyniri",               "beyaz peynir"),
+            ("cay",                        "siyah cay sekersiz"),
+            ("siyah cay",                  "siyah cay sekersiz"),
+            ("pilav",                      "pirinc pilavi"),
+            ("zeytin",                     "zeytin yesil"),
+            ("zeytin",                     "zeytin siyah"),
+            ("ton baligi",                 "ton baligi konserve"),
+            ("kuru fasulye",               "kuru fasulye etli"),
+            ("taze fasulye",               "taze fasulye zeytinyagli"),
+            ("yaprak sarmasi",             "yaprak sarmasi etli"),
+            ("biber dolmasi",              "biber dolmasi etli"),
+            ("nohut yemegi",               "nohut yemegi etli"),
+            ("turlu",                      "turlu sebze yemegi"),
+            ("pirinc pilavi",              "pirinc pilavi sehriyeli"),
+            ("bulgur pilavi",              "bulgur pilavi sebzeli"),
+            ("eriste",                     "eriste tereyagli"),
+            ("soslu makarna",              "soslu makarna bolonez"),
+            ("makarna",                    "makarna peynirli"),
+            ("domates",                    "domates cig"),
+            ("salatalik",                  "salatalik cig"),
+            ("havuc",                      "havuc cig"),
+            ("havuc",                      "havuc haslanmis"),
+            ("ispanak",                    "ispanak cig"),
+            ("ispanak",                    "ispanak pismis"),
+            ("kabak",                      "kabak cig"),
+            ("kabak",                      "kabak haslanmis"),
+            ("patlican",                   "patlican cig"),
+            ("patlican",                   "patlican kozlenmis"),
+            ("marul",                      "marul cig"),
+            ("taze sogan",                 "taze sogan cig"),
+            ("brokoli",                    "brokoli haslanmis"),
+            ("karnabahar",                 "karnabahar haslanmis"),
+            ("findik",                     "findik kavrulmus"),
+            ("fistik",                     "fistik tuzlu"),
+            ("antep fistigi",              "antep fistigi kavrulmus"),
+            ("ay cekirdegi",               "ay cekirdegi tuzlu"),
+            ("baklava",                    "baklava fistikli"),
+            ("sutlac",                     "sutlac firin"),
+            ("siyah cay",                  "siyah cay tek sekerli"),
+            ("turk kahvesi",               "turk kahvesi sekersiz"),
+            ("portakal suyu",              "portakal suyu taze"),
+            ("nescafe",                    "nescafe 3'u 1 arada"),
+            ("filtre kahve",               "filtre kahve sade"),
+            ("kokorec",                    "kokorec yarim ekmek"),
         ]
 
         /// Returns the matching aliases for a normalized query, or empty array

@@ -892,6 +892,143 @@
       "source_context": "TÜBER 2022"
     },
     {
+      "name": "beyaz ekmek",
+      "name_en": "white bread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 25,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [
+        {
+          "grams": 62,
+          "household_unit": "adet",
+          "household_quantity": 0.25,
+          "description": "¼ ekmek"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 265,
+        "protein_g": 8.9,
+        "carbs_g": 49.4,
+        "fat_g": 3.2
+      },
+      "nutrition_per_portion": {
+        "calories": 66,
+        "protein_g": 2.2,
+        "carbs_g": 12.4,
+        "fat_g": 0.8
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "tam buğday ekmeği",
+      "name_en": "whole wheat bread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 25,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 247,
+        "protein_g": 13.0,
+        "carbs_g": 41.2,
+        "fat_g": 3.4
+      },
+      "nutrition_per_portion": {
+        "calories": 62,
+        "protein_g": 3.3,
+        "carbs_g": 10.3,
+        "fat_g": 0.85
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "lavaş",
+      "name_en": "lavash",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 60,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 275,
+        "protein_g": 9.0,
+        "carbs_g": 55.0,
+        "fat_g": 2.5
+      },
+      "nutrition_per_portion": {
+        "calories": 165,
+        "protein_g": 5.4,
+        "carbs_g": 33.0,
+        "fat_g": 1.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "bazlama",
+      "name_en": "bazlama flatbread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 262,
+        "protein_g": 8.7,
+        "carbs_g": 50.0,
+        "fat_g": 3.0
+      },
+      "nutrition_per_portion": {
+        "calories": 314,
+        "protein_g": 10.4,
+        "carbs_g": 60.0,
+        "fat_g": 3.6
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "tandır/köy ekmeği",
+      "name_en": "tandir village bread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 270,
+        "protein_g": 8.5,
+        "carbs_g": 52.0,
+        "fat_g": 2.5
+      },
+      "nutrition_per_portion": {
+        "calories": 81,
+        "protein_g": 2.6,
+        "carbs_g": 15.6,
+        "fat_g": 0.75
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
       "name": "poğaça",
       "name_en": "pogaca (bun)",
       "category": "kahvalti",
@@ -1055,6 +1192,39 @@
       },
       "confidence_note": "approximate",
       "source_context": "ortalama ürün"
+    },
+    {
+      "name": "ton balığı (konserve)",
+      "name_en": "canned tuna",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 80,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 kutu (yaklaşık 80 g, süzülmüş, suda)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 160,
+          "household_unit": "adet",
+          "household_quantity": 2,
+          "description": "2 kutu"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 104,
+        "protein_g": 25.0,
+        "carbs_g": 0.0,
+        "fat_g": 0.9
+      },
+      "nutrition_per_portion": {
+        "calories": 83,
+        "protein_g": 20.0,
+        "carbs_g": 0.0,
+        "fat_g": 0.7
+      },
+      "confidence_note": "well-established",
+      "source_context": "USDA / ambalaj besin değeri ortalaması (suda, süzülmüş ton balığı)"
     },
     {
       "name": "Kuru fasulye (etli)",
@@ -1782,6 +1952,32 @@
         "fat_g": 6.2
       },
       "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kremalı makarna",
+      "name_en": "Creamy pasta",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 185,
+        "protein_g": 5.5,
+        "carbs_g": 22.5,
+        "fat_g": 8.0
+      },
+      "nutrition_per_portion": {
+        "calories": 278,
+        "protein_g": 8.3,
+        "carbs_g": 33.8,
+        "fat_g": 12.0
+      },
+      "confidence_note": "well-established",
       "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
     },
     {

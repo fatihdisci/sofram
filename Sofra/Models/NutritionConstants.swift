@@ -13,7 +13,35 @@
 
 import Foundation
 
+enum LegalLinks {
+    // TODO(fatih): gerçek URL
+    static let privacyPolicy = URL(string: "https://sofra.app/gizlilik")!
+    // TODO(fatih): gerçek URL
+    static let termsOfUse = URL(string: "https://sofra.app/kosullar")!
+}
+
 enum NutritionConstants {
+
+    // MARK: - Household portion defaults
+
+    /// Typical grams represented by one household unit when the food reference
+    /// database does not provide a dish-specific portion. Counted pieces and
+    /// pots intentionally have no global weight because their size varies too
+    /// much by food.
+    static func defaultGrams(for unit: PortionUnit) -> Double? {
+        switch unit {
+        case .kepce:       return 120
+        case .yemekKasigi: return 15
+        case .suBardagi:   return 200
+        case .cayBardagi:  return 100
+        case .dilim:       return 25
+        case .avuc:        return 30
+        case .kase:        return 250
+        case .tencere:     return nil
+        case .adet:        return nil
+        case .gram:        return 1
+        }
+    }
 
     // MARK: - BMI (WHO 1995)
 

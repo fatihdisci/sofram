@@ -18,9 +18,26 @@ options:
   developmentLanguage: tr
   groupSortPosition: top
 
+# Swift Package Manager dependencies.
+# - Pow: SwiftUI micro-effect + transition library (EmergeTools). Used in LogButton
+#   for haptic feedback + checkmark particle burst on successful log. iOS 15+.
+# - Lottie: vector animation renderer. Used in paywall/empty-state hero. iOS 13+.
+#   (Phase 2 — only declared here, no consumer yet, comment kept to track the plan.)
+#
+# Lottie SPM pin: use the precompiled `lottie-spm` mirror (8MB), NOT the main
+# `airbnb/lottie-ios` repo (300+MB) — SPM would otherwise download the full
+# git history every resolve.
+packages:
+  Pow:
+    url: https://github.com/EmergeTools/Pow
+    from: 1.0.5
+  Lottie:
+    url: https://github.com/airbnb/lottie-spm.git
+    branch: main
+
 settings:
   base:
-    MARKETING_VERSION: "0.1.0"
+    MARKETING_VERSION: "1.0.0"
     CURRENT_PROJECT_VERSION: "1"
     SWIFT_VERSION: "5.0"                 # Swift 5 language mode — avoids strict-concurrency churn this phase
     DEVELOPMENT_TEAM: ""                 # set your Apple Developer team here to sign + enable CloudKit
@@ -52,6 +69,10 @@ targets:
         CODE_SIGN_STYLE: Automatic
     dependencies:
       - target: SofraWidgetExtension
+      - package: Pow
+        product: Pow
+      - package: Lottie
+        product: Lottie
     # Explicit scheme so `xcodegen generate` always emits a shared "Sofra" app
     # scheme. Without it Xcode auto-creates schemes on open and may default to
     # the widget extension — building the widget instead of the app on device.

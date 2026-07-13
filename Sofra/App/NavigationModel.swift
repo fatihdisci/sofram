@@ -28,7 +28,7 @@ enum AppTab: Hashable {
 enum ScanFlow: Equatable {
     case camera
     case analyzing(imageData: Data, uiImage: UIImage)
-    case result(uiImage: UIImage, items: [VisionItem], source: ScanSource)
+    case result(uiImage: UIImage, items: [VisionItem], source: ScanSource, rawJSON: String)
     case textLog
 
     static func == (lhs: ScanFlow, rhs: ScanFlow) -> Bool {
@@ -37,8 +37,8 @@ enum ScanFlow: Equatable {
         case (.textLog, .textLog): return true
         case (.analyzing(let ld, let lu), .analyzing(let rd, let ru)):
             return ld == rd && lu === ru
-        case (.result(let li, let lv, let ls), .result(let ri, let rv, let rs)):
-            return li === ri && lv.map(\.name) == rv.map(\.name) && ls == rs
+        case (.result(let li, let lv, let ls, let lj), .result(let ri, let rv, let rs, let rj)):
+            return li === ri && lv.map(\.name) == rv.map(\.name) && ls == rs && lj == rj
         default: return false
         }
     }
@@ -76,8 +76,13 @@ final class NavigationModel {
         scanFlow = .analyzing(imageData: imageData, uiImage: uiImage)
     }
 
-    func showResult(uiImage: UIImage, items: [VisionItem], source: ScanSource = .photo) {
-        scanFlow = .result(uiImage: uiImage, items: items, source: source)
+    func showResult(
+        uiImage: UIImage,
+        items: [VisionItem],
+        source: ScanSource = .photo,
+        rawJSON: String
+    ) {
+        scanFlow = .result(uiImage: uiImage, items: items, source: source, rawJSON: rawJSON)
     }
 
     /// Finish the scan flow and land back on the Bugün tab (used after logging

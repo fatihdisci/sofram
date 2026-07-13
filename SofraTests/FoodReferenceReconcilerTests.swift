@@ -21,14 +21,25 @@ final class FoodReferenceReconcilerTests: XCTestCase {
     func testTurkishFoodReferenceLoad_countAndCategoryDistribution() throws {
         let foods = try TurkishFoodReference.load()
 
-        XCTAssertEqual(foods.count, 32)
+        XCTAssertEqual(foods.count, 150)
 
         let counts = Dictionary(grouping: foods, by: \.category).mapValues(\.count)
-        XCTAssertEqual(Set(counts.keys), ["corba", "kahvalti", "sut-urunu", "ekmek"])
+        XCTAssertEqual(Set(counts.keys), [
+            "corba", "kahvalti", "sut-urunu", "ekmek", "ana-yemek", "pilav-makarna",
+            "meyve", "sebze", "atistirmalik", "tatli", "icecek", "fast-food",
+        ])
         XCTAssertEqual(counts["corba"], 10)
-        XCTAssertEqual(counts["kahvalti"], 15)
+        XCTAssertEqual(counts["kahvalti"], 16)
         XCTAssertEqual(counts["sut-urunu"], 6)
-        XCTAssertEqual(counts["ekmek"], 1)
+        XCTAssertEqual(counts["ekmek"], 6)
+        XCTAssertEqual(counts["ana-yemek"], 14)
+        XCTAssertEqual(counts["pilav-makarna"], 15)
+        XCTAssertEqual(counts["meyve"], 14)
+        XCTAssertEqual(counts["sebze"], 14)
+        XCTAssertEqual(counts["atistirmalik"], 14)
+        XCTAssertEqual(counts["tatli"], 14)
+        XCTAssertEqual(counts["icecek"], 14)
+        XCTAssertEqual(counts["fast-food"], 13)
     }
 
     func testBeyazPeynirWellEstablishedUsesReferenceValues() throws {
@@ -53,6 +64,54 @@ final class FoodReferenceReconcilerTests: XCTestCase {
         XCTAssertEqual(reconciled.protein, 75 * reference.nutritionPer100g.proteinG / 100, accuracy: 0.001)
         XCTAssertEqual(reconciled.carbs, 75 * reference.nutritionPer100g.carbsG / 100, accuracy: 0.001)
         XCTAssertEqual(reconciled.fat, 75 * reference.nutritionPer100g.fatG / 100, accuracy: 0.001)
+    }
+
+    func testTonBaligiWellEstablishedUsesReferenceValues() throws {
+        let foods = try TurkishFoodReference.load()
+        let reference = try XCTUnwrap(foods.first { $0.name == "ton balığı (konserve)" })
+        let item = makeVisionItem(
+            name: "Ton balığı",
+            nameEn: "canned tuna",
+            estimatedGrams: 80,
+            calories: 999,
+            proteinG: 1,
+            carbsG: 2,
+            fatG: 3
+        )
+
+        let reconciled = ReferenceReconciler.reconcile(item: item, in: foods)
+
+        XCTAssertEqual(reconciled.source, .reference)
+        XCTAssertEqual(reconciled.referenceName, reference.name)
+        XCTAssertEqual(reconciled.confidenceNote, "well-established")
+        XCTAssertEqual(reconciled.calories, 80 * reference.nutritionPer100g.calories / 100, accuracy: 0.001)
+        XCTAssertEqual(reconciled.protein, 80 * reference.nutritionPer100g.proteinG / 100, accuracy: 0.001)
+        XCTAssertEqual(reconciled.carbs, 80 * reference.nutritionPer100g.carbsG / 100, accuracy: 0.001)
+        XCTAssertEqual(reconciled.fat, 80 * reference.nutritionPer100g.fatG / 100, accuracy: 0.001)
+    }
+
+    func testKremaliMakarnaWellEstablishedUsesReferenceValues() throws {
+        let foods = try TurkishFoodReference.load()
+        let reference = try XCTUnwrap(foods.first { $0.name == "Kremalı makarna" })
+        let item = makeVisionItem(
+            name: "Kremalı makarna",
+            nameEn: "Creamy pasta",
+            estimatedGrams: 250,
+            calories: 999,
+            proteinG: 1,
+            carbsG: 2,
+            fatG: 3
+        )
+
+        let reconciled = ReferenceReconciler.reconcile(item: item, in: foods)
+
+        XCTAssertEqual(reconciled.source, .reference)
+        XCTAssertEqual(reconciled.referenceName, reference.name)
+        XCTAssertEqual(reconciled.confidenceNote, "well-established")
+        XCTAssertEqual(reconciled.calories, 250 * reference.nutritionPer100g.calories / 100, accuracy: 0.001)
+        XCTAssertEqual(reconciled.protein, 250 * reference.nutritionPer100g.proteinG / 100, accuracy: 0.001)
+        XCTAssertEqual(reconciled.carbs, 250 * reference.nutritionPer100g.carbsG / 100, accuracy: 0.001)
+        XCTAssertEqual(reconciled.fat, 250 * reference.nutritionPer100g.fatG / 100, accuracy: 0.001)
     }
 
     func testReconcileIsDeterministicForSameInput() throws {

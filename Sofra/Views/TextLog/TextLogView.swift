@@ -14,6 +14,15 @@
 
 import SwiftUI
 
+enum TextLogInputPolicy {
+    static let maxCharacters = 300
+    static let counterThreshold = 240
+
+    static func limited(_ text: String) -> String {
+        String(text.prefix(maxCharacters))
+    }
+}
+
 struct TextLogView: View {
     @Environment(NavigationModel.self) private var nav
 
@@ -60,6 +69,19 @@ struct TextLogView: View {
                             .scrollContentBackground(.hidden)
                             .padding(Layout.Spacing.sm)
                             .focused($isFocused)
+
+                        if textInput.count >= TextLogInputPolicy.counterThreshold {
+                            Text("\(textInput.count)/\(TextLogInputPolicy.maxCharacters)")
+                                .font(.sofraCaption)
+                                .foregroundStyle(Color.textMuted)
+                                .frame(
+                                    maxWidth: .infinity,
+                                    maxHeight: .infinity,
+                                    alignment: .bottomTrailing
+                                )
+                                .padding(Layout.Spacing.md)
+                                .allowsHitTesting(false)
+                        }
                     }
                     .frame(minHeight: 120, maxHeight: 180)
                     .pressedSurface(cornerRadius: Layout.Radius.card)
@@ -83,7 +105,11 @@ struct TextLogView: View {
             }
         }
         .onChange(of: textInput) { _, newValue in
-            nav.textLogDraft = newValue
+            let limited = TextLogInputPolicy.limited(newValue)
+            if limited != newValue {
+                textInput = limited
+            }
+            nav.textLogDraft = limited
         }
         .alert("Analiz başarısız", isPresented: Binding(
             get: { errorMessage != nil },
@@ -212,9 +238,17 @@ struct TextLogView: View {
         defer { isScanning = false }
 
         do {
-            let response = try await client.scanText(text)
+            let result = try await client.scanText(text)
+            if !client.isDemoMode {
+                FreeScanCounter.shared.recordScan()
+            }
             // Reuse the result screen for text-log results
-            nav.showResult(uiImage: UIImage(), items: response.items, source: .text)
+            nav.showResult(
+                uiImage: UIImage(),
+                items: result.response.items,
+                source: .text,
+                rawJSON: result.rawJSON
+            )
         } catch {
             errorMessage = (error as? AIProxyError)?.localizedDescription
                 ?? AIProxyError.scanFailed.localizedDescription

@@ -394,6 +394,7 @@ struct SexStepView: View {
 struct ResultStepView: View {
     let model: OnboardingModel
     var onSave: (() -> Void)?
+    @State private var showsCalculationDetails = false
 
     var body: some View {
         VStack(spacing: Layout.Spacing.xl) {
@@ -442,7 +443,7 @@ struct ResultStepView: View {
 
                 HStack(spacing: Layout.Spacing.xl) {
                     macroPill(label: "Protein", value: model.proteinTargetG, color: .macroProtein)
-                    macroPill(label: "Carbs", value: model.carbsTargetG, color: .macroCarb)
+                    macroPill(label: "Karb.", value: model.carbsTargetG, color: .macroCarb)
                     macroPill(label: "Yağ", value: model.fatTargetG, color: .macroFat)
                 }
             }
@@ -462,9 +463,22 @@ struct ResultStepView: View {
                     .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
             }
 
-            Text("BMR: \(Int(model.bmr)) kcal · Aktivite: ×\(String(format: "%.2f", model.activityMultiplier))")
-                .font(.sofraCaption)
-                .foregroundStyle(Color.textMuted)
+            DisclosureGroup(isExpanded: $showsCalculationDetails) {
+                VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+                    calculationDetail("BMR (Mifflin-St Jeor)", value: "\(Int(model.bmr)) kcal")
+                    calculationDetail(
+                        "Aktivite çarpanı",
+                        value: "×\(model.activityMultiplier.formatted(.number.precision(.fractionLength(2))))"
+                    )
+                    calculationDetail("Hedef düzeltmesi", value: formattedGoalDelta)
+                }
+                .padding(.top, Layout.Spacing.sm)
+            } label: {
+                Text("Nasıl hesapladık?")
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textSecondary)
+            }
+            .tint(Color.accentFill)
 
             // Medical disclaimer (Phase A4): required alongside every computed
             // target. Sits below the fold but above the final spacer.
@@ -503,7 +517,25 @@ struct ResultStepView: View {
         .padding(.vertical, Layout.Spacing.sm)
         .background(color.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
     }
+
+    private var formattedGoalDelta: String {
+        let delta = Int(NutritionConstants.goalDelta(model.goal))
+        if delta > 0 { return "+\(delta) kcal" }
+        if delta < 0 { return "\(delta) kcal" }
+        return "0 kcal"
+    }
+
+    private func calculationDetail(_ label: String, value: String) -> some View {
+        HStack {
+            Text(label)
+            Spacer()
+            Text(value)
+                .font(.sofraNumericSmall)
+                .foregroundStyle(Color.textPrimary)
+        }
+        .font(.sofraCaption)
+        .foregroundStyle(Color.textMuted)
+    }
 }
 
 // MARK: - Paywall placeholder
-

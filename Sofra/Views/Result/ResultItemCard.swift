@@ -9,6 +9,12 @@ struct ResultItemCard: View {
     let item: EditableVisionItem
     let onUnitChange: (PortionUnit) -> Void
     let onQuantityChange: (Double) -> Void
+    let onNameChange: (String) -> Void
+    let onDelete: () -> Void
+
+    @State private var isEditingName = false
+    @State private var nameDraft = ""
+    @FocusState private var isNameFieldFocused: Bool
 
     /// Editable units shown in the picker (Turkish household vocabulary only).
     private let editableUnits: [PortionUnit] = [
@@ -18,36 +24,51 @@ struct ResultItemCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
-            // Header: icon + name + confidence
-            HStack(spacing: Layout.Spacing.sm) {
-                SofraIconView(icon: itemIcon, size: 28)
-                    .foregroundStyle(Color.accentFill)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(item.name)
+            // Header: name + a single status badge (verified match, or a
+            // low-confidence flag — never both, never a separate row each).
+            HStack(alignment: .top, spacing: Layout.Spacing.sm) {
+                if isEditingName {
+                    TextField("Yemek adı", text: $nameDraft)
                         .font(.sofraHeading)
                         .foregroundStyle(Color.textPrimary)
-
-                    if item.confidence < 0.6 {
-                        HStack(spacing: 4) {
-                            Image(systemName: "exclamationmark.triangle.fill")
-                                .font(.system(size: 10))
-                            Text("Şüpheli/tahminidir")
-                                .font(.sofraCaption)
+                        .focused($isNameFieldFocused)
+                        .submitLabel(.done)
+                        .onSubmit(commitName)
+                        .onChange(of: isNameFieldFocused) { _, focused in
+                            if !focused {
+                                commitName()
+                            }
                         }
-                        .foregroundStyle(Color.accentText)
+                } else {
+                    Button {
+                        nameDraft = item.name
+                        isEditingName = true
+                        isNameFieldFocused = true
+                    } label: {
+                        Text(item.name)
+                            .font(.sofraHeading)
+                            .foregroundStyle(Color.textPrimary)
+                            .multilineTextAlignment(.leading)
                     }
+                    .buttonStyle(.plain)
+                    .accessibilityHint("Yemek adını düzenler")
                 }
 
                 Spacer()
 
-                // Confidence pill
-                Text("\(Int(item.confidence * 100))%")
-                    .font(.sofraNumericSmall)
-                    .foregroundStyle(confidenceColor)
-                    .padding(.horizontal, Layout.Spacing.sm)
-                    .padding(.vertical, 2)
-                    .background(confidenceColor.opacity(0.12), in: Capsule())
+                HStack(spacing: Layout.Spacing.xs) {
+                    statusBadge
+
+                    Button(action: onDelete) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 22))
+                            .foregroundStyle(Color.textMuted)
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Öğeyi sil")
+                }
             }
 
             // Portion correction row
@@ -76,7 +97,9 @@ struct ResultItemCard: View {
 
     private var portionCorrectionRow: some View {
         VStack(spacing: Layout.Spacing.sm) {
-            // Unit picker — horizontal scroll of Turkish units
+            // Unit picker — horizontal scroll of Turkish units. Faded trailing
+            // edge signals there's more to scroll to (previously clipped with
+            // no affordance at all, reading as a layout bug).
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: Layout.Spacing.xs) {
                     ForEach(editableUnits, id: \.self) { unit in
@@ -106,6 +129,17 @@ struct ResultItemCard: View {
                     }
                 }
             }
+            .mask(
+                LinearGradient(
+                    stops: [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 0.92),
+                        .init(color: .clear, location: 1.0),
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
 
             // Quantity stepper
             HStack(spacing: Layout.Spacing.md) {
@@ -160,40 +194,63 @@ struct ResultItemCard: View {
     // MARK: - Macros
 
     private var macrosRow: some View {
-        HStack(spacing: Layout.Spacing.lg) {
-            Spacer()
-            macroPill(label: "kcal", value: item.calories, color: .accentText)
-            macroPill(label: "protein", value: item.proteinG, color: .macroProtein)
-            macroPill(label: "carbs", value: item.carbsG, color: .macroCarb)
-            macroPill(label: "yağ", value: item.fatG, color: .macroFat)
-            Spacer()
+        HStack(spacing: Layout.Spacing.sm) {
+            macroText(value: item.calories, label: "kcal", color: Color.accentText)
+            macroDot
+            macroText(value: item.proteinG, label: "protein", color: Color.macroProtein)
+            macroDot
+            macroText(value: item.carbsG, label: "karb.", color: Color.macroCarb)
+            macroDot
+            macroText(value: item.fatG, label: "yağ", color: Color.macroFat)
         }
         .padding(.top, Layout.Spacing.xs)
     }
 
-    private func macroPill(label: String, value: Double, color: Color) -> some View {
-        VStack(spacing: 2) {
+    private var macroDot: some View {
+        Circle()
+            .fill(Color.textMuted.opacity(0.3))
+            .frame(width: 3, height: 3)
+    }
+
+    private func macroText(value: Double, label: String, color: Color) -> some View {
+        HStack(spacing: 3) {
             Text("\(Int(value))")
                 .font(.sofraNumericSmall)
-                .foregroundStyle(Color.textPrimary)
+                .foregroundStyle(color)
             Text(label)
-                .font(.system(size: 10))
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
+    }
+
+    // MARK: - Status badge
+
+    /// One badge slot: a reference-matched item is "verified" (deterministic
+    /// numbers, not a guess); otherwise a low-confidence AI guess is flagged.
+    /// A confident AI guess (the common case) shows no badge at all.
+    @ViewBuilder
+    private var statusBadge: some View {
+        if item.valueSource == "reference" {
+            badge(icon: "checkmark.seal.fill", text: "Doğrulanmış")
+        } else if item.confidence < 0.6 {
+            badge(icon: "exclamationmark.triangle.fill", text: "Emin değilim")
+        }
+    }
+
+    private func badge(icon: String, text: String) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.system(size: 10))
+            Text(text)
+                .font(.sofraCaption)
+        }
+        .foregroundStyle(Color.accentText)
         .padding(.horizontal, Layout.Spacing.sm)
-        .padding(.vertical, Layout.Spacing.xs)
-        .background(color.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
+        .padding(.vertical, 2)
+        .background(Color.accentText.opacity(0.12), in: Capsule())
     }
 
     // MARK: - Helpers
-
-    private var itemIcon: SofraIcon {
-        item.householdUnit.icon ?? .tabak
-    }
-
-    private var confidenceColor: Color {
-        item.confidence >= 0.75 ? .green : (item.confidence >= 0.5 ? .orange : .red)
-    }
 
     private var unitStep: Double {
         switch item.householdUnit {
@@ -212,4 +269,14 @@ struct ResultItemCard: View {
     }
 
     private var unitMax: Double { 20 }
+
+    private func commitName() {
+        guard isEditingName else { return }
+        let cleanedName = nameDraft.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !cleanedName.isEmpty {
+            onNameChange(cleanedName)
+        }
+        isEditingName = false
+        isNameFieldFocused = false
+    }
 }

@@ -40,27 +40,36 @@ final class FreeScanCounter {
         didSet { defaults.set(isSubscribed, forKey: Keys.subscribed) }
     }
 
+    #if DEBUG
+    /// Keeps development flows unlocked without pretending StoreKit granted an
+    /// entitlement. Tests can disable this to exercise release counter logic.
+    var debugForcePro = true
+    #endif
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         self.usedScans = defaults.integer(forKey: Keys.used)
-        #if DEBUG
-        // Always pro in debug builds — no scan limits during testing.
-        self.isSubscribed = true
-        #else
         self.isSubscribed = defaults.bool(forKey: Keys.subscribed)
-        #endif
     }
 
     /// Free scans still available (0 once the cap is hit).
     var remainingFreeScans: Int { max(0, maxFreeScans - usedScans) }
 
     /// The gate the scan flow checks before starting a scan.
-    var canScanForFree: Bool { isSubscribed || usedScans < maxFreeScans }
+    var canScanForFree: Bool { hasUnlimitedScans || usedScans < maxFreeScans }
 
     /// Call once after a successful scan completes.
     func recordScan() {
-        guard !isSubscribed else { return } // subscribers don't consume the free cap
+        guard !hasUnlimitedScans else { return }
         usedScans += 1
+    }
+
+    private var hasUnlimitedScans: Bool {
+        #if DEBUG
+        return isSubscribed || debugForcePro
+        #else
+        return isSubscribed
+        #endif
     }
 
     #if DEBUG

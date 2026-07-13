@@ -18,6 +18,7 @@
 import Foundation
 import StoreKit
 import Observation
+import UIKit
 import UserNotifications
 
 // MARK: - Product identifiers
@@ -184,8 +185,15 @@ final class StoreKitManager {
 
         isSubscribed = subscribed
         activeProductID = productID
-        // Wire into the Phase 1 stub
+        // Keep DEBUG's independent force-Pro gate stable when StoreKit reports
+        // no entitlement. A real verified entitlement still propagates.
+        #if DEBUG
+        if subscribed {
+            FreeScanCounter.shared.isSubscribed = true
+        }
+        #else
         FreeScanCounter.shared.isSubscribed = subscribed
+        #endif
     }
 
     // MARK: - Trial-end notification
@@ -232,8 +240,21 @@ final class StoreKitManager {
     func openManageSubscriptions() {
         Task { @MainActor in
             #if os(iOS)
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL)
+            let activeScene = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first { $0.activationState == .foregroundActive }
+
+            if let activeScene {
+                do {
+                    try await AppStore.showManageSubscriptions(in: activeScene)
+                    return
+                } catch {
+                    // Fall through to the App Store subscriptions page.
+                }
+            }
+
+            if let subscriptionsURL = URL(string: "https://apps.apple.com/account/subscriptions") {
+                _ = await UIApplication.shared.open(subscriptionsURL)
             }
             #endif
         }
@@ -245,10 +266,6 @@ final class StoreKitManager {
     var annualPrice: String  { annualProduct?.displayPrice ?? "₺799,99" }
     var annualMonthlyPrice: String {
         guard let product = annualProduct else { return "₺66,67" }
-        let price = product.price
-        let perMonth = price / 12
-        return product.priceFormatStyle.locale.currencySymbol.map {
-            "\($0)\(String(format: "%.2f", Double(truncating: perMonth as NSNumber)))"
-        } ?? "₺66,67"
+        return product.priceFormatStyle.format(product.price / 12)
     }
 }

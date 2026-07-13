@@ -253,7 +253,11 @@ private struct QuickChip: View {
     }
 }
 
-/// A "+1"/"-1" that floats upward and fades out (400ms, ease-out).
+/// A "+1"/"-1" that floats upward and fades out (500ms, bouncy).
+/// Replaces the previous `easeOut(0.4)` with `Animation.sofraBouncy`
+/// (Amo95 pattern, retuned for Sofra) — a hair of overshoot at the
+/// end matches the spec's "Instagram like-count artışı hissi, ama
+/// abartısız" guidance.
 private struct GhostLabel: View {
     let text: String
     @State private var risen = false
@@ -266,7 +270,7 @@ private struct GhostLabel: View {
             .opacity(risen ? 0 : 1)
             .allowsHitTesting(false)
             .onAppear {
-                withAnimation(.easeOut(duration: 0.4)) { risen = true }
+                withAnimation(.sofraBouncy) { risen = true }
             }
     }
 }
