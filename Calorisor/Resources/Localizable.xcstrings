@@ -1,4 +1,5 @@
 {
+  "emitGeneratedSymbols" : false,
   "sourceLanguage" : "tr",
   "strings" : {
     "Günaydın" : {
