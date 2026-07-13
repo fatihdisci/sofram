@@ -432,6 +432,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Dosyalar:** `Sofra/App/ContentView.swift`, `Sofra/Views/Daily/`, `Sofra/DesignSystem/SofraIcon.swift`.
   **Talimat:** Ana akışı dashboard değil “yediğini anlama” aracı olarak kur. Kamera/yazılı giriş net birincil eylem olur; günlük kalori ve makrolar güçlü tipografik bilgi bloklarıdır. Kırık `C` marka işareti ikon/boş durumlarda ölçülü kullanılır; tab bar sade, düz ve okunur kalır. Yeni ekran düzeni mevcut günlük kayıt, quick-add ve hedef davranışlarını korur.
   **Kabul kriterleri:** Kullanıcı ilk bakışta fotoğrafla veya metinle öğün eklemeyi bulur; kayıt/toplam/widget akışları regress etmez; iPhone küçük ekranında taşma yok.
+  ⏸ **NOT:** Bugün ekranı artık top bar'ın hemen altında tam-genişlik "yakalama çubuğu" ile açılıyor: kamera vurgu rengiyle birincil eylem, yazılı giriş yanında — her iki giriş ilk bakışta bulunur. Kalori/makro bloğu ve kayıt/quick-add/hedef davranışları korundu; çubuk `lineLimit(1)`+`Spacer` ile küçük ekranda taşmaz. Görsel/Dynamic Type/gerçek cihaz doğrulaması derleme ortamı bekliyor.
 
 - [ ] **SF-1004 · Kamera, analiz ve sonuç deneyiminin Calorisor revizyonu**
   **Dosyalar:** `Sofra/Views/Camera/`, `Sofra/Views/Analysis/`, `Sofra/Views/Result/`, `Sofra/Views/TextLog/`.

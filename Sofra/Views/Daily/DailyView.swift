@@ -102,6 +102,9 @@ struct DailyView: View {
                     topBar
                         .modifier(entrance(0))
 
+                    captureBar
+                        .modifier(entrance(0.06))
+
                     CalorieRingView(consumed: todayCalories, target: calorieTarget)
                         .padding(.top, Layout.Spacing.sm)
                         .scaleEffect(appeared ? 1 : 0.82)
@@ -154,34 +157,52 @@ struct DailyView: View {
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
-
             Spacer()
+        }
+        .padding(.horizontal, Layout.Spacing.lg)
+        .padding(.top, Layout.Spacing.md)
+    }
 
-            // Text log
+    // MARK: - Capture bar (primary action)
+
+    /// Search-like primary entry: a full-width prompt that reads as "the thing
+    /// you do here". The camera fill is the accent; a text-log affordance sits
+    /// alongside so both capture paths are found at a glance.
+    private var captureBar: some View {
+        HStack(spacing: Layout.Spacing.md) {
+            Button {
+                nav.goToCamera()
+            } label: {
+                HStack(spacing: Layout.Spacing.md) {
+                    Image(systemName: "camera.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(Color.onAccent)
+                        .frame(width: 40, height: 40)
+                        .background(Circle().fill(Color.accentFill))
+                    Text("Tabağını çek, kalorisini gör")
+                        .font(.sofraBody)
+                        .foregroundStyle(Color.textSecondary)
+                        .lineLimit(1)
+                    Spacer(minLength: 0)
+                }
+                .padding(Layout.Spacing.sm)
+                .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+                .raisedSurface(cornerRadius: Layout.Radius.card)
+            }
+            .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
+
             Button {
                 nav.goToTextLog(from: .daily)
             } label: {
                 Image(systemName: "text.alignleft")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.textSecondary)
-                    .frame(width: 46, height: 46)
-                    .background(Color.surfaceRaised, in: Circle())
-                    .raisedSurface(cornerRadius: 23)
-            }
-
-            // Camera — the primary action
-            Button {
-                nav.goToCamera()
-            } label: {
-                Image(systemName: "camera.fill")
                     .font(.system(size: 18))
-                    .foregroundStyle(Color.onAccent)
-                    .frame(width: 52, height: 52)
-                    .background(Circle().fill(Color.accentFill))
+                    .foregroundStyle(Color.textSecondary)
+                    .frame(width: 56, height: 56)
+                    .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+                    .raisedSurface(cornerRadius: Layout.Radius.card)
             }
         }
         .padding(.horizontal, Layout.Spacing.lg)
-        .padding(.top, Layout.Spacing.md)
     }
 
     // MARK: - Consumed / target pill (below ring)
