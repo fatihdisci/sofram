@@ -1,7 +1,10 @@
 // MUST MATCH Sofra/Networking/AIProxyClient.swift prompts — update both together.
 
 function commonPromptContract(locale: string): string {
-  return `USER LOCALE: ${locale}. Use this locale only to interpret number and portion
+  const isTurkish = locale.startsWith("tr");
+
+  if (isTurkish) {
+    return `USER LOCALE: ${locale}. Use this locale only to interpret number and portion
 wording. Turkish output rules below always take precedence.
 
 RESPONSE CONTRACT:
@@ -28,14 +31,43 @@ COMMON RULES:
 - Be conservative with calorie estimates.
 - Set confidence between 0.0 and 1.0.
 - Return ONLY valid JSON, no markdown, no explanation.`;
+  } else {
+    return `USER LOCALE: ${locale}. Output all food names, notes, and units in English.
+
+RESPONSE CONTRACT:
+Return one JSON object with "items" (an array) and "no_food_detected" (a
+boolean). Every item must contain: English "name", English "name_en",
+numeric "estimated_grams", "household_unit", numeric
+"household_quantity", "calories", "protein_g", "carbs_g", "fat_g",
+"confidence", and nullable "note". Structured Outputs enforces the shape;
+do not include sample or placeholder values.
+
+COMMON RULES:
+- "note", if present, MUST be in English.
+- "name" must be lowercase English except proper nouns (e.g. "lentil soup", "Caesar salad").
+- Keep "name" the canonical dish name ONLY — no size, packaging, or brand
+  annotations. Put that kind of detail in "note" instead.
+- calories MUST be consistent with macros: calories ≈ 4·protein_g + 4·carbs_g + 9·fat_g (±15%).
+- Report visible drinks as separate items. Report visible bread separately.
+- Use international household units ONLY: "ladle", "tbsp", "glass", "tea glass", "slice", "handful", "bowl", "piece", "cup".
+- household_quantity must be between 0.25 and 20; estimated_grams between 5 and 2500.
+- Estimate realistic grams for standard international portions.
+- Be conservative with calorie estimates.
+- Set confidence between 0.0 and 1.0.
+- Return ONLY valid JSON, no markdown, no explanation.`;
+  }
 }
 
 export function visionPrompt(locale: string): string {
-  return `You are a food analysis assistant specialized in Turkish cuisine.
+  const isTurkish = locale.startsWith("tr");
+  const contract = commonPromptContract(locale);
+
+  if (isTurkish) {
+    return `You are a food analysis assistant specialized in Turkish cuisine.
 
 Analyze this food photo.
 
-${commonPromptContract(locale)}
+${contract}
 
 STEP 1 — SEGMENT BEFORE YOU NAME:
 A Turkish plate is almost always several separate foods placed side by side
@@ -71,18 +103,60 @@ with a lower confidence and use "note" to flag the ambiguity — do not
 compensate for uncertainty by picking a more "recognizable" dish name.
 
 If no food is visible, set no_food_detected: true and items: [].`;
+  } else {
+    return `You are a food analysis assistant.
+
+Analyze this food photo.
+
+${contract}
+
+STEP 1 — SEGMENT BEFORE YOU NAME:
+A plate may contain several separate foods placed side by side
+(e.g. a starch, a protein, a vegetable), not one dish. Look
+at the plate region by region first. Return ONE "items" entry
+per visually distinct food region. Only merge two regions into one item
+if they are truly a single preparation (e.g. a stew already mixed together).
+
+STEP 2 — NAME WHAT YOU ACTUALLY SEE:
+Use standard English food names. When uncertain, describe generically
+(e.g. "grilled chicken with sauce") rather than guessing a specific dish.
+- Loose mixed leaves → "green salad" / "mixed salad", always its own item.
+
+STEP 3 — CONFIDENCE reflects how sure you are of the DISH IDENTITY itself,
+not just the portion size. If the identity is uncertain, say so honestly
+with a lower confidence and use "note" to flag the ambiguity.
+
+If no food is visible, set no_food_detected: true and items: [].`;
+  }
 }
 
 export function textPrompt(description: string, locale: string): string {
-  return `You are a food analysis assistant specialized in Turkish cuisine.
+  const isTurkish = locale.startsWith("tr");
+  const contract = commonPromptContract(locale);
+
+  if (isTurkish) {
+    return `You are a food analysis assistant specialized in Turkish cuisine.
 
 The user typed this meal description: "${description}"
 
 Parse the description into food items.
 
-${commonPromptContract(locale)}
+${contract}
 
 IMPORTANT RULES:
 - Extract quantity and unit from the description (e.g. "2 kepçe mercimek" → household_quantity: 2, household_unit: "kepçe")
 - If you can't parse anything meaningful, set no_food_detected: true and items: [].`;
+  } else {
+    return `You are a food analysis assistant.
+
+The user typed this meal description: "${description}"
+
+Parse the description into food items.
+
+${contract}
+
+IMPORTANT RULES:
+- Extract quantity and unit from the description (e.g. "2 cups rice" → household_quantity: 2, household_unit: "cup")
+- If you can't parse anything meaningful, set no_food_detected: true and items: [].`;
+  }
 }

@@ -44,27 +44,27 @@ enum OnboardingStep: Int, CaseIterable {
 
     var title: String {
         switch self {
-        case .goal:     "Hedefin ne?"
-        case .height:   "Boyun kaç cm?"
-        case .weight:   "Kilon kaç kg?"
-        case .activity: "Günlük aktivite seviyen?"
-        case .age:      "Yaşın kaç?"
-        case .sex:      "Biyolojik cinsiyetin?"
-        case .result:   "Günlük Hedefin"
-        case .paywall:  "Calorisor'a Başla"
+        case .goal:     return String(localized: "Hedefin ne?")
+        case .height:   return String(localized: "Boyun kaç cm?")
+        case .weight:   return String(localized: "Kilon kaç kg?")
+        case .activity: return String(localized: "Günlük aktivite seviyen?")
+        case .age:      return String(localized: "Yaşın kaç?")
+        case .sex:      return String(localized: "Biyolojik cinsiyetin?")
+        case .result:   return String(localized: "Günlük Hedefin")
+        case .paywall:  return String(localized: "Calorisor'a Başla")
         }
     }
 
     var subtitle: String {
         switch self {
-        case .goal:     "Sana özel bir plan oluşturacağız"
-        case .height:   "Boyunu santimetre cinsinden gir"
-        case .weight:   "Kilonu kilogram cinsinden gir"
-        case .activity: "Ortalama bir gününü düşün"
-        case .age:      "Yaşını tam sayı olarak gir"
-        case .sex:      "Kalori hesaplaması için gerekli"
-        case .result:   ""
-        case .paywall:  ""
+        case .goal:     return String(localized: "Sana özel bir plan oluşturacağız")
+        case .height:   return String(localized: "Boyunu santimetre cinsinden gir")
+        case .weight:   return String(localized: "Kilonu kilogram cinsinden gir")
+        case .activity: return String(localized: "Ortalama bir gününü düşün")
+        case .age:      return String(localized: "Yaşını tam sayı olarak gir")
+        case .sex:      return String(localized: "Kalori hesaplaması için gerekli")
+        case .result:   return ""
+        case .paywall:  return ""
         }
     }
 }
@@ -74,6 +74,13 @@ enum OnboardingStep: Int, CaseIterable {
 enum BiologicalSex: String, Codable, CaseIterable {
     case male   = "Erkek"
     case female = "Kadın"
+
+    var displayName: String {
+        switch self {
+        case .male:   return String(localized: "Erkek")
+        case .female: return String(localized: "Kadın")
+        }
+    }
 }
 
 // MARK: - Onboarding model

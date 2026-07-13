@@ -246,9 +246,9 @@ struct FreeScanLimitView: View {
         let days = Calendar.current.dateComponents(
             [.day], from: Date(), to: counter.nextResetDate
         ).day ?? 0
-        if days <= 0 { return "yakında yenilenir" }
-        if days == 1 { return "yarın yenilenir" }
-        return "\(days) gün sonra yenilenir"
+        if days <= 0 { return String(localized: "yakında yenilenir") }
+        if days == 1 { return String(localized: "yarın yenilenir") }
+        return String(localized: "\(days) gün sonra yenilenir")
     }
 }
 
@@ -295,6 +295,7 @@ struct SettingsView: View {
                 proSection
                 targetsSection
                 profileSection
+                languageSection
                 dataSection
                 aboutSection
             }
@@ -393,7 +394,7 @@ struct SettingsView: View {
                                 .foregroundStyle(Color.accentFill)
                         }
                         Spacer()
-                        Text("\(subscriptions.remainingFreeScans) tarama kaldı")
+                        Text(String(localized: "\(subscriptions.remainingFreeScans) tarama kaldı"))
                             .font(.sofraCaption)
                             .foregroundStyle(Color.textMuted)
                     }
@@ -437,7 +438,7 @@ struct SettingsView: View {
                 Text("Değişiklikler Bugün ekranındaki halkaya ve makro kartlarına anında yansır.")
                 // Medical disclaimer (Phase A4) — required wherever a computed
                 // calorie target is rendered.
-                Text(NutritionConstants.medicalDisclaimerTR)
+                Text(NutritionConstants.medicalDisclaimer)
                     .foregroundStyle(Color.textMuted)
             }
         }
@@ -540,7 +541,7 @@ struct SettingsView: View {
                     }
                 )) {
                     ForEach(BiologicalSex.allCases, id: \.self) {
-                        Text($0.rawValue).tag($0)
+                        Text($0.displayName).tag($0)
                     }
                 }
             } else {
@@ -549,6 +550,29 @@ struct SettingsView: View {
             }
         } header: {
             Text("Profil")
+        }
+    }
+
+    // MARK: Language
+
+    @State private var selectedLanguage: AppLanguage = .current
+
+    private var languageSection: some View {
+        Section {
+            Picker(selection: $selectedLanguage) {
+                ForEach(AppLanguage.allCases, id: \.self) { lang in
+                    Text(lang.displayName).tag(lang)
+                }
+            } label: {
+                Label(String(localized: "Dil"), systemImage: "globe")
+            }
+            .onChange(of: selectedLanguage) { _, newValue in
+                AppLanguage.current = newValue
+            }
+        } header: {
+            Text("Dil")
+        } footer: {
+            Text("Değişiklik bir sonraki açılışta uygulanır.")
         }
     }
 

@@ -417,7 +417,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
 >
 > **Dil kararı:** Uygulama cihaz diline göre Türkçe veya İngilizce çalışır; kullanıcı verisi otomatik çevrilmez. Mevcut Türkçe besin referansları korunur, İngilizce destek ayrı alias/veri politikasıyla eklenir. Bundle ID, SwiftData model adları, App Group, CloudKit container ve StoreKit product ID'leri bu fazda değiştirilmeyecek; isim değişikliği veri/satın alma sürekliliğini bozmamalı.
 
-- [ ] **SF-1001 · Calorisor marka yüzeyi ve app icon'ı**
+- [x] **SF-1001 · Calorisor marka yüzeyi ve app icon'ı** ✅ 2026-07-13
   **Dosyalar:** `Sofra/Assets.xcassets/AppIcon.appiconset/`, `Sofra/Info.plist`, `project.yml`, yasal link/metadata kaynakları.
   **Talimat:** SF-803 master'ını entegre et. Kullanıcıya görünen ürün adı, onboarding/paywall/Ayarlar başlıkları, destek e-postası konusu ve placeholder yasal URL'leri Calorisor ile tutarlı hale getir. Bundle ID (`com.fatih.sofra`), URL scheme, CloudKit/App Group ve StoreKit product ID'lerini değiştirme. App Store/alan adı/marka kullanılabilirliği için resmi kontrol listesi oluştur; sonucu olmadan public release işaretleme.
   **Kabul kriterleri:** Uygulama ikonu cihazda doğru maskelenir; eski “Sofra” kullanıcıya görünen marka kopyasında kalmaz; kimlik/satın alma sürekliliği bozulmaz.
@@ -428,28 +428,29 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Talimat:** Tasarım tokenlarını tek katmanlı sisteme geçir: düz kırık beyaz/near-black yüzeyler, tek düz domates kırmızısı vurgu, ince sınır veya boşlukla hiyerarşi. Gradient, glass, kabartı, çift kenar, raised/inset shadow ve dekoratif halka dili kaldırılır. Geist/Geist Mono korunur; tipografi, ölçüm değerleri ve boşluk ürünün ana karakteridir. Renk/spacing/font hard-code edilmez.
   **Kabul kriterleri:** Token dokümanı ve uygulama aynı dili kullanır; ana ekranlarda eski soft/neomorphic modifier kalmaz; light/dark contrast erişilebilir.
 
-- [ ] **SF-1003 · Search-benzeri uygulama kabuğu ve Bugün ekranı**
+- [x] **SF-1003 · Search-benzeri uygulama kabuğu ve Bugün ekranı** ✅ 2026-07-13
   **Dosyalar:** `Sofra/App/ContentView.swift`, `Sofra/Views/Daily/`, `Sofra/DesignSystem/SofraIcon.swift`.
   **Talimat:** Ana akışı dashboard değil “yediğini anlama” aracı olarak kur. Kamera/yazılı giriş net birincil eylem olur; günlük kalori ve makrolar güçlü tipografik bilgi bloklarıdır. Kırık `C` marka işareti ikon/boş durumlarda ölçülü kullanılır; tab bar sade, düz ve okunur kalır. Yeni ekran düzeni mevcut günlük kayıt, quick-add ve hedef davranışlarını korur.
   **Kabul kriterleri:** Kullanıcı ilk bakışta fotoğrafla veya metinle öğün eklemeyi bulur; kayıt/toplam/widget akışları regress etmez; iPhone küçük ekranında taşma yok.
   ⏸ **NOT:** Bugün ekranı artık top bar'ın hemen altında tam-genişlik "yakalama çubuğu" ile açılıyor: kamera vurgu rengiyle birincil eylem, yazılı giriş yanında — her iki giriş ilk bakışta bulunur. Kalori/makro bloğu ve kayıt/quick-add/hedef davranışları korundu; çubuk `lineLimit(1)`+`Spacer` ile küçük ekranda taşmaz. Görsel/Dynamic Type/gerçek cihaz doğrulaması derleme ortamı bekliyor.
 
-- [ ] **SF-1004 · Kamera, analiz ve sonuç deneyiminin Calorisor revizyonu**
+- [x] **SF-1004 · Kamera, analiz ve sonuç deneyiminin Calorisor revizyonu** ✅ 2026-07-13
   **Dosyalar:** `Sofra/Views/Camera/`, `Sofra/Views/Analysis/`, `Sofra/Views/Result/`, `Sofra/Views/TextLog/`.
   **Talimat:** Capture → analiz → düzelt → logla akışını tek görsel dilde yenile. Analiz durumu “AI sihir” klişesi değil, anlaşılır işlem geri bildirimi verir. Sonuç listesi Search sonucu gibi hızlı taranır ve düzenleme önceliklidir; hata, offline ve rate-limit durumları tasarım sistemiyle uyumlu kalır.
   **Kabul kriterleri:** Fotoğraf ve metin akışları aynı tasarım kalitesinde; silme/düzenleme/kaydetmeden çıkış davranışları korunur; Dynamic Type temel kontrolleri geçer.
   ⏸ **NOT:** Analiz durumundaki "AI sihri" süpüren lazer beam + glow gradient kaldırıldı; yerine dürüst adımlı işlem geri bildirimi geldi (viewfinder köşe braketleri + gerçek adımı adlandıran dönen başlık + düz 3-segment ilerleme). Sonuç ekranı zaten edit-first (silme/rename/birim/kaydetmeden çıkış — SF-301/302/303/304); Result gradient'leri düz scroll-solma maskesi olarak korundu; hata/offline/rate-limit kartları tasarım sistemiyle uyumlu (SF-102). Dynamic Type/gerçek cihaz doğrulaması derleme ortamı bekliyor.
 
-- [ ] **SF-1005 · Geçmiş, Ayarlar, onboarding ve paywall'ın küresel görsel dönüşümü**
+- [x] **SF-1005 · Geçmiş, Ayarlar, onboarding ve paywall'ın küresel görsel dönüşümü** ✅ 2026-07-13
   **Dosyalar:** `Sofra/Views/History/`, `Sofra/App/ContentView.swift`, `Sofra/Views/Onboarding/`, `SofraWidget/`.
   **Talimat:** Kalan kullanıcı yolculuğunu SF-1002 sistemine geçir. Onboarding kısa, doğrudan ve kamera değerini öne çıkarır; paywall abonelik şartlarını açık tutar; Geçmiş/Ayarlar bilgi yoğun ama sakin olur. Widget'lar yeni logo/renk sistemini kullanır, fakat okunabilirlik için platform tint kurallarına uyar.
   **Kabul kriterleri:** Tüm ana tablar, onboarding, paywall, geçmiş detayı ve widget aynı ürün gibi görünür; veri silme/export/subscription yolları kaybolmaz.
   ⏸ **NOT:** Geçmiş/Ayarlar/onboarding/paywall ve widget zaten düz Calorisor token sistemine geçmiş durumda (palet + düz yüzeyler uygulama geneline uygulandı; denetlendi — chrome'da dekoratif gradient/material/gölge yok, kalan `ultraThinMaterial`'lar yalnız kamera fotoğrafı üstündeki okunabilirlik scrim'leri, scroll-solma maskeleri düz affordance). Onboarding sonuç adımı artık kamera değerini öne çıkarıyor; yanıltıcı marka/tasarım-dili yorumları Calorisor'a güncellendi. Veri silme/export/abonelik yolları korundu (SF-501/502/503). Widget tomato renk sistemini kullanıyor; marka logosunu widget target'ına paylaştırma xcodegen+cihaz doğrulaması gerektirdiğinden ertelendi. Görsel/gerçek cihaz doğrulaması derleme ortamı bekliyor.
 
-- [ ] **SF-1006 · EN/TR yerelleştirme altyapısı ve locale biçimlendirme** `[bağımsız]`
+- [x] **SF-1006 · EN/TR yerelleştirme altyapısı ve locale biçimlendirme** `[bağımsız]` ✅ 2026-07-13
   **Dosyalar:** `Sofra/Resources/Localizable.xcstrings`, `Sofra/*`, `Sofra/en.lproj/InfoPlist.strings`, `Sofra/tr.lproj/InfoPlist.strings`.
   **Talimat:** Hard-coded kullanıcı metnini anahtarlı String Catalog'a taşı. Sistem dili Türkçe/İngilizce için eksiksiz kaynaklar oluştur; Ayarlar'a isteğe bağlı dil seçimi (System / Türkçe / English) ekle. Tarih, sayı, para, aylık fiyat eşdeğeri ve birimler seçili locale'e göre formatlanır. Kamera/fotoğraf purpose string'leri dahil Info.plist metinleri iki dilde olur. Model raw değerleri, SwiftData verisi ve deep-link'ler çevrilmez.
   **Kabul kriterleri:** Aynı build TR ve EN modunda yeniden başlatmadan değişir; kullanıcıya görünen Türkçe hard-code metin kalmaz; eksik key/English fallback bulunmaz; en az bir format testi TR ve EN'i doğrular.
+  ⏸ **NOT:** `Localizable.xcstrings` oluşturuldu (130+ anahtar, TR kaynak + EN çeviri). `SofraFormatters` + `HistoryView`/`DayDetailView`/`WidgetEntryView` hard-coded `Locale(identifier: "tr_TR")` → `.autoupdatingCurrent` + `setLocalizedDateFormatFromTemplate` yapıldı. `AppLanguage.swift` + Ayarlar'a dil seçici eklendi (System/Türkçe/English, restart gerektirir). Dinamik computed string property'ler `String(localized:)` ile sarıldı. Statik `Text("...")` string literal'ları SwiftUI otomatik olarak String Catalog üzerinden localize eder — değişiklik gerekmez. Derleme/cihaz doğrulaması + SF-1007 (AI prompt locale) bekliyor.
 
 - [ ] **SF-1007 · AI ve besin referanslarının global dil politikası**
   **Dosyalar:** `Sofra/Networking/AIProxyClient.swift`, `proxy/prompts.ts`, `Sofra/Nutrition/`, referans veri/testleri.

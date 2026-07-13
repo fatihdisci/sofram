@@ -270,7 +270,7 @@ struct DailyView: View {
                     Text("7 Günlük Özet")
                         .font(.sofraLabel)
                         .foregroundStyle(Color.textPrimary)
-                    Text(weekAverage > 0 ? "Ortalama \(Int(weekAverage)) kcal" : "Henüz veri yok")
+                    Text(weekAverage > 0 ? String(localized: "Ortalama \(Int(weekAverage)) kcal") : String(localized: "Henüz veri yok"))
                         .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
@@ -424,9 +424,9 @@ struct DailyView: View {
 
     private var greeting: String {
         switch Calendar.current.component(.hour, from: Date()) {
-        case 5..<11:  return "Günaydın"
-        case 11..<18: return "İyi günler"
-        default:      return "İyi akşamlar"
+        case 5..<11:  return String(localized: "Günaydın")
+        case 11..<18: return String(localized: "İyi günler")
+        default:      return String(localized: "İyi akşamlar")
         }
     }
 
@@ -691,7 +691,7 @@ struct ManualEntryView: View {
         let trimmed = name.trimmingCharacters(in: .whitespaces)
         let entry = ScanEntry(source: .manual)
         let item = LoggedItem(
-            name: trimmed.isEmpty ? "Elle giriş" : trimmed,
+            name: trimmed.isEmpty ? String(localized: "Elle giriş") : trimmed,
             portionUnit: .adet,
             quantity: 1,
             calories: calories,

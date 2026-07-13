@@ -56,13 +56,13 @@ struct SofraWidgetEntryView: View {
     }
 
     private var accessoryInlineLayout: some View {
-        Text("\(formattedRemaining) kcal kaldı")
+        Text("\(formattedRemaining) \(String(localized: "kcal kaldı"))")
             .widgetURL(URL(string: "sofra://daily")!)
     }
 
     private var formattedRemaining: String {
         Int(entry.summary.remaining).formatted(
-            .number.locale(Locale(identifier: "tr_TR"))
+            .number.locale(.autoupdatingCurrent)
         )
     }
 

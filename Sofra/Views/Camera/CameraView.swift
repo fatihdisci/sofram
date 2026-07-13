@@ -648,8 +648,8 @@ struct FreeScanBadge: View {
                 Image(systemName: counter.canScanForFree ? "camera.fill" : "lock.fill")
                     .font(.system(size: 10))
                 Text(counter.canScanForFree
-                     ? "\(counter.remainingFreeScans) ücretsiz tarama"
-                     : "Limit doldu")
+                     ? String(localized: "\(counter.remainingFreeScans) ücretsiz tarama")
+                     : String(localized: "Limit doldu"))
                     .font(.sofraCaption)
             }
             .foregroundStyle(Color.accentText)

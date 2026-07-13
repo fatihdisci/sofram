@@ -30,8 +30,10 @@ enum PortionUnit: String, Codable, CaseIterable, Identifiable, Hashable {
 
     var id: String { rawValue }
 
-    /// User-facing Turkish label.
-    var displayName: String { rawValue }
+    /// User-facing label, localized to the app language.
+    var displayName: String {
+        String(localized: String.LocalizationValue(rawValue))
+    }
 
     /// Maps an API `household_unit` string to a unit, falling back to `.gram`
     /// for any value outside the known set.

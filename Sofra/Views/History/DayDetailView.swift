@@ -223,8 +223,8 @@ struct DayDetailView: View {
 
     private static let titleFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "d MMMM EEEE"
+        formatter.locale = .autoupdatingCurrent
+        formatter.setLocalizedDateFormatFromTemplate("d MMMM EEEE")
         return formatter
     }()
 }

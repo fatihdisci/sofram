@@ -363,7 +363,7 @@ struct QuickAddEditorView: View {
             .scrollContentBackground(.hidden)
             .background(Color.bgPage.ignoresSafeArea())
             .scrollDismissesKeyboard(.interactively)
-            .navigationTitle(isEditing ? "Sayacı Düzenle" : "Yeni Sayaç")
+            .navigationTitle(String(localized: isEditing ? "Sayacı Düzenle" : "Yeni Sayaç"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

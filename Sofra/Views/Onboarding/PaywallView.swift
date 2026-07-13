@@ -108,10 +108,10 @@ struct PaywallView: View {
     private var priceSummary: some View {
         VStack(spacing: 2) {
             if selectedHasTrial, let trial = selectedTrialText {
-                Text("\(trial) ücretsiz deneme")
+                Text(String(localized: "\(trial) ücretsiz deneme"))
                     .font(.sofraHeading)
                     .foregroundStyle(Color.accentText)
-                Text("Sonra \(priceString) · istediğin an iptal")
+                Text(String(localized: "Sonra \(priceString) · istediğin an iptal"))
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textSecondary)
             } else {
@@ -217,11 +217,11 @@ struct PaywallView: View {
                 // strongest conversion cue; otherwise the monthly equivalent /
                 // per-period label. Fixed to one line so both cards stay equal height.
                 if let trial = store.trialPeriodText(for: product), store.hasFreeTrial(product) {
-                    Text("\(trial) ücretsiz")
+                    Text(String(localized: "\(trial) ücretsiz"))
                         .font(.sofraCaption)
                         .foregroundStyle(Color.accentText)
                 } else {
-                    Text(monthlyEquivalent.map { "~\($0)/ay" } ?? "/\(period)")
+                    Text(monthlyEquivalent.map { String(localized: "~\($0)/ay") } ?? "/\(period)")
                         .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
@@ -309,9 +309,9 @@ struct PaywallView: View {
     }
 
     private var ctaLabel: String {
-        if store.isPurchasing { return "İşlem yapılıyor..." }
-        if selectedHasTrial, let trial = selectedTrialText { return "\(trial) Ücretsiz Dene" }
-        return "Abone Ol"
+        if store.isPurchasing { return String(localized: "İşlem yapılıyor...") }
+        if selectedHasTrial, let trial = selectedTrialText { return String(localized: "\(trial) Ücretsiz Dene") }
+        return String(localized: "Abone Ol")
     }
 
     // MARK: - Footer
@@ -369,11 +369,11 @@ struct PaywallView: View {
     }
 
     private var termsText: String {
-        let renewal = "\(priceString) olarak otomatik yenilenir. "
-            + "App Store hesabından dilediğin an iptal edebilirsin."
+        let renewal = String(localized: "\(priceString) olarak otomatik yenilenir. ")
+            + String(localized: "App Store hesabından dilediğin an iptal edebilirsin.")
         if selectedHasTrial, let trial = selectedTrialText {
-            return "\(trial) ücretsiz deneme sonunda " + renewal
+            return String(localized: "\(trial) ücretsiz deneme sonunda ") + renewal
         }
-        return "Abonelik " + renewal
+        return String(localized: "Abonelik ") + renewal
     }
 }

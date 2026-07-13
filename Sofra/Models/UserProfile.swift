@@ -14,10 +14,10 @@ enum Goal: String, Codable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .lose:       return "Kilo vermek"
-        case .maintain:   return "Korumak"
-        case .gain:       return "Kilo almak"
-        case .gainMuscle: return "Kas yapmak"
+        case .lose:       return String(localized: "Kilo vermek")
+        case .maintain:   return String(localized: "Korumak")
+        case .gain:       return String(localized: "Kilo almak")
+        case .gainMuscle: return String(localized: "Kas yapmak")
         }
     }
 }
@@ -31,21 +31,21 @@ enum ActivityLevel: String, Codable, CaseIterable {
 
     var displayName: String {
         switch self {
-        case .sedentary:  return "Hareketsiz"
-        case .light:      return "Hafif aktif"
-        case .moderate:   return "Orta aktif"
-        case .active:     return "Aktif"
-        case .veryActive: return "Çok aktif"
+        case .sedentary:  return String(localized: "Hareketsiz")
+        case .light:      return String(localized: "Hafif aktif")
+        case .moderate:   return String(localized: "Orta aktif")
+        case .active:     return String(localized: "Aktif")
+        case .veryActive: return String(localized: "Çok aktif")
         }
     }
 
     var description: String {
         switch self {
-        case .sedentary:  return "Masa başı çalışma, az hareket"
-        case .light:      return "Haftada 1-2 gün hafif egzersiz"
-        case .moderate:   return "Haftada 3-5 gün egzersiz"
-        case .active:     return "Haftada 6-7 gün egzersiz"
-        case .veryActive: return "Yoğun antrenman / fiziksel iş"
+        case .sedentary:  return String(localized: "Masa başı çalışma, az hareket")
+        case .light:      return String(localized: "Haftada 1-2 gün hafif egzersiz")
+        case .moderate:   return String(localized: "Haftada 3-5 gün egzersiz")
+        case .active:     return String(localized: "Haftada 6-7 gün egzersiz")
+        case .veryActive: return String(localized: "Yoğun antrenman / fiziksel iş")
         }
     }
 }

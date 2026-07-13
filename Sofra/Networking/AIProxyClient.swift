@@ -32,17 +32,17 @@ enum AIProxyError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .invalidConfiguration:
-            return "Yapılandırma hatası."
+            return String(localized: "Yapılandırma hatası.")
         case .notConfigured:
-            return "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil — sunucu adresi yapılandırılınca tarama çalışacak."
+            return String(localized: "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil -- sunucu adresi yapılandırılınca tarama çalışacak.")
         case .rateLimited:
-            return "Çok sık denedin — bir dakika sonra tekrar dene."
+            return String(localized: "Çok sık denedin -- bir dakika sonra tekrar dene.")
         case .offline:
-            return "İnternet bağlantısı yok görünüyor."
+            return String(localized: "İnternet bağlantısı yok görünüyor.")
         case .serverError:
-            return "Sunucuda geçici bir sorun var, birazdan düzelir."
+            return String(localized: "Sunucuda geçici bir sorun var, birazdan düzelir.")
         case .scanFailed:
-            return "Tarama başarısız oldu, lütfen tekrar deneyin."
+            return String(localized: "Tarama başarısız oldu, lütfen tekrar deneyin.")
         }
     }
 }
@@ -228,6 +228,8 @@ private struct OpenAIResponseFormat: Encodable {
                                 "enum": .array([
                                     "kepçe", "yemek kaşığı", "su bardağı", "çay bardağı",
                                     "dilim", "avuç", "kase", "adet",
+                                    "ladle", "tbsp", "glass", "tea glass",
+                                    "slice", "handful", "bowl", "piece", "cup",
                                 ].map(JSONValue.string)),
                             ]),
                             "household_quantity": .object(["type": .string("number")]),
@@ -351,7 +353,7 @@ final class AIProxyClient {
 
         // 1. Try Vercel proxy (production)
         if isConfigured {
-            let body = AIProxyRequest.photo(imageData: payload, locale: Locale.current.identifier, tier: tier)
+            let body = AIProxyRequest.photo(imageData: payload, locale: AppLanguage.current.effectiveLocale.identifier, tier: tier)
             return try await performProxyRequest(body: body)
         }
 
@@ -373,7 +375,7 @@ final class AIProxyClient {
         let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
 
         if isConfigured {
-            let body = AIProxyRequest.text(description: description, locale: Locale.current.identifier, tier: tier)
+            let body = AIProxyRequest.text(description: description, locale: AppLanguage.current.effectiveLocale.identifier, tier: tier)
             return try await performProxyRequest(body: body)
         }
 
@@ -452,7 +454,7 @@ final class AIProxyClient {
     private func callOpenAIVision(imageData: Data, tier: String) async throws -> ScanResult {
         let model = openAIModel(for: tier)
         let base64 = imageData.base64EncodedString()
-        let prompt = visionPrompt(locale: Locale.current.identifier)
+        let prompt = visionPrompt(locale: AppLanguage.current.effectiveLocale.identifier)
 
         let body = OpenAIRequest(
             model: model,
@@ -479,7 +481,7 @@ final class AIProxyClient {
     /// Text → OpenAI Chat Completions.
     private func callOpenAIText(description: String, tier: String) async throws -> ScanResult {
         let model = openAIModel(for: tier)
-        let prompt = textPrompt(description: description, locale: Locale.current.identifier)
+        let prompt = textPrompt(description: description, locale: AppLanguage.current.effectiveLocale.identifier)
 
         let body = OpenAIRequest(
             model: model,
@@ -643,67 +645,119 @@ private func commonPromptContract(locale: String) -> String {
     """
 }
 
-/// Prompt for photo-based food analysis. Must match VisionResponse JSON schema exactly.
+/// Prompt for photo-based food analysis. Language-aware: Turkish users get
+/// Turkish-cuisine-specialized instructions; English users get a generic
+/// international food analyser.
 private func visionPrompt(locale: String) -> String {
-    """
-    You are a food analysis assistant specialized in Turkish cuisine.
+    let isTurkish = locale.hasPrefix("tr")
+    let contract = commonPromptContract(locale: locale)
 
-    Analyze this food photo.
+    if isTurkish {
+        return """
+        You are a food analysis assistant specialized in Turkish cuisine.
 
-    \(commonPromptContract(locale: locale))
+        Analyze this food photo.
 
-    STEP 1 — SEGMENT BEFORE YOU NAME:
-    A Turkish plate is almost always several separate foods placed side by side
-    (e.g. a starch, a protein/sauce, a salad or vegetable), not one dish. Look
-    at the plate region by region first — do not describe the whole plate with
-    one name. Return ONE "items" entry per visually distinct food region.
-    Only merge two regions into one item if they are truly a single preparation
-    (e.g. a stew already mixed together, a soup).
+        \(contract)
 
-    STEP 2 — GROUND EACH NAME IN WHAT YOU ACTUALLY SEE, not in what Turkish
-    dish it "sounds like":
-    - Individual translucent grains you can count, sometimes with orzo/vermicelli
-      flecks → "pirinç pilavı" / "şehriyeli pilav", not a dumpling dish.
-    - A smooth, whipped, spreadable pale-yellow paste with no distinct pieces
-      → "patates püresi" (mashed potato). A sauce or stew spooned on top of it
-      is a SEPARATE item (e.g. "kuşbaşı et sote" / "kırmızı soslu et"), not one
-      fused invented name.
-    - Small (1–2cm) individually foldable dough pieces, each countable, usually
-      under a garlic-yogurt sauce → "mantı". Do NOT default to "mantı" just
-      because a pale base is topped with a reddish sauce — that pattern also
-      matches mashed potato, güveç, or many other dishes. Only use "mantı" when
-      you can actually see discrete folded dumpling shapes.
-    - Loose mixed leaves (lettuce, arugula, radicchio) → "yeşil salata" /
-      "karışık salata", always its own item, never folded into another name.
-    - When genuinely unsure of the specific named dish, describe what you see
-      generically and accurately (e.g. "kırmızı soslu kuşbaşı et") rather than
-      guessing a specific well-known dish name that doesn't match the visual
-      evidence.
+        STEP 1 — SEGMENT BEFORE YOU NAME:
+        A Turkish plate is almost always several separate foods placed side by side
+        (e.g. a starch, a protein/sauce, a salad or vegetable), not one dish. Look
+        at the plate region by region first — do not describe the whole plate with
+        one name. Return ONE "items" entry per visually distinct food region.
+        Only merge two regions into one item if they are truly a single preparation
+        (e.g. a stew already mixed together, a soup).
 
-    STEP 3 — CONFIDENCE reflects how sure you are of the DISH IDENTITY itself,
-    not just the portion size. If the identity is uncertain, say so honestly
-    with a lower confidence and use "note" to flag the ambiguity — do not
-    compensate for uncertainty by picking a more "recognizable" dish name.
+        STEP 2 — GROUND EACH NAME IN WHAT YOU ACTUALLY SEE, not in what Turkish
+        dish it "sounds like":
+        - Individual translucent grains you can count, sometimes with orzo/vermicelli
+          flecks → "pirinç pilavı" / "şehriyeli pilav", not a dumpling dish.
+        - A smooth, whipped, spreadable pale-yellow paste with no distinct pieces
+          → "patates püresi" (mashed potato). A sauce or stew spooned on top of it
+          is a SEPARATE item (e.g. "kuşbaşı et sote" / "kırmızı soslu et"), not one
+          fused invented name.
+        - Small (1–2cm) individually foldable dough pieces, each countable, usually
+          under a garlic-yogurt sauce → "mantı". Do NOT default to "mantı" just
+          because a pale base is topped with a reddish sauce — that pattern also
+          matches mashed potato, güveç, or many other dishes. Only use "mantı" when
+          you can actually see discrete folded dumpling shapes.
+        - Loose mixed leaves (lettuce, arugula, radicchio) → "yeşil salata" /
+          "karışık salata", always its own item, never folded into another name.
+        - When genuinely unsure of the specific named dish, describe what you see
+          generically and accurately (e.g. "kırmızı soslu kuşbaşı et") rather than
+          guessing a specific well-known dish name that doesn't match the visual
+          evidence.
 
-    If no food is visible, set no_food_detected: true and items: [].
-    """
+        STEP 3 — CONFIDENCE reflects how sure you are of the DISH IDENTITY itself,
+        not just the portion size. If the identity is uncertain, say so honestly
+        with a lower confidence and use "note" to flag the ambiguity — do not
+        compensate for uncertainty by picking a more "recognizable" dish name.
+
+        If no food is visible, set no_food_detected: true and items: [].
+        """
+    } else {
+        return """
+        You are a food analysis assistant.
+
+        Analyze this food photo.
+
+        \(contract)
+
+        STEP 1 — SEGMENT BEFORE YOU NAME:
+        A plate may contain several separate foods placed side by side
+        (e.g. a starch, a protein, a vegetable), not one dish. Look
+        at the plate region by region first. Return ONE "items" entry
+        per visually distinct food region. Only merge two regions into one item
+        if they are truly a single preparation (e.g. a stew already mixed together).
+
+        STEP 2 — NAME WHAT YOU ACTUALLY SEE:
+        Use standard English food names. When uncertain, describe generically
+        (e.g. "grilled chicken with sauce") rather than guessing a specific dish.
+        - Loose mixed leaves → "green salad" / "mixed salad", always its own item.
+
+        STEP 3 — CONFIDENCE reflects how sure you are of the DISH IDENTITY itself,
+        not just the portion size. If the identity is uncertain, say so honestly
+        with a lower confidence and use "note" to flag the ambiguity.
+
+        If no food is visible, set no_food_detected: true and items: [].
+        """
+    }
 }
 
-/// Prompt for text-based meal logging.
+/// Prompt for text-based meal logging. Language-aware.
 private func textPrompt(description: String, locale: String) -> String {
-    """
-    You are a food analysis assistant specialized in Turkish cuisine.
+    let isTurkish = locale.hasPrefix("tr")
+    let contract = commonPromptContract(locale: locale)
 
-    The user typed this meal description: "\(description)"
+    if isTurkish {
+        return """
+        You are a food analysis assistant specialized in Turkish cuisine.
 
-    Parse the description into food items.
+        The user typed this meal description: "\(description)"
 
-    \(commonPromptContract(locale: locale))
+        Parse the description into food items.
 
-    IMPORTANT RULES:
-    - Extract quantity and unit from the description (e.g. "2 kepçe mercimek" → household_quantity: 2, household_unit: "kepçe")
-    - If you can't parse anything meaningful, set no_food_detected: true and items: [].
-    """
+        \(contract)
+
+        IMPORTANT RULES:
+        - Extract quantity and unit from the description (e.g. "2 kepçe mercimek" → household_quantity: 2, household_unit: "kepçe")
+        - If you can't parse anything meaningful, set no_food_detected: true and items: [].
+        """
+    } else {
+        return """
+        You are a food analysis assistant.
+
+        The user typed this meal description: "\(description)"
+
+        Parse the description into food items.
+
+        \(contract)
+
+        IMPORTANT RULES:
+        - Extract quantity and unit from the description (e.g. "2 cups rice" → household_quantity: 2, household_unit: "cup")
+        - If you can't parse anything meaningful, set no_food_detected: true and items: [].
+        """
+    }
 }
 
 // MARK: - Upload downscaling

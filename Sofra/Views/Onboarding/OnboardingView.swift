@@ -362,7 +362,7 @@ struct SexStepView: View {
                                 .font(.system(size: 24))
                                 .foregroundStyle(Color.accentFill)
                                 .frame(width: 40)
-                            Text(sex.rawValue)
+                            Text(sex.displayName)
                                 .font(.sofraHeading)
                                 .foregroundStyle(Color.textPrimary)
                             Spacer()
@@ -490,7 +490,7 @@ struct ResultStepView: View {
 
             // Medical disclaimer (Phase A4): required alongside every computed
             // target. Sits below the fold but above the final spacer.
-            Text(NutritionConstants.medicalDisclaimerTR)
+            Text(NutritionConstants.medicalDisclaimer)
                 .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
                 .multilineTextAlignment(.center)

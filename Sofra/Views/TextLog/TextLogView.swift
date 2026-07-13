@@ -33,11 +33,28 @@ struct TextLogView: View {
 
     private let client = AIProxyClient()
 
-    /// One-tap starters for the most common Turkish quick entries.
-    private let suggestions = [
-        "1 çay", "1 simit", "2 kepçe mercimek çorbası", "1 dilim ekmek",
-        "1 kase yoğurt", "1 su bardağı ayran", "2 adet yumurta", "1 kase salata",
-    ]
+    /// One-tap starters — language-aware. Turkish users get Turkey-specific foods;
+    /// English users get international foods.
+    private var suggestions: [String] {
+        let isTurkish: Bool = {
+            switch AppLanguage.current {
+            case .system:  return Locale.current.identifier.hasPrefix("tr")
+            case .turkish: return true
+            case .english: return false
+            }
+        }()
+        if isTurkish {
+            return [
+                "1 çay", "1 simit", "2 kepçe mercimek çorbası", "1 dilim ekmek",
+                "1 kase yoğurt", "1 su bardağı ayran", "2 adet yumurta", "1 kase salata",
+            ]
+        } else {
+            return [
+                "1 coffee", "1 bread slice", "1 bowl yogurt", "2 eggs",
+                "1 bowl salad", "1 apple", "1 banana", "1 glass milk",
+            ]
+        }
+    }
 
     var body: some View {
         ZStack {

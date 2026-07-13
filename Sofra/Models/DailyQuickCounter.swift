@@ -109,7 +109,7 @@ struct QuickAddTemplate: Identifiable {
 }
 
 enum QuickAddTemplates {
-    static let all: [QuickAddTemplate] = [
+    static let turkish: [QuickAddTemplate] = [
         .init(name: "Ekmek",        unit: "dilim",  icon: .ekmekDilimi, calories: 80,  protein: 2.7, carbs: 15,  fat: 1),
         .init(name: "Çay",          unit: "bardak", icon: .cayBardagi,  calories: 2,   protein: 0,   carbs: 0.5, fat: 0),
         .init(name: "Türk kahvesi", unit: "fincan", icon: .cayBardagi,  calories: 5,   protein: 0.3, carbs: 1,   fat: 0),
@@ -123,6 +123,33 @@ enum QuickAddTemplates {
         .init(name: "Muz",          unit: "adet",   icon: .tabak,       calories: 100, protein: 1,   carbs: 27,  fat: 0),
         .init(name: "Elma",         unit: "adet",   icon: .tabak,       calories: 80,  protein: 0.5, carbs: 21,  fat: 0),
     ]
+
+    static let english: [QuickAddTemplate] = [
+        .init(name: "Bread",        unit: "slice", icon: .ekmekDilimi, calories: 80,  protein: 2.7, carbs: 15,  fat: 1),
+        .init(name: "Coffee",       unit: "cup",   icon: .cayBardagi,  calories: 5,   protein: 0.3, carbs: 1,   fat: 0),
+        .init(name: "Water",        unit: "glass", icon: .cayBardagi,  calories: 0,   protein: 0,   carbs: 0,   fat: 0),
+        .init(name: "Egg",          unit: "piece", icon: .tabak,       calories: 70,  protein: 6,   carbs: 0.5, fat: 5),
+        .init(name: "Banana",       unit: "piece", icon: .tabak,       calories: 100, protein: 1,   carbs: 27,  fat: 0),
+        .init(name: "Apple",        unit: "piece", icon: .tabak,       calories: 80,  protein: 0.5, carbs: 21,  fat: 0),
+        .init(name: "Cheese",       unit: "slice", icon: .ekmekDilimi, calories: 80,  protein: 5,   carbs: 1,   fat: 6),
+        .init(name: "Yogurt",       unit: "bowl",  icon: .kase,        calories: 100, protein: 6,   carbs: 12,  fat: 3),
+        .init(name: "Mixed Nuts",   unit: "handful", icon: .kase,      calories: 170, protein: 5,   carbs: 5,   fat: 15),
+        .init(name: "Milk",         unit: "glass", icon: .cayBardagi,  calories: 120, protein: 8,   carbs: 12,  fat: 2.5),
+        .init(name: "Orange Juice", unit: "glass", icon: .cayBardagi,  calories: 110, protein: 1,   carbs: 25,  fat: 0),
+        .init(name: "Rice",         unit: "cup",   icon: .tabak,       calories: 200, protein: 4,   carbs: 44,  fat: 0.5),
+    ]
+
+    /// Returns the template set for the user's effective language.
+    static var all: [QuickAddTemplate] {
+        switch AppLanguage.current {
+        case .system:
+            return Locale.current.identifier.hasPrefix("tr") ? turkish : english
+        case .turkish:
+            return turkish
+        case .english:
+            return english
+        }
+    }
 }
 
 // MARK: - Seeding
@@ -151,7 +178,10 @@ enum QuickAddSeed {
     /// a legitimately-all-zero template (e.g. "Su") just rewrites 0 → 0.
     static func backfillMissingNutrition(_ context: ModelContext) {
         guard let items = try? context.fetch(FetchDescriptor<QuickAddItem>()), !items.isEmpty else { return }
-        let templatesByName = Dictionary(QuickAddTemplates.all.map { ($0.name, $0) }, uniquingKeysWith: { a, _ in a })
+        let templatesByName = Dictionary(
+            (QuickAddTemplates.turkish + QuickAddTemplates.english).map { ($0.name, $0) },
+            uniquingKeysWith: { a, _ in a }
+        )
 
         var didChange = false
         for item in items {

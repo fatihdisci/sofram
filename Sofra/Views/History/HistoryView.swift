@@ -116,7 +116,7 @@ struct HistoryView: View {
                 Text("\(Int(day.calories.rounded())) kcal")
                     .font(.sofraNumericSmall)
                     .foregroundStyle(Color.textPrimary)
-                Text("\(day.mealCount) öğün")
+                Text("\(day.mealCount) \(String(localized: "öğün"))")
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
@@ -146,13 +146,13 @@ struct HistoryView: View {
     }
 
     private func monthTitle(_ date: Date) -> String {
-        Self.monthFormatter.string(from: date).capitalized(with: Locale(identifier: "tr_TR"))
+        Self.monthFormatter.string(from: date).capitalized(with: .autoupdatingCurrent)
     }
 
     private func dayName(_ date: Date) -> String {
-        if Calendar.current.isDateInToday(date) { return "Bugün" }
-        if Calendar.current.isDateInYesterday(date) { return "Dün" }
-        return Self.dayFormatter.string(from: date).capitalized(with: Locale(identifier: "tr_TR"))
+        if Calendar.current.isDateInToday(date) { return String(localized: "Bugün") }
+        if Calendar.current.isDateInYesterday(date) { return String(localized: "Dün") }
+        return Self.dayFormatter.string(from: date).capitalized(with: .autoupdatingCurrent)
     }
 
     private func shortDate(_ date: Date) -> String {
@@ -161,22 +161,22 @@ struct HistoryView: View {
 
     private static let monthFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "LLLL yyyy"
+        formatter.locale = .autoupdatingCurrent
+        formatter.setLocalizedDateFormatFromTemplate("LLLL yyyy")
         return formatter
     }()
 
     private static let dayFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "EEEE"
+        formatter.locale = .autoupdatingCurrent
+        formatter.setLocalizedDateFormatFromTemplate("EEEE")
         return formatter
     }()
 
     private static let shortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "d MMMM"
+        formatter.locale = .autoupdatingCurrent
+        formatter.setLocalizedDateFormatFromTemplate("d MMMM")
         return formatter
     }()
 }

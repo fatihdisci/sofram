@@ -130,8 +130,7 @@ enum NutritionConstants {
 
     // MARK: - Disclaimer (show alongside every computed target)
 
-    static let medicalDisclaimerTR =
-        "Bu değerler genel rehberlik içindir, tıbbi tavsiye değildir. " +
-        "Hamilelik, kronik hastalık veya yeme bozukluğu gibi özel durumlarda " +
-        "bir hekime veya diyetisyene danışın."
+    static var medicalDisclaimer: String {
+        String(localized: "Bu değerler genel rehberlik içindir, tıbbi tavsiye değildir. Hamilelik, kronik hastalık veya yeme bozukluğu gibi özel durumlarda bir hekime veya diyetisyene danışın.")
+    }
 }
