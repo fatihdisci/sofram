@@ -54,6 +54,7 @@ targets:
         excludes:
           - "**/*.md"                    # keep the Fonts drop-in README out of the bundle
           - "Info.plist"                 # referenced via INFOPLIST_FILE, not a bundle resource
+          - "Secrets.plist"              # local OpenAI key must never ship inside the app bundle
           - "*.entitlements"             # referenced via CODE_SIGN_ENTITLEMENTS
     settings:
       base:

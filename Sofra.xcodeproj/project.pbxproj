@@ -56,7 +56,6 @@
 		7D16B19CC9F67D20630871E5 /* WidgetDailySummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B62D9FDF67DCD06DCFC744 /* WidgetDailySummaryTests.swift */; };
 		806BDB4750F0928CA4DFAF93 /* Color+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA76BED7FFEE811D19E3ED1B /* Color+Widget.swift */; };
 		8223AA7BEAFD7A352FA5B0D5 /* WidgetDailySummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */; };
-		822A16CC4B0E1C0B5E07A988 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = E19F8CA13354DB8B97C93C2B /* Secrets.plist */; };
 		844170B51DF055D71FA038F1 /* CategorySlugMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7579E16F68EF88FA80D3D8F /* CategorySlugMap.swift */; };
 		88B5B14F618C6D8C047B11ED /* TextLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABEDB088BD86173D15337A9 /* TextLogView.swift */; };
 		8DB29A6B0446E2C7B537A2D1 /* Geist-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */; };
@@ -202,7 +201,6 @@
 		DA2661881718055D067FBDA2 /* NutritionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculator.swift; sourceTree = "<group>"; };
 		DF6450117D77FE994AEF0FAA /* Geist-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-SemiBold.otf"; sourceTree = "<group>"; };
 		E156CC8B82DB574BEC1B447D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		E19F8CA13354DB8B97C93C2B /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Secrets.plist; sourceTree = "<group>"; };
 		E4981BB2D24F7F2208FF4584 /* ResultItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItemCard.swift; sourceTree = "<group>"; };
 		E7E779E8983043AC16D6FE8E /* AIProxyRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIProxyRequestTests.swift; sourceTree = "<group>"; };
 		EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculatorTests.swift; sourceTree = "<group>"; };
@@ -457,7 +455,6 @@
 				B1F0FC49EF3FEA8DFD38ECB0 /* StoreKit */,
 				2CE4BD35B616F3A7BF36F0E3 /* Views */,
 				3E5CBAF7ABEBAABE517685BE /* Assets.xcassets */,
-				E19F8CA13354DB8B97C93C2B /* Secrets.plist */,
 			);
 			path = Sofra;
 			sourceTree = "<group>";
@@ -656,7 +653,6 @@
 				0157ABF651A922D23B8CC571 /* GeistMono-Medium.otf in Resources */,
 				E7810ED3DAB4A010F74ADB3B /* GeistMono-Regular.otf in Resources */,
 				3547A3A4E512CA44F0E178A9 /* Products.storekit in Resources */,
-				822A16CC4B0E1C0B5E07A988 /* Secrets.plist in Resources */,
 				74E71F51C46C76029C23714B /* turkish_food_reference.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
