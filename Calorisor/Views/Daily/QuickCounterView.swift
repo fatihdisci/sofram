@@ -32,7 +32,7 @@ struct QuickCounterView: View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             HStack {
                 Text("HIZLI EKLE")
-                    .font(.calorisorEyebrow)
+                    .font(.sofraEyebrow)
                     .tracking(1.2)
                     .foregroundStyle(Color.textMuted)
                 Spacer()
@@ -44,7 +44,7 @@ struct QuickCounterView: View {
                         Image(systemName: "plus")
                             .font(.system(size: 11, weight: .semibold))
                         Text("Ekle")
-                            .font(.calorisorCaption)
+                            .font(.sofraCaption)
                     }
                     .foregroundStyle(Color.accentText)
                 }
@@ -85,7 +85,7 @@ struct QuickCounterView: View {
                 Image(systemName: "plus.circle")
                     .font(.system(size: 16))
                 Text("İlk hızlı ekleme sayacını oluştur")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
             }
             .foregroundStyle(Color.textSecondary)
             .frame(maxWidth: .infinity)
@@ -176,12 +176,12 @@ private struct QuickChip: View {
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.name)
-                            .font(.calorisorLabel)
+                            .font(.sofraLabel)
                             .foregroundStyle(Color.textPrimary)
                             .lineLimit(2)
                         HStack(alignment: .firstTextBaseline, spacing: 3) {
                             Text("\(count)")
-                                .font(.calorisorNumericSmall)
+                                .font(.sofraNumericSmall)
                                 .foregroundStyle(Color.textPrimary)
                                 .contentTransition(.numericText())
                             Text(item.unit)
@@ -234,14 +234,14 @@ private struct QuickChip: View {
 
     private func increment() {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        withAnimation(.calorisorSpring) { onIncrement() }
+        withAnimation(.sofraSpring) { onIncrement() }
         spawnGhost("+1")
     }
 
     private func decrement() {
         guard count > 0 else { return }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        withAnimation(.calorisorSpring) { onDecrement() }
+        withAnimation(.sofraSpring) { onDecrement() }
         spawnGhost("-1")
     }
 
@@ -256,7 +256,7 @@ private struct QuickChip: View {
 }
 
 /// A "+1"/"-1" that floats upward and fades out (500ms, bouncy).
-/// Replaces the previous `easeOut(0.4)` with `Animation.calorisorBouncy`
+/// Replaces the previous `easeOut(0.4)` with `Animation.sofraBouncy`
 /// (Amo95 pattern, retuned for Sofra) — a hair of overshoot at the
 /// end matches the spec's "Instagram like-count artışı hissi, ama
 /// abartısız" guidance.
@@ -266,13 +266,13 @@ private struct GhostLabel: View {
 
     var body: some View {
         Text(text)
-            .font(.calorisorNumericSmall)
+            .font(.sofraNumericSmall)
             .foregroundStyle(text == "+1" ? Color.accentText : Color.textMuted)
             .offset(y: risen ? -28 : 0)
             .opacity(risen ? 0 : 1)
             .allowsHitTesting(false)
             .onAppear {
-                withAnimation(.calorisorBouncy) { risen = true }
+                withAnimation(.sofraBouncy) { risen = true }
             }
     }
 }
@@ -400,7 +400,7 @@ struct QuickAddEditorView: View {
                                     .foregroundStyle(Color.accentFill)
                                 VStack(alignment: .leading, spacing: 0) {
                                     Text(template.name)
-                                        .font(.calorisorCaption)
+                                        .font(.sofraCaption)
                                         .foregroundStyle(Color.textPrimary)
                                     Text("\(Int(template.calories)) kcal")
                                         .font(.system(size: 10))
@@ -433,10 +433,10 @@ struct QuickAddEditorView: View {
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
                 .frame(width: 72)
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .focused($focusedField, equals: field)
             Text(unit)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
     }

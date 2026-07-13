@@ -73,7 +73,7 @@ struct CalorisorWidgetEntryView: View {
             Color.bgPage
 
             VStack(spacing: Layout.Spacing.sm) {
-                ringView(ringSize: 110, font: .calorisorDisplayNumeric)
+                ringView(ringSize: 110, font: .sofraDisplayNumeric)
                 caloriesCaption
             }
             .padding(Layout.Spacing.sm)
@@ -146,7 +146,7 @@ struct CalorisorWidgetEntryView: View {
                     .foregroundStyle(Color.textPrimary)
                     .minimumScaleFactor(0.6)
                 Text("kalan")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
         }
@@ -156,7 +156,7 @@ struct CalorisorWidgetEntryView: View {
     /// Consumed / target kcal caption.
     private var caloriesCaption: some View {
         Text("\(Int(entry.summary.calories)) / \(Int(entry.summary.target)) kcal")
-            .font(.calorisorNumericSmall)
+            .font(.sofraNumericSmall)
             .foregroundStyle(Color.textSecondary)
     }
 
@@ -168,12 +168,12 @@ struct CalorisorWidgetEntryView: View {
                 .frame(width: 8, height: 8)
 
             Text(label)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
                 .frame(width: 52, alignment: .leading)
 
             Text("\(Int(value))g")
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .foregroundStyle(Color.textPrimary)
         }
     }
@@ -189,7 +189,7 @@ struct CalorisorWidgetEntryView: View {
 
     private func counterPill(count: Int, unit: String) -> some View {
         Text("\(count) × \(unit)")
-            .font(.calorisorCaption)
+            .font(.sofraCaption)
             .foregroundStyle(Color.textSecondary)
     }
 }

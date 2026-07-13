@@ -11,11 +11,11 @@
 //
 //  Pattern → Sofra use case map:
 //  -------------------------------------------------------------------------
-//  .calorisorBouncy       → QuickCounterView "+1"/"-1" ghost rise (WIRED)
+//  .sofraBouncy       → QuickCounterView "+1"/"-1" ghost rise (WIRED)
 //                       Replaces `easeOut(0.4)` with a bouncy spring
 //                       matching the spec's "Instagram like-count artışı
 //                       hissi, ama abartısız" line.
-//  .calorisorSubtlePulse  → generic "breathing" / "ready" easer, available
+//  .sofraSubtlePulse  → generic "breathing" / "ready" easer, available
 //  CalorisorPulseShine    → PhaseAnimator wrapper for any future "primary
 //                       action ready" indicator. NOT wired in MVP —
 //                       camera button deliberately stays instant per the
@@ -92,7 +92,7 @@ struct SofraPulseShine<Content: View>: View {
                 .scaleEffect(phase ? scaleRange.upperBound : scaleRange.lowerBound)
                 .opacity(phase ? opacityRange.upperBound : opacityRange.lowerBound)
         } animation: { _ in
-            .calorisorSubtlePulse.repeatForever(autoreverses: true)
+            .sofraSubtlePulse.repeatForever(autoreverses: true)
         }
     }
 }

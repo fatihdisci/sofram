@@ -94,10 +94,10 @@ struct DayDetailView: View {
 
                 VStack(spacing: 2) {
                     Text("\(Int(calories.rounded()))")
-                        .font(.calorisorDisplayNumeric)
+                        .font(.sofraDisplayNumeric)
                         .foregroundStyle(Color.textPrimary)
                     Text("/ \(Int(calorieTarget)) kcal")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
             }
@@ -125,10 +125,10 @@ struct DayDetailView: View {
     private func macroCell(_ label: String, value: Double, color: Color) -> some View {
         VStack(spacing: 3) {
             Text("\(Int(value.rounded())) g")
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .foregroundStyle(color)
             Text(label)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
         .frame(maxWidth: .infinity)
@@ -138,7 +138,7 @@ struct DayDetailView: View {
     private var mealsSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             Text("ÖĞÜNLER")
-                .font(.calorisorEyebrow)
+                .font(.sofraEyebrow)
                 .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
 
@@ -158,7 +158,7 @@ struct DayDetailView: View {
     private var quickAddsSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             Text("HIZLI EKLEMELER")
-                .font(.calorisorEyebrow)
+                .font(.sofraEyebrow)
                 .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
 
@@ -173,15 +173,15 @@ struct DayDetailView: View {
                                     .foregroundStyle(Color.accentFill)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(item.name)
-                                        .font(.calorisorBody)
+                                        .font(.sofraBody)
                                         .foregroundStyle(Color.textPrimary)
                                     Text(item.unit)
-                                        .font(.calorisorCaption)
+                                        .font(.sofraCaption)
                                         .foregroundStyle(Color.textMuted)
                                 }
                                 Spacer()
                                 Text("\(count.count)")
-                                    .font(.calorisorNumericSmall)
+                                    .font(.sofraNumericSmall)
                                     .foregroundStyle(Color.textPrimary)
                             }
                             .padding(Layout.Spacing.lg)
@@ -200,7 +200,7 @@ struct DayDetailView: View {
 
     private func emptyRow(_ text: String) -> some View {
         Text(text)
-            .font(.calorisorBody)
+            .font(.sofraBody)
             .foregroundStyle(Color.textMuted)
             .frame(maxWidth: .infinity)
             .padding(Layout.Spacing.xl)
@@ -208,7 +208,7 @@ struct DayDetailView: View {
     }
 
     private func delete(_ entry: ScanEntry) {
-        withAnimation(.calorisorSpring) {
+        withAnimation(.sofraSpring) {
             modelContext.delete(entry)
             try? modelContext.save()
         }

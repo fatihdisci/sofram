@@ -99,7 +99,7 @@ struct OnboardingView: View {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 14, weight: .medium))
                         Text("Geri")
-                            .font(.calorisorLabel)
+                            .font(.sofraLabel)
                     }
                     .foregroundStyle(Color.textSecondary)
                     .padding(.horizontal, Layout.Spacing.lg)
@@ -118,7 +118,7 @@ struct OnboardingView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Text("İleri")
-                            .font(.calorisorLabel)
+                            .font(.sofraLabel)
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14, weight: .medium))
                     }
@@ -145,12 +145,12 @@ struct StepCard<Content: View>: View {
         VStack(spacing: Layout.Spacing.xl) {
             VStack(spacing: Layout.Spacing.sm) {
                 Text(title)
-                    .font(.calorisorTitle)
+                    .font(.sofraTitle)
                     .foregroundStyle(Color.textPrimary)
                     .multilineTextAlignment(.center)
                 if !subtitle.isEmpty {
                     Text(subtitle)
-                        .font(.calorisorBody)
+                        .font(.sofraBody)
                         .foregroundStyle(Color.textSecondary)
                         .multilineTextAlignment(.center)
                 }
@@ -178,7 +178,7 @@ struct GoalStepView: View {
                     } label: {
                         HStack(spacing: Layout.Spacing.md) {
                             Text(goal.displayName)
-                                .font(.calorisorHeading)
+                                .font(.sofraHeading)
                                 .foregroundStyle(Color.textPrimary)
                             Spacer()
                             if model.goal == goal {
@@ -214,7 +214,7 @@ struct HeightStepView: View {
         StepCard(title: OnboardingStep.height.title, subtitle: OnboardingStep.height.subtitle) {
             VStack(spacing: Layout.Spacing.lg) {
                 Text("\(Int(model.heightCm))")
-                    .font(.calorisorDisplayNumeric)
+                    .font(.sofraDisplayNumeric)
                     .foregroundStyle(Color.accentText)
 
                 Slider(value: $model.heightCm, in: 130...220, step: 1)
@@ -223,11 +223,11 @@ struct HeightStepView: View {
 
                 HStack {
                     Text("130 cm")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                     Spacer()
                     Text("220 cm")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
             }
@@ -244,7 +244,7 @@ struct WeightStepView: View {
         StepCard(title: OnboardingStep.weight.title, subtitle: OnboardingStep.weight.subtitle) {
             VStack(spacing: Layout.Spacing.lg) {
                 Text("\(Int(model.weightKg))")
-                    .font(.calorisorDisplayNumeric)
+                    .font(.sofraDisplayNumeric)
                     .foregroundStyle(Color.accentText)
 
                 Slider(value: $model.weightKg, in: 35...200, step: 0.5)
@@ -253,11 +253,11 @@ struct WeightStepView: View {
 
                 HStack {
                     Text("35 kg")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                     Spacer()
                     Text("200 kg")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
             }
@@ -282,10 +282,10 @@ struct ActivityStepView: View {
                         HStack(spacing: Layout.Spacing.md) {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(level.displayName)
-                                    .font(.calorisorLabel)
+                                    .font(.sofraLabel)
                                     .foregroundStyle(Color.textPrimary)
                                 Text(level.description)
-                                    .font(.calorisorCaption)
+                                    .font(.sofraCaption)
                                     .foregroundStyle(Color.textMuted)
                             }
                             Spacer()
@@ -322,7 +322,7 @@ struct AgeStepView: View {
         StepCard(title: OnboardingStep.age.title, subtitle: OnboardingStep.age.subtitle) {
             VStack(spacing: Layout.Spacing.lg) {
                 Text("\(model.age)")
-                    .font(.calorisorDisplayNumeric)
+                    .font(.sofraDisplayNumeric)
                     .foregroundStyle(Color.accentText)
 
                 Slider(value: Binding(
@@ -334,11 +334,11 @@ struct AgeStepView: View {
 
                 HStack {
                     Text("14")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                     Spacer()
                     Text("100")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
             }
@@ -366,7 +366,7 @@ struct SexStepView: View {
                                 .foregroundStyle(Color.accentFill)
                                 .frame(width: 40)
                             Text(sex.displayName)
-                                .font(.calorisorHeading)
+                                .font(.sofraHeading)
                                 .foregroundStyle(Color.textPrimary)
                             Spacer()
                             if model.biologicalSex == sex {
@@ -405,16 +405,16 @@ struct ResultStepView: View {
             Spacer()
 
             Text("Günlük Hedefin")
-                .font(.calorisorTitle)
+                .font(.sofraTitle)
                 .foregroundStyle(Color.textPrimary)
 
             // Calorie target
             VStack(spacing: 0) {
                 Text("\(Int(model.dailyCalorieTarget))")
-                    .font(.calorisorDisplayNumeric)
+                    .font(.sofraDisplayNumeric)
                     .foregroundStyle(Color.accentText)
                 Text("kalori/gün")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
             .frame(width: 180, height: 180)
@@ -423,7 +423,7 @@ struct ResultStepView: View {
 
             // Foreground the core value: from here, capture is all it takes.
             Text("Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek.")
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
@@ -436,7 +436,7 @@ struct ResultStepView: View {
                         .font(.system(size: 14))
                         .foregroundStyle(Color.accentFill)
                     Text(floorHintText)
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textSecondary)
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -449,7 +449,7 @@ struct ResultStepView: View {
             // Macro breakdown
             VStack(spacing: Layout.Spacing.md) {
                 Text("Makro Dağılımı")
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(Color.textSecondary)
 
                 HStack(spacing: Layout.Spacing.xl) {
@@ -467,7 +467,7 @@ struct ResultStepView: View {
                 onSave?()
             } label: {
                 Text("Devam Et")
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(Color.onAccent)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Layout.Spacing.md)
@@ -486,7 +486,7 @@ struct ResultStepView: View {
                 .padding(.top, Layout.Spacing.sm)
             } label: {
                 Text("Nasıl hesapladık?")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textSecondary)
             }
             .tint(Color.accentFill)
@@ -494,7 +494,7 @@ struct ResultStepView: View {
             // Medical disclaimer (Phase A4): required alongside every computed
             // target. Sits below the fold but above the final spacer.
             Text(NutritionConstants.medicalDisclaimer)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
@@ -518,7 +518,7 @@ struct ResultStepView: View {
     private func macroPill(label: String, value: Double, color: Color) -> some View {
         VStack(spacing: 4) {
             Text("\(Int(value))g")
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .foregroundStyle(Color.textPrimary)
             Text(label)
                 .font(.system(size: 11))
@@ -541,10 +541,10 @@ struct ResultStepView: View {
             Text(label)
             Spacer()
             Text(value)
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .foregroundStyle(Color.textPrimary)
         }
-        .font(.calorisorCaption)
+        .font(.sofraCaption)
         .foregroundStyle(Color.textMuted)
     }
 }

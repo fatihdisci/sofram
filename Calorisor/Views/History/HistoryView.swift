@@ -33,7 +33,7 @@ struct HistoryView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: Layout.Spacing.xl) {
                         Text("Geçmiş")
-                            .font(.calorisorTitle)
+                            .font(.sofraTitle)
                             .foregroundStyle(Color.textPrimary)
 
                         SevenDaySummaryView(embedded: true)
@@ -56,7 +56,7 @@ struct HistoryView: View {
     private var allDaysSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             Text("TÜM GÜNLER")
-                .font(.calorisorEyebrow)
+                .font(.sofraEyebrow)
                 .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
 
@@ -66,7 +66,7 @@ struct HistoryView: View {
                 ForEach(monthSections) { section in
                     VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
                         Text(monthTitle(section.month))
-                            .font(.calorisorEyebrow)
+                            .font(.sofraEyebrow)
                             .tracking(1.2)
                             .foregroundStyle(Color.textMuted)
 
@@ -103,10 +103,10 @@ struct HistoryView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(dayName(day.date))
-                    .font(.calorisorBody)
+                    .font(.sofraBody)
                     .foregroundStyle(Color.textPrimary)
                 Text(shortDate(day.date))
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
 
@@ -114,10 +114,10 @@ struct HistoryView: View {
 
             VStack(alignment: .trailing, spacing: 2) {
                 Text("\(Int(day.calories.rounded())) kcal")
-                    .font(.calorisorNumericSmall)
+                    .font(.sofraNumericSmall)
                     .foregroundStyle(Color.textPrimary)
                 Text("\(day.mealCount) \(String(localized: "öğün"))")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
 
@@ -135,10 +135,10 @@ struct HistoryView: View {
             CalorisorIconView(icon: .tabak, size: 36)
                 .foregroundStyle(Color.textMuted)
             Text("Henüz kayıtlı gün yok")
-                .font(.calorisorBody)
+                .font(.sofraBody)
                 .foregroundStyle(Color.textSecondary)
             Text("Öğün ekledikçe geçmişin burada görünecek.")
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
         .frame(maxWidth: .infinity)

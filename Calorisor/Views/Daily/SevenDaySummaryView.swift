@@ -110,7 +110,7 @@ struct SevenDaySummaryView: View {
     private var header: some View {
         HStack {
             Text("7 Günlük Özet")
-                .font(.calorisorHeading)
+                .font(.sofraHeading)
                 .foregroundStyle(Color.textPrimary)
             Spacer()
             if !embedded {
@@ -154,7 +154,7 @@ struct SevenDaySummaryView: View {
     private var chartCard: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             Text("Kalori")
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textSecondary)
 
             WeekBarChart(summaries: daySummaries, target: calorieTarget)
@@ -179,10 +179,10 @@ struct SevenDaySummaryView: View {
             CalorisorIconView(icon: .tabak, size: 40)
                 .foregroundStyle(Color.textMuted)
             Text("Henüz kayıtlı gün yok")
-                .font(.calorisorBody)
+                .font(.sofraBody)
                 .foregroundStyle(Color.textSecondary)
             Text("Öğün ekledikçe haftalık görünüm burada dolacak.")
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
         .frame(maxWidth: .infinity)
@@ -204,7 +204,7 @@ struct SevenDaySummaryView: View {
                 Text("Hızlı ekleme")
                     .frame(width: 88, alignment: .trailing)
             }
-            .font(.calorisorCaption)
+            .font(.sofraCaption)
             .foregroundStyle(Color.textMuted)
             .padding(.horizontal, Layout.Spacing.lg)
             .padding(.vertical, Layout.Spacing.sm)
@@ -212,16 +212,16 @@ struct SevenDaySummaryView: View {
             ForEach(Array(daySummaries.enumerated()), id: \.element.date) { idx, day in
                 HStack(spacing: Layout.Spacing.sm) {
                     Text(dayLabel(for: day.date))
-                        .font(idx == 0 ? .calorisorLabel : .calorisorBody)
+                        .font(idx == 0 ? .sofraLabel : .sofraBody)
                         .foregroundStyle(Color.textPrimary)
                         .frame(width: 64, alignment: .leading)
                     Spacer()
                     Text(day.calories > 0 ? "\(Int(day.calories)) kcal" : "—")
-                        .font(.calorisorNumericSmall)
+                        .font(.sofraNumericSmall)
                         .foregroundStyle(day.calories > 0 ? Color.textPrimary : Color.textMuted)
                         .frame(width: 90, alignment: .trailing)
                     Text(day.quickAddTally > 0 ? "\(day.quickAddTally)" : "—")
-                        .font(.calorisorNumericSmall)
+                        .font(.sofraNumericSmall)
                         .foregroundStyle(day.quickAddTally > 0 ? Color.textSecondary : Color.textMuted)
                         .frame(width: 88, alignment: .trailing)
                 }
@@ -266,7 +266,7 @@ private struct StatCell: View {
                         .foregroundStyle(Color.accentFill)
                 }
                 Text(value)
-                    .font(.calorisorNumericSmall)
+                    .font(.sofraNumericSmall)
                     .foregroundStyle(Color.textPrimary)
             }
             Text(caption)

@@ -96,7 +96,7 @@ struct AnalysisOverlay: View {
                     Spacer()
                     if client.isDemoMode {
                         Text("Demo verisi")
-                            .font(.calorisorCaption)
+                            .font(.sofraCaption)
                             .foregroundStyle(.white.opacity(0.85))
                             .padding(.horizontal, Layout.Spacing.md)
                             .padding(.vertical, Layout.Spacing.xs)
@@ -137,7 +137,7 @@ struct AnalysisOverlay: View {
             VStack(spacing: Layout.Spacing.md) {
                 // Rotating status caption — names the real step in progress
                 Text(statusCaptions[statusIndex])
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(.white.opacity(0.9))
                     .padding(.horizontal, Layout.Spacing.md)
                     .padding(.vertical, Layout.Spacing.xs)
@@ -152,7 +152,7 @@ struct AnalysisOverlay: View {
                         Capsule()
                             .fill(i == statusIndex ? Color.accentFill : Color.white.opacity(0.3))
                             .frame(width: i == statusIndex ? 22 : 14, height: 4)
-                            .animation(.calorisorSpring, value: statusIndex)
+                            .animation(.sofraSpring, value: statusIndex)
                     }
                 }
             }
@@ -170,11 +170,11 @@ struct AnalysisOverlay: View {
                 .foregroundStyle(Color.accentFill)
 
             Text(errorPresentation(for: error).title)
-                .font(.calorisorHeading)
+                .font(.sofraHeading)
                 .foregroundStyle(Color.textPrimary)
 
             Text(error.localizedDescription)
-                .font(.calorisorBody)
+                .font(.sofraBody)
                 .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
@@ -184,7 +184,7 @@ struct AnalysisOverlay: View {
                     nav.goToCamera()
                 } label: {
                     Text("Vazgeç")
-                        .font(.calorisorLabel)
+                        .font(.sofraLabel)
                         .foregroundStyle(Color.textPrimary)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, Layout.Spacing.md)
@@ -195,7 +195,7 @@ struct AnalysisOverlay: View {
                     startScan()
                 } label: {
                     Text("Tekrar dene")
-                        .font(.calorisorLabel)
+                        .font(.sofraLabel)
                         .foregroundStyle(Color.onAccent)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, Layout.Spacing.md)
@@ -230,7 +230,7 @@ struct AnalysisOverlay: View {
 
     private func startScan() {
         scanTask?.cancel()
-        withAnimation(.calorisorSpring) { scanError = nil }
+        withAnimation(.sofraSpring) { scanError = nil }
         statusIndex = 0
 
         scanTask = Task {
@@ -239,7 +239,7 @@ struct AnalysisOverlay: View {
                 while !Task.isCancelled {
                     try? await Task.sleep(nanoseconds: 1_600_000_000)
                     if Task.isCancelled { break }
-                    withAnimation(.calorisorSpring) {
+                    withAnimation(.sofraSpring) {
                         statusIndex = (statusIndex + 1) % statusCaptions.count
                     }
                 }
@@ -257,7 +257,7 @@ struct AnalysisOverlay: View {
             } catch {
                 guard !Task.isCancelled else { return }
                 captionTask.cancel()
-                withAnimation(.calorisorSpring) {
+                withAnimation(.sofraSpring) {
                     scanError = (error as? AIProxyError) ?? .scanFailed
                 }
             }
@@ -308,10 +308,10 @@ struct RecognizedItemBadge: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.name)
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(.white)
                 Text("\(String(format: "%.0f", item.calories)) kcal · \(item.householdQuantity, specifier: "%.1f") \(item.householdUnit)")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(.white.opacity(0.7))
             }
 

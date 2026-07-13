@@ -146,10 +146,10 @@ struct ResultView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("Sonuçlar")
-                    .font(.calorisorHeading)
+                    .font(.sofraHeading)
                     .foregroundStyle(Color.textPrimary)
                 Text(editableItems.count == 1 ? "1 öğe tanındı" : "\(editableItems.count) öğe tanındı")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textSecondary)
             }
 
@@ -169,17 +169,17 @@ struct ResultView: View {
                 .font(.system(size: 48))
                 .foregroundStyle(Color.textMuted)
             Text(source == .text ? "Yazdıklarından yemek çıkaramadık." : "Fotoğrafta yemek bulunamadı.")
-                .font(.calorisorHeading)
+                .font(.sofraHeading)
                 .foregroundStyle(Color.textPrimary)
                 .multilineTextAlignment(.center)
             Text(source == .text ? "Biraz daha ayrıntı ekleyip tekrar dene." : "Farklı bir açıyla tekrar deneyin.")
-                .font(.calorisorBody)
+                .font(.sofraBody)
                 .foregroundStyle(Color.textSecondary)
             Button {
                 requestDismiss()
             } label: {
                 Text(source == .text ? "Düzenle" : "Tekrar çek")
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(Color.onAccent)
                     .padding(.horizontal, Layout.Spacing.xl)
                     .padding(.vertical, Layout.Spacing.md)
@@ -224,10 +224,10 @@ struct ResultView: View {
     private func totalCell(value: Double, label: String, emphasized: Bool = false) -> some View {
         VStack(spacing: 2) {
             Text("\(Int(value.rounded()))")
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .foregroundStyle(emphasized ? Color.accentText : Color.textPrimary)
                 .contentTransition(.numericText())
-                .animation(.calorisorSpring, value: value)
+                .animation(.sofraSpring, value: value)
             Text(label)
                 .font(.system(size: 10))
                 .foregroundStyle(Color.textMuted)
@@ -276,7 +276,7 @@ struct ResultView: View {
 
     private func deleteItem(id: UUID) {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        withAnimation(.calorisorSpring) {
+        withAnimation(.sofraSpring) {
             editableItems.removeAll { $0.id == id }
             hasEdits = true
         }

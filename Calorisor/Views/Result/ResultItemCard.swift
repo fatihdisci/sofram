@@ -29,7 +29,7 @@ struct ResultItemCard: View {
             HStack(alignment: .top, spacing: Layout.Spacing.sm) {
                 if isEditingName {
                     TextField("Yemek adı", text: $nameDraft)
-                        .font(.calorisorHeading)
+                        .font(.sofraHeading)
                         .foregroundStyle(Color.textPrimary)
                         .focused($isNameFieldFocused)
                         .submitLabel(.done)
@@ -46,7 +46,7 @@ struct ResultItemCard: View {
                         isNameFieldFocused = true
                     } label: {
                         Text(item.name)
-                            .font(.calorisorHeading)
+                            .font(.sofraHeading)
                             .foregroundStyle(Color.textPrimary)
                             .multilineTextAlignment(.leading)
                     }
@@ -83,7 +83,7 @@ struct ResultItemCard: View {
                     Image(systemName: "info.circle.fill")
                         .font(.system(size: 11))
                     Text(note)
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                 }
                 .foregroundStyle(Color.textMuted)
             }
@@ -113,7 +113,7 @@ struct ResultItemCard: View {
                                     CalorisorIconView(icon: icon, size: 14)
                                 }
                                 Text(unit.displayName)
-                                    .font(.calorisorCaption)
+                                    .font(.sofraCaption)
                             }
                             .foregroundStyle(item.householdUnit == unit
                                              ? Color.onAccent : Color.textSecondary)
@@ -163,12 +163,12 @@ struct ResultItemCard: View {
                 // Current quantity + estimated grams
                 VStack(spacing: 2) {
                     Text("\(item.householdQuantity, specifier: "%.1f") \(item.householdUnit.displayName)")
-                        .font(.calorisorBody)
+                        .font(.sofraBody)
                         .foregroundStyle(Color.textPrimary)
                         .contentTransition(.numericText())
                         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: item.householdQuantity)
                     Text("~\(Int(item.estimatedGrams))g")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
                 .frame(minWidth: 120)
@@ -217,10 +217,10 @@ struct ResultItemCard: View {
     private func macroText(value: Double, label: String, color: Color) -> some View {
         HStack(spacing: 3) {
             Text("\(Int(value))")
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .foregroundStyle(color)
             Text(label)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
     }
@@ -244,7 +244,7 @@ struct ResultItemCard: View {
             Image(systemName: icon)
                 .font(.system(size: 10))
             Text(text)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
         }
         .foregroundStyle(Color.accentText)
         .padding(.horizontal, Layout.Spacing.sm)

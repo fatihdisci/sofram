@@ -67,7 +67,7 @@
 		9AB5C410D2AC8E83D06C21DB /* ReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */; };
 		9DA956A393108E1719E5CBB4 /* CalorisorFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF173AC7FEF260AD502A7A29 /* CalorisorFormatters.swift */; };
 		A034580CE4614A3B94D32B5B /* PortionRecalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB810BF61C02917F98B012C /* PortionRecalculationTests.swift */; };
-		A27C817B5A553F42C52AC50D /* CalorisorWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A27C817B5A553F42C52AC50D /* Calorisor Widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 768B000219616D415E6478BF /* Calorisor Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A3707C461463E7DB88E43DC3 /* CalorieRingViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17DE019D6734175BC22974A /* CalorieRingViewTests.swift */; };
 		A5DED6E3B8A783A159E4423E /* NutritionCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */; };
 		A664A1CEC57056B0B0B5726D /* UserDataDeletionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D85027ED00E9227BD62D53 /* UserDataDeletionTests.swift */; };
@@ -127,7 +127,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A27C817B5A553F42C52AC50D /* CalorisorWidgetExtension.appex in Embed Foundation Extensions */,
+				A27C817B5A553F42C52AC50D /* Calorisor Widget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,7 +165,7 @@
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
 		6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCounterView.swift; sourceTree = "<group>"; };
 		6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
-		768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; name = CalorisorWidgetExtension.appex; path = "Calorisor Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		768B000219616D415E6478BF /* Calorisor Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Calorisor Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B2F13C99F7C4BFEC48A2347 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		7FA01550B4154909969504A1 /* DaySummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryBuilderTests.swift; sourceTree = "<group>"; };
 		83E136C81E00E88F23205CD9 /* GeistMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.otf"; sourceTree = "<group>"; };
@@ -189,7 +189,7 @@
 		9CA21E1C27ED51254B60BEDE /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9D7021E076DC4ED88D26975B /* VisionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponse.swift; sourceTree = "<group>"; };
 		A7579E16F68EF88FA80D3D8F /* CategorySlugMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlugMap.swift; sourceTree = "<group>"; };
-		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = file; path = Products.storekit; sourceTree = "<group>"; };
+		AA5EC66D7882786D07D37B17 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		ADC91F28B9EB9C3271B2F79D /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
 		AF173AC7FEF260AD502A7A29 /* CalorisorFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorFormatters.swift; sourceTree = "<group>"; };
 		B71968B769E47DAC3842D651 /* CalorisorLottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorLottieView.swift; sourceTree = "<group>"; };
@@ -411,7 +411,7 @@
 			children = (
 				142093050464BF9252D327F3 /* Calorisor.app */,
 				F0448D0A8FC1CA151A408D7F /* CalorisorTests.xctest */,
-				768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */,
+				768B000219616D415E6478BF /* Calorisor Widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -605,7 +605,7 @@
 			packageProductDependencies = (
 			);
 			productName = CalorisorWidgetExtension;
-			productReference = 768B000219616D415E6478BF /* CalorisorWidgetExtension.appex */;
+			productReference = 768B000219616D415E6478BF /* Calorisor Widget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -624,7 +624,6 @@
 						DevelopmentTeam = "";
 					};
 					B362A874E91C4F058C01DB28 = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -852,6 +851,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CalorisorWidget/CalorisorWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CalorisorWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -873,6 +873,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CalorisorWidget/CalorisorWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8XPP7Z37GF;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CalorisorWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;

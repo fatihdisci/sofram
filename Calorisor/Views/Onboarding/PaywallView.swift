@@ -86,7 +86,7 @@ struct PaywallView: View {
             }
 
             Text("Calorisor Pro")
-                .font(.calorisorTitle)
+                .font(.sofraTitle)
                 .foregroundStyle(Color.textPrimary)
 
             priceSummary
@@ -109,17 +109,17 @@ struct PaywallView: View {
         VStack(spacing: 2) {
             if selectedHasTrial, let trial = selectedTrialText {
                 Text(String(localized: "\(trial) ücretsiz deneme"))
-                    .font(.calorisorHeading)
+                    .font(.sofraHeading)
                     .foregroundStyle(Color.accentText)
                 Text(String(localized: "Sonra \(priceString) · istediğin an iptal"))
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textSecondary)
             } else {
                 Text(priceString)
-                    .font(.calorisorHeading)
+                    .font(.sofraHeading)
                     .foregroundStyle(Color.textPrimary)
                 Text("İstediğin an iptal edebilirsin")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
         }
@@ -150,7 +150,7 @@ struct PaywallView: View {
                 .foregroundStyle(Color.accentFill)
                 .frame(width: 20)
             Text(text)
-                .font(.calorisorLabel)
+                .font(.sofraLabel)
                 .foregroundStyle(Color.textPrimary)
         }
     }
@@ -160,7 +160,7 @@ struct PaywallView: View {
     private var planPickerSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
             Text("PLAN SEÇ")
-                .font(.calorisorEyebrow)
+                .font(.sofraEyebrow)
                 .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
                 .padding(.leading, Layout.Spacing.xs)
@@ -204,11 +204,11 @@ struct PaywallView: View {
                     )
 
                 Text(periodLabel(for: productID))
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(Color.textPrimary)
 
                 Text(product?.displayPrice ?? "…")
-                    .font(.calorisorNumericSmall)
+                    .font(.sofraNumericSmall)
                     .foregroundStyle(Color.textPrimary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
@@ -218,11 +218,11 @@ struct PaywallView: View {
                 // per-period label. Fixed to one line so both cards stay equal height.
                 if let trial = store.trialPeriodText(for: product), store.hasFreeTrial(product) {
                     Text(String(localized: "\(trial) ücretsiz"))
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.accentText)
                 } else {
                     Text(monthlyEquivalent.map { String(localized: "~\($0)/ay") } ?? "/\(period)")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
             }
@@ -274,7 +274,7 @@ struct PaywallView: View {
                             .tint(Color.onAccent)
                     }
                     Text(ctaLabel)
-                        .font(.calorisorLabel)
+                        .font(.sofraLabel)
                 }
                 .foregroundStyle(Color.onAccent)
                 .frame(maxWidth: .infinity)
@@ -290,7 +290,7 @@ struct PaywallView: View {
             // Error message (rare/transient; ViewThatFits scrolls if it overflows)
             if let error = store.purchaseError {
                 Text(error)
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(.red)
                     .multilineTextAlignment(.center)
             }
@@ -300,7 +300,7 @@ struct PaywallView: View {
                 onComplete()
             } label: {
                 Text(skipTitle)
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
                     .lineLimit(1)
             }
@@ -333,20 +333,20 @@ struct PaywallView: View {
                             ProgressView().scaleEffect(0.7)
                         }
                         Text("Satın Alımları Geri Yükle")
-                            .font(.calorisorCaption)
+                            .font(.sofraCaption)
                             .foregroundStyle(Color.textSecondary)
                     }
                 }
 
                 Text("·")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
 
                 Button {
                     store.openManageSubscriptions()
                 } label: {
                     Text("Abonelik Yönetimi")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textSecondary)
                 }
             }
@@ -356,7 +356,7 @@ struct PaywallView: View {
                 Link("Gizlilik Politikası", destination: LegalLinks.privacyPolicy)
                 Link("Kullanım Koşulları", destination: LegalLinks.termsOfUse)
             }
-            .font(.calorisorCaption)
+            .font(.sofraCaption)
             .foregroundStyle(Color.accentText)
 
             // Auto-renewal disclosure (condensed to two lines).

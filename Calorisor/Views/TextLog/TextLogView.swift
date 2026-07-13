@@ -66,14 +66,14 @@ struct TextLogView: View {
                 // Text input area — inset "pressed" surface per the neomorphic language
                 VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
                     Text("NE YEDİN?")
-                        .font(.calorisorEyebrow)
+                        .font(.sofraEyebrow)
                         .tracking(1.2)
                         .foregroundStyle(Color.textMuted)
 
                     ZStack(alignment: .topLeading) {
                         if textInput.isEmpty {
                             Text("Örn: 2 kepçe mercimek çorbası, 1 dilim ekmek, 1 kase yoğurt")
-                                .font(.calorisorBody)
+                                .font(.sofraBody)
                                 .foregroundStyle(Color.textMuted)
                                 .padding(.horizontal, Layout.Spacing.md)
                                 .padding(.vertical, Layout.Spacing.md)
@@ -81,7 +81,7 @@ struct TextLogView: View {
                         }
 
                         TextEditor(text: $textInput)
-                            .font(.calorisorBody)
+                            .font(.sofraBody)
                             .foregroundStyle(Color.textPrimary)
                             .scrollContentBackground(.hidden)
                             .padding(Layout.Spacing.sm)
@@ -89,7 +89,7 @@ struct TextLogView: View {
 
                         if textInput.count >= TextLogInputPolicy.counterThreshold {
                             Text("\(textInput.count)/\(TextLogInputPolicy.maxCharacters)")
-                                .font(.calorisorCaption)
+                                .font(.sofraCaption)
                                 .foregroundStyle(Color.textMuted)
                                 .frame(
                                     maxWidth: .infinity,
@@ -155,7 +155,7 @@ struct TextLogView: View {
             }
             Spacer()
             Text("Yazarak Ekle")
-                .font(.calorisorHeading)
+                .font(.sofraHeading)
                 .foregroundStyle(Color.textPrimary)
             Spacer()
             // Balance the xmark width
@@ -170,7 +170,7 @@ struct TextLogView: View {
     private var suggestionChips: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
             Text("HIZLI EKLE")
-                .font(.calorisorEyebrow)
+                .font(.sofraEyebrow)
                 .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
                 .padding(.horizontal, Layout.Spacing.lg)
@@ -186,7 +186,7 @@ struct TextLogView: View {
                                     .font(.system(size: 10, weight: .semibold))
                                     .accessibilityHidden(true)
                                 Text(suggestion)
-                                    .font(.calorisorCaption)
+                                    .font(.sofraCaption)
                             }
                             .foregroundStyle(Color.textPrimary)
                             .padding(.horizontal, Layout.Spacing.md)
@@ -205,7 +205,7 @@ struct TextLogView: View {
     private func appendSuggestion(_ suggestion: String) {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         let trimmed = textInput.trimmingCharacters(in: .whitespacesAndNewlines)
-        withAnimation(.calorisorSpring) {
+        withAnimation(.sofraSpring) {
             textInput = trimmed.isEmpty ? suggestion : "\(trimmed), \(suggestion)"
         }
     }
@@ -232,7 +232,7 @@ struct TextLogView: View {
                     CalorisorIconView(icon: .kepce, size: 18)
                 }
                 Text(isScanning ? "Analiz ediliyor..." : "Analiz Et")
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
             }
             .foregroundStyle(isInputEmpty ? Color.textMuted : Color.onAccent)
             .frame(maxWidth: .infinity)

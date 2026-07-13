@@ -196,7 +196,7 @@ struct CalorieRingView: View {
 
             VStack(spacing: 5) {
                 Text(displayValue)
-                    .font(.calorisorDisplayLarge)
+                    .font(.sofraDisplayLarge)
                     .foregroundStyle(Color.textPrimary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.5)
@@ -204,19 +204,19 @@ struct CalorieRingView: View {
                     .contentTransition(.numericText())
 
                 Text(displayLabel)
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
                     .contentTransition(.interpolate)
 
                 modeIndicator
                     .padding(.top, 5)
             }
-            .animation(reduceMotion ? nil : .calorisorSpring, value: displayModeRaw)
+            .animation(reduceMotion ? nil : .sofraSpring, value: displayModeRaw)
         }
         .frame(width: gaugeSize, height: gaugeSize)
         .contentShape(Circle())
         .onTapGesture {
-            withAnimation(reduceMotion ? nil : .calorisorSpring) {
+            withAnimation(reduceMotion ? nil : .sofraSpring) {
                 displayModeRaw = displayMode.next.rawValue
             }
         }
@@ -228,19 +228,19 @@ struct CalorieRingView: View {
         .accessibilityHint(String(localized: "Kalan, yenen ve hedef kalorileri arasında geçiş yapar"))
         .accessibilityValue("\(displayValue) \(displayLabel)")
         .onAppear {
-            withAnimation(reduceMotion ? nil : .calorisorSpring) {
+            withAnimation(reduceMotion ? nil : .sofraSpring) {
                 animatedProgress = progress
                 animatedOvershootProgress = overshootProgress
             }
             hasAppeared = true
         }
         .onChange(of: progress) { _, newValue in
-            withAnimation(reduceMotion ? nil : .calorisorSpring) {
+            withAnimation(reduceMotion ? nil : .sofraSpring) {
                 animatedProgress = newValue
             }
         }
         .onChange(of: overshootProgress) { _, newValue in
-            withAnimation(reduceMotion ? nil : .calorisorSpring) {
+            withAnimation(reduceMotion ? nil : .sofraSpring) {
                 animatedOvershootProgress = newValue
             }
         }
@@ -271,7 +271,7 @@ struct CalorieRingView: View {
                     .frame(width: mode == displayMode ? 14 : 5, height: 5)
             }
         }
-        .animation(reduceMotion ? nil : .calorisorSpring, value: displayModeRaw)
+        .animation(reduceMotion ? nil : .sofraSpring, value: displayModeRaw)
         .accessibilityHidden(true)
     }
 

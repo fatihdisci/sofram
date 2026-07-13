@@ -70,7 +70,7 @@ struct LogButton: View {
                         .font(.system(size: 16))
                 }
                 Text("Logla")
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
             }
             .foregroundStyle(Color.onAccent)
             .padding(.horizontal, Layout.Spacing.xl)

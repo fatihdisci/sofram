@@ -182,10 +182,10 @@ struct DailyView: View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(greeting)
-                    .font(.calorisorTitle)
+                    .font(.sofraTitle)
                     .foregroundStyle(Color.textPrimary)
                 Text(todayLabel)
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
             Spacer()
@@ -211,7 +211,7 @@ struct DailyView: View {
                         .frame(width: 40, height: 40)
                         .background(Circle().fill(Color.accentFill))
                     Text("Tabağını çek, kalorisini gör")
-                        .font(.calorisorBody)
+                        .font(.sofraBody)
                         .foregroundStyle(Color.textSecondary)
                         .lineLimit(1)
                     Spacer(minLength: 0)
@@ -242,7 +242,7 @@ struct DailyView: View {
 
     private var consumedPill: some View {
         Text("\(Int(todayCalories)) / \(Int(calorieTarget)) kcal")
-            .font(.calorisorNumericSmall)
+            .font(.sofraNumericSmall)
             .foregroundStyle(Color.accentText)
             .contentTransition(.numericText())
             .padding(.horizontal, Layout.Spacing.md)
@@ -255,7 +255,7 @@ struct DailyView: View {
     private var macroSection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
             Text("MAKROLAR")
-                .font(.calorisorEyebrow)
+                .font(.sofraEyebrow)
                 .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
 
@@ -278,7 +278,7 @@ struct DailyView: View {
     private var sevenDaySection: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
             Text("BU HAFTA")
-                .font(.calorisorEyebrow)
+                .font(.sofraEyebrow)
                 .tracking(1.2)
                 .foregroundStyle(Color.textMuted)
 
@@ -294,10 +294,10 @@ struct DailyView: View {
             HStack(spacing: Layout.Spacing.md) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("7 Günlük Özet")
-                        .font(.calorisorLabel)
+                        .font(.sofraLabel)
                         .foregroundStyle(Color.textPrimary)
                     Text(weekAverage > 0 ? String(localized: "Ortalama \(Int(weekAverage)) kcal") : String(localized: "Henüz veri yok"))
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
 
@@ -336,7 +336,7 @@ struct DailyView: View {
         VStack(alignment: .leading, spacing: Layout.Spacing.md) {
             HStack {
                 Text("BUGÜNKÜ ÖĞÜNLER")
-                    .font(.calorisorEyebrow)
+                    .font(.sofraEyebrow)
                     .tracking(1.2)
                     .foregroundStyle(Color.textMuted)
                 Spacer()
@@ -347,7 +347,7 @@ struct DailyView: View {
                         Image(systemName: "square.and.pencil")
                             .font(.system(size: 11, weight: .semibold))
                         Text("Elle gir")
-                            .font(.calorisorCaption)
+                            .font(.sofraCaption)
                     }
                     .foregroundStyle(Color.accentText)
                 }
@@ -385,11 +385,11 @@ struct DailyView: View {
             .frame(width: 80, height: 80)
 
             Text("Bugün henüz öğün eklemedin")
-                .font(.calorisorBody)
+                .font(.sofraBody)
                 .foregroundStyle(Color.textPrimary)
 
             Text("Tabağının fotoğrafını çek, gerisini Calorisor halletsin.")
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
                 .multilineTextAlignment(.center)
 
@@ -401,7 +401,7 @@ struct DailyView: View {
                         Image(systemName: "camera.fill")
                             .font(.system(size: 13))
                         Text("Fotoğrafla ekle")
-                            .font(.calorisorLabel)
+                            .font(.sofraLabel)
                     }
                     .foregroundStyle(Color.onAccent)
                     .padding(.horizontal, Layout.Spacing.lg)
@@ -413,7 +413,7 @@ struct DailyView: View {
                     nav.goToTextLog(from: .daily)
                 } label: {
                     Text("Yazarak ekle")
-                        .font(.calorisorLabel)
+                        .font(.sofraLabel)
                         .foregroundStyle(Color.textPrimary)
                         .padding(.horizontal, Layout.Spacing.lg)
                         .padding(.vertical, Layout.Spacing.sm)
@@ -426,7 +426,7 @@ struct DailyView: View {
                 showManualEntry = true
             } label: {
                 Text("Ya da kalori/makroyu elle gir")
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.accentText)
             }
         }
@@ -438,7 +438,7 @@ struct DailyView: View {
     }
 
     private func delete(_ entry: ScanEntry) {
-        withAnimation(.calorisorSpring) {
+        withAnimation(.sofraSpring) {
             modelContext.delete(entry)
             try? modelContext.save()
         }
@@ -496,12 +496,12 @@ struct UnifiedMacroColumn: View {
     var body: some View {
         VStack(alignment: .center, spacing: Layout.Spacing.xs) {
             Text(label)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textSecondary)
 
             HStack(alignment: .firstTextBaseline, spacing: 2) {
                 Text("\(Int(value))")
-                    .font(.calorisorNumericSmall)
+                    .font(.sofraNumericSmall)
                     .foregroundStyle(Color.textPrimary)
                     .contentTransition(.numericText())
                 Text("/ \(Int(target)) g")
@@ -581,11 +581,11 @@ struct MealEntryCard: View {
                     .font(.system(size: 10))
                     .foregroundStyle(Color.textMuted)
                 Text(timeLabel)
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
                 Spacer()
                 Text("\(Int(entryCalories)) kcal")
-                    .font(.calorisorNumericSmall)
+                    .font(.sofraNumericSmall)
                     .foregroundStyle(Color.accentText)
                     .contentTransition(.numericText())
             }
@@ -598,15 +598,15 @@ struct MealEntryCard: View {
                         .foregroundStyle(Color.accentFill)
                     VStack(alignment: .leading, spacing: 1) {
                         Text(item.name)
-                            .font(.calorisorBody)
+                            .font(.sofraBody)
                             .foregroundStyle(Color.textPrimary)
                         Text("\(item.quantity, specifier: "%.1f") \(item.portionUnit.displayName)")
-                            .font(.calorisorCaption)
+                            .font(.sofraCaption)
                             .foregroundStyle(Color.textMuted)
                     }
                     Spacer()
                     Text("\(Int(item.calories)) kcal")
-                        .font(.calorisorNumericSmall)
+                        .font(.sofraNumericSmall)
                         .foregroundStyle(Color.textSecondary)
                         .contentTransition(.numericText())
                 }
@@ -704,10 +704,10 @@ struct ManualEntryView: View {
                 .keyboardType(.decimalPad)
                 .multilineTextAlignment(.trailing)
                 .frame(width: 72)
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .focused($focusedField, equals: field)
             Text(unit)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
     }

@@ -89,7 +89,7 @@ struct ContentView: View {
                 .transition(.opacity)
         }
         .tint(Color.accentFill)
-        .animation(.calorisorSpring, value: nav.selectedTab)
+        .animation(.sofraSpring, value: nav.selectedTab)
         .fullScreenCover(isPresented: Binding(
             get: { nav.scanFlow != nil },
             set: { if !$0 { nav.scanFlow = nil } }
@@ -207,12 +207,12 @@ struct FreeScanLimitView: View {
                 }
 
                 Text("Bu haftaki taramaların bitti")
-                    .font(.calorisorTitle)
+                    .font(.sofraTitle)
                     .foregroundStyle(Color.textPrimary)
                     .multilineTextAlignment(.center)
 
                 Text("Haftalık \(counter.maxFreeScans) ücretsiz taraman doldu — \(resetHint).\nÖğününü elle de ekleyebilirsin (her zaman ücretsiz) ya da sınırsız taramaya geçebilirsin.")
-                    .font(.calorisorBody)
+                    .font(.sofraBody)
                     .foregroundStyle(Color.textSecondary)
                     .multilineTextAlignment(.center)
 
@@ -220,7 +220,7 @@ struct FreeScanLimitView: View {
                     showPaywall = true
                 } label: {
                     Text("Sınırsız Taramaya Geç")
-                        .font(.calorisorLabel)
+                        .font(.sofraLabel)
                         .foregroundStyle(Color.onAccent)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, Layout.Spacing.md)
@@ -379,7 +379,7 @@ struct SettingsView: View {
                         .foregroundStyle(Color.accentFill)
                     Spacer()
                     Text("Aktif")
-                        .font(.calorisorCaption)
+                        .font(.sofraCaption)
                         .foregroundStyle(Color.textSecondary)
                 }
                 Button("Aboneliği Yönet") { store.openManageSubscriptions() }
@@ -397,7 +397,7 @@ struct SettingsView: View {
                         }
                         Spacer()
                         Text(String(localized: "\(subscriptions.remainingFreeScans) tarama kaldı"))
-                            .font(.calorisorCaption)
+                            .font(.sofraCaption)
                             .foregroundStyle(Color.textMuted)
                     }
                 }
@@ -432,7 +432,7 @@ struct SettingsView: View {
             Button("Kaloriden makro dağıt (P25 · K45 · Y30)") {
                 distributeMacros()
             }
-            .font(.calorisorCaption)
+            .font(.sofraCaption)
         } header: {
             Text("Günlük Hedefler")
         } footer: {
@@ -457,10 +457,10 @@ struct SettingsView: View {
                 .frame(width: 92)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
-                .font(.calorisorNumericSmall)
+                .font(.sofraNumericSmall)
                 .focused($focusedTargetField, equals: field)
             Text(unit)
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
             Stepper("", value: value, in: 0...10000, step: step)
                 .labelsHidden()
@@ -502,7 +502,7 @@ struct SettingsView: View {
                         Text("Boy")
                         Spacer()
                         Text("\(Int(profile.heightCm)) cm")
-                            .font(.calorisorNumericSmall)
+                            .font(.sofraNumericSmall)
                             .foregroundStyle(Color.textSecondary)
                     }
                 }
@@ -517,7 +517,7 @@ struct SettingsView: View {
                         Text("Kilo")
                         Spacer()
                         Text("\(profile.weightKg, specifier: "%.1f") kg")
-                            .font(.calorisorNumericSmall)
+                            .font(.sofraNumericSmall)
                             .foregroundStyle(Color.textSecondary)
                     }
                 }
@@ -532,7 +532,7 @@ struct SettingsView: View {
                         Text("Yaş")
                         Spacer()
                         Text(profile.age > 0 ? "\(profile.age)" : "Belirtilmedi")
-                            .font(.calorisorNumericSmall)
+                            .font(.sofraNumericSmall)
                             .foregroundStyle(Color.textSecondary)
                     }
                 }
@@ -619,7 +619,7 @@ struct SettingsView: View {
                 Text("Sürüm")
                 Spacer()
                 Text(appVersion)
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
         } header: {

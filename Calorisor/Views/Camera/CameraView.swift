@@ -270,7 +270,7 @@ struct CameraView: View {
 
                 if let captureErrorMessage {
                     Text(captureErrorMessage)
-                        .font(.calorisorLabel)
+                        .font(.sofraLabel)
                         .foregroundStyle(.white)
                         .padding(.horizontal, Layout.Spacing.lg)
                         .padding(.vertical, Layout.Spacing.sm)
@@ -289,7 +289,7 @@ struct CameraView: View {
             authorization = granted ? .authorized : camera.authorizationStatus
             if granted {
                 camera.startSession()
-                withAnimation(.calorisorSpring.delay(0.15)) { guideVisible = true }
+                withAnimation(.sofraSpring.delay(0.15)) { guideVisible = true }
             }
         }
         .onChange(of: selectedPhotoItem) { _, newItem in
@@ -330,7 +330,7 @@ struct CameraView: View {
                 Spacer()
 
                 Text("Tabağını Tara")
-                    .font(.calorisorHeading)
+                    .font(.sofraHeading)
                     .foregroundStyle(Color.textPrimary)
 
                 Spacer()
@@ -422,7 +422,7 @@ struct CameraView: View {
             VStack {
                 Spacer()
                 Text("Tabağı çerçeveye al")
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(.white.opacity(0.9))
                     .padding(.horizontal, Layout.Spacing.md)
                     .padding(.vertical, Layout.Spacing.xs)
@@ -468,7 +468,7 @@ struct CameraView: View {
                         Image(systemName: "photo.on.rectangle")
                             .font(.system(size: 14))
                         Text("Galeri")
-                            .font(.calorisorLabel)
+                            .font(.sofraLabel)
                     }
                     .accessibilityLabel(String(localized: "Galeri"))
                     .foregroundStyle(Color.textPrimary)
@@ -484,7 +484,7 @@ struct CameraView: View {
                         Image(systemName: "text.alignleft")
                             .font(.system(size: 14))
                         Text("Yazarak ekle")
-                            .font(.calorisorLabel)
+                            .font(.sofraLabel)
                     }
                     .accessibilityLabel(String(localized: "Yazarak ekle"))
                     .foregroundStyle(Color.textPrimary)
@@ -507,11 +507,11 @@ struct CameraView: View {
                 .accessibilityHidden(true)
 
             Text("Kamera izni gerekli")
-                .font(.calorisorLabel)
+                .font(.sofraLabel)
                 .foregroundStyle(Color.textPrimary)
 
             Text("Tabağını tarayabilmek için\nAyarlar'dan izin ver.")
-                .font(.calorisorCaption)
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
 
@@ -521,7 +521,7 @@ struct CameraView: View {
                 }
             } label: {
                 Text("Ayarlar'ı Aç")
-                    .font(.calorisorLabel)
+                    .font(.sofraLabel)
                     .foregroundStyle(Color.onAccent)
                     .padding(.horizontal, Layout.Spacing.lg)
                     .padding(.vertical, Layout.Spacing.sm)
@@ -570,10 +570,10 @@ struct CameraView: View {
     }
 
     private func showCaptureError(_ message: String) {
-        withAnimation(.calorisorSpring) { captureErrorMessage = message }
+        withAnimation(.sofraSpring) { captureErrorMessage = message }
         Task {
             try? await Task.sleep(nanoseconds: 2_200_000_000)
-            withAnimation(.calorisorSpring) { captureErrorMessage = nil }
+            withAnimation(.sofraSpring) { captureErrorMessage = nil }
         }
     }
 }
@@ -656,7 +656,7 @@ struct FreeScanBadge: View {
                 Text(counter.canScanForFree
                      ? String(localized: "\(counter.remainingFreeScans) ücretsiz tarama")
                      : String(localized: "Limit doldu"))
-                    .font(.calorisorCaption)
+                    .font(.sofraCaption)
             }
             .foregroundStyle(Color.accentText)
             .padding(.horizontal, Layout.Spacing.sm)
