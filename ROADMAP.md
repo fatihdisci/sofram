@@ -463,6 +463,19 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
 
 ---
 
+## EK — KULLANILABİLİRLİK (kullanıcı geri bildirimi, 2026-07-13)
+
+- [x] **SF-EX01 · Free tarama ömür-boyu-3 yerine haftalık yenilensin** ✅ 2026-07-13
+  **Dosyalar:** `Sofra/Networking/FreeScanCounter.swift`, `Sofra/App/ContentView.swift` (FreeScanLimitView), `SofraTests/FreeScanCounterTests.swift`
+  **Sorun:** 3 ücretsiz tarama **ömür boyu toplam** ve hiç sıfırlanmıyordu → Pro olmadan app 3 denemeden sonra kullanılamaz hale geliyordu.
+  **Yapıldı:** `FreeScanCounter` artık `maxFreeScans`'i **haftalık** veriyor; takvim haftası başında yenilenir (`periodStart` + rollover). Enjekte edilebilir saat (`now`) ile deterministik test. Public API (`canScanForFree`/`remainingFreeScans`/`recordScan`) korundu; FreeScanLimitView kopyası haftalık yenilenmeyi ve elle girişin her zaman ücretsiz olduğunu anlatıyor. Yeni test: `testWeeklyQuotaRefillsInTheNextWeek`.
+
+- [x] **SF-EX02 · Tek-seferlik elle öğün girişi (free, scan tüketmez)** ✅ 2026-07-13
+  **Dosyalar:** `Sofra/Models/ScanEntry.swift` (`ScanSource.manual`), `Sofra/Views/Daily/DailyView.swift` (`ManualEntryView`, giriş noktaları, MealEntryCard ikonu)
+  **Sorun:** App yalnız yemekten AI ile değer ayıklıyordu; "şu kadar kalori/protein aldım" diye **elle öğün girişi** yoktu (Hızlı Ekle sayaçları kalıcı öğe için, tek-seferlik değil). Pro olmadan pratikte kullanılamıyordu.
+  **Yapıldı:** `ManualEntryView` sheet'i — kalori (zorunlu) + protein/karb/yağ (opsiyonel) girip bugüne `.manual` bir `ScanEntry` yazar (tek `LoggedItem`, adet/1). Halkaya, makro toplamlarına, Geçmiş gün detayına (silinebilir), widget'a ve CSV export'a akar; **AI tarama hakkı tüketmez**. Giriş noktaları: Bugün boş durumu + "BUGÜNKÜ ÖĞÜNLER" başlığı. Yeni dosya eklenmedi (committed .xcodeproj uyumu için DailyView.swift içinde).
+  ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (bu ortamda Xcode yok).
+
 ## GELECEK (roadmap dışı, başlamadan Fatih onayı gerek)
 - "Sofra Modu" (çok kişilik tencere paylaşımı) — PROJECT_CONTEXT'te v1.1.
 - Tencere/ev tarifi kalibrasyon hafızası.
