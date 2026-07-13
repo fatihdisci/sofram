@@ -1139,8 +1139,7 @@
             "value": "Tüm Verilerimi Sil"
           }
         }
-      },
-      "shouldGenerateSymbol": false
+      }
     },
     "Veri": {
       "extractionState": "manual",
@@ -1294,24 +1293,6 @@
           }
         }
       }
-    },
-    "Tüm verilerimi sil?": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete all my data?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tüm verilerimi sil?"
-          }
-        }
-      },
-      "shouldGenerateSymbol": false
     },
     "Tüm öğünler, sayaçlar ve profil kalıcı olarak silinir. iCloud kopyası da dahil. Bu geri alınamaz.": {
       "extractionState": "manual",
@@ -2996,24 +2977,6 @@
         }
       }
     },
-    "sayaç": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "counter"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "sayaç"
-          }
-        }
-      },
-      "shouldGenerateSymbol": false
-    },
     "Erkek": {
       "extractionState": "manual",
       "localizations": {
@@ -4066,8 +4029,7 @@
             "value": "Sayaç"
           }
         }
-      },
-      "shouldGenerateSymbol": false
+      }
     },
     "Öğün ekledikçe geçmişin burada görünecek.": {
       "extractionState": "manual",
@@ -4116,6 +4078,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "App Store hesabından dilediğin an iptal edebilirsin."
+          }
+        }
+      }
+    },
+    "Tüm verilerimi silmek istiyor musun?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete all your data?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm verilerimi silmek istiyor musun?"
           }
         }
       }

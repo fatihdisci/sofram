@@ -215,7 +215,7 @@
 		EB0261418C32DD71652874BF /* NutritionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculatorTests.swift; sourceTree = "<group>"; };
 		EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeScanCounter.swift; sourceTree = "<group>"; };
 		F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionResponseValidatorTests.swift; sourceTree = "<group>"; };
-		F0448D0A8FC1CA151A408D7F /* CalorisorTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CalorisorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0448D0A8FC1CA151A408D7F /* CalorisorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalorisorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F147E274CA44406942ADF2E8 /* WidgetDataStore+MainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetDataStore+MainApp.swift"; sourceTree = "<group>"; };
 		F17DE019D6734175BC22974A /* CalorieRingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingViewTests.swift; sourceTree = "<group>"; };
 		F2F6CFF933D16CAF3A6EAF7F /* TurkishFoodReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurkishFoodReference.swift; sourceTree = "<group>"; };
@@ -615,7 +615,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2660;
 				TargetAttributes = {
 					4CEAA32D14A007032EAE0522 = {
 						ProvisioningStyle = Automatic;
@@ -929,6 +929,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -986,6 +987,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -997,6 +999,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1047,6 +1050,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

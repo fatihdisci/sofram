@@ -333,7 +333,7 @@ struct SettingsView: View {
             Button("Hayır", role: .cancel) {}
         }
         .confirmationDialog(
-            "Tüm verilerimi sil?",
+            "Tüm verilerimi silmek istiyor musun?",
             isPresented: $showDeleteAllDataConfirmation,
             titleVisibility: .visible
         ) {
