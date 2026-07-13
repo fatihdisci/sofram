@@ -59,7 +59,7 @@ targets:
     settings:
       base:
         PRODUCT_NAME: Sofra
-        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.sofra
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calorisor
         INFOPLIST_FILE: Sofra/Info.plist
         CODE_SIGN_ENTITLEMENTS: Sofra/Sofra.entitlements
         GENERATE_INFOPLIST_FILE: "NO"
@@ -96,7 +96,7 @@ targets:
       - target: Sofra
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.sofra.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calorisor.tests
         GENERATE_INFOPLIST_FILE: "YES"
         TARGETED_DEVICE_FAMILY: "1"
 
@@ -112,7 +112,7 @@ targets:
     settings:
       base:
         PRODUCT_NAME: "Sofra Widget"
-        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.sofra.widget
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calorisor.widget
         INFOPLIST_FILE: SofraWidget/Info.plist
         CODE_SIGN_ENTITLEMENTS: SofraWidget/SofraWidget.entitlements
         GENERATE_INFOPLIST_FILE: "NO"

@@ -36,7 +36,7 @@ enum AppLanguage: String, CaseIterable {
     }
 
     /// Persisted preference key.
-    static let storageKey = "sofra.appLanguage"
+    static let storageKey = "calorisor.appLanguage"
 
     /// Current effective language — reads stored preference, falls back to system.
     static var current: AppLanguage {

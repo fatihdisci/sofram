@@ -395,7 +395,7 @@ final class AIProxyClient {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         if let key = configuration.apiKey {
-            request.setValue(key, forHTTPHeaderField: "x-sofra-key")
+            request.setValue(key, forHTTPHeaderField: "x-calorisor-key")
         }
         request.httpBody = try JSONEncoder().encode(body)
 

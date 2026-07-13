@@ -32,9 +32,9 @@ final class FreeScanCounter {
     private let now: () -> Date
 
     private enum Keys {
-        static let used = "sofra.freeScansUsed"
-        static let subscribed = "sofra.isSubscribed"
-        static let periodStart = "sofra.freeScanPeriodStart"
+        static let used = "calorisor.freeScansUsed"
+        static let subscribed = "calorisor.isSubscribed"
+        static let periodStart = "calorisor.freeScanPeriodStart"
     }
 
     /// Scans consumed within the current weekly period.

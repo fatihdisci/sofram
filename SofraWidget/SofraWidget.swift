@@ -18,7 +18,7 @@ struct SofraWidgets: WidgetBundle {
 }
 
 struct SofraDailyWidget: Widget {
-    let kind = "com.fatih.sofra.widget.daily"
+    let kind = "com.fatih.calorisor.widget.daily"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(

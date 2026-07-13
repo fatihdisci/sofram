@@ -24,8 +24,8 @@ import UserNotifications
 // MARK: - Product identifiers
 
 enum SofraProductID {
-    static let monthly = "com.fatih.sofra.monthly"
-    static let annual  = "com.fatih.sofra.annual"
+    static let monthly = "com.fatih.calorisor.monthly"
+    static let annual  = "com.fatih.calorisor.annual"
     static let all      = [monthly, annual]
 }
 
@@ -242,7 +242,7 @@ final class StoreKitManager {
         )
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
         let request = UNNotificationRequest(
-            identifier: "sofra.trialEnd.\(transaction.id)",
+            identifier: "calorisor.trialEnd.\(transaction.id)",
             content: content,
             trigger: trigger
         )
@@ -259,7 +259,7 @@ final class StoreKitManager {
     /// Cancels the trial-end notification (called if user cancels early).
     func cancelTrialEndNotification(for transactionID: UInt64) {
         UNUserNotificationCenter.current()
-            .removePendingNotificationRequests(withIdentifiers: ["sofra.trialEnd.\(transactionID)"])
+            .removePendingNotificationRequests(withIdentifiers: ["calorisor.trialEnd.\(transactionID)"])
     }
 
     // MARK: - Open subscription management

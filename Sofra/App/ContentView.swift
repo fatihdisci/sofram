@@ -35,7 +35,7 @@ enum UserDataDeletion {
 struct ContentView: View {
     @Environment(NavigationModel.self) private var nav
 
-    @AppStorage("sofra.onboardingCompleted") private var onboardingCompleted = false
+    @AppStorage("calorisor.onboardingCompleted") private var onboardingCompleted = false
 
     var body: some View {
         ZStack {
@@ -48,9 +48,9 @@ struct ContentView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.75), value: onboardingCompleted)
         .onOpenURL { url in
             // Deep links (widget + future lock-screen quick actions):
-            //  sofra://daily → Bugün tab, sofra://camera → capture,
-            //  sofra://textlog → text logging.
-            guard url.scheme == "sofra" else { return }
+            //  calorisor://daily → Bugün tab, calorisor://camera → capture,
+            //  calorisor://textlog → text logging.
+            guard url.scheme == "calorisor" else { return }
             switch url.host {
             case "daily":   nav.goToDaily()
             case "camera":  nav.goToCamera()
@@ -265,11 +265,11 @@ struct SettingsView: View {
     @Query private var profiles: [UserProfile]
     @Query(sort: \ScanEntry.timestamp) private var exportScanEntries: [ScanEntry]
 
-    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
-    @AppStorage("sofra.proteinTarget") private var proteinTarget: Double = 0
-    @AppStorage("sofra.carbsTarget") private var carbsTarget: Double = 0
-    @AppStorage("sofra.fatTarget") private var fatTarget: Double = 0
-    @AppStorage("sofra.onboardingCompleted") private var onboardingCompleted = false
+    @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("calorisor.proteinTarget") private var proteinTarget: Double = 0
+    @AppStorage("calorisor.carbsTarget") private var carbsTarget: Double = 0
+    @AppStorage("calorisor.fatTarget") private var fatTarget: Double = 0
+    @AppStorage("calorisor.onboardingCompleted") private var onboardingCompleted = false
 
     @State private var store = StoreKitManager.shared
     @State private var subscriptions = FreeScanCounter.shared
@@ -715,11 +715,11 @@ struct SettingsView: View {
 
             let defaults = UserDefaults.standard
             [
-                "sofra.dailyCalorieTarget",
-                "sofra.proteinTarget",
-                "sofra.carbsTarget",
-                "sofra.fatTarget",
-                "sofra.onboardingCompleted",
+                "calorisor.dailyCalorieTarget",
+                "calorisor.proteinTarget",
+                "calorisor.carbsTarget",
+                "calorisor.fatTarget",
+                "calorisor.onboardingCompleted",
             ].forEach(defaults.removeObject(forKey:))
 
             WidgetDataStore.save(.empty)

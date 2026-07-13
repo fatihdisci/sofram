@@ -15,7 +15,7 @@ The endpoint is available at `http://localhost:3000/api/scan`.
 ## Environment variables
 
 - `OPENAI_API_KEY`: server-side OpenAI API key.
-- `SOFRA_CLIENT_KEY`: shared client key expected in the `x-sofra-key` header.
+- `CALORISOR_CLIENT_KEY`: shared client key expected in the `x-calorisor-key` header.
 - `UPSTASH_REDIS_REST_URL`: Upstash Redis REST endpoint.
 - `UPSTASH_REDIS_REST_TOKEN`: Upstash Redis REST token.
 
@@ -27,7 +27,7 @@ real keys.
 ```bash
 curl --request POST http://localhost:3000/api/scan \
   --header 'content-type: application/json' \
-  --header 'x-sofra-key: replace-with-local-client-key' \
+  --header 'x-calorisor-key: replace-with-local-client-key' \
   --data '{
     "text": "2 kepçe mercimek çorbası",
     "mode": "text",
@@ -39,7 +39,7 @@ curl --request POST http://localhost:3000/api/scan \
 ```
 
 A successful response is the `VisionResponse` JSON object itself. The
-`x-sofra-cache` response header is `miss` for a new analysis and `hit` when the
+`x-calorisor-cache` response header is `miss` for a new analysis and `hit` when the
 same normalized text or photo payload is served from the seven-day cache.
 
 Authorized requests are limited per anonymized IP hash to 10 per minute and
@@ -65,6 +65,6 @@ without resolving the seven-day response cache with the final privacy-policy
 review; Apple may classify the cached analysis result as collected User Content
 even though the raw photo/text is not retained.
 
-Requests with an invalid `x-sofra-key` return HTTP 401. Invalid bodies return
+Requests with an invalid `x-calorisor-key` return HTTP 401. Invalid bodies return
 HTTP 400, OpenAI rate limits return HTTP 429, and other upstream failures return
 HTTP 502.

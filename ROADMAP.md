@@ -192,10 +192,10 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Yeni dosyalar:** `proxy/api/scan.ts`, `proxy/package.json`, `proxy/README.md`
   **Talimat:**
   1. Vercel Edge Function (TypeScript). İstek gövdesi = `AIProxyRequest` kontratı: `{image_base64?, text?, mode: "photo"|"text", locale, tier, schema_version, app_version}`.
-  2. `x-sofra-key` header'ı env'deki `SOFRA_CLIENT_KEY` ile eşleşmiyorsa 401.
+  2. `x-calorisor-key` header'ı env'deki `CALORISOR_CLIENT_KEY` ile eşleşmiyorsa 401.
   3. Model çağrısı: OpenAI Chat Completions, `tier == "pro" ? "gpt-5-mini" : "gpt-5-nano"`, `reasoning_effort` photo→"low" / text→"minimal", **aynı Structured Outputs şeması** (AIProxyClient'taki `visionResponse` şemasını TS'e birebir taşı), `max_completion_tokens: 2048`.
   4. Prompt'lar `proxy/prompts.ts` içinde — **SF-101 sonrası Swift'tekiyle bire bir aynı metin**. Dosya başına şu yorum: `// MUST MATCH Sofra/Networking/AIProxyClient.swift prompts — update both together.`
-  5. Yanıt: modelin content JSON'u **olduğu gibi** (VisionResponse şekli) döner; ayrıca `x-sofra-cache: hit|miss` header'ı.
+  5. Yanıt: modelin content JSON'u **olduğu gibi** (VisionResponse şekli) döner; ayrıca `x-calorisor-cache: hit|miss` header'ı.
   6. Hata kontratı: `{ "error": "rate_limited" | "invalid_request" | "upstream_error" }` + uygun HTTP kodu (429/400/502).
   **Kabul kriterleri:** `vercel dev` ile lokal çalışır; curl ile text-mode istek gerçek yanıt döner; yanlış key 401.
 
@@ -205,7 +205,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   1. **Cache:** photo modunda `sha256(image_base64)` (text modunda normalize edilmiş text hash'i) anahtarıyla yanıtı 7 gün TTL ile sakla; hit'te modeli hiç çağırma.
   2. **Rate limit:** `@upstash/ratelimit` — IP başına 10 istek/dk (sliding window) + IP başına 200/gün. Aşımda 429 + `error: rate_limited`.
   3. Upstash'e **yalnızca** hash anahtarları ve sayaçlar yazılır; görsel/metin içeriği loglanmaz, `console.log`'a da yazılmaz.
-  **Kabul kriterleri:** Aynı görsel ikinci kez → `x-sofra-cache: hit` ve <300ms; 11. ardışık istek 429.
+  **Kabul kriterleri:** Aynı görsel ikinci kez → `x-calorisor-cache: hit` ve <300ms; 11. ardışık istek 429.
 
 - [ ] **SF-203 · İstemciyi gerçek endpoint'e bağla** ⏸ NOT: Hata kontratı parse ediliyor ve proxy yanıtı sanitize ediliyor; gerçek endpoint/key ile cihaz testi Vercel/Upstash kurulumunu bekliyor.
   **Dosyalar:** `Sofra/Info.plist`, `Sofra/Networking/AIProxyClient.swift`
@@ -326,7 +326,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
 
 - [x] **SF-603 · Halka etkileşimi: dokununca yenen/kalan/hedef modu** ✅ 2026-07-13
   **Dosya:** `CalorieRingView.swift`, `DailyView.swift`
-  **Talimat:** Halkaya dokunmak merkez metni 3 mod arasında döndürsün: **kalan** (varsayılan) → **yenen** → **hedef**. Mod etiketi alt satırda ("kcal kalan"/"kcal yenen"/"kcal hedef"). Seçim `@AppStorage("sofra.ringDisplayMode")` ile kalıcı. Geçiş `contentTransition(.numericText())` + hafif haptic. Halka dolgusu her modda aynı (yenen/hedef oranı).
+  **Talimat:** Halkaya dokunmak merkez metni 3 mod arasında döndürsün: **kalan** (varsayılan) → **yenen** → **hedef**. Mod etiketi alt satırda ("kcal kalan"/"kcal yenen"/"kcal hedef"). Seçim `@AppStorage("calorisor.ringDisplayMode")` ile kalıcı. Geçiş `contentTransition(.numericText())` + hafif haptic. Halka dolgusu her modda aynı (yenen/hedef oranı).
   **Kabul kriterleri:** Dokunuşlar mod değiştiriyor, tercih relaunch sonrası korunuyor, animasyon sofraSpring.
 
 - [x] **SF-604 · Hedef üstü durumda halka ikinci tur göstergesi** ✅ 2026-07-13
@@ -419,7 +419,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
 
 - [x] **SF-1001 · Calorisor marka yüzeyi ve app icon'ı** ✅ 2026-07-13
   **Dosyalar:** `Sofra/Assets.xcassets/AppIcon.appiconset/`, `Sofra/Info.plist`, `project.yml`, yasal link/metadata kaynakları.
-  **Talimat:** SF-803 master'ını entegre et. Kullanıcıya görünen ürün adı, onboarding/paywall/Ayarlar başlıkları, destek e-postası konusu ve placeholder yasal URL'leri Calorisor ile tutarlı hale getir. Bundle ID (`com.fatih.sofra`), URL scheme, CloudKit/App Group ve StoreKit product ID'lerini değiştirme. App Store/alan adı/marka kullanılabilirliği için resmi kontrol listesi oluştur; sonucu olmadan public release işaretleme.
+  **Talimat:** SF-803 master'ını entegre et. Kullanıcıya görünen ürün adı, onboarding/paywall/Ayarlar başlıkları, destek e-postası konusu ve placeholder yasal URL'leri Calorisor ile tutarlı hale getir. Bundle ID (`com.fatih.calorisor`), URL scheme, CloudKit/App Group ve StoreKit product ID'lerini değiştirme. App Store/alan adı/marka kullanılabilirliği için resmi kontrol listesi oluştur; sonucu olmadan public release işaretleme.
   **Kabul kriterleri:** Uygulama ikonu cihazda doğru maskelenir; eski “Sofra” kullanıcıya görünen marka kopyasında kalmaz; kimlik/satın alma sürekliliği bozulmaz.
   ⏸ **NOT:** Kod tarafı hazır — `CFBundleDisplayName`=Calorisor, purpose string'ler, destek e-postası konusu, yasal linkler (`calorisor.app`) ve app icon (`AppIcon-1024.png`) yerinde; kullanıcıya görünen kopyada eski marka kalmadı; bundle ID/URL scheme/CloudKit/StoreKit ID'leri korundu. Resmi marka/alan-adı/hukuk kontrolü ve cihaz ikon-maske doğrulaması `CALORISOR_BRAND_CHECK.md`'de izleniyor (Fatih'in hesap/hukuk erişimini bekliyor).
 
@@ -484,7 +484,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
 - Apple Health yazma entegrasyonu.
 - Ramazan modu (sahur/iftar zaman pencereleri).
 - Streak/rozet sistemi — utandırmayan, nötr dil şartıyla tasarlanacak.
-- App Attest / DeviceCheck ile proxy anahtarını sertleştirme (statik `x-sofra-key` MVP sonrası yetmez).
+- App Attest / DeviceCheck ile proxy anahtarını sertleştirme (statik `x-calorisor-key` MVP sonrası yetmez).
 
 ---
 

@@ -14,7 +14,7 @@ struct OnboardingView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var model = OnboardingModel()
 
-    @AppStorage("sofra.onboardingCompleted") private var onboardingCompleted = false
+    @AppStorage("calorisor.onboardingCompleted") private var onboardingCompleted = false
 
     var body: some View {
         ZStack {

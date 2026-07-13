@@ -39,7 +39,7 @@ struct CalorieRingView: View {
 
     @State private var animatedProgress: Double = 0
     @State private var animatedOvershootProgress: Double = 0
-    @AppStorage("sofra.ringDisplayMode") private var displayModeRaw = RingDisplayMode.remaining.rawValue
+    @AppStorage("calorisor.ringDisplayMode") private var displayModeRaw = RingDisplayMode.remaining.rawValue
 
     private let ringSize: CGFloat = 220
     private let stroke: CGFloat = 18

@@ -52,12 +52,12 @@ struct SofraWidgetEntryView: View {
                 .font(.system(size: 14, weight: .semibold, design: .rounded))
                 .minimumScaleFactor(0.6)
         }
-        .widgetURL(URL(string: "sofra://daily")!)
+        .widgetURL(URL(string: "calorisor://daily")!)
     }
 
     private var accessoryInlineLayout: some View {
         Text("\(formattedRemaining) \(String(localized: "kcal kaldı"))")
-            .widgetURL(URL(string: "sofra://daily")!)
+            .widgetURL(URL(string: "calorisor://daily")!)
     }
 
     private var formattedRemaining: String {
@@ -79,7 +79,7 @@ struct SofraWidgetEntryView: View {
             .padding(Layout.Spacing.sm)
         }
         .containerBackground(Color.bgPage, for: .widget)
-        .widgetURL(URL(string: "sofra://daily")!)
+        .widgetURL(URL(string: "calorisor://daily")!)
     }
 
     // MARK: - Medium Widget (ring left + macros right)
@@ -115,7 +115,7 @@ struct SofraWidgetEntryView: View {
             .padding(Layout.Spacing.md)
         }
         .containerBackground(Color.bgPage, for: .widget)
-        .widgetURL(URL(string: "sofra://daily")!)
+        .widgetURL(URL(string: "calorisor://daily")!)
     }
 
     // MARK: - Shared components

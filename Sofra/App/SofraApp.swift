@@ -27,7 +27,7 @@ struct SofraApp: App {
                 QuickAddSeed.backfillMissingNutrition(context)
 
                 // Catch-up widget update for CloudKit sync or midnight rollover
-                let target = UserDefaults.standard.object(forKey: "sofra.dailyCalorieTarget") as? Double ?? 2000
+                let target = UserDefaults.standard.object(forKey: "calorisor.dailyCalorieTarget") as? Double ?? 2000
                 WidgetDataStore.saveCurrentDaySummary(
                     modelContext: context,
                     calorieTarget: target

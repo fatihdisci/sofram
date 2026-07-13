@@ -23,7 +23,7 @@ extension WidgetDataStore {
     ///
     /// - Parameters:
     ///   - modelContext: The SwiftData ModelContext to query (from @Environment or container.mainContext).
-    ///   - calorieTarget: Daily calorie target from UserDefaults key "sofra.dailyCalorieTarget" (default 2000).
+    ///   - calorieTarget: Daily calorie target from UserDefaults key "calorisor.dailyCalorieTarget" (default 2000).
     static func saveCurrentDaySummary(
         modelContext: ModelContext,
         calorieTarget: Double

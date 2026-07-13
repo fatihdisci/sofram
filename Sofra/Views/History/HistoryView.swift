@@ -15,7 +15,7 @@ struct HistoryView: View {
 
     @Query private var quickCounts: [QuickAddCount]
 
-    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
 
     private var monthSections: [HistoryMonthSection] {
         HistoryDaySummaryBuilder.monthSections(

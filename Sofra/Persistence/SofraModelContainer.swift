@@ -15,7 +15,7 @@ enum SofraModelContainer {
     /// CloudKit container id. Declared in the entitlement
     /// `com.apple.developer.icloud-container-identifiers`; `.automatic` (below) picks
     /// it up from there in signed builds.
-    static let cloudKitContainerID = "iCloud.com.fatih.sofra"
+    static let cloudKitContainerID = "iCloud.com.fatih.calorisor"
 
     static let schema = Schema([
         ScanEntry.self,

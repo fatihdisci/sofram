@@ -47,12 +47,12 @@ function getUpstashInfrastructure(): UpstashInfrastructure {
     minuteLimit: new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(10, "1 m"),
-      prefix: "sofra:rate:minute",
+      prefix: "calorisor:rate:minute",
     }),
     dailyLimit: new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(200, "1 d"),
-      prefix: "sofra:rate:day",
+      prefix: "calorisor:rate:day",
     }),
   };
   return upstashInfrastructure;
@@ -133,7 +133,7 @@ function jsonError(
     { error },
     {
       status,
-      headers: { "x-sofra-cache": "miss" },
+      headers: { "x-calorisor-cache": "miss" },
     },
   );
 }
@@ -168,7 +168,7 @@ async function cacheKey(forRequest: ScanRequest): Promise<string> {
     forRequest.mode === "photo"
       ? (forRequest.image_base64 ?? "")
       : normalizedText(forRequest.text ?? "");
-  return `sofra:scan:v${forRequest.schema_version}:${forRequest.mode}:${await sha256(source)}`;
+  return `calorisor:scan:v${forRequest.schema_version}:${forRequest.mode}:${await sha256(source)}`;
 }
 
 function isScanRequest(value: unknown): value is ScanRequest {
@@ -238,8 +238,8 @@ export default async function handler(request: Request): Promise<Response> {
     return jsonError("invalid_request", 400);
   }
 
-  const clientKey = process.env.SOFRA_CLIENT_KEY;
-  if (!clientKey || request.headers.get("x-sofra-key") !== clientKey) {
+  const clientKey = process.env.CALORISOR_CLIENT_KEY;
+  if (!clientKey || request.headers.get("x-calorisor-key") !== clientKey) {
     return jsonError("invalid_request", 401);
   }
 
@@ -279,7 +279,7 @@ export default async function handler(request: Request): Promise<Response> {
         status: 200,
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          "x-sofra-cache": "hit",
+          "x-calorisor-cache": "hit",
         },
       });
     }
@@ -341,7 +341,7 @@ export default async function handler(request: Request): Promise<Response> {
     status: 200,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "x-sofra-cache": "miss",
+      "x-calorisor-cache": "miss",
     },
   });
 }

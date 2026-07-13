@@ -185,7 +185,7 @@ Her adımı gerçek cihazda gözlemledikten sonra ✅ veya ❌ ile işaretle.
 - [ ] Foodvisor isim benzerliği hukuki değerlendirmesi yapıldı
 - [ ] Sosyal medya kullanıcı adı (@calorisor) kontrol edildi
 - [ ] `AIProxyEndpointURL` gerçek Vercel deployment URL'si ile değiştirildi
-- [ ] `AIProxyAPIKey` gerçek `SOFRA_CLIENT_KEY` ile değiştirildi
+- [ ] `AIProxyAPIKey` gerçek `CALORISOR_CLIENT_KEY` ile değiştirildi
 - [ ] `DEVELOPMENT_TEAM` project.yml'da ayarlandı
 - [ ] App Store Connect: aylık ve yıllık ürünler oluşturuldu
 - [ ] App Store Connect: yıllık planda 7 günlük introductory offer tanımlandı

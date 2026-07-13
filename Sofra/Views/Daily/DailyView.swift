@@ -25,10 +25,10 @@ struct DailyView: View {
 
     @Query private var quickCounts: [QuickAddCount]
 
-    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
-    @AppStorage("sofra.proteinTarget") private var proteinTargetStored: Double = 0
-    @AppStorage("sofra.carbsTarget") private var carbsTargetStored: Double = 0
-    @AppStorage("sofra.fatTarget") private var fatTargetStored: Double = 0
+    @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("calorisor.proteinTarget") private var proteinTargetStored: Double = 0
+    @AppStorage("calorisor.carbsTarget") private var carbsTargetStored: Double = 0
+    @AppStorage("calorisor.fatTarget") private var fatTargetStored: Double = 0
     @State private var dayAnchor = Calendar.current.startOfDay(for: .now)
 
     /// Today's scan entries.

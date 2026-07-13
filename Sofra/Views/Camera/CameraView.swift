@@ -75,7 +75,7 @@ final class CameraManager: NSObject, @unchecked Sendable {
 
     /// All session/device mutations are funneled through this serial queue —
     /// start/stop calls from disappearing/appearing screens stay strictly ordered.
-    private let sessionQueue = DispatchQueue(label: "com.fatih.sofra.camera.session")
+    private let sessionQueue = DispatchQueue(label: "com.fatih.calorisor.camera.session")
 
     private let photoOutput = AVCapturePhotoOutput()
     private var device: AVCaptureDevice?

@@ -28,14 +28,15 @@
       Xcode auto-generate; dosyada rounded-square/gradient/gölge yok (maske uygulamada)
 - [x] Düz Calorisor renk paleti (domates kırmızısı vurgu) tüm renk asset'lerinde
 
-## 4. Süreklilik (DEĞİŞMEDİ — kasıtlı)
-- [x] Bundle ID `com.fatih.sofra` korundu
-- [x] URL scheme `sofra://` korundu (widget deep-link)
-- [x] CloudKit container / App Group korundu
-- [x] StoreKit product ID'leri (`SofraProductID`) korundu
-- [x] SwiftData model adları korundu
-- [x] `project.yml` `PRODUCT_NAME` internal olarak "Sofra" (kullanıcıya görünmez;
-      home-screen etiketi `CFBundleDisplayName`=Calorisor'dan gelir)
+## 4. Süreklilik (2026-07-13 güncellemesi: bundle ID değişti)
+- [x] Bundle ID `com.fatih.sofra` → `com.fatih.calorisor` (ASC kurulmadan önce yapıldı)
+- [x] URL scheme `sofra://` → `calorisor://` (widget deep-link)
+- [x] CloudKit container / App Group → `com.fatih.calorisor` olarak güncellendi
+- [x] StoreKit product ID'leri → `com.fatih.calorisor.monthly/annual` güncellendi
+- [x] UserDefaults key prefix: `sofra.*` → `calorisor.*`
+- [x] Proxy: `x-sofra-key` → `x-calorisor-key`, `SOFRA_CLIENT_KEY` → `CALORISOR_CLIENT_KEY`
+- [x] SwiftData model adları korundu (iç mimari)
+- [x] `project.yml` `PRODUCT_NAME` → `Calorisor` (hem app hem widget)
 
 ## 5. App Store metadata (yayın öncesi)
 - [ ] App Store listing başlığı/altbaşlığı Calorisor

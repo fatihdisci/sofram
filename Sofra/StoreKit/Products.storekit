@@ -25,7 +25,7 @@
               "locale" : "tr_TR"
             }
           ],
-          "productID" : "com.fatih.sofra.monthly",
+          "productID" : "com.fatih.calorisor.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Calorisor Aylık",
           "subscriptionGroupID" : "B6C75F4E",
@@ -51,7 +51,7 @@
               "locale" : "tr_TR"
             }
           ],
-          "productID" : "com.fatih.sofra.annual",
+          "productID" : "com.fatih.calorisor.annual",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Calorisor Yıllık",
           "subscriptionGroupID" : "B6C75F4E",

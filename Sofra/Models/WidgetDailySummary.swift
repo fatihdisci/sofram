@@ -27,7 +27,7 @@ struct WidgetDailySummary: Codable, Equatable {
     /// Total calories consumed today (sum of all LoggedItem.calories across today's scans).
     var calories: Double
 
-    /// Daily calorie target from @AppStorage("sofra.dailyCalorieTarget") — default 2000.
+    /// Daily calorie target from @AppStorage("calorisor.dailyCalorieTarget") — default 2000.
     var target: Double
 
     /// Today's total protein (grams).

@@ -34,14 +34,14 @@ Henüz main dalına merge etme.
    ```bash
    openssl rand -hex 32
    ```
-   Bu değer `SOFRA_CLIENT_KEY` olacak.
+   Bu değer `CALORISOR_CLIENT_KEY` olacak.
 
 ## 3. Vercel projesini oluştur
 1. Vercel'de GitHub'daki sofram reposunu içe aktar.
 2. Root Directory olarak `proxy` seç.
 3. Şu environment variable'ları ekle:
    - `OPENAI_API_KEY`
-   - `SOFRA_CLIENT_KEY`
+   - `CALORISOR_CLIENT_KEY`
    - `UPSTASH_REDIS_REST_URL`
    - `UPSTASH_REDIS_REST_TOKEN`
 4. Production deploy başlat.
@@ -53,15 +53,15 @@ OpenAI anahtarını kesinlikle Xcode'a veya Info.plist içine koyma.
 
 ## 4. Proxy'yi kontrol et
 `proxy/README.md` içindeki curl testini çalıştır. Beklenen:
-- İlk istek: HTTP 200 ve `x-sofra-cache: miss`
-- Aynı istek tekrar: `x-sofra-cache: hit`
+- İlk istek: HTTP 200 ve `x-calorisor-cache: miss`
+- Aynı istek tekrar: `x-calorisor-cache: hit`
 - Yanlış istemci anahtarı: HTTP 401
 - Arka arkaya 11 istek: son istek HTTP 429
 
 ## 5. Uygulamayı proxy'ye bağla
 `Sofra/Info.plist` içinde:
 - `AIProxyEndpointURL` → Vercel `/api/scan` adresi
-- `AIProxyAPIKey` → oluşturduğun `SOFRA_CLIENT_KEY`
+- `AIProxyAPIKey` → oluşturduğun `CALORISOR_CLIENT_KEY`
 
 Buraya OpenAI anahtarı değil, yalnızca paylaşılan istemci anahtarı yazılacak.
 Bu değerleri herkese açık repoya commit etme.
@@ -77,13 +77,13 @@ Bu değerleri herkese açık repoya commit etme.
 5. Şunların hatasız göründüğünü doğrula:
    - iCloud / CloudKit
    - Push Notifications
-   - App Group: `group.com.fatih.sofra`
-   - CloudKit container: `iCloud.com.fatih.sofra`
+   - App Group: `group.com.fatih.calorisor`
+   - CloudKit container: `iCloud.com.fatih.calorisor`
 
 ## 7. App Store Connect abonelikleri
 Aynı subscription group ("Sofra Premium") altında oluştur:
-- `com.fatih.sofra.monthly`
-- `com.fatih.sofra.annual`
+- `com.fatih.calorisor.monthly`
+- `com.fatih.calorisor.annual`
 
 Her ikisine de uygun fiyat ve Türkçe lokalizasyon ekle.
 
@@ -142,8 +142,8 @@ ayarlarsan paywall onu yazar — bu yüzden ASC'yi 7 güne göre doğru kurman k
 ## App Store Connect adımları (7 gün deneme için)
 1. **App Store Connect → Apps → Sofra → Subscriptions** (Monetization) bölümüne gir.
 2. Subscription Group **"Sofra Premium"** yoksa oluştur; iki ürünü aynı grupta tut
-   (`com.fatih.sofra.monthly`, `com.fatih.sofra.annual`).
-3. **Yıllık ürünü** (`com.fatih.sofra.annual`) aç → **Introductory Offers → (+)**.
+   (`com.fatih.calorisor.monthly`, `com.fatih.calorisor.annual`).
+3. **Yıllık ürünü** (`com.fatih.calorisor.annual`) aç → **Introductory Offers → (+)**.
    - **Offer Type / Payment:** `Free` (Ücretsiz)
    - **Duration:** `1 Week` seç.
      - ⚠️ ASC'de "7 gün" diye bir seçenek YOKTUR; **1 hafta = 7 gündür**. Kod bunu
@@ -151,7 +151,7 @@ ayarlarsan paywall onu yazar — bu yüzden ASC'yi 7 güne göre doğru kurman k
        yazar ve isteğin bozulur.
    - **Countries/Regions:** satışa açacağın tüm ülkeler (en azından Türkiye).
    - **Start Date:** bugünden; **End Date:** boş bırak (süresiz).
-4. **Aylık ürüne** (`com.fatih.sofra.monthly`) introductory offer **EKLEME** — aylıkta
+4. **Aylık ürüne** (`com.fatih.calorisor.monthly`) introductory offer **EKLEME** — aylıkta
    deneme yok (kararlaştırılan politika).
 5. Her iki ürünün de **Localization (tr-TR)**, **fiyat (price point)** ve
    **review screenshot/notes** alanlarını doldur; durum "Ready to Submit" olmalı.

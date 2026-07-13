@@ -41,7 +41,7 @@ enum TurkishFoodReference {
 
     private static let bundleName = "turkish_food_reference"
     private static let ext = "json"
-    private static let queue = DispatchQueue(label: "sofra.turkish_food_reference.cache")
+    private static let queue = DispatchQueue(label: "calorisor.turkish_food_reference.cache")
 
     private static var cachedFoods: [FoodReference]?
     private static var cachedIndex: [String: FoodReference]?

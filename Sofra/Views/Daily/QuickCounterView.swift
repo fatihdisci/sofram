@@ -23,7 +23,7 @@ struct QuickCounterView: View {
     @Query(sort: \QuickAddItem.sortOrder) private var items: [QuickAddItem]
     @Query private var allCounts: [QuickAddCount]
 
-    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
 
     @State private var editingItem: QuickAddItem?
     @State private var showEditor = false

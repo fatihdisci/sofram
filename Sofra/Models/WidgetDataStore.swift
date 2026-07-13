@@ -16,10 +16,10 @@ import Foundation
 enum WidgetDataStore {
 
     /// Must match the App Group ID in both entitlement files.
-    static let appGroupID = "group.com.fatih.sofra"
+    static let appGroupID = "group.com.fatih.calorisor"
 
     /// Key under which the JSON blob is stored in shared UserDefaults.
-    static let summaryKey = "sofra.widget.dailySummary"
+    static let summaryKey = "calorisor.widget.dailySummary"
 
     // MARK: - Shared UserDefaults
 

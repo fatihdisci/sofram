@@ -28,7 +28,7 @@ struct SevenDaySummaryView: View {
     @Query(sort: \ScanEntry.timestamp, order: .reverse)
     private var scanEntries: [ScanEntry]
 
-    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
 
     /// Trailing 7 days, today first.
     private var daySummaries: [DaySummary] {

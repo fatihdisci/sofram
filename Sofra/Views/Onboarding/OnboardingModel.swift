@@ -116,7 +116,7 @@ final class OnboardingModel {
     var ageText: String = ""
 
     private enum Keys {
-        static let completed = "sofra.onboardingCompleted"
+        static let completed = "calorisor.onboardingCompleted"
     }
 
     init() {
@@ -222,10 +222,10 @@ final class OnboardingModel {
         try? context.save()
 
         // Also store the calorie + macro targets that DailyView and Ayarlar read.
-        UserDefaults.standard.set(dailyCalorieTarget, forKey: "sofra.dailyCalorieTarget")
-        UserDefaults.standard.set(proteinTargetG, forKey: "sofra.proteinTarget")
-        UserDefaults.standard.set(carbsTargetG, forKey: "sofra.carbsTarget")
-        UserDefaults.standard.set(fatTargetG, forKey: "sofra.fatTarget")
+        UserDefaults.standard.set(dailyCalorieTarget, forKey: "calorisor.dailyCalorieTarget")
+        UserDefaults.standard.set(proteinTargetG, forKey: "calorisor.proteinTarget")
+        UserDefaults.standard.set(carbsTargetG, forKey: "calorisor.carbsTarget")
+        UserDefaults.standard.set(fatTargetG, forKey: "calorisor.fatTarget")
 
         completeOnboarding()
     }

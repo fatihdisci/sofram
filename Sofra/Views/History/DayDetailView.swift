@@ -18,7 +18,7 @@ struct DayDetailView: View {
 
     @Query private var quickCounts: [QuickAddCount]
 
-    @AppStorage("sofra.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
 
     let date: Date
 
