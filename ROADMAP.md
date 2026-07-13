@@ -478,6 +478,69 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Yapıldı:** `ManualEntryView` sheet'i — kalori (zorunlu) + protein/karb/yağ (opsiyonel) girip bugüne `.manual` bir `ScanEntry` yazar (tek `LoggedItem`, adet/1). Halkaya, makro toplamlarına, Geçmiş gün detayına (silinebilir), widget'a ve CSV export'a akar; **AI tarama hakkı tüketmez**. Giriş noktaları: Bugün boş durumu + "BUGÜNKÜ ÖĞÜNLER" başlığı. Yeni dosya eklenmedi (committed .xcodeproj uyumu için DailyView.swift içinde).
   ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (bu ortamda Xcode yok).
 
+- [ ] **SF-EX03 · Uygulama içinde sesle yemek kaydı**
+  **Dosyalar:** `Sofra/Views/TextLog/TextLogView.swift` veya yeni ses giriş görünümü, `Sofra/Resources/Localizable.xcstrings`
+  **Amaç:** Kullanıcı yemek aramak ve yazmak yerine ne yediğini Türkçe veya İngilizce olarak söyleyebilsin.
+  **Talimat:**
+  1. Apple `Speech` framework'ü ve `SFSpeechRecognizer` ile mikrofon girişini metne dönüştür. Türkçe (`tr-TR`) ve İngilizce (`en-US`) locale desteği ekle; mevcut uygulama dili kullanılmalı.
+  2. Mikrofon iznini ilk açılışta isteme; kullanıcı sesli giriş butonuna bastığında, kısa açıklama sonrasında iste.
+  3. Konuşma sırasında canlı transkript göster; başlatma, dinleme, duraklatma, tamamlanma ve hata durumlarını açıkça ayır.
+  4. Transkript tamamlanınca mevcut metin analiz akışını kullan. Ses özelliği ayrı bir besin hesaplama yolu oluşturmasın.
+  5. Sonuç doğrudan kaydedilmesin; kullanıcı sonuç ekranında kontrol edip onaylasın.
+  **Kabul kriterleri:** İzin verildiğinde Türkçe örnek bir cümle canlı transkripte düşer ve mevcut metin analiziyle sonuç ekranına ulaşır; izin reddedildiğinde açıklayıcı hata ve yazılı girişe dönüş gösterilir; derleme + testler yeşil.
+
+- [ ] **SF-EX04 · Sesli girişte düzenleme ve onay akışı**
+  **Dosyalar:** Ses giriş görünümü, `TextLogView`, sonuç/draft akışı
+  **Amaç:** Konuşma tanıma hataları veya belirsiz porsiyonlar yanlışlıkla kaydedilmesin.
+  **Talimat:**
+  1. Transkript tamamlandıktan sonra kullanıcıya metni düzenleme imkânı ver.
+  2. Analiz sonucunda algılanan öğeleri ve tahmini toplamı göster; `Düzelt` ve `Ekle` eylemlerini ayır.
+  3. Kullanıcı onaylamadan `ScanEntry` oluşturma ve AI tarama hakkını tüketme.
+  4. Kullanıcı iptal ederse taslak temizlensin; ses kaydı veya ham mikrofon verisi kalıcı olarak saklanmasın.
+  **Kabul kriterleri:** Sesli giriş iptal edildiğinde geçmişte kayıt oluşmaz; kullanıcı transkripti düzelttiğinde analiz düzeltilmiş metinle çalışır; onaydan sonra mevcut sonuç/kayıt akışıyla aynı değerler oluşur.
+
+- [ ] **SF-EX05 · Siri ve App Intents ile yemek ekleme**
+  **Dosyalar:** Yeni `Sofra/AppIntents/` dosyaları, `Sofra/Resources/Localizable.xcstrings`, `project.yml` gerekirse
+  **Amaç:** Kullanıcı Siri veya Kestirmeler üzerinden Calorisor'a yemek ekleyebilsin.
+  **Talimat:**
+  1. App Intents ile "Yemek Ekle" intent'i oluştur; yemek açıklamasını metin parametresi olarak al.
+  2. Türkçe ve İngilizce App Shortcut phrase'leri ekle: uygulama adı üzerinden doğal komutlar kullanılmalı.
+  3. İlk sürümde Siri isteği taslak oluşturup uygulamayı onay ekranında açsın; belirsiz öğünleri arka planda otomatik kaydetme.
+  4. Intent, uygulama içindeki mevcut metin analiz akışını çağırsın; ikinci bir besin hesaplama mantığı yazılmasın.
+  5. Uygulama kapalıyken, ağ yokken ve kullanıcı onaylamadan çıkarken davranışı tanımlı hata mesajlarıyla ele al.
+  **Kabul kriterleri:** Kestirmeler'de intent görünür; Siri örnek komutuyla taslak oluşur ve onay ekranı açılır; onay verilmeden geçmişe kayıt yazılmaz; Türkçe/İngilizce kopyalar yerelleştirilmiştir.
+
+- [ ] **SF-EX06 · Kullanıcı kontrollü öğün hatırlatmaları**
+  **Dosyalar:** Bildirim ayarları, `Sofra/Resources/Localizable.xcstrings`, `UNUserNotificationCenter` kullanan yeni bildirim servisi
+  **Amaç:** Kullanıcı seçerse kahvaltı, öğle, akşam ve ara öğün saatlerinde nazik hatırlatma alabilsin.
+  **Talimat:**
+  1. Kullanıcı onboarding'de zorlanmasın; bildirim iznini ayarlar ekranında veya ilk hatırlatma ayarı seçildiğinde iste.
+  2. Öğün saatlerini ayrı ayrı aç/kapat ve saat seçimiyle yönet; varsayılanlar kapalı veya açık olacaksa kararını tek bir ürün kuralında sabitle.
+  3. İlgili öğün kaydedildiğinde o günün bildirimi iptal edilsin; aynı öğün için tekrar tekrar bildirim gönderilmesin.
+  4. Bildirimden uygulama açıldığında doğrudan günlük kayıt ekranına yönlendir.
+  5. Bildirim metinleri Türkçe ve İngilizce, nötr ve suçlayıcı olmayan tonda olsun.
+  **Kabul kriterleri:** Ayarlanan saat için yerel bildirim planlanır; öğün kaydedilince bildirim kaldırılır; bildirimler tek ayarla tamamen kapatılabilir; uygulama yeniden açıldığında planlar doğru şekilde yeniden kurulur.
+
+- [ ] **SF-EX07 · Gün içinde hiç kayıt yapılmadığında tek hatırlatma**
+  **Dosyalar:** Bildirim servisi, günlük kayıt durumu, `Sofra/Resources/Localizable.xcstrings`
+  **Amaç:** Kullanıcı gün boyunca hiçbir öğün eklemediyse, spam yapmadan tek bir geri dönüş noktası sunmak.
+  **Talimat:**
+  1. Günlük kayıt sayısı sıfırsa yalnızca kullanıcının belirlediği akşam saatinden sonra bir bildirim planla/gönder.
+  2. Gün içinde herhangi bir kayıt oluşturulursa bu bildirim iptal edilsin.
+  3. Günlük kayıt sayısı bir veya daha fazlaysa "eksik kaldın" türü bildirim gönderme.
+  4. Bildirim eylemi günlük kayıt ekranını açsın; sesli giriş hazırsa oraya geçiş için tek dokunuşlu giriş sunulabilir.
+  **Kabul kriterleri:** Sıfır kayıtlı günde en fazla bir bildirim gönderilir; ilk kayıt sonrası bildirim iptal edilir; ertesi gün durum sıfırlanır; bildirim kapalı kullanıcıya hiçbir bildirim gönderilmez.
+
+- [ ] **SF-EX08 · Gece özeti ve bildirim tercihleri**
+  **Dosyalar:** Ayarlar bildirim bölümü, günlük özet bileşeni, `Sofra/Resources/Localizable.xcstrings`
+  **Amaç:** Kullanıcı isterse günü sakin bir özetle kapatabilsin; bildirim sistemi kullanıcı kontrolünde kalsın.
+  **Talimat:**
+  1. İsteğe bağlı gece özeti planla: toplam kalori, protein ve kayıtlı öğün sayısını göster.
+  2. Gün tamamlanmışsa yeni öğün eklemeye zorlayan metin kullanma; özet yalnızca bilgi versin.
+  3. Ayarlar'da ayrı tercihler sun: öğün hatırlatmaları, hiç kayıt yok bildirimi, gece özeti ve tüm bildirimleri kapat.
+  4. Bildirim zamanlarını kullanıcı değiştirdiğinde eski bildirimleri iptal edip yenilerini planla.
+  **Kabul kriterleri:** Gece özeti yalnızca açık tercihte gönderilir; aynı gün ikinci kez gönderilmez; tüm bildirimler kapatılınca bekleyen yerel bildirimler temizlenir; TR/EN metinleri eksiksizdir.
+
 ## GELECEK (roadmap dışı, başlamadan Fatih onayı gerek)
 - "Sofra Modu" (çok kişilik tencere paylaşımı) — PROJECT_CONTEXT'te v1.1.
 - Tencere/ev tarifi kalibrasyon hafızası.
