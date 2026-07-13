@@ -131,6 +131,7 @@ struct ResultView: View {
                     .frame(width: 42, height: 42)
                     .background(Color.surfaceRaised, in: Circle())
                     .raisedSurface(cornerRadius: 21)
+                    .accessibilityLabel(String(localized: "Kapat"))
             }
 
             // Mini captured image thumbnail (photo scans only)
@@ -140,6 +141,7 @@ struct ResultView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 44, height: 44)
                     .clipShape(RoundedRectangle(cornerRadius: Layout.Radius.control))
+                    .accessibilityHidden(true)
             }
 
             VStack(alignment: .leading, spacing: 2) {

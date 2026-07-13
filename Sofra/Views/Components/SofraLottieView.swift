@@ -67,5 +67,6 @@ struct SofraLottieView<Fallback: View>: View {
         .looping()
         .resizable()
         .aspectRatio(contentMode: contentMode)
+        .accessibilityHidden(true)
     }
 }

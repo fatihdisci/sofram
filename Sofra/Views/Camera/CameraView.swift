@@ -324,6 +324,7 @@ struct CameraView: View {
                         .frame(width: 42, height: 42)
                         .background(Color.surfaceRaised, in: Circle())
                         .raisedSurface(cornerRadius: 21)
+                        .accessibilityLabel(String(localized: "Kapat"))
                 }
 
                 Spacer()
@@ -345,6 +346,7 @@ struct CameraView: View {
                         .frame(width: 42, height: 42)
                         .background(Color.surfaceRaised, in: Circle())
                         .raisedSurface(cornerRadius: 21)
+                        .accessibilityLabel(torchOn ? String(localized: "Flası kapat") : String(localized: "Flası aç"))
                 }
                 .opacity(authorization == .authorized ? 1 : 0.35)
                 .disabled(authorization != .authorized)
@@ -453,6 +455,7 @@ struct CameraView: View {
                         .font(.system(size: 26, weight: .medium))
                         .foregroundStyle(Color.onAccent)
                 }
+                .accessibilityLabel(String(localized: "Fotoğraf çek"))
                 .scaleEffect(isCapturing ? 0.88 : 1)
             }
             .buttonStyle(.plain)
@@ -467,6 +470,7 @@ struct CameraView: View {
                         Text("Galeri")
                             .font(.sofraLabel)
                     }
+                    .accessibilityLabel(String(localized: "Galeri"))
                     .foregroundStyle(Color.textPrimary)
                     .padding(.horizontal, Layout.Spacing.lg)
                     .padding(.vertical, Layout.Spacing.sm)
@@ -482,6 +486,7 @@ struct CameraView: View {
                         Text("Yazarak ekle")
                             .font(.sofraLabel)
                     }
+                    .accessibilityLabel(String(localized: "Yazarak ekle"))
                     .foregroundStyle(Color.textPrimary)
                     .padding(.horizontal, Layout.Spacing.lg)
                     .padding(.vertical, Layout.Spacing.sm)
@@ -499,6 +504,7 @@ struct CameraView: View {
             Image(systemName: "camera.on.rectangle")
                 .font(.system(size: 40))
                 .foregroundStyle(Color.textMuted)
+                .accessibilityHidden(true)
 
             Text("Kamera izni gerekli")
                 .font(.sofraLabel)

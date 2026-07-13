@@ -219,6 +219,7 @@ struct HeightStepView: View {
 
                 Slider(value: $model.heightCm, in: 130...220, step: 1)
                     .tint(Color.accentFill)
+                    .accessibilityValue("\(Int(model.heightCm)) cm")
 
                 HStack {
                     Text("130 cm")
@@ -248,6 +249,7 @@ struct WeightStepView: View {
 
                 Slider(value: $model.weightKg, in: 35...200, step: 0.5)
                     .tint(Color.accentFill)
+                    .accessibilityValue("\(Int(model.weightKg)) kg")
 
                 HStack {
                     Text("35 kg")
@@ -328,6 +330,7 @@ struct AgeStepView: View {
                     set: { model.age = Int($0) }
                 ), in: 14...100, step: 1)
                 .tint(Color.accentFill)
+                .accessibilityValue("\(model.age)")
 
                 HStack {
                     Text("14")

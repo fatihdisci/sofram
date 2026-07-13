@@ -133,7 +133,8 @@ struct CalorieRingView: View {
             }
         }
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Kalan, yenen ve hedef kalorileri arasında geçiş yapar")
+        .accessibilityHint(String(localized: "Kalan, yenen ve hedef kalorileri arasında geçiş yapar"))
+        .accessibilityValue(String(localized: "\(mode.displayValue) kalori"))
         .onAppear {
             withAnimation(.sofraSpring) {
                 animatedProgress = progress

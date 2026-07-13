@@ -124,6 +124,7 @@ struct HistoryView: View {
             Image(systemName: "chevron.right")
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(Color.textMuted)
+                .accessibilityHidden(true)
         }
         .padding(Layout.Spacing.lg)
         .contentShape(Rectangle())

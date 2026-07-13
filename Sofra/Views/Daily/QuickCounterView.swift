@@ -202,6 +202,7 @@ private struct QuickChip: View {
                                 .foregroundStyle(Color.textSecondary)
                                 .frame(width: 28, height: 28)
                                 .background(Color.surfaceFlat, in: Circle())
+                                .accessibilityLabel(String(localized: "Azalt"))
                         }
                         .buttonStyle(.plain)
                         .transition(.scale.combined(with: .opacity))
@@ -212,6 +213,7 @@ private struct QuickChip: View {
                         .foregroundStyle(Color.onAccent)
                         .frame(width: 30, height: 30)
                         .background(Color.accentFill, in: Circle())
+                        .accessibilityLabel(String(localized: "Artır"))
                 }
                 .padding(.horizontal, Layout.Spacing.md)
                 .padding(.vertical, Layout.Spacing.sm)

@@ -151,6 +151,7 @@ struct TextLogView: View {
                     .frame(width: 42, height: 42)
                     .background(Color.surfaceRaised, in: Circle())
                     .raisedSurface(cornerRadius: 21)
+                    .accessibilityLabel(String(localized: "Kapat"))
             }
             Spacer()
             Text("Yazarak Ekle")
@@ -183,6 +184,7 @@ struct TextLogView: View {
                             HStack(spacing: 4) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 10, weight: .semibold))
+                                    .accessibilityHidden(true)
                                 Text(suggestion)
                                     .font(.sofraCaption)
                             }

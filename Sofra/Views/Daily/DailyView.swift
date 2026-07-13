@@ -196,6 +196,7 @@ struct DailyView: View {
                 .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
                 .raisedSurface(cornerRadius: Layout.Radius.card)
             }
+            .accessibilityLabel(String(localized: "Fotoğrafla ekle"))
             .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
 
             Button {
@@ -208,6 +209,7 @@ struct DailyView: View {
                     .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
                     .raisedSurface(cornerRadius: Layout.Radius.card)
             }
+            .accessibilityLabel(String(localized: "Yazarak ekle"))
         }
         .padding(.horizontal, Layout.Spacing.lg)
     }

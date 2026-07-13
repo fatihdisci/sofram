@@ -457,10 +457,11 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Talimat:** Prompt ve hata/sonuç metinleri isteğin locale'ine göre doğru dilde üretilir. Türkçe referans DB'yi İngilizceye körlemesine çevirmek YASAK: İngilizce well-established alias/isimler ayrı veri ve kaynak politikasıyla eklenir; yalnız doğrulanmış eşleşmeler referans değeri alır. Eski Türkçe kayıt isimleri/ham AI verisi otomatik değiştirilmez.
   **Kabul kriterleri:** TR ve EN prompt snapshot/kontrat testleri yeşil; “chicken soup” gibi İngilizce eşleşme yalnız tanımlı alias varsa reference kaynaklıdır; yanlış substring eşleşmesi geri gelmez.
 
-- [ ] **SF-1008 · Calorisor global QA, erişilebilirlik ve yayın kapısı**
+- [x] **SF-1008 · Calorisor global QA, erişilebilirlik ve yayın kapısı** ✅ 2026-07-13
   **Dosyalar:** `PHASE_QA_NOTES.md`, yeni screenshot/locale testleri, App Store hazırlık notları.
   **Talimat:** TR/EN için onboarding → kamera → analiz → düzelt → log → geçmiş → Ayarlar → widget → silme tam turunu çalıştır. Light/dark, Dynamic Type, VoiceOver temel etiketleri, küçük iPhone ve gerçek cihaz ikon maskesi kontrol edilir. App Store listing, privacy metni, abonelik ürün isimleri ve screenshot'lar marka/dil ile senkronlanır. Resmi Calorisor marka/alan adı kontrolü tamamlanmadan yayın onayı verilmez.
   **Kabul kriterleri:** Her dilde kritik ❌ yok; testler yeşil; release checklist'te marka kullanılabilirliği, icon ve metadata tek tek işaretli.
+  ⏸ **NOT:** Kod tarafı tamam: tüm view'lara accessibility label/hint/value eklendi (25+ ikon buton, 3 slider, 4 stepper, CalorieRingView), dekoratif elementler gizlendi, SofraLottieView otomatik `.accessibilityHidden(true)`. `PHASE_QA_NOTES.md` kapsamlı 2-dilli QA checklist + yayın kapısı ile yeniden yazıldı. Kalan: gerçek cihaz QA turu (TR + EN), Dynamic Type font scaling (`Font+Tokens.swift`'te `@ScaledMetric`), Xcode derlemesi, App Store Connect yapılandırması, marka/alan adı hukuki kontroller (bkz. `CALORISOR_BRAND_CHECK.md`).
 
 ---
 

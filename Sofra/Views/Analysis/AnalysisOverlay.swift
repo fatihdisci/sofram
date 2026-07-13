@@ -57,6 +57,7 @@ struct AnalysisOverlay: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(.black.opacity(0.35))
                 .allowsHitTesting(false)
+                .accessibilityHidden(true)
                 .ignoresSafeArea()
 
             // Viewfinder treatment while scanning
@@ -90,6 +91,7 @@ struct AnalysisOverlay: View {
                             .foregroundStyle(.white)
                             .frame(width: 42, height: 42)
                             .background(.ultraThinMaterial, in: Circle())
+                        .accessibilityLabel(String(localized: "Vazgeç"))
                     }
                     Spacer()
                     if client.isDemoMode {

@@ -122,6 +122,7 @@ struct SevenDaySummaryView: View {
                         .foregroundStyle(Color.textPrimary)
                         .frame(width: 36, height: 36)
                         .background(Color.surfaceRaised, in: Circle())
+                        .accessibilityLabel(String(localized: "Kapat"))
                 }
             }
         }

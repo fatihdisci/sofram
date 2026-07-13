@@ -188,6 +188,7 @@ struct FreeScanLimitView: View {
                             .background(Color.surfaceRaised, in: Circle())
                             .raisedSurface(cornerRadius: 21)
                     }
+                    .accessibilityLabel(String(localized: "Kapat"))
                     Spacer()
                 }
                 .padding(.horizontal, Layout.Spacing.lg)
@@ -202,6 +203,7 @@ struct FreeScanLimitView: View {
                         .raisedSurface(cornerRadius: 60)
                     SofraIconView(icon: .sofra, size: 56)
                         .foregroundStyle(Color.accentFill)
+                        .accessibilityHidden(true)
                 }
 
                 Text("Bu haftaki taramaların bitti")
@@ -462,6 +464,7 @@ struct SettingsView: View {
                 .foregroundStyle(Color.textMuted)
             Stepper("", value: value, in: 0...10000, step: step)
                 .labelsHidden()
+                .accessibilityLabel(title)
         }
     }
 

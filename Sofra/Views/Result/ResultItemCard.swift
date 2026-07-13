@@ -156,6 +156,7 @@ struct ResultItemCard: View {
                         .frame(width: 36, height: 36)
                         .foregroundStyle(Color.textPrimary)
                         .background(Color.surfaceFlat, in: Circle())
+                        .accessibilityLabel(String(localized: "Azalt"))
                 }
                 .buttonStyle(.plain)
 
@@ -185,6 +186,7 @@ struct ResultItemCard: View {
                         .frame(width: 36, height: 36)
                         .foregroundStyle(Color.onAccent)
                         .background(Color.accentFill, in: Circle())
+                        .accessibilityLabel(String(localized: "Artır"))
                 }
                 .buttonStyle(.plain)
             }
