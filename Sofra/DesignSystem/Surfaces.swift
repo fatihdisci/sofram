@@ -36,6 +36,17 @@ struct RaisedSurfaceModifier: ViewModifier {
                                           radius: 8, x: 5, y: 6))
                     )
             )
+            // Dark mode only: the bottom-right drop shadow is near-black and
+            // vanishes against the dark page, so raised cards/buttons blur into
+            // the background. A hairline rim restores crisp edge definition.
+            // Light mode already separates cleanly (white highlight on cream) —
+            // no border there, so the neomorphic look is untouched.
+            .overlay(
+                scheme == .dark
+                    ? RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .strokeBorder(Color.borderHairline.opacity(0.9), lineWidth: 1)
+                    : nil
+            )
     }
 }
 

@@ -51,8 +51,14 @@ final class StoreKitManager {
     /// The currently active product (if subscribed).
     private(set) var activeProductID: String?
 
-    /// Whether the user is eligible for the 3-day intro trial.
-    private(set) var isEligibleForTrial = true
+    /// Product IDs the user is currently eligible to start a free trial on.
+    /// Driven per-product (the annual plan carries the 7-day trial, the monthly
+    /// plan has none), so the paywall can show trial copy only for the plan that
+    /// actually offers it. Empty until `checkTrialEligibility()` runs.
+    private(set) var trialEligibleProductIDs: Set<String> = []
+
+    /// Legacy convenience: true if ANY product offers a trial the user can start.
+    var isEligibleForTrial: Bool { !trialEligibleProductIDs.isEmpty }
 
     // MARK: - Init
 
@@ -86,20 +92,41 @@ final class StoreKitManager {
     }
 
     private func checkTrialEligibility() async {
-        // Check if eligible for intro offer on either product.
-        if let monthly = monthlyProduct,
-           let info = monthly.subscription,
-           await info.isEligibleForIntroOffer {
-            isEligibleForTrial = true
-            return
+        // A product qualifies only if it carries a free-trial introductory offer
+        // AND the user hasn't already consumed an intro offer in its group.
+        var eligible: Set<String> = []
+        for product in [monthlyProduct, annualProduct].compactMap({ $0 }) {
+            guard let info = product.subscription,
+                  info.introductoryOffer?.paymentMode == .freeTrial,
+                  await info.isEligibleForIntroOffer
+            else { continue }
+            eligible.insert(product.id)
         }
-        if let annual = annualProduct,
-           let info = annual.subscription,
-           await info.isEligibleForIntroOffer {
-            isEligibleForTrial = true
-            return
+        trialEligibleProductIDs = eligible
+    }
+
+    /// True when this specific product offers a free trial the user can start now.
+    func hasFreeTrial(_ product: Product?) -> Bool {
+        guard let id = product?.id else { return false }
+        return trialEligibleProductIDs.contains(id)
+    }
+
+    /// Human-readable Turkish trial length for a product's intro offer
+    /// (e.g. "7 gün", "3 gün", "1 ay"), read from the real StoreKit period so
+    /// the copy always matches whatever is configured in App Store Connect.
+    /// Returns nil when the product has no free-trial offer.
+    func trialPeriodText(for product: Product?) -> String? {
+        guard let offer = product?.subscription?.introductoryOffer,
+              offer.paymentMode == .freeTrial else { return nil }
+        let period = offer.period
+        let value = period.value
+        switch period.unit {
+        case .day:   return "\(value) gün"
+        case .week:  return "\(value * 7) gün"   // 1 hafta → "7 gün"
+        case .month: return value == 1 ? "1 ay" : "\(value) ay"
+        case .year:  return value == 1 ? "1 yıl" : "\(value) yıl"
+        @unknown default: return "\(value) gün"
         }
-        isEligibleForTrial = false
     }
 
     // MARK: - Purchase

@@ -81,6 +81,10 @@ targets:
       testTargets:
         - SofraTests
       gatherCoverageData: false
+      # Local StoreKit testing: products + the annual 7-day free trial resolve
+      # from this config in the simulator (no App Store Connect round-trip).
+      # Production reads the real products from App Store Connect regardless.
+      storeKitConfiguration: Sofra/StoreKit/Products.storekit
 
   SofraTests:
     type: bundle.unit-test
