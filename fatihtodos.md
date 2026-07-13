@@ -5,13 +5,14 @@
 > hesap/kurulum işlerinin listesidir. Kod tarafı ROADMAP.md'de takip ediliyor.
 
 ## Mevcut durum (referans)
-- Commitler roadmap dalına pushlandı:
-  - `617bf3f` — Roadmap uygulaması
-  - `8d80e0e` — Yerel OpenAI anahtarını uygulama paketinden çıkaran güvenlik düzeltmesi
-- 80 test, 0 hata; çalışma ağacı temiz; roadmap ile origin/roadmap aynı durumda.
-- Bunların üstüne **paywall revizyonu** eklendi (bu oturum): scroll'suz tek ekran,
-  koyu mod kontrast düzeltmesi, gerçek Pro'ya özel özellik listesi ve **yıllık planda
-  7 gün ücretsiz deneme** (aylıkta deneme yok). Detay: aşağıdaki "7 Gün Ücretsiz Deneme" bölümü.
+- **Branch:** `roadmap`, commit'ler local'de (pushlanmadı):
+  - `ff4516d` — SF-1006 + SF-1007: EN/TR yerelleştirme altyapısı ve global dil politikası
+  - `57bda90` — SF-1008: Global QA, erişilebilirlik ve yayın kapısı
+  - Faz 10'un tüm kod yüzeyi tamam. 22+15 dosya değişti.
+- **Test:** 80 test, 0 hata
+- **Faz 10:** SF-1001…1008 arası tüm maddeler kod tarafında tamam.
+  Kalan: gerçek cihaz QA, App Store Connect yapılandırması, marka/alan adı kontrolleri.
+- **Yerel değişiklikler:** `Sofra/secrets.plist` ve `project.pbxproj` stash'te (main'den geçerken).
 
 ---
 
@@ -108,13 +109,14 @@ iPhone'u seçip uygulamayı çalıştır. `PHASE_QA_NOTES.md` listesini sırayla
 Her satıra yalnız gözlemledikten sonra ✅ veya ❌ koy.
 
 ## 9. Son kalan kararlar
+- ✅ App Icon (1024×1024) yerleştirildi (`Sofra/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png`)
 - Gerçek gizlilik politikası ve kullanım koşulları URL'lerini sağla
-  (`Sofra/Models/NutritionConstants.swift` → `LegalLinks` placeholder'ları).
-- 1024×1024 App Icon tasarımını yerleştir.
+  (`Sofra/Models/NutritionConstants.swift` → `LegalLinks` placeholder'ları → `calorisor.app`).
 - **Gizlilik etiketi kararı:** Proxy, normalize analiz yanıtını 7 gün cache'lediği için
   doğrudan "veri toplanmıyor" seçmek riskli. Ya cache kaldırılmalı ya da
   "kullanıcıyla ilişkilendirilmeyen User Content" olarak beyan edilmeli.
-- QA notlarını gönder; hatalar düzeltilip ardından main merge/PR aşaması tamamlanır.
+- QA notlarını gönder (`PHASE_QA_NOTES.md` güncellendi, 2-dilli checklist hazır);
+  hatalar düzeltilip ardından main merge/PR aşaması tamamlanır.
 
 ---
 
@@ -173,3 +175,52 @@ ayarlarsan paywall onu yazar — bu yüzden ASC'yi 7 güne göre doğru kurman k
   bildirim kurar — bunu da sandbox'ta gözlemle.
 - **Terms/expiry:** Paywall footer'ındaki otomatik-yenileme metni de dinamik; yıllıkta
   "7 gün ücretsiz deneme sonunda ₺.../yıl olarak otomatik yenilenir" yazmalı.
+
+---
+
+# SF-1006/1007 SONRASI — YENİ EKLENENLER
+
+## 10. Marka ve alan adı kontrolleri (CALORISOR_BRAND_CHECK.md)
+Bu kontroller yapılmadan yayın onayı verilmez:
+- [ ] App Store'da "Calorisor" isim müsaitliği kontrolü
+- [ ] `calorisor.app` alan adı kaydı
+- [ ] Privacy Policy sayfası yayında (`https://calorisor.app/privacy`)
+- [ ] Terms of Use sayfası yayında (`https://calorisor.app/terms`)
+- [ ] TURKPATENT marka araştırması (sınıf 9, 42)
+- [ ] USPTO / EUIPO marka araştırması
+- [ ] Foodvisor isim benzerliği hukuki değerlendirmesi
+- [ ] Sosyal medya kullanıcı adı (@calorisor) kontrolü
+- [ ] Destek e-postası (`destek@calorisor.app`) — şu an `av.fatihdisci@gmail.com`
+
+## 11. App Store iki dilli metadata (TR + EN)
+- [ ] App Store açıklaması (TR + EN)
+- [ ] Anahtar kelimeler (TR + EN)
+- [ ] Ekran görüntüleri: 6.7", 6.5", 5.5" — her boyut için TR ve EN set
+- [ ] Abonelik ürün görünen adları: "Calorisor Pro Aylık" / "Calorisor Pro Yıllık" (ve İngilizce karşılıkları)
+- [ ] Privacy nutrition label (App Store Connect)
+
+## 12. Proxy prompt güncellemesi
+- [ ] `proxy/prompts.ts`: yeni dil-aware prompt'larla Vercel'e deploy et
+  - TR için mevcut prompt korundu (Turkish cuisine)
+  - EN için yeni prompt (international foods, English units)
+  - `proxy/api/scan.ts`: `household_unit` enum'ı genişletildi (17 birim)
+- [ ] Deploy sonrası curl testini TR ve EN locale için tekrarla
+
+## 13. Xcode'da yapılacaklar
+- [ ] `DEVELOPMENT_TEAM` doldur → `xcodegen generate`
+- [ ] `Localizable.xcstrings` Xcode'da build al — String Catalog'un derlenmesi gerek
+- [ ] `Sofra/App/AppLanguage.swift` ve `Sofra/Resources/Localizable.xcstrings` Xcode projesine eklendi mi kontrol et
+- [ ] Scheme'de StoreKit config'in bağlı olduğunu doğrula
+- [ ] Widget target'ına `SofraIcon.swift` paylaşımı (marka logosu widget'ta) — ertelenmişti
+
+## 14. İki dilli QA (güncellenmiş PHASE_QA_NOTES.md)
+- [ ] TR tam tur: onboarding → kamera → analiz → sonuç → log → geçmiş → ayarlar → widget → silme
+- [ ] EN tam tur: aynı akış, tüm metinler İngilizce olmalı
+- [ ] VoiceOver: tüm ikon butonlar okunuyor, slider'lar değer söylüyor, dekoratif öğeler atlanıyor
+- [ ] Light/dark mode: tüm ekranlar
+- [ ] Dynamic Type en büyük ayar: metinler taşmıyor
+- [ ] iPhone SE: Paywall sığıyor, sütunlar taşmıyor
+- [ ] Gerçek cihaz ikon maskesi
+
+## 15. Abonelik grubu isim güncellemesi
+- Kod `Calorisor Pro` markasını kullanıyor. App Store Connect'teki "Sofra Premium" grubu → "Calorisor Pro" olarak güncellenmeli (ya da tam tersi, kod ASC'ye uyacak şekilde). Hangisi olursa olsun, kod ve ASC aynı olmalı.
