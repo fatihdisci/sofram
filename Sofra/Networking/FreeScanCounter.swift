@@ -1,10 +1,14 @@
 //
 //  FreeScanCounter.swift
-//  Sofra — device-level lifetime free-scan counter (no accounts, no server).
+//  Sofra — device-level free-scan quota (no accounts, no server).
 //
-//  Enforces a lifetime cap of 3 free scans before paywall gating. The paywall UI
-//  and StoreKit 2 subscription wiring are later phases; `isSubscribed` is a stub
-//  flag here that a later phase will drive from `Transaction.currentEntitlements`.
+//  Grants a fixed number of free AI scans per rolling weekly period, then gates
+//  behind the paywall until the quota refills at the start of the next calendar
+//  week. This keeps the app usable without Pro (unlike a one-time lifetime cap)
+//  while still steering heavy users to a subscription.
+//
+//  Manual entry (Hızlı Ekle counters + the one-off manual meal entry) does NOT
+//  consume this quota — only successful AI recognitions do.
 //
 //  Backed by UserDefaults (device-local). Note: this is best-effort abuse
 //  prevention on the client; the proxy also enforces IP/device rate limiting
@@ -20,18 +24,28 @@ final class FreeScanCounter {
 
     static let shared = FreeScanCounter()
 
-    /// Lifetime free scans allowed before the paywall.
+    /// Free scans granted per weekly period before the paywall.
     let maxFreeScans = 3
 
     private let defaults: UserDefaults
+    /// Injectable clock so tests can exercise weekly rollover deterministically.
+    private let now: () -> Date
+
     private enum Keys {
         static let used = "sofra.freeScansUsed"
         static let subscribed = "sofra.isSubscribed"
+        static let periodStart = "sofra.freeScanPeriodStart"
     }
 
-    /// Lifetime count of scans consumed.
+    /// Scans consumed within the current weekly period.
     private(set) var usedScans: Int {
         didSet { defaults.set(usedScans, forKey: Keys.used) }
+    }
+
+    /// Start of the week that `usedScans` is counted against. Persisted so a
+    /// rollover survives relaunches.
+    private var periodStart: Date {
+        didSet { defaults.set(periodStart, forKey: Keys.periodStart) }
     }
 
     /// STUB — wired to StoreKit 2 in a later phase. Persisted so the app can boot
@@ -46,21 +60,47 @@ final class FreeScanCounter {
     var debugForcePro = true
     #endif
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = .standard, now: @escaping () -> Date = { Date() }) {
         self.defaults = defaults
+        self.now = now
         self.usedScans = defaults.integer(forKey: Keys.used)
         self.isSubscribed = defaults.bool(forKey: Keys.subscribed)
+        self.periodStart = (defaults.object(forKey: Keys.periodStart) as? Date) ?? .distantPast
     }
 
-    /// Free scans still available (0 once the cap is hit).
-    var remainingFreeScans: Int { max(0, maxFreeScans - usedScans) }
+    /// Start of the calendar week containing `date` (locale first-weekday).
+    private func weekStart(for date: Date) -> Date {
+        Calendar.current.dateInterval(of: .weekOfYear, for: date)?.start
+            ?? Calendar.current.startOfDay(for: date)
+    }
+
+    /// `usedScans` as it applies right now: zero once the stored period elapsed.
+    /// Read-only — the actual persisted rollover happens in `recordScan()`.
+    private var effectiveUsedScans: Int {
+        weekStart(for: now()) > periodStart ? 0 : usedScans
+    }
+
+    /// Free scans still available this period (0 once the cap is hit).
+    var remainingFreeScans: Int { max(0, maxFreeScans - effectiveUsedScans) }
 
     /// The gate the scan flow checks before starting a scan.
-    var canScanForFree: Bool { hasUnlimitedScans || usedScans < maxFreeScans }
+    var canScanForFree: Bool { hasUnlimitedScans || effectiveUsedScans < maxFreeScans }
+
+    /// When the current free-scan quota next refills (start of next week).
+    var nextResetDate: Date {
+        Calendar.current.date(byAdding: .weekOfYear, value: 1, to: weekStart(for: now()))
+            ?? now()
+    }
 
     /// Call once after a successful scan completes.
     func recordScan() {
         guard !hasUnlimitedScans else { return }
+        let currentWeek = weekStart(for: now())
+        if currentWeek > periodStart {
+            // New weekly period — reset the tally before counting this scan.
+            periodStart = currentWeek
+            usedScans = 0
+        }
         usedScans += 1
     }
 
@@ -73,7 +113,10 @@ final class FreeScanCounter {
     }
 
     #if DEBUG
-    /// Test/debug helper — resets the lifetime counter.
-    func resetForTesting() { usedScans = 0 }
+    /// Test/debug helper — resets the quota to a fresh, full period.
+    func resetForTesting() {
+        usedScans = 0
+        periodStart = .distantPast
+    }
     #endif
 }

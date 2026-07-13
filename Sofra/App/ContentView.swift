@@ -204,12 +204,12 @@ struct FreeScanLimitView: View {
                         .foregroundStyle(Color.accentFill)
                 }
 
-                Text("Ücretsiz taramaların bitti")
+                Text("Bu haftaki taramaların bitti")
                     .font(.sofraTitle)
                     .foregroundStyle(Color.textPrimary)
                     .multilineTextAlignment(.center)
 
-                Text("3 ücretsiz taramanın üçünü de kullandın.\nSınırsız taramayla devam et — istediğin an iptal.")
+                Text("Haftalık \(counter.maxFreeScans) ücretsiz taraman doldu — \(resetHint).\nÖğününü elle de ekleyebilirsin (her zaman ücretsiz) ya da sınırsız taramaya geçebilirsin.")
                     .font(.sofraBody)
                     .foregroundStyle(Color.textSecondary)
                     .multilineTextAlignment(.center)
@@ -239,6 +239,16 @@ struct FreeScanLimitView: View {
                 .presentationBackground(Color.bgPage)
                 .presentationDragIndicator(.visible)
         }
+    }
+
+    /// Human-readable "refills in N days" hint for the weekly quota.
+    private var resetHint: String {
+        let days = Calendar.current.dateComponents(
+            [.day], from: Date(), to: counter.nextResetDate
+        ).day ?? 0
+        if days <= 0 { return "yakında yenilenir" }
+        if days == 1 { return "yarın yenilenir" }
+        return "\(days) gün sonra yenilenir"
     }
 }
 
