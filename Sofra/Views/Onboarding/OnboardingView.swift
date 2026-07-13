@@ -1,9 +1,10 @@
 //
 //  OnboardingView.swift
-//  Sofra — onboarding quiz: goal → height → weight → activity → age → sex → result → paywall.
+//  Calorisor — onboarding quiz: goal → height → weight → activity → age → sex → result → paywall.
 //
-//  One question per page using TabView page-style. Design tokens throughout.
-//  Raised-surface cards, spring transitions, accent progress indicator.
+//  One question per page using TabView page-style. Flat design tokens throughout.
+//  Flat bordered cards, spring transitions, accent progress indicator. The result
+//  step foregrounds the core value — capture is all it takes — before the paywall.
 //
 
 import SwiftUI
@@ -416,6 +417,13 @@ struct ResultStepView: View {
             .frame(width: 180, height: 180)
             .background(Color.surfaceRaised, in: Circle())
             .raisedSurface(cornerRadius: 999)
+
+            // Foreground the core value: from here, capture is all it takes.
+            Text("Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek.")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textSecondary)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
             // Floor-applied hint (Phase A4): shown only when the sex-aware
             // safety minimum clipped the raw target upward.

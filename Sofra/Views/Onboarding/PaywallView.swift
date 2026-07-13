@@ -1,6 +1,6 @@
 //
 //  PaywallView.swift
-//  Sofra — "Dürüst Paywall" (Honest Paywall).
+//  Calorisor — "Dürüst Paywall" (Honest Paywall).
 //
 //  Core brand differentiator vs Cal AI:
 //  • Price shown on the FIRST screen — never hidden behind steps.
