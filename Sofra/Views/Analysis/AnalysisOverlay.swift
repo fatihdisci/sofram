@@ -2,11 +2,13 @@
 //  AnalysisOverlay.swift
 //  Sofra — post-capture analysis screen with staggered item reveal.
 //
-//  No spinner. The captured photo stays visible under a viewfinder-style
-//  scanning treatment (corner brackets + a sweeping light beam + rotating
-//  status captions). Recognized items appear one by one (150ms stagger,
-//  fade+scale 0.9→1). When all items are revealed, a medium haptic fires
-//  and the result screen takes over.
+//  No spinner and no "AI magic" laser sweep. The captured photo stays visible
+//  under an honest processing treatment: viewfinder corner brackets framing the
+//  plate, a rotating status caption naming the real step (inceleniyor →
+//  ölçülüyor → hesaplanıyor) and a flat 3-segment stepped progress that tracks
+//  that step. Recognized items appear one by one (150ms stagger, fade+scale
+//  0.9→1). When all items are revealed, a medium haptic fires and the result
+//  screen takes over.
 //
 //  Failures land in a bottom card with distinct copy for "the proxy isn't
 //  configured yet" vs. a transient error, plus retry-in-place and cancel.
@@ -25,7 +27,6 @@ struct AnalysisOverlay: View {
     @State private var revealedCount = 0
     @State private var scanError: AIProxyError?
     @State private var allRevealed = false
-    @State private var beamDown = false
     @State private var statusIndex = 0
     @State private var scanTask: Task<Void, Never>?
 
@@ -126,40 +127,36 @@ struct AnalysisOverlay: View {
 
     private var scanningTreatment: some View {
         VStack(spacing: Layout.Spacing.lg) {
-            ZStack {
-                CornerBrackets()
-                    .stroke(.white.opacity(0.6), style: StrokeStyle(lineWidth: 3, lineCap: .round))
+            // Honest viewfinder framing — no laser sweep.
+            CornerBrackets()
+                .stroke(.white.opacity(0.6), style: StrokeStyle(lineWidth: 3, lineCap: .round))
+                .frame(width: 280, height: 280)
 
-                // Sweeping beam
-                LinearGradient(
-                    colors: [.clear, Color.accentFill.opacity(0.85), .clear],
-                    startPoint: .leading, endPoint: .trailing
-                )
-                .frame(height: 3)
-                .shadow(color: Color.accentFill.opacity(0.8), radius: 6)
-                .padding(.horizontal, 10)
-                .offset(y: beamDown ? 130 : -130)
+            VStack(spacing: Layout.Spacing.md) {
+                // Rotating status caption — names the real step in progress
+                Text(statusCaptions[statusIndex])
+                    .font(.sofraLabel)
+                    .foregroundStyle(.white.opacity(0.9))
+                    .padding(.horizontal, Layout.Spacing.md)
+                    .padding(.vertical, Layout.Spacing.xs)
+                    .background(.black.opacity(0.35), in: Capsule())
+                    .contentTransition(.opacity)
+                    .id(statusIndex)
+                    .transition(.opacity)
+
+                // Flat stepped progress — clear "step k of 3", no glow/gradient
+                HStack(spacing: 6) {
+                    ForEach(0..<statusCaptions.count, id: \.self) { i in
+                        Capsule()
+                            .fill(i == statusIndex ? Color.accentFill : Color.white.opacity(0.3))
+                            .frame(width: i == statusIndex ? 22 : 14, height: 4)
+                            .animation(.sofraSpring, value: statusIndex)
+                    }
+                }
             }
-            .frame(width: 280, height: 280)
-
-            // Rotating status caption
-            Text(statusCaptions[statusIndex])
-                .font(.sofraLabel)
-                .foregroundStyle(.white.opacity(0.9))
-                .padding(.horizontal, Layout.Spacing.md)
-                .padding(.vertical, Layout.Spacing.xs)
-                .background(.black.opacity(0.35), in: Capsule())
-                .contentTransition(.opacity)
-                .id(statusIndex)
-                .transition(.opacity)
         }
         .offset(y: -20)
         .allowsHitTesting(false)
-        .onAppear {
-            withAnimation(.spring(response: 0.8, dampingFraction: 0.9).repeatForever(autoreverses: true)) {
-                beamDown = true
-            }
-        }
     }
 
     // MARK: - Error card

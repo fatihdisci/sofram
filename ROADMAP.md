@@ -438,6 +438,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Dosyalar:** `Sofra/Views/Camera/`, `Sofra/Views/Analysis/`, `Sofra/Views/Result/`, `Sofra/Views/TextLog/`.
   **Talimat:** Capture → analiz → düzelt → logla akışını tek görsel dilde yenile. Analiz durumu “AI sihir” klişesi değil, anlaşılır işlem geri bildirimi verir. Sonuç listesi Search sonucu gibi hızlı taranır ve düzenleme önceliklidir; hata, offline ve rate-limit durumları tasarım sistemiyle uyumlu kalır.
   **Kabul kriterleri:** Fotoğraf ve metin akışları aynı tasarım kalitesinde; silme/düzenleme/kaydetmeden çıkış davranışları korunur; Dynamic Type temel kontrolleri geçer.
+  ⏸ **NOT:** Analiz durumundaki "AI sihri" süpüren lazer beam + glow gradient kaldırıldı; yerine dürüst adımlı işlem geri bildirimi geldi (viewfinder köşe braketleri + gerçek adımı adlandıran dönen başlık + düz 3-segment ilerleme). Sonuç ekranı zaten edit-first (silme/rename/birim/kaydetmeden çıkış — SF-301/302/303/304); Result gradient'leri düz scroll-solma maskesi olarak korundu; hata/offline/rate-limit kartları tasarım sistemiyle uyumlu (SF-102). Dynamic Type/gerçek cihaz doğrulaması derleme ortamı bekliyor.
 
 - [ ] **SF-1005 · Geçmiş, Ayarlar, onboarding ve paywall'ın küresel görsel dönüşümü**
   **Dosyalar:** `Sofra/Views/History/`, `Sofra/App/ContentView.swift`, `Sofra/Views/Onboarding/`, `SofraWidget/`.
