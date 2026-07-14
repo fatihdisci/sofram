@@ -36,6 +36,11 @@ enum CalorisorIcon: String, CaseIterable, Identifiable {
     case gecmis         // history tab: notebook calendar
     case ayarlar        // settings tab: low flame
 
+    // Product-defining action icons (see VISUAL_DIFFERENTIATION_NOTES.md §D).
+    case capture        // photo meal capture: camera whose lens is a plate
+    case mealNote       // text meal logging: a note/menu card with lines
+    case emptyPlate     // empty food log: plate rim with an empty centre line
+
     var id: String { rawValue }
 
     /// Drawing primitives in the 0…24 SVG user space.
@@ -112,6 +117,32 @@ enum CalorisorIcon: String, CaseIterable, Identifiable {
             return [
                 .path("M12 3c.8 3-1 4.2-1 6.2 0 1 .7 1.8 1.7 2.4-.2-1.6.8-2.8 2-4 2.2 1.9 3.3 4.2 3.3 6.6 0 3.5-2.7 6.2-6 6.2s-6-2.7-6-6.2c0-3 1.8-5.7 5-8.1-.5 2.4.2 3.6 1.4 4.7C10.5 6 11.7 4.6 12 3Z"),
                 .path("M12 13c1.4 1.1 2 2.2 2 3.3 0 1.2-.9 2.2-2 2.2s-2-1-2-2.2c0-1.1.6-2.2 2-3.3Z"),
+            ]
+        case .capture:
+            // Camera body + a small viewfinder hump; the lens is a plate
+            // (double concentric circle, echoing `.tabak`) so "capture" reads
+            // as "capture a plate", not a generic camera.
+            return [
+                .path("M8.7 6.5 9.6 5c.19-.31.53-.5.9-.5h3c.37 0 .71.19.9.5l.9 1.5"),
+                .path("M4.5 6.5h15c1.1 0 2 .9 2 2v8.5c0 1.1-.9 2-2 2h-15c-1.1 0-2-.9-2-2V8.5c0-1.1.9-2 2-2Z"),
+                .circle(cx: 12, cy: 13, r: 3.3),
+                .circle(cx: 12, cy: 13, r: 1.3),
+            ]
+        case .mealNote:
+            // A note / menu card with three text lines — the written-word
+            // counterpart to the photo capture.
+            return [
+                .path("M6 4h12c.55 0 1 .45 1 1v14c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1V5c0-.55.45-1 1-1Z"),
+                .path("M8.5 9h7"),
+                .path("M8.5 12.5h7"),
+                .path("M8.5 16h4.5"),
+            ]
+        case .emptyPlate:
+            // A plate rim with a single empty centre line — "nothing logged
+            // yet". Distinct from `.tabak` (which has a full inner rim).
+            return [
+                .circle(cx: 12, cy: 12, r: 8.5),
+                .path("M9 12h6"),
             ]
         }
     }
@@ -341,22 +372,64 @@ enum SVGPath {
 }
 
 #if DEBUG
-#Preview("Sofra icons") {
-    let columns = [GridItem(.adaptive(minimum: 64), spacing: 16)]
-    return LazyVGrid(columns: columns, spacing: 16) {
-        ForEach(CalorisorIcon.allCases) { icon in
-            VStack(spacing: 8) {
-                CalorisorIconView(icon: icon, size: 40)
-                    .foregroundStyle(Color.accentFill)
-                Text(icon.rawValue)
-                    .font(.system(size: 11))
-                    .foregroundStyle(.secondary)
+
+/// DEBUG-only internal catalog for eyeballing the whole family — every icon at
+/// 18/24/32pt, over both backgrounds, in the primary/muted/accent tints. This
+/// is a `#Preview` only; it is never wired into user-facing navigation.
+struct CalorisorIconGallery: View {
+    private let sizes: [CGFloat] = [18, 24, 32]
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 24) {
+                row(scheme: .light)
+                row(scheme: .dark)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
+            .padding()
         }
     }
-    .padding()
-    .background(Color.bgPage)
+
+    private func row(scheme: ColorScheme) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(scheme == .light ? "Light" : "Dark")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(.secondary)
+
+            let columns = [GridItem(.adaptive(minimum: 96), spacing: 12)]
+            LazyVGrid(columns: columns, spacing: 12) {
+                ForEach(CalorisorIcon.allCases) { icon in
+                    VStack(spacing: 8) {
+                        // Three sizes, primary tint.
+                        HStack(alignment: .bottom, spacing: 8) {
+                            ForEach(sizes, id: \.self) { size in
+                                CalorisorIconView(icon: icon, size: size)
+                                    .foregroundStyle(Color.textPrimary)
+                            }
+                        }
+                        // Muted + accent tints at 24pt.
+                        HStack(spacing: 10) {
+                            CalorisorIconView(icon: icon, size: 24)
+                                .foregroundStyle(Color.textMuted)
+                            CalorisorIconView(icon: icon, size: 24)
+                                .foregroundStyle(Color.accentFill)
+                        }
+                        Text(icon.rawValue)
+                            .font(.system(size: 10))
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
+                }
+            }
+        }
+        .padding()
+        .background(Color.bgPage, in: RoundedRectangle(cornerRadius: 16))
+        .environment(\.colorScheme, scheme)
+    }
+}
+
+#Preview("Calorisor icon gallery") {
+    CalorisorIconGallery()
 }
 #endif
