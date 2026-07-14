@@ -127,7 +127,7 @@ final class FreeScanCounter {
     }
 
     func canScan(for pool: FreeScanPool) -> Bool {
-        hasUnlimitedScans || remaining(for: pool) > 0
+        isQuotaBypassed || remaining(for: pool) > 0
     }
 
     /// When the current daily quota next refills (UTC midnight).
@@ -138,7 +138,7 @@ final class FreeScanCounter {
     /// Record a successful AI scan. If the proxy supplied quota headers, they
     /// replace the local estimate; otherwise only the relevant local pool moves.
     func recordScan(pool: FreeScanPool, serverQuota: ScanQuotaSnapshot? = nil) {
-        guard !hasUnlimitedScans else { return }
+        guard !isQuotaBypassed else { return }
         rolloverIfNeeded()
 
         if let serverQuota, serverQuota.tier == "free" {
@@ -163,7 +163,7 @@ final class FreeScanCounter {
         usedTextScans = max(0, quota.textLimit - quota.textRemaining)
     }
 
-    private var hasUnlimitedScans: Bool {
+    private var isQuotaBypassed: Bool {
         #if DEBUG
         return isSubscribed || debugForcePro
         #else

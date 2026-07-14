@@ -30,7 +30,7 @@ struct PaywallView: View {
     /// Label of the no-purchase escape hatch. Onboarding offers the free tier;
     /// the free-scan-limit / settings sheets override this with a plain "close".
     /// Kept to a single line so the fixed layout stays within its height budget.
-    var skipTitle: String = "3 ücretsiz tarama ile devam et"
+    var skipTitle: String = "Ücretsiz devam et"
 
     @State private var selectedProductID = CalorisorProductID.annual
     @State private var isRestoring = false
@@ -111,7 +111,7 @@ struct PaywallView: View {
                 Text(String(localized: "\(trial) ücretsiz deneme"))
                     .font(.sofraHeading)
                     .foregroundStyle(Color.accentText)
-                Text(String(localized: "Sonra \(priceString) · istediğin an iptal"))
+                Text(String(localized: "Deneme sonunda \(priceString) tahsil edilir"))
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textSecondary)
             } else {
@@ -127,13 +127,14 @@ struct PaywallView: View {
     }
 
     // Genuinely Pro-only value — every line is gated behind a subscription:
-    //  • scans (photo + text) are capped at 3 lifetime on the free tier;
+    //  • free scans are limited by separate daily photo and text/voice pools;
     //  • Pro requests use the stronger vision model (gpt-5-mini vs -nano),
     //    so recognition is measurably more accurate (see AIProxyClient tiering).
     private var featureCard: some View {
         VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
-            featureRow(icon: "infinity", text: "Sınırsız fotoğrafla kalori takibi")
-            featureRow(icon: "text.alignleft", text: "Sınırsız yazarak öğün ekleme")
+            featureRow(icon: "camera.viewfinder", text: "Günlük kullanım için yüksek limitli AI analizi")
+            featureRow(icon: "text.alignleft", text: "Pro ile daha fazla analiz")
+            featureRow(icon: "person.2.fill", text: "Aile Paylaşımı ile paylaşılabilir")
             // `target` (accuracy/isabet), not `sparkles` — Calorisor avoids
             // generic AI clichés; the honest promise is a more accurate model.
             featureRow(icon: "target", text: "Daha akıllı AI ile daha isabetli tanıma")
@@ -247,7 +248,7 @@ struct PaywallView: View {
     }
 
     private func periodLabel(for productID: String) -> String {
-        productID == CalorisorProductID.annual ? "Yıllık" : "Aylık"
+        productID == CalorisorProductID.annual ? "Yıllık toplam" : "Aylık"
     }
 
     private var periodLabel: String {
@@ -371,10 +372,10 @@ struct PaywallView: View {
     }
 
     private var termsText: String {
-        let renewal = String(localized: "\(priceString) olarak otomatik yenilenir. ")
-            + String(localized: "App Store hesabından dilediğin an iptal edebilirsin.")
+        let renewal = String(localized: "\(priceString) tutarında otomatik yenilenir. ")
+            + String(localized: "App Store'dan istediğin an iptal edebilirsin.")
         if selectedHasTrial, let trial = selectedTrialText {
-            return String(localized: "\(trial) ücretsiz deneme sonunda ") + renewal
+            return String(localized: "\(trial) ücretsiz deneme sonunda tahsil edilir. ") + renewal
         }
         return String(localized: "Abonelik ") + renewal
     }

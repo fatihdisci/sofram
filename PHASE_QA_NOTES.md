@@ -23,7 +23,7 @@ Her adımı gerçek cihazda gözlemledikten sonra ✅ veya ❌ ile işaretle.
 ### Paywall
 - [ ] Paywall "Calorisor Pro" başlığıyla açılıyor
 - [ ] Fiyat ve plan seçimi doğru (aylık/yıllık, 7 gün ücretsiz deneme)
-- [ ] "3 ücretsiz tarama ile devam et" ile kapanıyor
+- [ ] "Ücretsiz devam et" ile kapanıyor
 - [ ] "Satın Alımları Geri Yükle" ve "Abonelik Yönetimi" butonları var
 - [ ] Gizlilik Politikası / Kullanım Koşulları linkleri tıklanabilir
 - [ ] Otomatik yenileme metni doğru
@@ -119,7 +119,7 @@ Her adımı gerçek cihazda gözlemledikten sonra ✅ veya ❌ ile işaretle.
 
 ### Paywall
 - [ ] "Calorisor Pro", plan seçimi, özellik kartı İngilizce
-- [ ] Feature rows: "Unlimited photo calorie tracking", "Unlimited text meal logging", "Smarter AI", "First access to new Pro features"
+- [ ] Feature rows: "High-limit daily AI analysis", "More analysis with Pro", "Shareable with Family", "Smarter AI", "First access to new Pro features"
 
 ### Bugün (Today)
 - [ ] Greeting: "Good morning" / "Good afternoon" / "Good evening"

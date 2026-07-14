@@ -249,19 +249,19 @@
         }
       }
     },
-    "3 ücretsiz tarama ile devam et" : {
+    "Ücretsiz devam et" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Continue with 3 free scans"
+            "value" : "Continue for free"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3 ücretsiz tarama ile devam et"
+            "value" : "Ücretsiz devam et"
           }
         }
       }
@@ -572,6 +572,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "App Store hesabından dilediğin an iptal edebilirsin."
+          }
+        }
+      }
+    },
+    "App Store'dan istediğin an iptal edebilirsin." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can cancel anytime from the App Store."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store'dan istediğin an iptal edebilirsin."
           }
         }
       }
@@ -3465,53 +3482,121 @@
         }
       }
     },
-    "Sınırsız fotoğrafla kalori takibi" : {
+    "Günlük kullanım için yüksek limitli AI analizi" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlimited photo calorie tracking"
+            "value" : "High-limit AI analysis for daily use"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sınırsız fotoğrafla kalori takibi"
+            "value" : "Günlük kullanım için yüksek limitli AI analizi"
           }
         }
       }
     },
-    "Sınırsız Taramaya Geç" : {
+    "Pro'yu İncele" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upgrade to Unlimited Scans"
+            "value" : "Explore Pro"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sınırsız Taramaya Geç"
+            "value" : "Pro'yu İncele"
           }
         }
       }
     },
-    "Sınırsız yazarak öğün ekleme" : {
+    "Pro ile daha fazla analiz" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlimited text meal logging"
+            "value" : "More analysis with Pro"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sınırsız yazarak öğün ekleme"
+            "value" : "Pro ile daha fazla analiz"
+          }
+        }
+      }
+    },
+    "Aile Paylaşımı ile paylaşılabilir" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shareable with Family"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aile Paylaşımı ile paylaşılabilir"
+          }
+        }
+      }
+    },
+    "Yıllık toplam" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annual total"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yıllık toplam"
+          }
+        }
+      }
+    },
+    "Deneme sonunda %@ tahsil edilir" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You will be charged %@ after the trial"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deneme sonunda %@ tahsil edilir"
+          }
+        }
+      }
+    },
+    "%@ tutarında otomatik yenilenir. " : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renews automatically at %@. "
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tutarında otomatik yenilenir. "
           }
         }
       }
