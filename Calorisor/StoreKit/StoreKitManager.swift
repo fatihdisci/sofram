@@ -6,7 +6,7 @@
 //  API usage, following the pattern shipped in the developer's "Arvia" app.
 //
 //  Responsibilities:
-//   • Fetch products (monthly/annual with 3-day intro trials)
+//   • Fetch products (monthly without trial; annual with a 7-day intro trial)
 //   • Purchase flow (+ userCancelled / pending handling)
 //   • Restore via AppStore.sync()
 //   • Transaction.updates listener (renewals, family sharing, out-of-band)

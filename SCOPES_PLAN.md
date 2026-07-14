@@ -39,9 +39,9 @@
 ## 2. Mevcut durum ↔ hedef durum farkları (doğrulanmış bulgular)
 
 ### 2.1 Free limit modeli çelişiyor
-- Mevcut: `FreeScanCounter` **haftalık 3 tarama**, foto+metin ortak havuz, UserDefaults'ta, tamamen cihaz-yerel (`FreeScanCounter.swift:28`, `ContentView.swift:214`).
+- Mevcut: `FreeScanCounter` günlük **1 foto + 2 metin/ses** ayrı havuz, UTC gün sınırı; proxy installation hash ile sunucu esaslı, UserDefaults yalnız çevrimdışı gösterim/fallback (`FreeScanCounter.swift`, `ContentView.swift`).
 - Hedef: **günlük 1 foto + günlük 2 metin/ses** (ayrı havuzlar), esas uygulama **sunucuda** installation hash ile, UTC günü.
-- `CalorisorTests/FreeScanCounterTests.swift` haftalık rollover'a göre yazılmış — model değişince yeniden yazılacak.
+- `CalorisorTests/FreeScanCounterTests.swift` UTC günlük rollover, bağımsız havuz ve server quota senkronunu doğruluyor.
 
 ### 2.2 Proxy'de kullanım limiti yok, tier doğrulanmıyor
 - `proxy/api/scan.ts:294-299`: yalnız IP-hash bazlı 10/dk + 200/gün genel rate limit var. Tier bazlı günlük hak yok.
@@ -63,7 +63,7 @@
 ### 2.5 StoreKit konfigürasyonu
 - `Products.storekit`: aylık 129,99 / yıllık 799,99 (lansman fiyatları ✓), yıllıkta P1W ücretsiz deneme ✓, aylıkta deneme yok ✓.
 - **`familyShareable: false`** — doküman Family Sharing açılmasını istiyor (§18.3). Hem local config hem ASC'de açılacak.
-- Bayat metinler: `StoreKitManager.swift:9` "3-day intro trials" yorumu; `PROJECT_CONTEXT.md` hâlâ "3-day trial", "lifetime 3 scans", "Gemini Flash" diyor (kod OpenAI gpt-5 ailesinde).
+- StoreKit ve proje dokümanları güncel durumla hizalı: yıllıkta 7 gün deneme, aylıkta deneme yok; free günlük 1+2; OpenAI gpt-5-nano/mini; proxy Vercel/Upstash zinciri.
 
 ### 2.6 Request sözleşmesi eksikleri
 - `AIProxyClient.swift:52-105` (`AIProxyRequest`): `input_source` yok (ses, text olarak gidiyor — voice/typed ayrımı sunucuya ulaşmıyor), installation header'ları yok, `claimed_tier`/JWS alanları yok.
@@ -143,10 +143,10 @@
   **Talimat:** İki üründe `familyShareable: true`; açıklamalardan "Sınırsız" çıkar (SF-1107 ile aynı terminoloji). Fiyatlar lansman değerlerinde kalır (129,99/799,99 — §4.2). Deneme: yalnız yıllıkta P1W ✓ (değişiklik yok).
   **Kabul:** İki ürün `familyShareable: true`; açıklamalarda “Sınırsız” kaldırıldı; aylık/yıllık fiyatlar ve yıllık P1W denemesi korundu. JSON geçerli, Xcode Simulator test/build zinciri 105/105 geçti. Paywall’daki görünür Family Sharing kopyası SF-1107 kapsamında ele alınacak.
 
-- [ ] **SF-1109 · Bayat doküman/yorum düzeltmeleri**
-  **Dosya:** `StoreKitManager.swift` (satır 9 "3-day"), `PROJECT_CONTEXT.md` ("3-day trial", "lifetime 3 scans", "Gemini Flash"), `ROADMAP.md` (SF-201..203 durum notları)
+- [x] **SF-1109 · Bayat doküman/yorum düzeltmeleri** ✅ 2026-07-14
+  **Dosya:** `StoreKitManager.swift`, `PROJECT_CONTEXT.md`, `ROADMAP.md` (SF-201..203 durum notları), `SCOPES_PLAN.md`
   **Talimat:** Gerçek durumla eşitle: 7 gün deneme yalnız yıllıkta; free limiti günlük 1+2; model OpenAI gpt-5-nano/mini; proxy deploy edilmiş.
-  **Kabul:** `grep -ri "3-day\|3 gün deneme\|gemini"` temiz (tarihî PHASE notları hariç).
+  **Kabul:** `grep -ri "3-day\|3 gün deneme\|gemini"` temiz (tarihî PHASE notları hariç); deneme, limit, model ve proxy durumları güncel gerçekle eşleşiyor.
 
 - [ ] **SF-1110 · Manuel işler kontrol listesi (kod dışı — Fatih)**
   App Store Connect: TR fiyatları (lansman 129,99/799,99; sonrası 149,99/899,99), global 6,99/29,99 USD; haftalık plan EKLEME; yıllık 7g deneme; Family Sharing aç; App Store açıklamasında "sınırsız AI" ifadesi kullanma. OpenAI: ayrı project, hard/soft budget + günlük harcama alarmı (§22.3). Vercel: `INSTALLATION_HASH_SALT` env'i. Privacy Policy + Terms metinlerini §23'e göre güncelle ("hiç veri toplamıyoruz" deme; installation hash, 7 gün cache, token/maliyet kaydı, AI sonuçları tahminidir, adil kullanım).

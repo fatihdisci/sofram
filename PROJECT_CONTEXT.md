@@ -6,11 +6,11 @@ A photo-based calorie tracking iOS app positioned around Turkish shared-table ("
 ## Non-negotiable architecture constraints
 - **No accounts, no login, ever.** No email, no username, no social auth.
 - **No Supabase.** No custom backend database for user data.
-- **No RevenueCat.** Subscriptions are StoreKit 2 native only (same pattern as the developer's other shipped app "Arvia": ASC Introductory Offers for a 3-day free trial, direct `Product` / `Transaction` API, no third-party subscription SDK).
+- **No RevenueCat.** Subscriptions are StoreKit 2 native only: the annual product has a 7-day ASC introductory offer, while the monthly product has no trial. Direct `Product` / `Transaction` API; no third-party subscription SDK.
 - **No barcode scanning feature, ever** — not even as a future phase. Do not scaffold for it.
 - User data (logs, scans, profile, settings) lives in **SwiftData**, synced via **CloudKit Private Database** (the user's own iCloud account). The app's own server never stores or sees any of this.
-- The only thing that touches our server is: an anonymized photo + prompt, sent to a Vercel Edge Function proxy, which calls Gemini Flash vision, cached/rate-limited via Upstash Redis (image-hash cache + IP/device rate limiting). This is a direct architectural copy of the developer's existing "Arvia" AI proxy chain. Nothing is persisted server-side beyond cache/rate-limit keys.
-- Free tier abuse prevention: device-level lifetime free-scan counter (3 scans) + rate limiting, no server-side user accounts needed for this.
+- The only thing that touches our server is: an anonymized photo or meal description + prompt, sent to a Vercel Edge Function proxy, which calls OpenAI gpt-5-nano for free and gpt-5-mini for Pro. Responses are cached and rate-limited via Upstash Redis using an anonymous installation hash. Nothing is persisted server-side beyond cache/rate-limit keys.
+- Free tier abuse prevention: anonymous installation-hash daily quotas (1 photo analysis + 2 text/voice analyses) plus rate limiting; no server-side user accounts are needed.
 
 ## Design system
 Two reference files define the entire visual language, do not deviate without checking them:
@@ -25,7 +25,7 @@ Design direction name: "Yumuşak Sofra" (Soft Native) — a restrained neomorphi
 The AI's raw gram output is always mapped to and editable in Turkish household units: kepçe (ladle), yemek kaşığı (tbsp), su bardağı (glass), çay bardağı (tea glass), dilim (slice), avuç (handful), kase (bowl). Users correct AI results using these units via steppers/pickers, never raw grams or a generic slider.
 
 ## MVP scope (this phase and near-term phases)
-In scope for MVP: camera-first capture flow, AI scan (Gemini Flash vision via the proxy), text-based logging alternative ("2 kepçe mercimek, 1 dilim ekmek" parsed by AI), Turkish portion dictionary, daily ring (calories + 3 macros), 7-day summary, bread & tea quick counters, onboarding quiz (goal/height/weight/activity → target → paywall), hard paywall via StoreKit 2, home screen widget (today's remaining calories), SwiftData + CloudKit Private sync.
+In scope for MVP: camera-first capture flow, AI scan (OpenAI gpt-5 vision via the proxy), text-based logging alternative ("2 kepçe mercimek, 1 dilim ekmek" parsed by AI), Turkish portion dictionary, daily ring (calories + 3 macros), 7-day summary, bread & tea quick counters, onboarding quiz (goal/height/weight/activity → target → paywall), hard paywall via StoreKit 2, home screen widget (today's remaining calories), SwiftData + CloudKit Private sync.
 
 Explicitly NOT in this phase (future versions, do not build now): "Sofra Modu" (multi-item shared-table photo mode), pot/home-recipe calibration memory, Apple Health write integration, Ramadan mode, barcode (never, any phase).
 

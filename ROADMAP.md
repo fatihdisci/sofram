@@ -183,23 +183,23 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
 
 ---
 
-## FAZ 2 — BACKEND: VERCEL EDGE PROXY (üretim engeli — endpoint hâlâ REPLACE-ME)
+## FAZ 2 — BACKEND: VERCEL EDGE PROXY (kod tamam; canlı hesap doğrulamaları bekliyor)
 
 > Bu faz repo içinde `proxy/` klasöründe geliştirilir (ayrı deploy, Vercel). Arvia'daki
 > proxy zinciri örnek alınır. **Kullanıcı verisi persist edilmez** — yalnız cache/rate-limit anahtarları.
 
-- [ ] **SF-201 · Proxy iskeleti: `POST /api/scan`** ⏸ NOT: Kod, TypeScript kontrolü, 401 ve gerçek OpenAI text-mode testi hazır; `vercel dev` Vercel hesabı girişi bekliyor.
-  **Yeni dosyalar:** `proxy/api/scan.ts`, `proxy/package.json`, `proxy/README.md`
+- [ ] **SF-201 · Proxy iskeleti: `POST /api/scan`** ⏸ NOT: `proxy/api/scan.ts` ve TypeScript kontrolü hazır; Vercel hesabı erişimi olmadığı için canlı `vercel dev`/deployment doğrulaması bekliyor.
+  **Dosyalar:** `proxy/api/scan.ts`, `proxy/package.json`, `proxy/README.md`
   **Talimat:**
   1. Vercel Edge Function (TypeScript). İstek gövdesi = `AIProxyRequest` kontratı: `{image_base64?, text?, mode: "photo"|"text", locale, tier, schema_version, app_version}`.
   2. `x-calorisor-key` header'ı env'deki `CALORISOR_CLIENT_KEY` ile eşleşmiyorsa 401.
   3. Model çağrısı: OpenAI Chat Completions, `tier == "pro" ? "gpt-5-mini" : "gpt-5-nano"`, `reasoning_effort` photo→"low" / text→"minimal", **aynı Structured Outputs şeması** (AIProxyClient'taki `visionResponse` şemasını TS'e birebir taşı), `max_completion_tokens: 2048`.
-  4. Prompt'lar `proxy/prompts.ts` içinde — **SF-101 sonrası Swift'tekiyle bire bir aynı metin**. Dosya başına şu yorum: `// MUST MATCH Sofra/Networking/AIProxyClient.swift prompts — update both together.`
+  4. Prompt'lar `proxy/prompts.ts` içinde — **SF-101 sonrası Swift'tekiyle bire bir aynı metin**. Dosya başına şu yorum: `// MUST MATCH Calorisor/Networking/AIProxyClient.swift prompts — update both together.`
   5. Yanıt: modelin content JSON'u **olduğu gibi** (VisionResponse şekli) döner; ayrıca `x-calorisor-cache: hit|miss` header'ı.
   6. Hata kontratı: `{ "error": "rate_limited" | "invalid_request" | "upstream_error" }` + uygun HTTP kodu (429/400/502).
   **Kabul kriterleri:** `vercel dev` ile lokal çalışır; curl ile text-mode istek gerçek yanıt döner; yanlış key 401.
 
-- [ ] **SF-202 · Upstash Redis: cache + rate limit** ⏸ NOT: Kod hazır; gerçek cache-hit ve 11. istek testleri Upstash hesap değişkenlerini bekliyor.
+- [ ] **SF-202 · Upstash Redis: cache + rate limit** ⏸ NOT: Kod ve Vitest senaryoları hazır; gerçek cache-hit ve limit testi Upstash hesap değişkenlerini bekliyor.
   **Dosya:** `proxy/api/scan.ts`
   **Talimat:**
   1. **Cache:** photo modunda `sha256(image_base64)` (text modunda normalize edilmiş text hash'i) anahtarıyla yanıtı 7 gün TTL ile sakla; hit'te modeli hiç çağırma.
@@ -207,8 +207,8 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   3. Upstash'e **yalnızca** hash anahtarları ve sayaçlar yazılır; görsel/metin içeriği loglanmaz, `console.log`'a da yazılmaz.
   **Kabul kriterleri:** Aynı görsel ikinci kez → `x-calorisor-cache: hit` ve <300ms; 11. ardışık istek 429.
 
-- [ ] **SF-203 · İstemciyi gerçek endpoint'e bağla** ⏸ NOT: Hata kontratı parse ediliyor ve proxy yanıtı sanitize ediliyor; gerçek endpoint/key ile cihaz testi Vercel/Upstash kurulumunu bekliyor.
-  **Dosyalar:** `Sofra/Info.plist`, `Sofra/Networking/AIProxyClient.swift`
+- [ ] **SF-203 · İstemciyi gerçek endpoint'e bağla** ⏸ NOT: İstemci `https://sofram-five.vercel.app/api/scan` endpoint'ini kullanacak şekilde yapılandırıldı; gerçek endpoint/key ile cihaz testi Vercel/Upstash hesap doğrulamasını bekliyor.
+  **Dosyalar:** `Calorisor/Info.plist`, `Calorisor/Networking/AIProxyClient.swift`
   **Talimat:** Deploy sonrası `AIProxyEndpointURL`'i gerçek URL'e, `AIProxyAPIKey`'i client key'e çevir. `performProxyRequest`'te SF-102 hata kontratını (`error` alanı) parse et. Proxy yolunda da `sanitized()` (SF-007) uygulanıyor olmalı.
   **Kabul kriterleri:** Gerçek cihazda fotoğraf çek → sonuç ekranı gerçek AI verisiyle dolar. `isDemoMode` artık devrede değil. (⚠️ Bu görev Fatih'in Vercel/Upstash hesap kurulumunu gerektirir — Codex hazır olmayanı `⏸` ile işaretlesin.)
 
@@ -405,7 +405,7 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   - [ ] `DEVELOPMENT_TEAM` + imzalı cihazda iki uçlu CloudKit sync — takım kimliği ve cihaz testi bekliyor.
   - [x] `UIBackgroundModes remote-notification` korundu — uygulama CloudKit silent push ile dış değişiklikleri almak için kullanıyor. ✅ 2026-07-13
   - [x] Kamera ve fotoğraf purpose string'leri Türkçe ve kullanım amacıyla uyumlu. ✅ 2026-07-13
-  - [ ] App Store Connect aboneliklerinde 3 günlük trial — hesap erişimi bekliyor.
+  - [ ] App Store Connect aboneliklerinde yıllık 7 günlük trial — hesap erişimi bekliyor.
   - [x] `proxy/README.md` gizlilik etiketi taslağı gerçek saklama davranışıyla belgelendi. ⚠️ Yedi günlük normalize yanıt cache'i nedeniyle App Store'da koşulsuz “veri toplanmıyor” seçilmemeli; son politika kararı bekliyor. ✅ 2026-07-13
   - [x] `MARKETING_VERSION` 1.0.0 yapıldı. ✅ 2026-07-13
 
@@ -467,10 +467,10 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
 
 ## EK — KULLANILABİLİRLİK (kullanıcı geri bildirimi, 2026-07-13)
 
-- [x] **SF-EX01 · Free tarama ömür-boyu-3 yerine haftalık yenilensin** ✅ 2026-07-13
+- [x] **SF-EX01 · Free tarama günlük 1 foto + 2 metin/ses havuzuna ayrılsın** ✅ 2026-07-14
   **Dosyalar:** `Sofra/Networking/FreeScanCounter.swift`, `Sofra/App/ContentView.swift` (FreeScanLimitView), `SofraTests/FreeScanCounterTests.swift`
-  **Sorun:** 3 ücretsiz tarama **ömür boyu toplam** ve hiç sıfırlanmıyordu → Pro olmadan app 3 denemeden sonra kullanılamaz hale geliyordu.
-  **Yapıldı:** `FreeScanCounter` artık `maxFreeScans`'i **haftalık** veriyor; takvim haftası başında yenilenir (`periodStart` + rollover). Enjekte edilebilir saat (`now`) ile deterministik test. Public API (`canScanForFree`/`remainingFreeScans`/`recordScan`) korundu; FreeScanLimitView kopyası haftalık yenilenmeyi ve elle girişin her zaman ücretsiz olduğunu anlatıyor. Yeni test: `testWeeklyQuotaRefillsInTheNextWeek`.
+  **Sorun:** Ücretsiz tarama hakkı eski modelde ortak ve ömür boyu toplam tutuluyordu; bu, Pro olmadan uygulamayı birkaç denemeden sonra kullanılamaz hale getiriyordu.
+  **Yapıldı:** `FreeScanCounter` fotoğraf (günlük 1) ve metin/ses (günlük 2) havuzlarını UTC gününde yeniler. Proxy installation hash ile sunucu esaslı limit uygular; iOS sayaçları çevrimdışı gösterim/fallback içindir. Yeni testler: UTC gün dönümü, bağımsız havuzlar ve server quota senkronu.
 
 - [x] **SF-EX02 · Tek-seferlik elle öğün girişi (free, scan tüketmez)** ✅ 2026-07-13
   **Dosyalar:** `Sofra/Models/ScanEntry.swift` (`ScanSource.manual`), `Sofra/Views/Daily/DailyView.swift` (`ManualEntryView`, giriş noktaları, MealEntryCard ikonu)
