@@ -512,36 +512,43 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Kabul kriterleri:** Kestirmeler'de intent görünür; Siri örnek komutuyla taslak oluşur ve onay ekranı açılır; onay verilmeden geçmişe kayıt yazılmaz; Türkçe/İngilizce kopyalar yerelleştirilmiştir.
   ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (bu ortamda Xcode yok); Siri/Kestirmeler ve intent bağış gerçek cihazda test edilmeli.
 
-- [ ] **SF-EX06 · Kullanıcı kontrollü öğün hatırlatmaları**
-  **Dosyalar:** Bildirim ayarları, `Sofra/Resources/Localizable.xcstrings`, `UNUserNotificationCenter` kullanan yeni bildirim servisi
+> **Ortak altyapı (EX06/07/08):** `Calorisor/Notifications/MealReminderService.swift` (yeni) — `MealSlot`, `NotificationPrefs` (UserDefaults anahtarları), tek-seferlik `UNCalendarNotificationTrigger`'larla 4 günlük yuvarlanan pencere; her state değişiminde (app foreground, tercih değişimi, öğün kaydı) `removeAllPendingNotificationRequests` + tam yeniden kurulum. Ayar UI'ı `ContentView.swift` `notificationsSection`. Log noktaları (`ResultView.save`, `DailyView` elle giriş + silme, `QuickCounterView`) kayıttan sonra `reschedule` çağırır. `CalorisorApp` delegate'i kurar + scenePhase active'de yeniden kurar ve tıklanan bildirimi Bugün sekmesine yönlendirir.
+
+- [x] **SF-EX06 · Kullanıcı kontrollü öğün hatırlatmaları** ✅ 2026-07-14
+  **Dosyalar:** `Calorisor/Notifications/MealReminderService.swift`, `Calorisor/App/ContentView.swift` (notificationsSection), `Calorisor/App/CalorisorApp.swift`, `Calorisor/Views/Result/ResultView.swift`, `Calorisor/Views/Daily/{DailyView,QuickCounterView}.swift`, `Calorisor/Resources/Localizable.xcstrings`
   **Amaç:** Kullanıcı seçerse kahvaltı, öğle, akşam ve ara öğün saatlerinde nazik hatırlatma alabilsin.
-  **Talimat:**
-  1. Kullanıcı onboarding'de zorlanmasın; bildirim iznini ayarlar ekranında veya ilk hatırlatma ayarı seçildiğinde iste.
-  2. Öğün saatlerini ayrı ayrı aç/kapat ve saat seçimiyle yönet; varsayılanlar kapalı veya açık olacaksa kararını tek bir ürün kuralında sabitle.
-  3. İlgili öğün kaydedildiğinde o günün bildirimi iptal edilsin; aynı öğün için tekrar tekrar bildirim gönderilmesin.
-  4. Bildirimden uygulama açıldığında doğrudan günlük kayıt ekranına yönlendir.
-  5. Bildirim metinleri Türkçe ve İngilizce, nötr ve suçlayıcı olmayan tonda olsun.
-  **Kabul kriterleri:** Ayarlanan saat için yerel bildirim planlanır; öğün kaydedilince bildirim kaldırılır; bildirimler tek ayarla tamamen kapatılabilir; uygulama yeniden açıldığında planlar doğru şekilde yeniden kurulur.
+  **Talimat (uygulandı):**
+  1. ✅ Onboarding'de zorlama yok; bildirim izni yalnızca Ayarlar'da ilk bildirim açıldığında istenir.
+  2. ✅ 4 öğün ayrı aç/kapat + `DatePicker` saat seçimi. **Ürün kuralı: hepsi varsayılan KAPALI** (opt-in, nötr felsefe).
+  3. ✅ İlgili öğün kaydedildiğinde (zaman penceresi eşleşmesi) o öğünün bugünkü bildirimi düşer; her yeniden kurulumda `removeAll` ile tek kayıt garanti — tekrar gönderim yok.
+  4. ✅ Bildirime dokununca `MealReminderDelegate` `openDaily` bayrağı kurar; app öne gelince Bugün sekmesine gider.
+  5. ✅ Metinler TR + EN, nötr/suçlamayan ton ("Yediysen birkaç saniyede ekleyebilirsin.").
+  **Kabul kriterleri:** Ayarlanan saat için yerel bildirim planlanır; öğün kaydedilince kaldırılır; tek ayarla ("Tüm bildirimleri kapat") tamamen kapatılır; app öne gelince planlar yeniden kurulur.
+  ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (izin diyaloğu + teslim zamanlaması cihazda test edilmeli).
 
-- [ ] **SF-EX07 · Gün içinde hiç kayıt yapılmadığında tek hatırlatma**
-  **Dosyalar:** Bildirim servisi, günlük kayıt durumu, `Sofra/Resources/Localizable.xcstrings`
-  **Amaç:** Kullanıcı gün boyunca hiçbir öğün eklemediyse, spam yapmadan tek bir geri dönüş noktası sunmak.
-  **Talimat:**
-  1. Günlük kayıt sayısı sıfırsa yalnızca kullanıcının belirlediği akşam saatinden sonra bir bildirim planla/gönder.
-  2. Gün içinde herhangi bir kayıt oluşturulursa bu bildirim iptal edilsin.
-  3. Günlük kayıt sayısı bir veya daha fazlaysa "eksik kaldın" türü bildirim gönderme.
-  4. Bildirim eylemi günlük kayıt ekranını açsın; sesli giriş hazırsa oraya geçiş için tek dokunuşlu giriş sunulabilir.
-  **Kabul kriterleri:** Sıfır kayıtlı günde en fazla bir bildirim gönderilir; ilk kayıt sonrası bildirim iptal edilir; ertesi gün durum sıfırlanır; bildirim kapalı kullanıcıya hiçbir bildirim gönderilmez.
+- [x] **SF-EX07 · Gün içinde hiç kayıt yapılmadığında tek hatırlatma** ✅ 2026-07-14
+  **Dosyalar:** `Calorisor/Notifications/MealReminderService.swift`, `Calorisor/App/ContentView.swift`, log noktaları (yukarıdaki ortak altyapı)
+  **Amaç:** Kullanıcı gün boyunca hiçbir öğün eklemediyse, spam yapmadan tek bir geri dönüş noktası.
+  **Talimat (uygulandı):**
+  1. ✅ Günlük kayıt (scan + quick-add) sayısı sıfırsa, kullanıcının belirlediği akşam saatinde tek bildirim planlanır.
+  2. ✅ Gün içinde herhangi bir kayıt oluşunca `reschedule` bugünkü no-log bildirimini düşürür.
+  3. ✅ Kayıt ≥1 ise "eksik kaldın" bildirimi gönderilmez (gate: `loggedCount > 0`).
+  4. ✅ Bildirim uygulamayı Bugün ekranına açar.
+  **Kabul kriterleri:** Sıfır kayıtlı günde en fazla bir bildirim; ilk kayıt sonrası iptal; ertesi gün sıfırlanır (günlük re-arm + horizon'da ertesi gün kaydı); kapalı kullanıcıya hiç gönderilmez.
+  ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor.
 
-- [ ] **SF-EX08 · Gece özeti ve bildirim tercihleri**
-  **Dosyalar:** Ayarlar bildirim bölümü, günlük özet bileşeni, `Sofra/Resources/Localizable.xcstrings`
-  **Amaç:** Kullanıcı isterse günü sakin bir özetle kapatabilsin; bildirim sistemi kullanıcı kontrolünde kalsın.
-  **Talimat:**
-  1. İsteğe bağlı gece özeti planla: toplam kalori, protein ve kayıtlı öğün sayısını göster.
-  2. Gün tamamlanmışsa yeni öğün eklemeye zorlayan metin kullanma; özet yalnızca bilgi versin.
-  3. Ayarlar'da ayrı tercihler sun: öğün hatırlatmaları, hiç kayıt yok bildirimi, gece özeti ve tüm bildirimleri kapat.
-  4. Bildirim zamanlarını kullanıcı değiştirdiğinde eski bildirimleri iptal edip yenilerini planla.
-  **Kabul kriterleri:** Gece özeti yalnızca açık tercihte gönderilir; aynı gün ikinci kez gönderilmez; tüm bildirimler kapatılınca bekleyen yerel bildirimler temizlenir; TR/EN metinleri eksiksizdir.
+- [x] **SF-EX08 · Gece özeti ve bildirim tercihleri** ✅ 2026-07-14
+  **Dosyalar:** `Calorisor/Notifications/MealReminderService.swift`, `Calorisor/App/ContentView.swift` (notificationsSection), `Calorisor/Resources/Localizable.xcstrings`
+  **Amaç:** Kullanıcı isterse günü sakin bir özetle kapatsın; sistem kullanıcı kontrolünde kalsın.
+  **Talimat (uygulandı):**
+  1. ✅ İsteğe bağlı gece özeti: bugünün toplam kalori, protein ve kayıtlı öğün sayısı (bugün için gerçek değerler, ileri günler için nötr metin; günlük re-arm ile tazelenir).
+  2. ✅ Özet yalnızca bilgi verir; "daha ye" baskısı yok.
+  3. ✅ Ayarlar'da ayrı tercihler: öğün hatırlatmaları (×4), hiç-kayıt-yok, gece özeti ve "Tüm bildirimleri kapat".
+  4. ✅ Kullanıcı saati değiştirince `removeAll` + yeniden planlama.
+  **Kabul kriterleri:** Gece özeti yalnızca açıkken gönderilir; aynı gün ikinci kez gönderilmez (id/gün + removeAll); tüm bildirimler kapatılınca bekleyenler temizlenir; TR/EN metinleri eksiksiz.
+  ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor.
+
+**Testler (EX06/07/08):** `CalorisorTests/NotificationPrefsTests.swift` — öğün zaman pencereleri çakışmaz, varsayılan saatler, master switch gate'i.
 
 ## GELECEK (roadmap dışı, başlamadan Fatih onayı gerek)
 - "Sofra Modu" (çok kişilik tencere paylaşımı) — PROJECT_CONTEXT'te v1.1.

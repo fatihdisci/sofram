@@ -446,6 +446,7 @@ struct DailyView: View {
             modelContext: modelContext,
             calorieTarget: calorieTarget
         )
+        MealReminderService.shared.reschedule(modelContext: modelContext)
     }
 
     private var greeting: String {
@@ -733,6 +734,7 @@ struct ManualEntryView: View {
         try? modelContext.save()
 
         WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
+        MealReminderService.shared.reschedule(modelContext: modelContext)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         dismiss()
     }

@@ -4472,6 +4472,237 @@
           }
         }
       }
+    },
+    "Kahvaltı" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breakfast"
+          }
+        }
+      }
+    },
+    "Öğle yemeği" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lunch"
+          }
+        }
+      }
+    },
+    "Ara öğün" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snack"
+          }
+        }
+      }
+    },
+    "Akşam yemeği" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dinner"
+          }
+        }
+      }
+    },
+    "Kahvaltı vakti" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Breakfast time"
+          }
+        }
+      }
+    },
+    "Öğle yemeği vakti" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lunch time"
+          }
+        }
+      }
+    },
+    "Ara öğün vakti" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snack time"
+          }
+        }
+      }
+    },
+    "Akşam yemeği vakti" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dinner time"
+          }
+        }
+      }
+    },
+    "Yediysen birkaç saniyede ekleyebilirsin." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you've eaten, you can add it in a few seconds."
+          }
+        }
+      }
+    },
+    "Bugünü kaçırma" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't miss today"
+          }
+        }
+      }
+    },
+    "Bugün henüz bir şey eklemedin. Hazırsan birkaç saniyede ekleyebilirsin." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You haven't added anything today yet. When you're ready, it takes a few seconds."
+          }
+        }
+      }
+    },
+    "Bugünün özetine göz at." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take a look at today's summary."
+          }
+        }
+      }
+    },
+    "Günün özeti" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today's summary"
+          }
+        }
+      }
+    },
+    "Bugün %lld kcal · %lld g protein · %lld öğün." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today: %1$lld kcal · %2$lld g protein · %3$lld meals."
+          }
+        }
+      }
+    },
+    "Bildirimler" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        }
+      }
+    },
+    "Bildirim izni kapalı — Ayarlar'dan aç" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications are off — turn them on in Settings"
+          }
+        }
+      }
+    },
+    "Hiç kayıt yoksa akşam hatırlat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me in the evening if nothing is logged"
+          }
+        }
+      }
+    },
+    "Saat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time"
+          }
+        }
+      }
+    },
+    "Gece özeti" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nightly summary"
+          }
+        }
+      }
+    },
+    "Tüm bildirimleri kapat" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn off all notifications"
+          }
+        }
+      }
+    },
+    "Hepsi isteğe bağlı ve kapalı gelir. Bir öğün kaydedildiğinde o öğünün hatırlatması iptal olur; gece özeti yalnızca bilgi verir." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All are optional and off by default. Logging a meal cancels that meal's reminder; the nightly summary is informational only."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

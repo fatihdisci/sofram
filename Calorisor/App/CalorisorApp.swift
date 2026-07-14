@@ -6,11 +6,17 @@
 import SwiftUI
 import SwiftData
 import WidgetKit
+import UserNotifications
 
 @main
 struct CalorisorApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @State private var navigation = NavigationModel()
+
+    init() {
+        // Route notification taps to the Bugün tab (SF-EX06.4 / EX07).
+        UNUserNotificationCenter.current().delegate = MealReminderDelegate.shared
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -39,6 +45,17 @@ struct CalorisorApp: App {
                 if let meal = IntentMealInbox.consume() {
                     navigation.presentIntentMeal(meal)
                 }
+
+                // A tapped notification (SF-EX06/07) asked to open the daily log.
+                if UserDefaults.standard.bool(forKey: NotificationPrefs.openDailyKey) {
+                    UserDefaults.standard.set(false, forKey: NotificationPrefs.openDailyKey)
+                    navigation.goToDaily()
+                }
+
+                // Re-arm meal/no-log/summary notifications against today's state
+                // (SF-EX06/07/08) — this is what makes "logged → reminder gone"
+                // and "reset next day" work without background refresh.
+                MealReminderService.shared.reschedule(modelContext: context)
             }
         }
     }

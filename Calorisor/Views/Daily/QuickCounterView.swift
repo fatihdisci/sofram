@@ -140,6 +140,8 @@ struct QuickCounterView: View {
     private func persist() {
         try? modelContext.save()
         WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
+        // Quick-add counts as activity — re-arm the no-log nudge (SF-EX07).
+        MealReminderService.shared.reschedule(modelContext: modelContext)
     }
 }
 

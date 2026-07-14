@@ -272,6 +272,10 @@ struct ResultView: View {
             modelContext: modelContext,
             calorieTarget: target
         )
+
+        // Logging covers a meal — re-arm so that meal's reminder (and the
+        // no-log nudge) drop for today (SF-EX06/07).
+        MealReminderService.shared.reschedule(modelContext: modelContext)
     }
 
     private func deleteItem(id: UUID) {

@@ -63,6 +63,7 @@
 		8DB29A6B0446E2C7B537A2D1 /* Geist-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8B1E2BDD79E8133CFA0705D8 /* Geist-Medium.otf */; };
 		92E51425D18DF71D48BE63C6 /* CalorisorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4EC8FB1EBDB96EAFB72A87 /* CalorisorApp.swift */; };
 		EE01FACE0000000000000203 /* LogMealIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01FACE0000000000000202 /* LogMealIntent.swift */; };
+		EE01FACE0000000000000303 /* MealReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01FACE0000000000000302 /* MealReminderService.swift */; };
 		9518412FD393A19F2FDDA9EC /* CalorisorModelContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448BA48575AFBC9374C7C1F /* CalorisorModelContainer.swift */; };
 		99ABCFF7C82E14E231E0A44E /* FreeScanCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAF79A09D2B9B22A61B3293 /* FreeScanCounter.swift */; };
 		9AB5C410D2AC8E83D06C21DB /* ReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F4D97BF2FC24BF78722F8 /* ReferenceReconcilerTests.swift */; };
@@ -83,6 +84,7 @@
 		B63DCF18E9BFA9180EC8FA05 /* RenameReconciliationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5450361CF129367245855D /* RenameReconciliationTests.swift */; };
 		B66A652F2DB5E33687CD963C /* TextLogInputPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A65FFF0F0CBF7A8AB1BF6E /* TextLogInputPolicyTests.swift */; };
 		EE01FACE0000000000000102 /* MealSpeechRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01FACE0000000000000101 /* MealSpeechRecognizerTests.swift */; };
+		EE01FACE0000000000000402 /* NotificationPrefsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE01FACE0000000000000401 /* NotificationPrefsTests.swift */; };
 		B9744D5660C9C7FA9F6EB2A7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B17F01B847BA24B835B4037 /* UserProfile.swift */; };
 		BABBBF429BC9E1A04F1E9BE0 /* Surfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AE8E5B3D4B49925F402BC8 /* Surfaces.swift */; };
 		BDBB9B674BEB8923D1BA5065 /* CalorisorIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8E2BAB0C43BFA9637B6040 /* CalorisorIcon.swift */; };
@@ -147,6 +149,7 @@
 		1ABEDB088BD86173D15337A9 /* TextLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogView.swift; sourceTree = "<group>"; };
 		1E4EC8FB1EBDB96EAFB72A87 /* CalorisorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorApp.swift; sourceTree = "<group>"; };
 		EE01FACE0000000000000202 /* LogMealIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMealIntent.swift; sourceTree = "<group>"; };
+		EE01FACE0000000000000302 /* MealReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealReminderService.swift; sourceTree = "<group>"; };
 		238FF164D03FBE4CB6367536 /* CalorieRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieRingView.swift; sourceTree = "<group>"; };
 		2A56C40031CD587A873FC971 /* WidgetDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataStore.swift; sourceTree = "<group>"; };
 		2B17F01B847BA24B835B4037 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -166,6 +169,7 @@
 		60F9A94E277A5B7F98C3A0BB /* WidgetDailySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDailySummary.swift; sourceTree = "<group>"; };
 		61A65FFF0F0CBF7A8AB1BF6E /* TextLogInputPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogInputPolicyTests.swift; sourceTree = "<group>"; };
 		EE01FACE0000000000000101 /* MealSpeechRecognizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealSpeechRecognizerTests.swift; sourceTree = "<group>"; };
+		EE01FACE0000000000000401 /* NotificationPrefsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPrefsTests.swift; sourceTree = "<group>"; };
 		61CA283C143DFB3AF113488E /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
 		6C5C91377CEFBE867F8F8510 /* QuickCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCounterView.swift; sourceTree = "<group>"; };
 		6D4666D9525FC6EF15232BD0 /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
@@ -339,6 +343,14 @@
 			path = AppIntents;
 			sourceTree = "<group>";
 		};
+		EE01FACE0000000000000301 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				EE01FACE0000000000000302 /* MealReminderService.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		3CE869EBA21DE36DE94948C7 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,6 +392,7 @@
 				FC5450361CF129367245855D /* RenameReconciliationTests.swift */,
 				61A65FFF0F0CBF7A8AB1BF6E /* TextLogInputPolicyTests.swift */,
 				EE01FACE0000000000000101 /* MealSpeechRecognizerTests.swift */,
+				EE01FACE0000000000000401 /* NotificationPrefsTests.swift */,
 				C2D85027ED00E9227BD62D53 /* UserDataDeletionTests.swift */,
 				FB74F4E0EC9C9FA5A6B5B984 /* UserProfileRecomputeTests.swift */,
 				F013753BD4BACA5DAAAAD9B6 /* VisionResponseValidatorTests.swift */,
@@ -477,6 +490,7 @@
 				87522F40CDC496FAEF7D4EEF /* Models */,
 				3CE869EBA21DE36DE94948C7 /* Networking */,
 				0DDABFE76DE4E32F5D1419C5 /* Nutrition */,
+				EE01FACE0000000000000301 /* Notifications */,
 				40BC61BE2D2C595666C68E47 /* Persistence */,
 				A393E1770736058EF5CB308A /* Resources */,
 				B1F0FC49EF3FEA8DFD38ECB0 /* StoreKit */,
@@ -721,6 +735,7 @@
 				B63DCF18E9BFA9180EC8FA05 /* RenameReconciliationTests.swift in Sources */,
 				B66A652F2DB5E33687CD963C /* TextLogInputPolicyTests.swift in Sources */,
 				EE01FACE0000000000000102 /* MealSpeechRecognizerTests.swift in Sources */,
+				EE01FACE0000000000000402 /* NotificationPrefsTests.swift in Sources */,
 				A664A1CEC57056B0B0B5726D /* UserDataDeletionTests.swift in Sources */,
 				A6EF69200A2C240480FFD0D7 /* UserProfileRecomputeTests.swift in Sources */,
 				64FCDE8A0383D75485EB0903 /* VisionResponseValidatorTests.swift in Sources */,
@@ -768,6 +783,7 @@
 				0AF6FEBF2EC509B74055940C /* SevenDaySummaryView.swift in Sources */,
 				92E51425D18DF71D48BE63C6 /* CalorisorApp.swift in Sources */,
 				EE01FACE0000000000000203 /* LogMealIntent.swift in Sources */,
+				EE01FACE0000000000000303 /* MealReminderService.swift in Sources */,
 				9DA956A393108E1719E5CBB4 /* CalorisorFormatters.swift in Sources */,
 				BDBB9B674BEB8923D1BA5065 /* CalorisorIcon.swift in Sources */,
 				D4DB6EC5D9E7C553A4301514 /* CalorisorLottieView.swift in Sources */,

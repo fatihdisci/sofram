@@ -271,6 +271,17 @@ struct SettingsView: View {
     @AppStorage("calorisor.fatTarget") private var fatTarget: Double = 0
     @AppStorage("calorisor.onboardingCompleted") private var onboardingCompleted = false
 
+    // Notifications (SF-EX06/07/08) — reactive mirrors of the UserDefaults keys
+    // MealReminderService reads. Toggling any of these re-arms the schedule.
+    @AppStorage(NotificationPrefs.masterKey) private var notifMaster = false
+    @AppStorage(MealSlot.breakfast.enabledKey) private var notifBreakfast = false
+    @AppStorage(MealSlot.lunch.enabledKey) private var notifLunch = false
+    @AppStorage(MealSlot.snack.enabledKey) private var notifSnack = false
+    @AppStorage(MealSlot.dinner.enabledKey) private var notifDinner = false
+    @AppStorage(NotificationPrefs.noLogEnabledKey) private var notifNoLog = false
+    @AppStorage(NotificationPrefs.summaryEnabledKey) private var notifSummary = false
+    @State private var notifAuthorizationDenied = false
+
     @State private var store = StoreKitManager.shared
     @State private var subscriptions = FreeScanCounter.shared
     @State private var showPaywall = false
@@ -298,6 +309,7 @@ struct SettingsView: View {
                 targetsSection
                 profileSection
                 languageSection
+                notificationsSection
                 dataSection
                 aboutSection
             }
@@ -577,6 +589,139 @@ struct SettingsView: View {
         } footer: {
             Text("Değişiklik bir sonraki açılışta uygulanır.")
         }
+    }
+
+    // MARK: Notifications (SF-EX06/07/08)
+
+    @ViewBuilder
+    private var notificationsSection: some View {
+        Section {
+            Toggle(isOn: $notifMaster) {
+                Label(String(localized: "Bildirimler"), systemImage: "bell.badge")
+            }
+            .onChange(of: notifMaster) { _, isOn in
+                if isOn { requestNotificationAuthorization() }
+                rescheduleNotifications()
+            }
+
+            if notifMaster {
+                if notifAuthorizationDenied {
+                    Button {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    } label: {
+                        Label(String(localized: "Bildirim izni kapalı — Ayarlar'dan aç"), systemImage: "exclamationmark.circle")
+                            .foregroundStyle(Color.accentText)
+                    }
+                }
+
+                // Meal reminders (SF-EX06)
+                mealReminderRow(.breakfast, isOn: $notifBreakfast)
+                mealReminderRow(.lunch, isOn: $notifLunch)
+                mealReminderRow(.snack, isOn: $notifSnack)
+                mealReminderRow(.dinner, isOn: $notifDinner)
+
+                // No-log reminder (SF-EX07)
+                Toggle(String(localized: "Hiç kayıt yoksa akşam hatırlat"), isOn: $notifNoLog)
+                    .onChange(of: notifNoLog) { _, _ in rescheduleNotifications() }
+                if notifNoLog {
+                    DatePicker(
+                        String(localized: "Saat"),
+                        selection: notifTime(
+                            hourKey: NotificationPrefs.noLogHourKey,
+                            minuteKey: NotificationPrefs.noLogMinuteKey,
+                            defaultHour: NotificationPrefs.defaultNoLogHour
+                        ),
+                        displayedComponents: .hourAndMinute
+                    )
+                }
+
+                // Nightly summary (SF-EX08)
+                Toggle(String(localized: "Gece özeti"), isOn: $notifSummary)
+                    .onChange(of: notifSummary) { _, _ in rescheduleNotifications() }
+                if notifSummary {
+                    DatePicker(
+                        String(localized: "Saat"),
+                        selection: notifTime(
+                            hourKey: NotificationPrefs.summaryHourKey,
+                            minuteKey: NotificationPrefs.summaryMinuteKey,
+                            defaultHour: NotificationPrefs.defaultSummaryHour
+                        ),
+                        displayedComponents: .hourAndMinute
+                    )
+                }
+
+                Button(role: .destructive) {
+                    turnOffAllNotifications()
+                } label: {
+                    Text("Tüm bildirimleri kapat")
+                }
+            }
+        } header: {
+            Text("Bildirimler")
+        } footer: {
+            Text("Hepsi isteğe bağlı ve kapalı gelir. Bir öğün kaydedildiğinde o öğünün hatırlatması iptal olur; gece özeti yalnızca bilgi verir.")
+        }
+    }
+
+    private func mealReminderRow(_ slot: MealSlot, isOn: Binding<Bool>) -> some View {
+        Group {
+            Toggle(slot.displayName, isOn: isOn)
+                .onChange(of: isOn.wrappedValue) { _, _ in rescheduleNotifications() }
+            if isOn.wrappedValue {
+                DatePicker(
+                    String(localized: "Saat"),
+                    selection: notifTime(
+                        hourKey: slot.hourKey,
+                        minuteKey: slot.minuteKey,
+                        defaultHour: slot.defaultHour
+                    ),
+                    displayedComponents: .hourAndMinute
+                )
+            }
+        }
+    }
+
+    /// A DatePicker binding that stores the chosen hour/minute in UserDefaults
+    /// and re-arms the schedule.
+    private func notifTime(hourKey: String, minuteKey: String, defaultHour: Int) -> Binding<Date> {
+        Binding(
+            get: {
+                let h = UserDefaults.standard.object(forKey: hourKey) as? Int ?? defaultHour
+                let m = UserDefaults.standard.object(forKey: minuteKey) as? Int ?? 0
+                return Calendar.current.date(bySettingHour: h, minute: m, second: 0, of: Date()) ?? Date()
+            },
+            set: { date in
+                let comps = Calendar.current.dateComponents([.hour, .minute], from: date)
+                UserDefaults.standard.set(comps.hour ?? defaultHour, forKey: hourKey)
+                UserDefaults.standard.set(comps.minute ?? 0, forKey: minuteKey)
+                rescheduleNotifications()
+            }
+        )
+    }
+
+    private func requestNotificationAuthorization() {
+        Task { @MainActor in
+            let granted = await MealReminderService.shared.requestAuthorization()
+            notifAuthorizationDenied = !granted
+            rescheduleNotifications()
+        }
+    }
+
+    private func rescheduleNotifications() {
+        MealReminderService.shared.reschedule(modelContext: modelContext)
+    }
+
+    private func turnOffAllNotifications() {
+        notifMaster = false
+        notifBreakfast = false
+        notifLunch = false
+        notifSnack = false
+        notifDinner = false
+        notifNoLog = false
+        notifSummary = false
+        rescheduleNotifications()
     }
 
     // MARK: Data
