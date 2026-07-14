@@ -188,6 +188,40 @@ function clientIP(request: Request): string {
   return forwarded || request.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
+const INSTALLATION_ID_HEADER = "x-calorisor-installation-id";
+
+interface LimitIdentity {
+  /** SHA-256 rate-limit key. Never the raw installation UUID or a raw IP. */
+  key: string;
+  source: "installation" | "ip";
+}
+
+/**
+ * Resolve the anonymous rate-limit identity for a request.
+ *
+ * Preferred: `SHA256(installation_id + INSTALLATION_HASH_SALT)` from the
+ * `x-calorisor-installation-id` header — a stable per-install key that survives
+ * IP changes and shared networks (scope doc §8.2 / §11.1). The raw UUID is
+ * hashed with a server-held salt and is never logged or stored in the clear.
+ *
+ * Fallback: a hashed client IP, for pre-SF-1102 clients that do not send the
+ * header yet (transition window). Callers may reject the missing-header case
+ * outright via `REQUIRE_INSTALLATION_ID` once all shipped clients send it.
+ */
+async function limitIdentity(
+  rawInstallationID: string | undefined,
+  request: Request,
+  salt: string,
+): Promise<LimitIdentity> {
+  if (isNonEmptyString(rawInstallationID)) {
+    return {
+      key: await sha256(rawInstallationID + salt),
+      source: "installation",
+    };
+  }
+  return { key: await sha256(clientIP(request)), source: "ip" };
+}
+
 async function cacheKey(forRequest: ScanRequest): Promise<string> {
   const source =
     forRequest.mode === "photo"
@@ -275,6 +309,15 @@ export default async function handler(request: Request): Promise<Response> {
     return jsonError("upstream_error", 502);
   }
 
+  // The installation-hash salt is required infrastructure: without it we cannot
+  // derive the anonymous rate-limit identity. Fail with a controlled 502 (not an
+  // unhandled crash) rather than silently degrading to IP-only limiting or
+  // hashing with an empty salt.
+  const installationSalt = process.env.INSTALLATION_HASH_SALT;
+  if (!installationSalt) {
+    return jsonError("upstream_error", 502);
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -290,10 +333,22 @@ export default async function handler(request: Request): Promise<Response> {
   let responseCacheKey: string;
   try {
     infrastructure = getUpstashInfrastructure();
-    const ipHash = await sha256(clientIP(request));
+
+    // Rate-limit identity is the anonymous installation hash (scope doc §11.1),
+    // falling back to a hashed IP for clients that predate the header. Once every
+    // shipped build sends it, set REQUIRE_INSTALLATION_ID=true to reject the
+    // missing-header case instead of falling back.
+    const rawInstallationID = request.headers.get(INSTALLATION_ID_HEADER)?.trim();
+    if (
+      !isNonEmptyString(rawInstallationID) &&
+      process.env.REQUIRE_INSTALLATION_ID === "true"
+    ) {
+      return jsonError("invalid_request", 400);
+    }
+    const identity = await limitIdentity(rawInstallationID, request, installationSalt);
     const [minute, daily] = await Promise.all([
-      infrastructure.minuteLimit.limit(ipHash),
-      infrastructure.dailyLimit.limit(ipHash),
+      infrastructure.minuteLimit.limit(identity.key),
+      infrastructure.dailyLimit.limit(identity.key),
     ]);
     if (!minute.success || !daily.success) {
       return jsonError("rate_limited", 429);

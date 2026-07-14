@@ -18,6 +18,13 @@ The endpoint is available at `http://localhost:3000/api/scan`.
 - `CALORISOR_CLIENT_KEY`: shared client key expected in the `x-calorisor-key` header.
 - `UPSTASH_REDIS_REST_URL`: Upstash Redis REST endpoint.
 - `UPSTASH_REDIS_REST_TOKEN`: Upstash Redis REST token.
+- `INSTALLATION_HASH_SALT`: secret salt hashed with the anonymous installation id
+  (`x-calorisor-installation-id`) to derive the rate-limit key. Required; the
+  function returns HTTP 502 when it is unset. The raw installation id is never
+  logged or stored — only its salted SHA-256 hash is used.
+- `REQUIRE_INSTALLATION_ID` (optional): set to `true` to reject requests that
+  omit the installation id header with HTTP 400 instead of falling back to a
+  hashed IP. Leave unset during the rollout while older clients may still omit it.
 
 Configure the same values in the Vercel project for deployment. Never commit
 real keys.
@@ -42,11 +49,13 @@ A successful response is the `VisionResponse` JSON object itself. The
 `x-calorisor-cache` response header is `miss` for a new analysis and `hit` when the
 same normalized text or photo payload is served from the seven-day cache.
 
-Authorized requests are limited per anonymized IP hash to 10 per minute and
-200 per day. Redis contains SHA-256 cache/rate-limit identifiers, counters, and
-the normalized model response associated with a cache identifier. Raw meal
-text, image data, and IP addresses are not logged. Cache entries expire after
-seven days.
+Authorized requests are limited per anonymized installation hash (a salted
+SHA-256 of the `x-calorisor-installation-id` header), falling back to a hashed
+IP for clients that do not send it, to 10 per minute and 200 per day. Redis
+contains SHA-256 cache/rate-limit identifiers, counters, and the normalized model
+response associated with a cache identifier. Raw meal text, image data, IP
+addresses, and installation ids are not logged. Cache entries expire after seven
+days.
 
 ## App Store privacy nutrition label draft
 

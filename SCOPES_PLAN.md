@@ -109,10 +109,12 @@
   **Kabul:** Encode edilen JSON ve header'lar testle doğrulanır; eski proxy'ye karşı geriye uyumlu (yeni alanlar eklenince mevcut deploy 400 dönmüyor — `isScanRequest` bilinmeyen alanı umursamıyor, doğrulanacak).
   **Uygulama notu:** `AIProxyInputSource` enum'u; `AIProxyRequest`'e `input_source` + `claimed_tier` (=tier). `scanText(_:inputSource:)` (varsayılan `.typedText`). Header'lar `performProxyRequest`'te `InstallationIdentity.shared.headerValue` ile eklendi (hem foto hem text yolunda). TextLogView `usedDictation` bayrağı: transkript gelince true, alan boşalınca / öneri dokununca false → `scan()` `voice_transcript`/`typed_text` seçer. **Geriye uyumluluk doğrulandı:** deploy'daki `isScanRequest` yalnız mevcut alanları doğruluyor, `tier` hâlâ gönderiliyor, `JSONEncoder` nil `image_base64`'ü atlıyor → 400 yok. Testler: `input_source`/`claimed_tier` (typed/voice/photo) encode + mock-URLProtocol header + installation ID'nin gövdede olmadığı.
 
-- [ ] **SF-1103 · Proxy: installation hash**
-  **Dosya:** `proxy/api/scan.ts`
+- [x] **SF-1103 · Proxy: installation hash** ✅ 2026-07-14
+  **Dosya:** `proxy/api/scan.ts`, `proxy/.env.example`, `proxy/README.md`
   **Talimat:** `x-calorisor-installation-id` header'ını al; `SHA256(installation_id + INSTALLATION_HASH_SALT)` üret (`INSTALLATION_HASH_SALT` yeni Vercel env). Ham ID hiçbir log/Redis değerine yazılmaz; her yerde yalnız `installation_hash` kullanılır. Header yoksa: eski sürümler için IP-hash fallback'iyle çalışmaya devam et (geçiş dönemi), yeni app_version'larda `invalid_request`.
   **Kabul:** Salt olmadan boot hatası değil kontrollü 502; hash deterministik; ham ID grep'le hiçbir çıktıda yok.
+  **Uygulama notu:** `limitIdentity()` yardımcısı: header varsa `sha256(id + salt)` (source "installation"), yoksa `sha256(ip)` (source "ip"). Salt env yoksa handler üstünde kontrollü 502 (OpenAI key kontrolüyle aynı desen). Rate-limit anahtarı artık `identity.key` (ipHash yerine). "Yeni sürümde zorunlu" kısmı kırılgan semver yerine `REQUIRE_INSTALLATION_ID=true` env bayrağıyla (varsayılan kapalı → IP fallback; açılınca header'sız istek 400). `.env.example` + README güncellendi. **Doğrulama:** `npm run typecheck` (tsc --noEmit) temiz geçti; `grep console.` → hiç log yok, ham ID yalnız hash girdisinde. Otomatik proxy testi SF-1204'te (vitest) gelecek.
+  **⚠ Deploy notu:** Bu kod canlıya çıkmadan ÖNCE Vercel'de `INSTALLATION_HASH_SALT` set edilmeli, aksi halde endpoint tüm isteklere 502 döner (kasıtlı — SF-1110).
 
 - [ ] **SF-1104 · Proxy: cihaz bazlı günlük limitler (Free 1+2, Pro 50+100)**
   **Dosya:** `proxy/api/scan.ts`
