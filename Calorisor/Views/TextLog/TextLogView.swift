@@ -49,6 +49,11 @@ struct TextLogView: View {
     /// Text already present when dictation began — the live transcript is
     /// appended onto this so partial-result updates never wipe earlier input.
     @State private var textBeforeDictation = ""
+    /// Whether the current field content originated from dictation, so the scan
+    /// is reported to the proxy as `voice_transcript` rather than `typed_text`
+    /// (scope doc §9). Set when a transcript lands, cleared when the field is
+    /// emptied or a typed suggestion is inserted.
+    @State private var usedDictation = false
 
     private let client = AIProxyClient()
 
@@ -163,6 +168,11 @@ struct TextLogView: View {
             if limited != newValue {
                 textInput = limited
             }
+            // A cleared field resets provenance: fresh input is typed_text until
+            // dictation contributes again.
+            if limited.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                usedDictation = false
+            }
             nav.textLogDraft = limited
         }
         // Mirror the live transcript into the text field. Rebuilt from the text
@@ -173,6 +183,7 @@ struct TextLogView: View {
             guard !dictated.isEmpty else { return }
             let base = textBeforeDictation.trimmingCharacters(in: .whitespacesAndNewlines)
             textInput = base.isEmpty ? dictated : "\(base) \(dictated)"
+            usedDictation = true
         }
         // SF-EX04 — when dictation ends with content, hand control back to the
         // user for review/editing: raise the keyboard on the transcript so the
@@ -404,6 +415,8 @@ struct TextLogView: View {
 
     private func appendSuggestion(_ suggestion: String) {
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        // Tapping a chip is a typed action — the resulting scan is typed_text.
+        usedDictation = false
         let trimmed = textInput.trimmingCharacters(in: .whitespacesAndNewlines)
         withAnimation(.sofraSpring) {
             textInput = trimmed.isEmpty ? suggestion : "\(trimmed), \(suggestion)"
@@ -459,7 +472,10 @@ struct TextLogView: View {
         defer { isScanning = false }
 
         do {
-            let result = try await client.scanText(text)
+            let result = try await client.scanText(
+                text,
+                inputSource: usedDictation ? .voiceTranscript : .typedText
+            )
             if !client.isDemoMode {
                 FreeScanCounter.shared.recordScan()
             }

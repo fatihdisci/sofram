@@ -49,17 +49,36 @@ enum AIProxyError: LocalizedError, Equatable {
 
 // MARK: - Proxy request body
 
+/// Where a scan's input came from. Sent as `input_source` so the proxy can
+/// meter photo separately from text/voice, with voice sharing the text pool
+/// (scope doc §11.2). Distinct from `mode` ("photo"/"text"), which selects the
+/// prompt: a voice transcript is `mode: "text"`, `input_source: "voice_transcript"`.
+enum AIProxyInputSource: String {
+    case photo = "photo"
+    case typedText = "typed_text"
+    case voiceTranscript = "voice_transcript"
+}
+
 struct AIProxyRequest: Encodable {
     let imageBase64: String?
     let text: String?
     let mode: String
+    let inputSource: String
     let locale: String
+    /// Legacy tier field, kept so the currently deployed proxy keeps working.
     let tier: String
+    /// Same value as `tier`, under the name the new server-side contract uses
+    /// (scope doc §9). Transitional only — once the proxy verifies the signed
+    /// StoreKit transaction (SF-1303) neither client-supplied field is trusted
+    /// for model or limit selection.
+    let claimedTier: String
     let schemaVersion: Int
     let appVersion: String
 
     enum CodingKeys: String, CodingKey {
         case imageBase64 = "image_base64"
+        case inputSource = "input_source"
+        case claimedTier = "claimed_tier"
         case schemaVersion = "schema_version"
         case appVersion = "app_version"
         case text, mode, locale, tier
@@ -75,8 +94,10 @@ struct AIProxyRequest: Encodable {
             imageBase64: imageData.base64EncodedString(),
             text: nil,
             mode: "photo",
+            inputSource: AIProxyInputSource.photo.rawValue,
             locale: locale,
             tier: tier,
+            claimedTier: tier,
             schemaVersion: 1,
             appVersion: appVersion ?? currentAppVersion()
         )
@@ -86,14 +107,17 @@ struct AIProxyRequest: Encodable {
         description: String,
         locale: String,
         tier: String,
+        inputSource: AIProxyInputSource = .typedText,
         appVersion: String? = nil
     ) -> AIProxyRequest {
         AIProxyRequest(
             imageBase64: nil,
             text: description,
             mode: "text",
+            inputSource: inputSource.rawValue,
             locale: locale,
             tier: tier,
+            claimedTier: tier,
             schemaVersion: 1,
             appVersion: appVersion ?? currentAppVersion()
         )
@@ -365,7 +389,10 @@ final class AIProxyClient {
         throw AIProxyError.notConfigured
     }
 
-    func scanText(_ description: String) async throws -> ScanResult {
+    func scanText(
+        _ description: String,
+        inputSource: AIProxyInputSource = .typedText
+    ) async throws -> ScanResult {
         if isDemoMode {
             return ScanResult(
                 response: try await DemoVisionData.textResponse(for: description),
@@ -375,7 +402,12 @@ final class AIProxyClient {
         let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
 
         if isConfigured {
-            let body = AIProxyRequest.text(description: description, locale: AppLanguage.current.effectiveLocale.identifier, tier: tier)
+            let body = AIProxyRequest.text(
+                description: description,
+                locale: AppLanguage.current.effectiveLocale.identifier,
+                tier: tier,
+                inputSource: inputSource
+            )
             return try await performProxyRequest(body: body)
         }
 
@@ -397,6 +429,14 @@ final class AIProxyClient {
         if let key = configuration.apiKey {
             request.setValue(key, forHTTPHeaderField: "x-calorisor-key")
         }
+        // Anonymous per-installation identity travels in a header only — never in
+        // the body. The proxy hashes the raw UUID with a server secret before any
+        // log touches it (scope doc §8.2 / §9), so it is the rate-limit key
+        // without ever being persisted in the clear.
+        request.setValue(InstallationIdentity.shared.headerValue,
+                         forHTTPHeaderField: "x-calorisor-installation-id")
+        request.setValue(body.appVersion, forHTTPHeaderField: "x-calorisor-app-version")
+        request.setValue("ios", forHTTPHeaderField: "x-calorisor-platform")
         request.httpBody = try JSONEncoder().encode(body)
 
         let data: Data

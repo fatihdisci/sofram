@@ -22,6 +22,44 @@ final class AIProxyClientTests: XCTestCase {
         XCTAssertFalse(result.response.noFoodDetected)
     }
 
+    func testProxyRequestSendsInstallationHeadersAndKeepsIDOutOfBody() async throws {
+        var platform: String?
+        var installationID: String?
+        var appVersion: String?
+        var clientKey: String?
+        var bodyJSON: [String: Any]?
+        AIClientMockURLProtocol.handler = { request in
+            platform = request.value(forHTTPHeaderField: "x-calorisor-platform")
+            installationID = request.value(forHTTPHeaderField: "x-calorisor-installation-id")
+            appVersion = request.value(forHTTPHeaderField: "x-calorisor-app-version")
+            clientKey = request.value(forHTTPHeaderField: "x-calorisor-key")
+            bodyJSON = try JSONSerialization.jsonObject(
+                with: requestBodyData(request)
+            ) as? [String: Any]
+            let response = HTTPURLResponse(
+                url: try XCTUnwrap(request.url),
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            )!
+            return (response, Data(self.validVisionJSON.utf8))
+        }
+
+        _ = try await makeProxyClient().scanText("çorba", inputSource: .voiceTranscript)
+
+        XCTAssertEqual(platform, "ios")
+        XCTAssertEqual(clientKey, "test-key")
+        XCTAssertNotNil(UUID(uuidString: try XCTUnwrap(installationID)),
+                        "installation id header must be a UUID string")
+        XCTAssertFalse((appVersion ?? "").isEmpty)
+
+        // The raw installation UUID must live in the header, never the body.
+        let body = try XCTUnwrap(bodyJSON)
+        XCTAssertNil(body["installation_id"])
+        XCTAssertEqual(body["input_source"] as? String, "voice_transcript")
+        XCTAssertEqual(body["claimed_tier"] as? String, body["tier"] as? String)
+    }
+
     func testProxy429MapsToRateLimited() async {
         stub(statusCode: 429, body: #"{"error":"rate_limited"}"#)
         await assertError(.rateLimited) { try await self.makeProxyClient().scanText("çorba") }

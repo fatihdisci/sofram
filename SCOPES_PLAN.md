@@ -103,10 +103,11 @@
   **Kabul:** ID bir kez üretilir, ikinci okuma aynı değeri döner; mock-keychain testleri geçer.
   **Uygulama notu:** `InstallationKeychainStore` protokolü + `SystemKeychainStore` (AfterFirstUnlockThisDeviceOnly) + kilitli/cache'li `InstallationIdentity` sınıfı (`.shared`, `headerValue` SF-1102 için hazır). Testler in-memory + write-count spy ile: tek üretim, kalıcılık (ayrı instance aynı değeri okur), bozuk değerin yenilenmesi, ayrı kurulumların farklı ID'si.
 
-- [ ] **SF-1102 · İstemci request sözleşmesi: input_source + header'lar + claimed_tier**
+- [ ] **SF-1102 · İstemci request sözleşmesi: input_source + header'lar + claimed_tier** ⏸ NOT: Kod + testler yazıldı; `xcodebuild test` Mac'te doğrulanacak. Yeni dosya yok, pbxproj değişmedi.
   **Dosya:** `Calorisor/Networking/AIProxyClient.swift`, `Calorisor/Views/TextLog/TextLogView.swift`, `CalorisorTests/AIProxyRequestTests.swift`
   **Talimat:** `AIProxyRequest`'e `input_source: "photo"|"typed_text"|"voice_transcript"` ekle; TextLog akışı transkript kullanıldıysa `voice_transcript` göndersin (MealSpeechRecognizer'dan gelen metin `textInput`'a yansıyor — son analiz girdisinin kaynağını izle). Geçiş için body'de hem `tier` (eski) hem `claimed_tier` gönder. Header'lar: `x-calorisor-installation-id` (ham UUID), `x-calorisor-app-version`, `x-calorisor-platform: ios` (`x-calorisor-key` zaten var). Installation ID body'ye KONMAZ.
   **Kabul:** Encode edilen JSON ve header'lar testle doğrulanır; eski proxy'ye karşı geriye uyumlu (yeni alanlar eklenince mevcut deploy 400 dönmüyor — `isScanRequest` bilinmeyen alanı umursamıyor, doğrulanacak).
+  **Uygulama notu:** `AIProxyInputSource` enum'u; `AIProxyRequest`'e `input_source` + `claimed_tier` (=tier). `scanText(_:inputSource:)` (varsayılan `.typedText`). Header'lar `performProxyRequest`'te `InstallationIdentity.shared.headerValue` ile eklendi (hem foto hem text yolunda). TextLogView `usedDictation` bayrağı: transkript gelince true, alan boşalınca / öneri dokununca false → `scan()` `voice_transcript`/`typed_text` seçer. **Geriye uyumluluk doğrulandı:** deploy'daki `isScanRequest` yalnız mevcut alanları doğruluyor, `tier` hâlâ gönderiliyor, `JSONEncoder` nil `image_base64`'ü atlıyor → 400 yok. Testler: `input_source`/`claimed_tier` (typed/voice/photo) encode + mock-URLProtocol header + installation ID'nin gövdede olmadığı.
 
 - [ ] **SF-1103 · Proxy: installation hash**
   **Dosya:** `proxy/api/scan.ts`
