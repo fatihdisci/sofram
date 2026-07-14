@@ -14,13 +14,13 @@
           "adHocOffers" : [],
           "codeOffers" : [],
           "displayPrice" : "129.99",
-          "familyShareable" : false,
+          "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "97215F2D",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Sınırsız fotoğrafla kalori takibi, tüm Pro özellikler.",
+              "description" : "Günlük kullanım için yüksek limitli AI analizi, tüm Pro özellikler.",
               "displayName" : "Calorisor Aylık",
               "locale" : "tr_TR"
             }
@@ -36,7 +36,7 @@
           "adHocOffers" : [],
           "codeOffers" : [],
           "displayPrice" : "799.99",
-          "familyShareable" : false,
+          "familyShareable" : true,
           "groupNumber" : 1,
           "internalID" : "B83E41A2",
           "introductoryOffer" : {
@@ -46,7 +46,7 @@
           },
           "localizations" : [
             {
-              "description" : "Sınırsız fotoğrafla kalori takibi, en uygun fiyat. 7 gün ücretsiz deneme.",
+              "description" : "Günlük kullanım için yüksek limitli AI analizi, en uygun fiyat. 7 gün ücretsiz deneme.",
               "displayName" : "Calorisor Yıllık",
               "locale" : "tr_TR"
             }

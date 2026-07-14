@@ -138,10 +138,10 @@
   **Talimat:** §2.4'teki tüm satırları değiştir. Yeni kopyalar (§6.2/§7): "Günlük kullanım için yüksek limitli AI analizi", "Pro ile daha fazla analiz"; buton "Pro'yu İncele". Paywall'da §5 zorunluları: yıllık TOPLAM fiyat aylık eşdeğerden daha görünür; deneme sonunda tahsil edilecek gerçek tutar; otomatik yenileme + App Store'dan iptal cümlesi (mevcut "Sonra {fiyat} · istediğin an iptal" satırını §5 örneğine genişlet). "Yalnızca X TL/ay" tek başına kullanılmaz. SF-505'in aylık-eşdeğer format düzeltmesini burada birlikte kapat. EN/TR ikisi de güncellenir.
   **Kabul:** Repo'da `grep -ri "sınırsız\|unlimited"` yalnız gerçekten sınırsız özellikler (manuel kayıt/geçmiş/düzenleme) ve kod-içi `hasUnlimitedScans` gibi teknik adlarda kalır (o property da yeniden adlandırılır); paywall snapshot/preview güncel.
 
-- [ ] **SF-1108 · Products.storekit: Family Sharing + açıklama metinleri**
+- [x] **SF-1108 · Products.storekit: Family Sharing + açıklama metinleri** ✅ 2026-07-14
   **Dosya:** `Calorisor/StoreKit/Products.storekit`
   **Talimat:** İki üründe `familyShareable: true`; açıklamalardan "Sınırsız" çıkar (SF-1107 ile aynı terminoloji). Fiyatlar lansman değerlerinde kalır (129,99/799,99 — §4.2). Deneme: yalnız yıllıkta P1W ✓ (değişiklik yok).
-  **Kabul:** StoreKit config testte yüklenir; paywall Family Sharing'i belirtir (SF-1107 kopyasına satır ekle).
+  **Kabul:** İki ürün `familyShareable: true`; açıklamalarda “Sınırsız” kaldırıldı; aylık/yıllık fiyatlar ve yıllık P1W denemesi korundu. JSON geçerli, Xcode Simulator test/build zinciri 105/105 geçti. Paywall’daki görünür Family Sharing kopyası SF-1107 kapsamında ele alınacak.
 
 - [ ] **SF-1109 · Bayat doküman/yorum düzeltmeleri**
   **Dosya:** `StoreKitManager.swift` (satır 9 "3-day"), `PROJECT_CONTEXT.md` ("3-day trial", "lifetime 3 scans", "Gemini Flash"), `ROADMAP.md` (SF-201..203 durum notları)
