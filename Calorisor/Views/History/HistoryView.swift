@@ -38,6 +38,8 @@ struct HistoryView: View {
 
                         SevenDaySummaryView(embedded: true)
 
+                        weightTrendLink
+
                         allDaysSection
 
                         Spacer(minLength: 96)
@@ -50,6 +52,39 @@ struct HistoryView: View {
                 DayDetailView(date: date)
             }
         }
+    }
+
+    private var weightTrendLink: some View {
+        NavigationLink {
+            WeightTrendView()
+        } label: {
+            HStack(spacing: Layout.Spacing.md) {
+                Image(systemName: "scalemass")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundStyle(Color.accentFill)
+                    .frame(width: 40, height: 40)
+                    .background(Color.accentTintBg, in: Circle())
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Kilo trendi")
+                        .font(.sofraLabel)
+                        .foregroundStyle(Color.textPrimary)
+                    Text("Sağlık uygulamasındaki son 30 günü gör")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(Color.textMuted)
+            }
+            .padding(Layout.Spacing.lg)
+            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+            .raisedSurface(cornerRadius: Layout.Radius.card)
+        }
+        .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
     }
 
     @ViewBuilder

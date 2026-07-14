@@ -15,6 +15,13 @@ struct HealthKitSnapshot: Equatable, Sendable {
     )
 }
 
+struct HealthKitWeightPoint: Equatable, Identifiable, Sendable {
+    let date: Date
+    let kilograms: Double
+
+    var id: Date { date }
+}
+
 /// The only boundary between the app and HealthKit. Health data stays on-device
 /// and is never part of an AI proxy request, telemetry event, or widget payload.
 final class HealthKitManager {
@@ -74,6 +81,42 @@ final class HealthKitManager {
             activeEnergyKcal: (try? await energy) ?? 0,
             steps: (try? await steps) ?? 0
         )
+    }
+
+    /// Returns body-mass samples for the requested trailing window. HealthKit
+    /// can contain several readings per day; the trend view reduces these to
+    /// one reading per day before rendering.
+    func readWeightHistory(days: Int = 30, now: Date = .now) async -> [HealthKitWeightPoint] {
+        guard Self.isAvailable, days > 0 else { return [] }
+
+        let calendar = Calendar.current
+        let end = now
+        let today = calendar.startOfDay(for: end)
+        let start = calendar.date(byAdding: .day, value: -(days - 1), to: today) ?? today
+        guard let type = HKObjectType.quantityType(forIdentifier: .bodyMass) else { return [] }
+
+        let predicate = HKQuery.predicateForSamples(
+            withStart: start,
+            end: end,
+            options: .strictStartDate
+        )
+
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: type,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: true)]
+            ) { _, samples, _ in
+                let points = (samples as? [HKQuantitySample] ?? []).compactMap { sample -> HealthKitWeightPoint? in
+                    let value = sample.quantity.doubleValue(for: .gramUnit(with: .kilo))
+                    guard value.isFinite, value > 0 else { return nil }
+                    return HealthKitWeightPoint(date: sample.endDate, kilograms: value)
+                }
+                continuation.resume(returning: points)
+            }
+            self.store.execute(query)
+        }
     }
 
     /// Writes one meal's nutrition only after the caller has explicitly

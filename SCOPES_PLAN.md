@@ -237,9 +237,10 @@
   **Kabul:** §20.5'in tamamı; izin reddi testte crash üretmez.
   **Uygulama notu:** Okuma/yazma yalnızca `HealthKitManager` içinde; Settings'ten kullanıcı başlatmalı izin akışı; izin yoksa boş snapshot/`false` dönüşü ve crash yok. Simulator test runner'ı iki koşuda da CoreSimulator “Busy” hatasıyla başlatılamadı; Swift derlemesi başarılı.
 
-- [ ] **SF-1502 · Aktif enerji görünümü + kilo trendi**
+- [x] **SF-1502 · Aktif enerji görünümü + kilo trendi** ✅ 2026-07-14
   **Dosya:** `DailyView.swift`, yeni kilo geçmişi view'ı
   **Kabul:** Günlük ekranda aktif enerji özeti; kilo trend ekranı HealthKit verisiyle.
+  **Uygulama notu:** Bugün ekranına aktif enerji/adım kartı; Geçmiş ekranına HealthKit’ten son 30 günü okuyan, gün başına son ölçümü gösteren kilo trendi eklendi. HealthKit verisi cihaz dışına çıkmaz.
 
 - [ ] **SF-1503 · HealthKit yazma senkronu (duplicate/düzenleme/silme)**
   **Dosya:** `HealthKitManager.swift`, öğün kayıt/düzenleme akışları

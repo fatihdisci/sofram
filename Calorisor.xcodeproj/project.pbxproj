@@ -11,6 +11,7 @@
 		005AEC57DF0EBAD932CFA338 /* VisionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC57EDF03FB81945A9D5032D /* VisionResponse.swift */; };
 		00F7878C70C308E89AE723C8 /* PortionRecalculationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EAC6401ADBAB3BC97E85DA /* PortionRecalculationTests.swift */; };
 		02A997C493742DB259429542 /* InstallationIdentityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A636A3CB150DE35B6ED56F2F /* InstallationIdentityTests.swift */; };
+		06C28A8B18B90AAD10C0CC8E /* HealthKitWeightTrendBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325D227BABC6B12C152A5DEE /* HealthKitWeightTrendBuilderTests.swift */; };
 		0AE34414AD49CABC00BE4941 /* AIProxyRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46128715FADCC279B5056F0 /* AIProxyRequestTests.swift */; };
 		0C690FDC2D1B097432BA4170 /* WidgetDataStore+MainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91025AD78F8264670567B82B /* WidgetDataStore+MainApp.swift */; };
 		0D0A919939F5373A1BFBD533 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ED97A6754E6A9CAF2E2A0B6 /* Assets.xcassets */; };
@@ -63,6 +64,7 @@
 		772203ABFB28E65B104555B5 /* CalorisorFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BD24BA450518E535654318 /* CalorisorFormatters.swift */; };
 		774A3774249812C659CD45E9 /* TurkishFoodReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BBDF90CF9265B4C3790BCA /* TurkishFoodReference.swift */; };
 		79F38C14420C0E2C54B2CE5E /* Color+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E9FE15580F17B38AAFE28B /* Color+Tokens.swift */; };
+		7BDFE1A2536D7CFEA99CCE25 /* HealthKitWeightTrendBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D0252162673CC05499768A /* HealthKitWeightTrendBuilder.swift */; };
 		82AF13000255959D7BC44DC9 /* ReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC28ACD3FE8E3F41C23A8DD /* ReferenceReconcilerTests.swift */; };
 		86D6F1186D5EA0767A20B8C5 /* GeistMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9A26520421B1683756057FE5 /* GeistMono-Regular.otf */; };
 		8A71C748C5FDB2199F43BC48 /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6D4F2FC6A62DF734DE8C13 /* DayDetailView.swift */; };
@@ -106,6 +108,7 @@
 		E17D91CEFF75904926060CF3 /* ImageDownscalerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A0607010C75AC0543D1AE0 /* ImageDownscalerTests.swift */; };
 		E41F4454AA923268CA26623D /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3F8C1AFED26D14BEBCD7EE /* Layout.swift */; };
 		E6AD43DD8A1D85656EDDEC1B /* CalorisorIconRenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5750C25C8AC14377E35D98A /* CalorisorIconRenderTests.swift */; };
+		E7C18522ACCF93CE490DC1D7 /* WeightTrendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC33FA2F59D203CDB8BB705 /* WeightTrendView.swift */; };
 		EB437655F1A5236524F60C4E /* Geist-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 12675C092DB7AEE123AE49D4 /* Geist-Medium.otf */; };
 		F112F28C9BF7C83152FE11A9 /* ReferenceReconciler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85647310CC9368556EF3D16 /* ReferenceReconciler.swift */; };
 		F42741E7D69A74C4776737AF /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BCA8E9FCE34FCE031C0006 /* OnboardingView.swift */; };
@@ -147,6 +150,7 @@
 
 /* Begin PBXFileReference section */
 		0110C615AE66FDDD46F02FCC /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
+		05D0252162673CC05499768A /* HealthKitWeightTrendBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitWeightTrendBuilder.swift; sourceTree = "<group>"; };
 		07EAC6401ADBAB3BC97E85DA /* PortionRecalculationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionRecalculationTests.swift; sourceTree = "<group>"; };
 		0A132B9E017CD4AF07CF09EB /* FoodReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReferenceReconcilerTests.swift; sourceTree = "<group>"; };
 		0A5CB1E3BAB77746A9CD9E17 /* HealthKitManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManagerTests.swift; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 		20CAEE7F6CAA43D64781CAE6 /* NutritionCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculator.swift; sourceTree = "<group>"; };
 		2157D9A7A839F485EEA3358C /* BreadReferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreadReferenceTests.swift; sourceTree = "<group>"; };
 		25560B0E61F6C49B28C75EA5 /* UserDataDeletionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataDeletionTests.swift; sourceTree = "<group>"; };
+		325D227BABC6B12C152A5DEE /* HealthKitWeightTrendBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitWeightTrendBuilderTests.swift; sourceTree = "<group>"; };
 		37E597EF19552E0CD85EE33F /* Geist-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-SemiBold.otf"; sourceTree = "<group>"; };
 		38F4F0E19596BB906ECD9F56 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		39BBDF90CF9265B4C3790BCA /* TurkishFoodReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurkishFoodReference.swift; sourceTree = "<group>"; };
@@ -248,6 +253,7 @@
 		ED907CD31FFF0235D330267E /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
 		F4732C6D43064C0E1C0C5F38 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FA4E404F4BEC781D825D123B /* InstallationIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallationIdentity.swift; sourceTree = "<group>"; };
+		FAC33FA2F59D203CDB8BB705 /* WeightTrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightTrendView.swift; sourceTree = "<group>"; };
 		FAC65F6700B972665F5B7D54 /* TextLogInputPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogInputPolicyTests.swift; sourceTree = "<group>"; };
 		FB73CDD81D295F767724EED6 /* CalorisorModelContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorModelContainer.swift; sourceTree = "<group>"; };
 		FBBA5506EB73D98116695157 /* AnalysisOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisOverlay.swift; sourceTree = "<group>"; };
@@ -346,6 +352,7 @@
 			children = (
 				8D6D4F2FC6A62DF734DE8C13 /* DayDetailView.swift */,
 				5DC2C5A6F9CCDF3EA91658E0 /* HistoryView.swift */,
+				FAC33FA2F59D203CDB8BB705 /* WeightTrendView.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -466,6 +473,7 @@
 				A476FF2A8C46A9EE66351659 /* FreeScanCounterTests.swift */,
 				6486817DB465C238D084C52A /* FrequentMealsBuilderTests.swift */,
 				0A5CB1E3BAB77746A9CD9E17 /* HealthKitManagerTests.swift */,
+				325D227BABC6B12C152A5DEE /* HealthKitWeightTrendBuilderTests.swift */,
 				0AC399C35E81AC1142CA0E2F /* HistoryDaySummaryBuilderTests.swift */,
 				D5A0607010C75AC0543D1AE0 /* ImageDownscalerTests.swift */,
 				A636A3CB150DE35B6ED56F2F /* InstallationIdentityTests.swift */,
@@ -563,6 +571,7 @@
 				4835A0ECAD1156E685566217 /* DaySummaryBuilder.swift */,
 				BDBE73D2FB9E4D370662A725 /* FoodReference.swift */,
 				684FE8D566E5C5D73B3D536A /* FrequentMealsBuilder.swift */,
+				05D0252162673CC05499768A /* HealthKitWeightTrendBuilder.swift */,
 				0110C615AE66FDDD46F02FCC /* LoggedItem.swift */,
 				8C50C6727093AE135F03C322 /* NutritionConstants.swift */,
 				E87FBECF54583E7422F6A3FD /* PortionUnit.swift */,
@@ -759,6 +768,7 @@
 				3828C395523EB59D6136A686 /* FreeScanCounterTests.swift in Sources */,
 				C937844343A5BBC4E8E5FEB2 /* FrequentMealsBuilderTests.swift in Sources */,
 				8FEECFC6E7775D27B3DEEA89 /* HealthKitManagerTests.swift in Sources */,
+				06C28A8B18B90AAD10C0CC8E /* HealthKitWeightTrendBuilderTests.swift in Sources */,
 				B16403C34CFC241F2C7277F5 /* HistoryDaySummaryBuilderTests.swift in Sources */,
 				E17D91CEFF75904926060CF3 /* ImageDownscalerTests.swift in Sources */,
 				02A997C493742DB259429542 /* InstallationIdentityTests.swift in Sources */,
@@ -805,6 +815,7 @@
 				001E4CBDE943ECF01C255CE1 /* FreeScanCounter.swift in Sources */,
 				C281FE61B3BD11981443FF5A /* FrequentMealsBuilder.swift in Sources */,
 				98C1432070956FB356DAEA68 /* HealthKitManager.swift in Sources */,
+				7BDFE1A2536D7CFEA99CCE25 /* HealthKitWeightTrendBuilder.swift in Sources */,
 				7074C3F697E8D480D5021ACA /* HistoryView.swift in Sources */,
 				2118432E37E742A0347AD94B /* InstallationIdentity.swift in Sources */,
 				E41F4454AA923268CA26623D /* Layout.swift in Sources */,
@@ -834,6 +845,7 @@
 				14CA6792581DF91D6FA97021 /* UserProfile.swift in Sources */,
 				005AEC57DF0EBAD932CFA338 /* VisionResponse.swift in Sources */,
 				64B7DFBD3FF8B6125B4679A5 /* VisionResponseValidator.swift in Sources */,
+				E7C18522ACCF93CE490DC1D7 /* WeightTrendView.swift in Sources */,
 				CFE650B24AC2838386E12137 /* WidgetDailySummary.swift in Sources */,
 				0C690FDC2D1B097432BA4170 /* WidgetDataStore+MainApp.swift in Sources */,
 				8CB6A114EFD2596DE465C9E9 /* WidgetDataStore.swift in Sources */,

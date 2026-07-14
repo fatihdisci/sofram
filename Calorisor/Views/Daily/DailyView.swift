@@ -30,6 +30,8 @@ struct DailyView: View {
     @AppStorage("calorisor.carbsTarget") private var carbsTargetStored: Double = 0
     @AppStorage("calorisor.fatTarget") private var fatTargetStored: Double = 0
     @State private var dayAnchor = Calendar.current.startOfDay(for: .now)
+    @State private var healthSnapshot = HealthKitSnapshot.empty
+    @State private var healthKitLoaded = false
 
     /// Today's scan entries.
     private var todayScans: [ScanEntry] {
@@ -144,6 +146,9 @@ struct DailyView: View {
                     macroSection
                         .modifier(entrance(0.16))
 
+                    activeEnergySection
+                        .modifier(entrance(0.2))
+
                     QuickCounterView()
                         .padding(.horizontal, Layout.Spacing.lg)
                         .modifier(entrance(0.24))
@@ -169,7 +174,11 @@ struct DailyView: View {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 refreshDayAnchor()
+                Task { await loadHealthSnapshot() }
             }
+        }
+        .task(id: dayAnchor) {
+            await loadHealthSnapshot()
         }
         .sheet(isPresented: $showManualEntry) {
             ManualEntryView(calorieTarget: calorieTarget)
@@ -278,6 +287,72 @@ struct DailyView: View {
             .raisedSurface(cornerRadius: Layout.Radius.card)
         }
         .padding(.horizontal, Layout.Spacing.lg)
+    }
+
+    // MARK: - Active energy
+
+    private var activeEnergySection: some View {
+        VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+            Text("HAREKET")
+                .font(.sofraEyebrow)
+                .tracking(1.2)
+                .foregroundStyle(Color.textMuted)
+
+            HStack(spacing: Layout.Spacing.md) {
+                Image(systemName: "figure.walk")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Color.accentFill)
+                    .frame(width: 40, height: 40)
+                    .background(Color.accentTintBg, in: Circle())
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Aktif enerji")
+                        .font(.sofraLabel)
+                        .foregroundStyle(Color.textPrimary)
+                    Text(healthSnapshot.steps > 0
+                         ? "\(Int(healthSnapshot.steps.rounded())) adım"
+                         : "HealthKit verisi cihazda tutulur")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+
+                Spacer()
+
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text(healthSnapshot.activeEnergyKcal > 0
+                         ? "\(Int(healthSnapshot.activeEnergyKcal.rounded()))"
+                         : "—")
+                        .font(.sofraNumericSmall)
+                        .foregroundStyle(Color.textPrimary)
+                    Text("kcal")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+            }
+            .padding(Layout.Spacing.lg)
+            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+            .raisedSurface(cornerRadius: Layout.Radius.card)
+
+            if healthKitLoaded && healthSnapshot.activeEnergyKcal == 0 && healthSnapshot.steps == 0 {
+                Button {
+                    nav.selectedTab = .settings
+                } label: {
+                    Label("Sağlık verilerini Ayarlar’dan bağla", systemImage: "heart.text.square")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.accentText)
+                }
+                .padding(.horizontal, Layout.Spacing.sm)
+            }
+        }
+        .padding(.horizontal, Layout.Spacing.lg)
+    }
+
+    @MainActor
+    private func loadHealthSnapshot() async {
+        let snapshot = await HealthKitManager.shared.readToday()
+        guard !Task.isCancelled else { return }
+        healthSnapshot = snapshot
+        healthKitLoaded = true
     }
 
     // MARK: - 7-day section
