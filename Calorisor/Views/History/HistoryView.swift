@@ -36,7 +36,7 @@ struct HistoryView: View {
                             .font(.sofraTitle)
                             .foregroundStyle(Color.textPrimary)
 
-                        SevenDaySummaryView(embedded: true)
+                        WeeklySummaryView()
 
                         weightTrendLink
 

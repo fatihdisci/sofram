@@ -35,6 +35,7 @@
 		398182663FD229E903BAF4B4 /* CategorySlugMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9737DCD2C18AED8AA8734377 /* CategorySlugMap.swift */; };
 		3B4DD2A1BE2022E375437DCB /* ReconcilerNegativeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EEBDC748C516E5E2D03CD6 /* ReconcilerNegativeTests.swift */; };
 		3BF881297BFE3620993A285C /* Font+Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B0E3CB58E7F31FCACEF3EC /* Font+Tokens.swift */; };
+		417311500DDCF30BB8C3DF28 /* WeeklySummaryBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D36885A082B1060C63AF42 /* WeeklySummaryBuilderTests.swift */; };
 		41D23A0B1C8E770C4CC8E8AF /* RawAIResponseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EBB288F8C3D465AC687F4A /* RawAIResponseTests.swift */; };
 		41ED153DDB20D420A0C8441E /* WidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826D575097B870F6EDAB44B1 /* WidgetEntryView.swift */; };
 		4AEA5074972A6D1D7F0B0A3D /* CalorisorIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF22DBF9E4C913D48D4C3D0 /* CalorisorIcon.swift */; };
@@ -51,8 +52,10 @@
 		5CDF4A949CD644AEFECBB9A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ED97A6754E6A9CAF2E2A0B6 /* Assets.xcassets */; };
 		5CEE957BD67722D42E898FC5 /* MealSpeechRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05F4BC72923466DB41A66CE /* MealSpeechRecognizerTests.swift */; };
 		620D62438F3FCFE58CA0D1BF /* Geist-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5BFA3F950169F0C2E7AAA171 /* Geist-Regular.otf */; };
+		630ACB31AC9C43A8CF6A0845 /* WeeklySummaryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49781B3BFB1BC9B8EBD4EF9F /* WeeklySummaryBuilder.swift */; };
 		64B7DFBD3FF8B6125B4679A5 /* VisionResponseValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F5BC08B312274A62F31B20 /* VisionResponseValidator.swift */; };
 		6562A41FE5DEC894423EFD6A /* WidgetDailySummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43E5A75CE80FE0EFCF4485E /* WidgetDailySummaryTests.swift */; };
+		688029F2C31833E44E8E1A72 /* WeeklySummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D0C61A78DFDAB8115F491D /* WeeklySummaryView.swift */; };
 		6C0C3A7640E71F3A963DA534 /* CalorisorLottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D3D028925CDAD621B60DA1 /* CalorisorLottieView.swift */; };
 		6D450F4F725E9162DC57CC61 /* String+TurkishNormalize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611D2668C0DEBF5107D09983 /* String+TurkishNormalize.swift */; };
 		705A23177B0A105A0D38245E /* CalorisorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C2D3FCC4BC573EC91E67BF /* CalorisorApp.swift */; };
@@ -177,6 +180,7 @@
 		3EF22DBF9E4C913D48D4C3D0 /* CalorisorIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorisorIcon.swift; sourceTree = "<group>"; };
 		3F4A4C89E18477D4B5D39880 /* WidgetDailySummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDailySummary.swift; sourceTree = "<group>"; };
 		4835A0ECAD1156E685566217 /* DaySummaryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryBuilder.swift; sourceTree = "<group>"; };
+		49781B3BFB1BC9B8EBD4EF9F /* WeeklySummaryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklySummaryBuilder.swift; sourceTree = "<group>"; };
 		56173C488B2EBAE267E9EEEA /* TextLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextLogView.swift; sourceTree = "<group>"; };
 		568C132695DA112741046934 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5BFA3F950169F0C2E7AAA171 /* Geist-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geist-Regular.otf"; sourceTree = "<group>"; };
@@ -245,12 +249,14 @@
 		DFD27B599CBE576D0CD6F44A /* DaySummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySummaryBuilderTests.swift; sourceTree = "<group>"; };
 		E1B0E3CB58E7F31FCACEF3EC /* Font+Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Tokens.swift"; sourceTree = "<group>"; };
 		E201E94BC95515BDB49EAD5C /* CalorisorTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CalorisorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5D36885A082B1060C63AF42 /* WeeklySummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklySummaryBuilderTests.swift; sourceTree = "<group>"; };
 		E7A279FCFE77D1B29C731670 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E80C942567606EED9541078F /* WidgetDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataStore.swift; sourceTree = "<group>"; };
 		E87FBECF54583E7422F6A3FD /* PortionUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionUnit.swift; sourceTree = "<group>"; };
 		EA177D9CF39074FF33BA0C37 /* DailyQuickCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyQuickCounter.swift; sourceTree = "<group>"; };
 		ECA3CC2380D5891D1F7E062F /* NutritionCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCalculatorTests.swift; sourceTree = "<group>"; };
 		ED907CD31FFF0235D330267E /* NavigationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModel.swift; sourceTree = "<group>"; };
+		F2D0C61A78DFDAB8115F491D /* WeeklySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklySummaryView.swift; sourceTree = "<group>"; };
 		F4732C6D43064C0E1C0C5F38 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FA4E404F4BEC781D825D123B /* InstallationIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallationIdentity.swift; sourceTree = "<group>"; };
 		FAC33FA2F59D203CDB8BB705 /* WeightTrendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightTrendView.swift; sourceTree = "<group>"; };
@@ -352,6 +358,7 @@
 			children = (
 				8D6D4F2FC6A62DF734DE8C13 /* DayDetailView.swift */,
 				5DC2C5A6F9CCDF3EA91658E0 /* HistoryView.swift */,
+				F2D0C61A78DFDAB8115F491D /* WeeklySummaryView.swift */,
 				FAC33FA2F59D203CDB8BB705 /* WeightTrendView.swift */,
 			);
 			path = History;
@@ -489,6 +496,7 @@
 				25560B0E61F6C49B28C75EA5 /* UserDataDeletionTests.swift */,
 				C8D4035C21E1DCE8992DCE1D /* UserProfileRecomputeTests.swift */,
 				961E76B66A836E2BDA9327BD /* VisionResponseValidatorTests.swift */,
+				E5D36885A082B1060C63AF42 /* WeeklySummaryBuilderTests.swift */,
 				C43E5A75CE80FE0EFCF4485E /* WidgetDailySummaryTests.swift */,
 			);
 			path = CalorisorTests;
@@ -577,6 +585,7 @@
 				E87FBECF54583E7422F6A3FD /* PortionUnit.swift */,
 				3D3752E2751EACCCB9B2889E /* ScanEntry.swift */,
 				602E4499D02012A4D35591E3 /* UserProfile.swift */,
+				49781B3BFB1BC9B8EBD4EF9F /* WeeklySummaryBuilder.swift */,
 				3F4A4C89E18477D4B5D39880 /* WidgetDailySummary.swift */,
 				E80C942567606EED9541078F /* WidgetDataStore.swift */,
 			);
@@ -784,6 +793,7 @@
 				D432662D90861A5C4DE6224B /* UserDataDeletionTests.swift in Sources */,
 				BCAC463215E5244EB8CB92B6 /* UserProfileRecomputeTests.swift in Sources */,
 				91F0978BD4FB7F473672647C /* VisionResponseValidatorTests.swift in Sources */,
+				417311500DDCF30BB8C3DF28 /* WeeklySummaryBuilderTests.swift in Sources */,
 				6562A41FE5DEC894423EFD6A /* WidgetDailySummaryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -845,6 +855,8 @@
 				14CA6792581DF91D6FA97021 /* UserProfile.swift in Sources */,
 				005AEC57DF0EBAD932CFA338 /* VisionResponse.swift in Sources */,
 				64B7DFBD3FF8B6125B4679A5 /* VisionResponseValidator.swift in Sources */,
+				630ACB31AC9C43A8CF6A0845 /* WeeklySummaryBuilder.swift in Sources */,
+				688029F2C31833E44E8E1A72 /* WeeklySummaryView.swift in Sources */,
 				E7C18522ACCF93CE490DC1D7 /* WeightTrendView.swift in Sources */,
 				CFE650B24AC2838386E12137 /* WidgetDailySummary.swift in Sources */,
 				0C690FDC2D1B097432BA4170 /* WidgetDataStore+MainApp.swift in Sources */,

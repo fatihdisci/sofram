@@ -248,10 +248,11 @@
   **Kabul:** Yaz-düzenle-sil zinciri testte tutarlı.
   **Uygulama notu:** Her ScanEntry UUID’si dört besin örneğinin ortak HealthKit metadata anahtarıdır. Yeni kayıt ve düzenleme önce aynı UUID’ye ait örnekleri silip güncel toplamı yeniden yazar; günlük/geçmiş silme akışları da ilişkili örnekleri kaldırır. Uygulama HealthKit yazma başarısız olsa bile yerel öğün kaydını korur. Test runner Simulator “Busy” nedeniyle başlatılamadı; build başarılı.
 
-- [ ] **SF-1504 · Haftalık özet hesaplayıcı + Free temel istatistik ekranı**
+- [x] **SF-1504 · Haftalık özet hesaplayıcı + Free temel istatistik ekranı** ✅ 2026-07-14
   **Dosya:** yeni `Calorisor/Models/WeeklySummaryBuilder.swift`, yeni haftalık görünüm
   **Talimat:** §21.2 metrikleri tamamen cihazda hesaplanır (kayıtlı gün, ort. kalori/protein, hedef tutturulan gün, en yüksek/düşük gün, gece öğünü, önceki haftaya değişim; varsa aktif enerji + kilo değişimi). Free kullanıcı bu ekranı görür (AI raporu Pro — §21.5).
   **Kabul:** Builder birim testleri; AI erişimi olmadan ekran çalışır.
+  **Uygulama notu:** `WeeklySummaryBuilder` kayıtlı gün, ortalama kalori/protein, hedef günleri, en yüksek/düşük gün, gece öğünü ve önceki hafta değişimini cihazda hesaplar; HealthKit aktif enerji ve kilo değişimi varsa eklenir. `HistoryView` içindeki haftalık özet Free kullanıcıya AI erişimi olmadan gösterilir. Builder testleri ve mevcut test paketi başarıyla geçti.
 
 - [ ] **SF-1505 · Haftalık AI raporu (Pro)**
   **Dosya:** yeni `proxy/api/weekly-report.ts` (veya scan.ts'e mode), `AIProxyClient.swift`, rapor view'ı

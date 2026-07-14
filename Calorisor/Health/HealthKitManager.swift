@@ -83,6 +83,20 @@ final class HealthKitManager {
         )
     }
 
+    func readActiveEnergyTotal(days: Int = 7, now: Date = .now) async -> Double? {
+        guard Self.isAvailable, days > 0 else { return nil }
+        let calendar = Calendar.current
+        let end = now
+        let today = calendar.startOfDay(for: end)
+        let start = calendar.date(byAdding: .day, value: -(days - 1), to: today) ?? today
+        return try? await summedQuantity(
+            .activeEnergyBurned,
+            unit: .kilocalorie(),
+            from: start,
+            to: end
+        )
+    }
+
     /// Returns body-mass samples for the requested trailing window. HealthKit
     /// can contain several readings per day; the trend view reduces these to
     /// one reading per day before rendering.
