@@ -17,7 +17,6 @@ final class AIProxyRequestTests: XCTestCase {
         let json = try encoded(AIProxyRequest.text(
             description: "çorba",
             locale: "tr_TR",
-            tier: "free",
             appVersion: "1.2.3"
         ))
 
@@ -25,28 +24,24 @@ final class AIProxyRequestTests: XCTestCase {
         XCTAssertEqual(json["app_version"] as? String, "1.2.3")
         XCTAssertEqual(json["mode"] as? String, "text")
         XCTAssertEqual(json["locale"] as? String, "tr_TR")
-        XCTAssertEqual(json["tier"] as? String, "free")
+        XCTAssertNil(json["tier"])
     }
 
-    func testTypedTextRequestCarriesInputSourceAndClaimedTier() throws {
+    func testTypedTextRequestCarriesInputSourceWithoutClientTier() throws {
         let json = try encoded(AIProxyRequest.text(
             description: "çorba",
-            locale: "tr_TR",
-            tier: "pro"
+            locale: "tr_TR"
         ))
 
-        // Default text input is typed; claimed_tier mirrors the legacy tier so
-        // the transitional server contract (scope doc §9) has both.
+        // The server decides tier from the signed transaction, never this body.
         XCTAssertEqual(json["input_source"] as? String, "typed_text")
-        XCTAssertEqual(json["claimed_tier"] as? String, "pro")
-        XCTAssertEqual(json["tier"] as? String, "pro")
+        XCTAssertNil(json["signed_transaction_info"])
     }
 
     func testVoiceTranscriptRequestUsesTextModeWithVoiceSource() throws {
         let json = try encoded(AIProxyRequest.text(
             description: "iki kepçe mercimek",
             locale: "tr_TR",
-            tier: "free",
             inputSource: .voiceTranscript
         ))
 
@@ -60,13 +55,11 @@ final class AIProxyRequestTests: XCTestCase {
         let json = try encoded(AIProxyRequest.photo(
             imageData: Data([0x01, 0x02, 0x03]),
             locale: "en_US",
-            tier: "pro",
             appVersion: "2.0.0"
         ))
 
         XCTAssertEqual(json["mode"] as? String, "photo")
         XCTAssertEqual(json["input_source"] as? String, "photo")
-        XCTAssertEqual(json["claimed_tier"] as? String, "pro")
         XCTAssertNotNil(json["image_base64"] as? String)
         XCTAssertNil(json["text"])
     }
@@ -75,10 +68,19 @@ final class AIProxyRequestTests: XCTestCase {
         let json = try encoded(AIProxyRequest.photo(
             imageData: Data([0x01]),
             locale: "tr_TR",
-            tier: "free"
         ))
         // The raw installation UUID must ride in a header only (scope doc §8.2).
         XCTAssertNil(json["installation_id"])
         XCTAssertNil(json["x-calorisor-installation-id"])
+    }
+
+    func testSignedTransactionIsSentOnlyWhenProvided() throws {
+        let json = try encoded(AIProxyRequest.text(
+            description: "çorba",
+            locale: "tr_TR",
+            signedTransactionInfo: "eyJhbGciOiJFUzI1NiJ9.test.signature"
+        ))
+
+        XCTAssertEqual(json["signed_transaction_info"] as? String, "eyJhbGciOiJFUzI1NiJ9.test.signature")
     }
 }

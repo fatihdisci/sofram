@@ -1,6 +1,7 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { textPrompt, visionPrompt, PROMPT_VERSION } from "../prompts.js";
+import { resolveEntitlement } from "../lib/entitlement.js";
 
 export const config = {
   runtime: "edge",
@@ -15,6 +16,7 @@ interface ScanRequest {
   mode: ScanMode;
   locale: string;
   tier: Tier;
+  signed_transaction_info?: string;
   schema_version: number;
   app_version: string;
   input_source?: "photo" | "typed_text" | "voice_transcript";
@@ -83,6 +85,7 @@ interface RequestTelemetry {
   openAIResponseTimeMs: number;
   usage?: OpenAIUsage;
   estimatedCostMicrousd: number;
+  verificationFailed?: boolean;
 }
 
 function telemetryHeaders(telemetry: RequestTelemetry): Record<string, string> {
@@ -117,8 +120,16 @@ const METRIC_NAMES = [
   "cost:microusd",
   "status:error",
   "rate_limited",
+  "verification_failed",
 ] as const;
 type MetricName = (typeof METRIC_NAMES)[number];
+const ANOMALY_NAMES = [
+  "installation_burst",
+  "invalid_key",
+  "verification_failure",
+  "daily_cost_threshold",
+] as const;
+type AnomalyName = (typeof ANOMALY_NAMES)[number];
 
 interface MetricsEvent {
   date: string;
@@ -126,7 +137,7 @@ interface MetricsEvent {
   mode?: ScanMode;
   inputSource?: ScanRequest["input_source"];
   status: "success" | "error";
-  error?: "rate_limited" | "error";
+  error?: "rate_limited" | "subscription_verification_failed" | "error";
   telemetry: RequestTelemetry;
   inputChars: number;
   imageBytes: number;
@@ -137,6 +148,10 @@ interface MetricsEvent {
 
 function metricKey(date: string, name: MetricName): string {
   return `metrics:${date}:${name}`;
+}
+
+function anomalyKey(date: string, name: AnomalyName): string {
+  return `metrics:${date}:anomaly:${name}`;
 }
 
 function imageByteCount(imageBase64: string | undefined): number {
@@ -186,6 +201,12 @@ async function recordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
   increments.push(["cost:microusd", event.telemetry.estimatedCostMicrousd]);
   if (event.status === "error") increments.push(["status:error", 1]);
   if (event.error === "rate_limited") increments.push(["rate_limited", 1]);
+  if (event.error === "subscription_verification_failed") increments.push(["verification_failed", 1]);
+  const anomalies: Array<[AnomalyName, number]> = [];
+  if (event.error === "rate_limited") anomalies.push(["installation_burst", 1]);
+  if (event.error === "subscription_verification_failed") anomalies.push(["verification_failure", 1]);
+  const costThreshold = Number(process.env.CALORISOR_DAILY_COST_ALERT_MICROUSD ?? 10_000_000);
+  if (event.telemetry.estimatedCostMicrousd >= costThreshold) anomalies.push(["daily_cost_threshold", 1]);
 
   const log = {
     request_id: event.telemetry.requestID,
@@ -212,6 +233,8 @@ async function recordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
   await Promise.all([
     ...increments.map(([name, amount]) => redis.incrby(metricKey(event.date, name), amount)),
     ...METRIC_NAMES.map((name) => redis.expire(metricKey(event.date, name), METRIC_RETENTION_SECONDS)),
+    ...anomalies.map(([name, amount]) => redis.incrby(anomalyKey(event.date, name), amount)),
+    ...anomalies.map(([name]) => redis.expire(anomalyKey(event.date, name), METRIC_RETENTION_SECONDS)),
     redis.lpush(REQUEST_LOG_KEY, JSON.stringify(log)),
   ]);
   await Promise.all([
@@ -247,7 +270,7 @@ function eventFor(
     mode: body?.mode,
     inputSource: body?.input_source ?? (body?.mode === "photo" ? "photo" : "typed_text"),
     status,
-    error,
+    error: error ?? (telemetry.verificationFailed ? "subscription_verification_failed" : undefined),
     telemetry,
     inputChars: body?.text?.length ?? 0,
     imageBytes: imageByteCount(body?.image_base64),
@@ -538,11 +561,16 @@ function isScanRequest(value: unknown): value is ScanRequest {
   const body = value as Record<string, unknown>;
   if (
     (body.mode !== "photo" && body.mode !== "text") ||
-    (body.tier !== "free" && body.tier !== "pro") ||
+    (body.tier !== undefined && body.tier !== "free" && body.tier !== "pro") ||
     body.schema_version !== 1 ||
     !isNonEmptyString(body.locale) ||
     !isNonEmptyString(body.app_version)
   ) {
+    return false;
+  }
+
+  if (body.signed_transaction_info !== undefined &&
+      (!isNonEmptyString(body.signed_transaction_info) || body.signed_transaction_info.length > 100_000)) {
     return false;
   }
 
@@ -617,6 +645,9 @@ export default async function handler(request: Request): Promise<Response> {
 
   const clientKey = process.env.CALORISOR_CLIENT_KEY;
   if (!clientKey || request.headers.get("x-calorisor-key") !== clientKey) {
+    try {
+      await Redis.fromEnv().incrby(anomalyKey(utcDate(), "invalid_key"), 1);
+    } catch { /* an alert must not reveal infrastructure state */ }
     return jsonError("unauthorized", 401);
   }
 
@@ -645,11 +676,11 @@ export default async function handler(request: Request): Promise<Response> {
     return jsonError("invalid_request", 400);
   }
 
-  // Tier is client-claimed for now (SF-1302 will verify it). Photo scans draw
-  // from the photo pool; typed and voice text scans share the text pool.
-  const tier: Tier = body.tier;
+  // The client tier is only a legacy Pro claim. The server resolves the real
+  // tier from the signed StoreKit transaction below.
+  let tier: Tier = "free";
   const pool: UsagePool = body.mode === "photo" ? "photo" : "text";
-  const model = modelForTier(tier);
+  let model = modelForTier(tier);
 
   let infrastructure: UpstashInfrastructure;
   let responseCacheKey: string;
@@ -676,6 +707,16 @@ export default async function handler(request: Request): Promise<Response> {
     const identity = await limitIdentity(rawInstallationID, request, installationSalt);
     usageIdentityKey = identity.key;
     usageDate = utcDate();
+    const entitlement = await resolveEntitlement(
+      infrastructure.redis,
+      identity.key,
+      body.signed_transaction_info,
+      body.tier === "pro",
+    );
+    tier = entitlement.tier;
+    model = modelForTier(tier);
+    body.tier = tier;
+    telemetry.verificationFailed = entitlement.verificationFailed;
     const photoKey = usageKey(identity.key, "photo", usageDate);
     const textKey = usageKey(identity.key, "text", usageDate);
 

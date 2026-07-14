@@ -154,7 +154,7 @@ beforeEach(() => {
 });
 
 describe("POST /api/scan proxy contract", () => {
-  it("separates cache entries by model and locale", async () => {
+  it("ignores a client Pro claim without a verified transaction", async () => {
     const freeResponse = await handler(request(textBody("mercimek çorbası")));
     const proResponse = await handler(
       request(textBody("mercimek çorbası", { tier: "pro" })),
@@ -174,11 +174,11 @@ describe("POST /api/scan proxy contract", () => {
     expect(proResponse.status).toBe(200);
     expect(englishResponse.status).toBe(200);
     expect(cachedEnglishResponse.status).toBe(200);
-    expect(fakes.fetch).toHaveBeenCalledTimes(3);
+    expect(fakes.fetch).toHaveBeenCalledTimes(2);
     expect(cachedEnglishResponse.headers.get("x-calorisor-cache")).toBe("hit");
     expect(
       [...fakes.values.keys()].filter((key) => key.startsWith("calorisor:scan:v3:")),
-    ).toHaveLength(3);
+    ).toHaveLength(2);
   });
 
   it("does not consume a daily quota on a cache hit", async () => {

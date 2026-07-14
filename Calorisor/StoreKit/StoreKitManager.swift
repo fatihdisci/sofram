@@ -223,6 +223,22 @@ final class StoreKitManager {
         #endif
     }
 
+    /// Returns the signed StoreKit transaction used by the proxy to make the
+    /// authoritative Pro decision. Only a currently active, verified
+    /// subscription is eligible to leave the device.
+    func currentEntitlementJWS() async -> String? {
+        for await verification in Transaction.currentEntitlements {
+            guard case .verified(let transaction) = verification,
+                  CalorisorProductID.all.contains(transaction.productID),
+                  transaction.revocationDate == nil,
+                  let expiration = transaction.expirationDate,
+                  expiration > Date()
+            else { continue }
+            return verification.jwsRepresentation
+        }
+        return nil
+    }
+
     // MARK: - Trial-end notification
 
     /// Schedules a local notification 24 hours before the trial billing date.

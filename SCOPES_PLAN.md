@@ -181,25 +181,29 @@
 
 ## FAZ 13 — GELİR GÜVENLİĞİ (kaynak Faz 3)
 
-- [ ] **SF-1301 · iOS: signed transaction (JWS) gönderimi**
+- [x] **SF-1301 · iOS: signed transaction (JWS) gönderimi** ✅ 2026-07-14
   **Dosya:** `StoreKitManager.swift`, `AIProxyClient.swift`
   **Talimat:** `Transaction.currentEntitlements`'tan aktif aboneliğin `jwsRepresentation`'ını al; `AIProxyRequest.signed_transaction_info` olarak ekle (yalnız Pro iddiasında). Offline'da istemci kendi entitlement'ını kullanır; proxy erişilebilirken sunucu kararı esastır (§10.2).
   **Kabul:** Request encode testi; abonesiz kullanıcıda alan hiç gönderilmez.
+  **Uygulama notu:** Aktif ve doğrulanmış StoreKit entitlement’ın `VerificationResult.jwsRepresentation` değeri yalnız Pro akışında `signed_transaction_info` olarak gönderiliyor; abonesiz request alanı encode etmiyor. ✅ iOS request testleri.
 
-- [ ] **SF-1302 · Proxy: Apple JWS doğrulama + entitlement cache**
+- [x] **SF-1302 · Proxy: Apple JWS doğrulama + entitlement cache** ✅ 2026-07-14
   **Dosya:** yeni `proxy/lib/entitlement.ts`, `proxy/api/scan.ts`
-  **Talimat:** JWS x5c zincirini Apple Root CA'ya karşı doğrula; `productID ∈ {com.fatih.calorisor.monthly, com.fatih.calorisor.annual}`, `expirationDate > now`, `revocationDate == null` kontrolü. Sonuç `calorisor:entitlement:{installation_hash}` key'inde 15 dk–1 saat TTL ile cache'lenir. Doğrulama başarısızsa tier=free + `subscription_verification_failed` sinyali (istek free limitleriyle devam eder, hard-fail değil).
+  **Talimat:** JWS x5c zincirini Apple Root CA'ya karşı doğrula; `productID ∈ {com.fatih.calorisor.monthly, com.fatih.calorisor.annual}`, `expirationDate > now`, `revocationDate == null` kontrolü. Sonuç `calorisor:entitlement:{installation_hash}` key'inde 15 dk–1 saat TTL ile cache'lenir. Doğrulama başarısızsa tier=free + `subscription_verification_failed` sinyali (istek free limitleriyle devam eder, hard-fail değil). Root sertifika digest'i deployment secret/config olarak `APPLE_ROOT_CA_SHA256` ile pinlenir.
   **Kabul:** §27: expired→free, revoked→free, geçerli monthly/annual→pro (test vektörleriyle).
+  **Uygulama notu:** `proxy/lib/entitlement.ts` ES256 + x5c/root pin doğrulaması, ürün/tarih/revocation politikası ve 30 dakikalık installation-hash cache içeriyor. Expired/revoked free, geçerli ürünler pro; 1303 testi imzasız Pro claim’in nano/free’a düştüğünü doğruluyor. ✅ Proxy testleri: 9/9.
 
-- [ ] **SF-1303 · claimed_tier bağımlılığını kaldır**
+- [x] **SF-1303 · claimed_tier bağımlılığını kaldır** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts`, `Calorisor/Networking/AIProxyClient.swift`
   **Talimat:** Model ve limit seçimi yalnız sunucu tier'ından. `claimed_tier` yalnız eski app_version'lar için okunur; sunset sürümü belirle. İstemciden `tier` alanını kaldır.
   **Kabul:** `claimed_tier: "pro"` + geçersiz/eksik JWS → nano model + free limitleri (test).
+  **Uygulama notu:** iOS request body’den `tier` ve `claimed_tier` kaldırıldı; proxy tier’i yalnız JWS kararından alıyor. Legacy body tier alanı kabul edilse bile yalnız Pro iddiası olarak değerlendirilip doğrulama yoksa free uygulanıyor. ✅ iOS Simulator: 110/110.
 
-- [ ] **SF-1304 · Anomali alarmları + App Attest hazırlığı**
+- [x] **SF-1304 · Anomali alarmları + App Attest hazırlığı** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts` / `metrics.ts`; tasarım notu `SCOPES_PLAN.md`'ye ek
   **Talimat:** §22.4 sinyalleri: tek installation'dan aşırı istek, invalid key sayısı, verification hata sayısı, günlük maliyet eşiği → `metrics:{date}:anomaly:*` sayaçları + rapor script'inde eşik uyarısı. App Attest (§22.2) için akış tasarımını yaz, implementasyon kullanıcı sayısı artınca.
   **Kabul:** Eşik aşımı rapor çıktısında UYARI satırı üretir.
+  **Uygulama notu:** Rate-limit burst, invalid key, verification failure ve daily-cost sinyalleri anomaly sayaçlarına bağlandı; daily report bunları ve maliyet eşiğini `UYARI` satırlarıyla raporluyor. App Attest tasarımı: cihaz nonce/challenge alır → `DCAppAttestService` assertion üretir → proxy assertion’ı installation hash ve request body digest’iyle doğrular → geçerli assertion kısa TTL cache’e alınır; rollout, JWS doğrulamasından sonra ayrı bir enforcement flag ile açılacak. ✅
 
 ---
 

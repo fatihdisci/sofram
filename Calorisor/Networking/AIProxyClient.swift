@@ -88,29 +88,24 @@ struct AIProxyRequest: Encodable {
     let mode: String
     let inputSource: String
     let locale: String
-    /// Legacy tier field, kept so the currently deployed proxy keeps working.
-    let tier: String
-    /// Same value as `tier`, under the name the new server-side contract uses
-    /// (scope doc §9). Transitional only — once the proxy verifies the signed
-    /// StoreKit transaction (SF-1303) neither client-supplied field is trusted
-    /// for model or limit selection.
-    let claimedTier: String
+    /// Signed StoreKit 2 transaction. The proxy is the authority for Pro access.
+    let signedTransactionInfo: String?
     let schemaVersion: Int
     let appVersion: String
 
     enum CodingKeys: String, CodingKey {
         case imageBase64 = "image_base64"
         case inputSource = "input_source"
-        case claimedTier = "claimed_tier"
+        case signedTransactionInfo = "signed_transaction_info"
         case schemaVersion = "schema_version"
         case appVersion = "app_version"
-        case text, mode, locale, tier
+        case text, mode, locale
     }
 
     static func photo(
         imageData: Data,
         locale: String,
-        tier: String,
+        signedTransactionInfo: String? = nil,
         appVersion: String? = nil
     ) -> AIProxyRequest {
         AIProxyRequest(
@@ -119,8 +114,7 @@ struct AIProxyRequest: Encodable {
             mode: "photo",
             inputSource: AIProxyInputSource.photo.rawValue,
             locale: locale,
-            tier: tier,
-            claimedTier: tier,
+            signedTransactionInfo: signedTransactionInfo,
             schemaVersion: 1,
             appVersion: appVersion ?? currentAppVersion()
         )
@@ -129,8 +123,8 @@ struct AIProxyRequest: Encodable {
     static func text(
         description: String,
         locale: String,
-        tier: String,
         inputSource: AIProxyInputSource = .typedText,
+        signedTransactionInfo: String? = nil,
         appVersion: String? = nil
     ) -> AIProxyRequest {
         AIProxyRequest(
@@ -139,8 +133,7 @@ struct AIProxyRequest: Encodable {
             mode: "text",
             inputSource: inputSource.rawValue,
             locale: locale,
-            tier: tier,
-            claimedTier: tier,
+            signedTransactionInfo: signedTransactionInfo,
             schemaVersion: 1,
             appVersion: appVersion ?? currentAppVersion()
         )
@@ -408,12 +401,14 @@ final class AIProxyClient {
         if isDemoMode {
             return ScanResult(response: try await DemoVisionData.photoResponse(), rawJSON: "demo")
         }
-        let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
+        let isSubscribed = await FreeScanCounter.shared.isSubscribed
+        let tier = isSubscribed ? "pro" : "free"
         let payload = ImageDownscaler.jpegForUpload(imageData) ?? imageData
 
         // 1. Try Vercel proxy (production)
         if isConfigured {
-            let body = AIProxyRequest.photo(imageData: payload, locale: AppLanguage.current.effectiveLocale.identifier, tier: tier)
+            let jws = isSubscribed ? await StoreKitManager.shared.currentEntitlementJWS() : nil
+            let body = AIProxyRequest.photo(imageData: payload, locale: AppLanguage.current.effectiveLocale.identifier, signedTransactionInfo: jws)
             return try await performProxyRequest(body: body)
         }
 
@@ -435,14 +430,15 @@ final class AIProxyClient {
                 rawJSON: "demo"
             )
         }
-        let tier = await FreeScanCounter.shared.isSubscribed ? "pro" : "free"
+        let isSubscribed = await FreeScanCounter.shared.isSubscribed
+        let tier = isSubscribed ? "pro" : "free"
 
         if isConfigured {
             let body = AIProxyRequest.text(
                 description: description,
                 locale: AppLanguage.current.effectiveLocale.identifier,
-                tier: tier,
-                inputSource: inputSource
+                inputSource: inputSource,
+                signedTransactionInfo: isSubscribed ? await StoreKitManager.shared.currentEntitlementJWS() : nil
             )
             return try await performProxyRequest(body: body)
         }
