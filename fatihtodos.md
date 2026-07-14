@@ -1,226 +1,132 @@
-# Fatih — Yayına Çıkış To-Do (Sofra)
+# Calorisor — Fatih'in Yayın Öncesi Yapılacakları
 
-> Codex handoff'u + 7 gün ücretsiz deneme için App Store Connect adımları.
-> Bu dosya, bilgisayar başına geçtiğinde elle yapacağın (Claude/Codex'in yapamadığı)
-> hesap/kurulum işlerinin listesidir. Kod tarafı ROADMAP.md'de takip ediliyor.
+> Bu liste yalnızca bilgisayar, Apple/Vercel/Upstash/App Store hesapları ve gerçek
+> cihaz gerektiren işleri içerir. Kod tarafındaki tamamlanan maddeler `ROADMAP.md`de
+> tutulur. Her adımı gözlemledikten sonra `[x]` yap; bir sorun görürsen kısa notunu
+> `PHASE_QA_NOTES.md`ye yaz.
 
-## Mevcut durum (referans)
-- **Branch:** `roadmap`, commit'ler local'de (pushlanmadı):
-  - `ff4516d` — SF-1006 + SF-1007: EN/TR yerelleştirme altyapısı ve global dil politikası
-  - `57bda90` — SF-1008: Global QA, erişilebilirlik ve yayın kapısı
-  - Faz 10'un tüm kod yüzeyi tamam. 22+15 dosya değişti.
-- **Test:** 80 test, 0 hata
-- **Faz 10:** SF-1001…1008 arası tüm maddeler kod tarafında tamam.
-  Kalan: gerçek cihaz QA, App Store Connect yapılandırması, marka/alan adı kontrolleri.
-- **Yerel değişiklikler:** `Sofra/secrets.plist` ve `project.pbxproj` stash'te (main'den geçerken).
+## Mevcut teknik durum
 
----
-
-## 1. Dalı güncelle
-```bash
-cd /Users/fatihdisci/apps/sofram
-git switch roadmap
-git pull --ff-only origin roadmap
-open Sofra.xcodeproj
-```
-Henüz main dalına merge etme.
-
-## 2. Upstash Redis kur
-1. Upstash'te yeni bir Redis veritabanı oluştur.
-2. Şunları kaydet:
-   - `UPSTASH_REDIS_REST_URL`
-   - `UPSTASH_REDIS_REST_TOKEN`
-3. Terminalde istemci anahtarı üret:
-   ```bash
-   openssl rand -hex 32
-   ```
-   Bu değer `CALORISOR_CLIENT_KEY` olacak.
-
-## 3. Vercel projesini oluştur
-1. Vercel'de GitHub'daki sofram reposunu içe aktar.
-2. Root Directory olarak `proxy` seç.
-3. Şu environment variable'ları ekle:
-   - `OPENAI_API_KEY`
-   - `CALORISOR_CLIENT_KEY`
-   - `UPSTASH_REDIS_REST_URL`
-   - `UPSTASH_REDIS_REST_TOKEN`
-4. Production deploy başlat.
-5. Oluşan adresi kaydet:
-   ```
-   https://PROJE-ADI.vercel.app/api/scan
-   ```
-OpenAI anahtarını kesinlikle Xcode'a veya Info.plist içine koyma.
-
-## 4. Proxy'yi kontrol et
-`proxy/README.md` içindeki curl testini çalıştır. Beklenen:
-- İlk istek: HTTP 200 ve `x-calorisor-cache: miss`
-- Aynı istek tekrar: `x-calorisor-cache: hit`
-- Yanlış istemci anahtarı: HTTP 401
-- Arka arkaya 11 istek: son istek HTTP 429
-
-## 5. Uygulamayı proxy'ye bağla
-`Sofra/Info.plist` içinde:
-- `AIProxyEndpointURL` → Vercel `/api/scan` adresi
-- `AIProxyAPIKey` → oluşturduğun `CALORISOR_CLIENT_KEY`
-
-Buraya OpenAI anahtarı değil, yalnızca paylaşılan istemci anahtarı yazılacak.
-Bu değerleri herkese açık repoya commit etme.
-
-## 6. Apple imzalama ayarları
-1. Apple Developer Team ID'ni öğren.
-2. `project.yml` içindeki boş `DEVELOPMENT_TEAM` değerini doldur.
-3. Çalıştır:
-   ```bash
-   xcodegen generate
-   ```
-4. Xcode'da hem Sofra hem SofraWidgetExtension için aynı Team'i seç.
-5. Şunların hatasız göründüğünü doğrula:
-   - iCloud / CloudKit
-   - Push Notifications
-   - App Group: `group.com.fatih.calorisor`
-   - CloudKit container: `iCloud.com.fatih.calorisor`
-
-## 7. App Store Connect abonelikleri
-Aynı subscription group ("Sofra Premium") altında oluştur:
-- `com.fatih.calorisor.monthly`
-- `com.fatih.calorisor.annual`
-
-Her ikisine de uygun fiyat ve Türkçe lokalizasyon ekle.
-
-> ⚠️ **DEĞİŞİKLİK:** Deneme politikası güncellendi. Eski plan "her iki plana 3 gün"
-> idi; artık **yalnızca yıllık planda 7 gün ücretsiz deneme**, aylıkta deneme yok.
-> Detaylı ASC adımları için aşağıdaki bölüme bak.
-
-## 8. Gerçek cihaz QA turu
-iPhone'u seçip uygulamayı çalıştır. `PHASE_QA_NOTES.md` listesini sırayla doldur:
-1. Onboarding
-2. Paywall geçişi
-3. Kamera ve gerçek AI taraması
-4. Sonuç düzeltme ve kaydetme
-5. Kalori halkası
-6. Quick-add
-7. Geçmiş ve gün detayı
-8. Hedef değiştirme
-9. Ana ekran/kilit ekranı widget'ı
-10. Abonelik yönetimi ve destek e-postası
-11. Tüm verileri silme
-12. Onboarding'e dönüş
-
-Her satıra yalnız gözlemledikten sonra ✅ veya ❌ koy.
-
-## 9. Son kalan kararlar
-- ✅ App Icon (1024×1024) yerleştirildi (`Sofra/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png`)
-- Gerçek gizlilik politikası ve kullanım koşulları URL'lerini sağla
-  (`Sofra/Models/NutritionConstants.swift` → `LegalLinks` placeholder'ları → `calorisor.app`).
-- **Gizlilik etiketi kararı:** Proxy, normalize analiz yanıtını 7 gün cache'lediği için
-  doğrudan "veri toplanmıyor" seçmek riskli. Ya cache kaldırılmalı ya da
-  "kullanıcıyla ilişkilendirilmeyen User Content" olarak beyan edilmeli.
-- QA notlarını gönder (`PHASE_QA_NOTES.md` güncellendi, 2-dilli checklist hazır);
-  hatalar düzeltilip ardından main merge/PR aşaması tamamlanır.
+- Aktif dal: `roadmap`
+- Proje: `Calorisor.xcodeproj`
+- Uygulama bundle ID: `com.fatih.calorisor`
+- Widget bundle ID: `com.fatih.calorisor.widget`
+- Apple Team: `8XPP7Z37GF`
+- iOS minimum sürümü: 17.0
+- Kod tarafında hazır: sesli giriş, Siri/Kestirmeler ile taslak yemek ekleme,
+  yerel öğün hatırlatmaları, manuel giriş, TR/EN dil seçimi ve widget.
+- Son doğrulama: uygulama + widget, aynı Apple Development sertifikasıyla imzalı
+  iOS build'de başarıyla derlendi.
 
 ---
 
-# 7 GÜN ÜCRETSİZ DENEME — App Store Connect tarafında ne yapmalı
+## 1. Başlangıç — doğru projeyi aç
 
-Kod ve yerel StoreKit config tarafı bu oturumda hazırlandı. Kalan iş yalnızca
-**App Store Connect'te introductory offer tanımlamak**. Kod, deneme süresini üründen
-**dinamik** okuyup gösterdiği için (`StoreKitManager.trialPeriodText`), ASC'de ne
-ayarlarsan paywall onu yazar — bu yüzden ASC'yi 7 güne göre doğru kurman kritik.
+- [ ] Terminalde güncel kodu al:
 
-## Kodda hazır olanlar (senin yapmana gerek yok — bilgi amaçlı)
-- `Sofra/StoreKit/Products.storekit`: yıllık ürüne **P1W (1 hafta = 7 gün)** ücretsiz
-  deneme; aylık üründe deneme yok. Ürün tipleri `autoRenewable`'a çevrildi.
-- Scheme'e StoreKit config bağlandı (`project.yml` → `storeKitConfiguration`), böylece
-  simülatörde **Xcode'dan çalıştırınca** (Cmd+R) fiyatlar ve deneme görünür.
-  ⚠️ `xcrun simctl launch` ile açarsan StoreKit config uygulanmaz (fiyatlar "..." çıkar).
-- `PaywallView`: deneme kopyası seçili plana göre dinamik — yıllık seçiliyken
-  "7 gün ücretsiz deneme / Sonra ₺.../yıl" + CTA "7 Gün Ücretsiz Dene"; yıllık kartta
-  "7 gün ücretsiz" rozeti; aylık seçilince deneme metni kaybolur, CTA "Abone Ol" olur.
-- `PROJECT_CONTEXT.md`'de eski "3 günlük deneme" ifadesi kaldıysa güncelle (kod artık
-  süreyi hardcode etmiyor; ASC + .storekit tek gerçek kaynak).
+  ```bash
+  cd /Users/fatihdisci/apps/sofram
+  git switch roadmap
+  git pull --ff-only origin roadmap
+  open Calorisor.xcodeproj
+  ```
 
-## App Store Connect adımları (7 gün deneme için)
-1. **App Store Connect → Apps → Sofra → Subscriptions** (Monetization) bölümüne gir.
-2. Subscription Group **"Sofra Premium"** yoksa oluştur; iki ürünü aynı grupta tut
-   (`com.fatih.calorisor.monthly`, `com.fatih.calorisor.annual`).
-3. **Yıllık ürünü** (`com.fatih.calorisor.annual`) aç → **Introductory Offers → (+)**.
-   - **Offer Type / Payment:** `Free` (Ücretsiz)
-   - **Duration:** `1 Week` seç.
-     - ⚠️ ASC'de "7 gün" diye bir seçenek YOKTUR; **1 hafta = 7 gündür**. Kod bunu
-       "7 gün" olarak gösterir (P1W → 7 gün). "3 Days" seçme — o zaman uygulama "3 gün"
-       yazar ve isteğin bozulur.
-   - **Countries/Regions:** satışa açacağın tüm ülkeler (en azından Türkiye).
-   - **Start Date:** bugünden; **End Date:** boş bırak (süresiz).
-4. **Aylık ürüne** (`com.fatih.calorisor.monthly`) introductory offer **EKLEME** — aylıkta
-   deneme yok (kararlaştırılan politika).
-5. Her iki ürünün de **Localization (tr-TR)**, **fiyat (price point)** ve
-   **review screenshot/notes** alanlarını doldur; durum "Ready to Submit" olmalı.
-6. Introductory offer, uygulama sürümüyle **birlikte** review'a gönderilir; ürünleri
-   ilk sürümün "In-App Purchases and Subscriptions" bölümüne eklemeyi unutma.
+- [ ] Xcode üst çubuğunda scheme olarak **Calorisor**, hedef olarak kendi iPhone'un seçili.
+- [ ] `Signing & Capabilities` altında hem **Calorisor** hem de
+  **CalorisorWidgetExtension** için aynı Team seçili: `8XPP7Z37GF`.
+- [ ] Her iki target için `Automatically manage signing` açık.
+- [ ] `Cmd + R` ile telefona kur ve uygulamayı aç.
 
-## Eligibility (kimler denemeyi görür)
-- Introductory offer, kullanıcı başına **subscription group içinde bir kez** geçerlidir.
-- Uygulama `Product.SubscriptionInfo.isEligibleForIntroOffer` kontrol eder; daha önce bu
-  grupta deneme/intro kullanmış kullanıcıya paywall denemeyi göstermez, doğrudan
-  "Abone Ol" ve normal fiyat gösterir. Bu, Apple politikasının doğru davranışıdır.
+> Not: `xcodegen generate` çalıştırman gerekirse Team ayarı artık `project.yml`de
+> kayıtlı. Generate sonrası `Calorisor.xcodeproj` değişikliğini de commit et.
 
-## Doğrulama
-- **Simülatör (yerel .storekit ile):** Xcode'da Sofra scheme'i + iPhone 16 simülatörü
-  seçip **Cmd+R** ile çalıştır → Ayarlar → "Sofra Pro'ya Geç". Yıllık seçiliyken
-  "7 gün ücretsiz deneme" ve gerçek fiyatlar (₺129,99 / ₺799,99) görünmeli.
-  (`simctl launch` ile DEĞİL — config uygulanmaz.)
-- **Sandbox (gerçek cihaz):** Settings → App Store → Sandbox Account ile test hesabı
-  gir; gerçek deneme akışını (7 gün → yenileme) sandbox'ta hızlandırılmış sürelerle
-  doğrula. `StoreKitManager.scheduleTrialEndNotification` deneme bitiminden 24 saat önce
-  bildirim kurar — bunu da sandbox'ta gözlemle.
-- **Terms/expiry:** Paywall footer'ındaki otomatik-yenileme metni de dinamik; yıllıkta
-  "7 gün ücretsiz deneme sonunda ₺.../yıl olarak otomatik yenilenir" yazmalı.
+## 2. Proxy'yi canlıya al
+
+- [ ] Upstash'te Redis veritabanı oluştur ve şunları kaydet:
+  - `UPSTASH_REDIS_REST_URL`
+  - `UPSTASH_REDIS_REST_TOKEN`
+- [ ] Güçlü istemci anahtarı üret:
+
+  ```bash
+  openssl rand -hex 32
+  ```
+
+- [ ] Vercel'de GitHub'daki `sofram` reposunu içe aktar; **Root Directory**: `proxy`.
+- [ ] Vercel Environment Variables'a şunları ekle:
+  - `OPENAI_API_KEY`
+  - `CALORISOR_CLIENT_KEY`
+  - `UPSTASH_REDIS_REST_URL`
+  - `UPSTASH_REDIS_REST_TOKEN`
+- [ ] Production deploy tamamlanınca adresi al:
+  `https://PROJE-ADI.vercel.app/api/scan`
+- [ ] Yerelde [Calorisor/Info.plist](/Users/fatihdisci/apps/sofram/Calorisor/Info.plist:67) içindeki
+  `AIProxyEndpointURL` ve `AIProxyAPIKey` değerlerini güncelle. OpenAI API anahtarını
+  iOS uygulamasına asla koyma ve bu iki gerçek değeri Git'e commit etme.
+- [ ] `proxy/README.md`deki text-mode smoke testini canlı endpoint'e karşı çalıştır.
+  İlk çağrı 200 + `x-calorisor-cache: miss`, tekrar çağrı `hit` olmalı.
+
+## 3. Gerçek cihazda önce yeni özellikleri test et
+
+- [ ] **Sesli giriş:** Bugün → yazı ile ekle → mikrofon. Mikrofon ve Konuşma Tanıma
+  izinlerini ver; Türkçe bir öğün söyle; canlı transkripti düzelt; `Analiz Et` →
+  sonuç → `Kaydet` akışını tamamla.
+- [ ] İzinleri reddedip tekrar dene; açıklayıcı hata ve `Ayarlar'ı Aç` seçeneği görünmeli,
+  yazılı giriş çalışmaya devam etmeli.
+- [ ] **Siri/Kestirmeler:** Kestirmeler'de Calorisor eylemini bul ya da Siri'ye
+  “Calorisor'a yemek ekle” de. Metin uygulamaya taslak olarak gelmeli; sen onaylamadan
+  geçmişe kayıt düşmemeli.
+- [ ] **Bildirimler:** Ayarlar → Bildirimler bölümünde bir öğün hatırlatmasını açıp
+  saati birkaç dakika ileri kur. Bildirime dokununca Bugün ekranı açılmalı.
+- [ ] Aynı alanda `Hiç kayıt yok` ve `Gece özeti` tercihlerini ayrı ayrı dene;
+  `Tüm bildirimleri kapat` bekleyen bildirimleri temizlemeli.
+
+## 4. Ana uygulama QA turu
+
+- [ ] `PHASE_QA_NOTES.md`deki **TR** turunu gerçek cihazda baştan sona doldur.
+- [ ] Uygulama dilini English yapıp **EN** turunu doldur.
+- [ ] Kamera izni, fotoğraf tarama, hata/offline durumu, manuel giriş, quick-add,
+  geçmiş, CSV export, veri silme ve widget'ları test et.
+- [ ] Dynamic Type'ın en büyük ayarında, Light/Dark modda ve küçük ekranlı iPhone'da
+  kritik ekranlara bak.
+- [ ] Bir hata bulursan `PHASE_QA_NOTES.md`ye ❌ ve kısa gözlem yaz; ardından
+  `ROADMAP.md`ye net bir geliştirme maddesi ekle.
+
+## 5. Abonelikleri App Store Connect'te kur
+
+- [ ] Subscription Group: **Calorisor Pro**.
+- [ ] Ürünler aynı grupta:
+  - `com.fatih.calorisor.monthly`
+  - `com.fatih.calorisor.annual`
+- [ ] Aylık plan için deneme ekleme.
+- [ ] Yıllık plan için Introductory Offer: **Free / 1 Week** (= 7 gün).
+- [ ] Her ürün için TR ve EN görünen ad, açıklama, fiyat, review screenshot ve notları ekle.
+- [ ] Sandbox hesabıyla satın alma, geri yükleme ve yıllık deneme metnini gerçek cihazda doğrula.
+
+## 6. Yayın kapısı: marka, hukuk ve gizlilik
+
+- [ ] [CALORISOR_BRAND_CHECK.md](/Users/fatihdisci/apps/sofram/CALORISOR_BRAND_CHECK.md:1)
+  içindeki App Store isim, `calorisor.app`, TÜRKPATENT, USPTO/EUIPO ve sosyal medya
+  kontrollerini tamamla.
+- [ ] `https://calorisor.app/privacy` ve `/terms` sayfalarını gerçek metinle yayına al.
+- [ ] Markalı destek e-postasını hazırla.
+- [ ] App Store Privacy Nutrition Label'ı `proxy/README.md`deki 7 günlük cache
+  davranışıyla tutarlı doldur. “Hiç veri toplanmıyor” seçeneğini seçme.
+
+## 7. App Store materyalleri ve gönderim
+
+- [ ] TR + EN App Store başlığı, alt başlık, açıklama ve anahtar kelimeleri hazırla.
+- [ ] Calorisor markasıyla TR ve EN ekran görüntüsü setlerini oluştur.
+- [ ] TestFlight build yükle; en az bir gerçek cihazda tekrar test et.
+- [ ] App Store Connect'te uygulama, abonelikler, privacy alanları ve review notlarını
+  aynı sürümde `Ready for Review` durumuna getir.
+- [ ] `PHASE_QA_NOTES.md`de kritik ❌ kalmadığında `roadmap` → `main` PR/merge kararı ver.
 
 ---
 
-# SF-1006/1007 SONRASI — YENİ EKLENENLER
+## Yapman gerekmeyenler
 
-## 10. Marka ve alan adı kontrolleri (CALORISOR_BRAND_CHECK.md)
-Bu kontroller yapılmadan yayın onayı verilmez:
-- [ ] App Store'da "Calorisor" isim müsaitliği kontrolü
-- [ ] `calorisor.app` alan adı kaydı
-- [ ] Privacy Policy sayfası yayında (`https://calorisor.app/privacy`)
-- [ ] Terms of Use sayfası yayında (`https://calorisor.app/terms`)
-- [ ] TURKPATENT marka araştırması (sınıf 9, 42)
-- [ ] USPTO / EUIPO marka araştırması
-- [ ] Foodvisor isim benzerliği hukuki değerlendirmesi
-- [ ] Sosyal medya kullanıcı adı (@calorisor) kontrolü
-- [ ] Destek e-postası (`destek@calorisor.app`) — şu an `av.fatihdisci@gmail.com`
-
-## 11. App Store iki dilli metadata (TR + EN)
-- [ ] App Store açıklaması (TR + EN)
-- [ ] Anahtar kelimeler (TR + EN)
-- [ ] Ekran görüntüleri: 6.7", 6.5", 5.5" — her boyut için TR ve EN set
-- [ ] Abonelik ürün görünen adları: "Calorisor Pro Aylık" / "Calorisor Pro Yıllık" (ve İngilizce karşılıkları)
-- [ ] Privacy nutrition label (App Store Connect)
-
-## 12. Proxy prompt güncellemesi
-- [ ] `proxy/prompts.ts`: yeni dil-aware prompt'larla Vercel'e deploy et
-  - TR için mevcut prompt korundu (Turkish cuisine)
-  - EN için yeni prompt (international foods, English units)
-  - `proxy/api/scan.ts`: `household_unit` enum'ı genişletildi (17 birim)
-- [ ] Deploy sonrası curl testini TR ve EN locale için tekrarla
-
-## 13. Xcode'da yapılacaklar
-- [ ] `DEVELOPMENT_TEAM` doldur → `xcodegen generate`
-- [ ] `Localizable.xcstrings` Xcode'da build al — String Catalog'un derlenmesi gerek
-- [ ] `Sofra/App/AppLanguage.swift` ve `Sofra/Resources/Localizable.xcstrings` Xcode projesine eklendi mi kontrol et
-- [ ] Scheme'de StoreKit config'in bağlı olduğunu doğrula
-- [ ] Widget target'ına `SofraIcon.swift` paylaşımı (marka logosu widget'ta) — ertelenmişti
-
-## 14. İki dilli QA (güncellenmiş PHASE_QA_NOTES.md)
-- [ ] TR tam tur: onboarding → kamera → analiz → sonuç → log → geçmiş → ayarlar → widget → silme
-- [ ] EN tam tur: aynı akış, tüm metinler İngilizce olmalı
-- [ ] VoiceOver: tüm ikon butonlar okunuyor, slider'lar değer söylüyor, dekoratif öğeler atlanıyor
-- [ ] Light/dark mode: tüm ekranlar
-- [ ] Dynamic Type en büyük ayar: metinler taşmıyor
-- [ ] iPhone SE: Paywall sığıyor, sütunlar taşmıyor
-- [ ] Gerçek cihaz ikon maskesi
-
-## 15. Abonelik grubu isim güncellemesi
-- Kod `Calorisor Pro` markasını kullanıyor. App Store Connect'teki "Sofra Premium" grubu → "Calorisor Pro" olarak güncellenmeli (ya da tam tersi, kod ASC'ye uyacak şekilde). Hangisi olursa olsun, kod ve ASC aynı olmalı.
+- Sesli giriş, transkript düzenleme, Siri/Kestirmeler, hatırlatmalar, String Catalog
+  ve uygulama/widget signing uyumu kod tarafında hazır.
+- OpenAI anahtarını veya Vercel/Upstash gerçek sırlarını repoya yazma.
+- Eski **Sofra** proje/target/adlarını kullanma; her yerde marka ve proje adı
+  **Calorisor**.

@@ -1,4 +1,5 @@
 {
+  "emitGeneratedSymbols" : false,
   "sourceLanguage" : "tr",
   "strings" : {
     "" : {
@@ -3036,7 +3037,7 @@
     "Öğeyi sil" : {
 
     },
-    "öğün" : {
+    "meal_unit" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -4426,13 +4427,19 @@
         }
       }
     },
-    "Öğün" : {
+    "meal_parameter_title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meal"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öğün"
           }
         }
       }

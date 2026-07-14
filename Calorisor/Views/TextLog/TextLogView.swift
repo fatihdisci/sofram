@@ -530,8 +530,8 @@ final class MealSpeechRecognizer {
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
 
-    init(locale: Locale = MealSpeechRecognizer.preferredLocale) {
-        recognizer = SFSpeechRecognizer(locale: locale)
+    init(locale: Locale? = nil) {
+        recognizer = SFSpeechRecognizer(locale: locale ?? Self.preferredLocale)
     }
 
     /// Locale for recognition, derived from the user's app-language choice so it

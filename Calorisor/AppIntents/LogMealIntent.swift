@@ -67,7 +67,7 @@ struct LogMealIntent: AppIntent {
     static var openAppWhenRun = true
 
     @Parameter(
-        title: "Öğün",
+        title: "meal_parameter_title",
         description: "Ne yediğin — örn. 2 kepçe mercimek çorbası, 1 dilim ekmek",
         requestValueDialog: "Ne yedin?"
     )

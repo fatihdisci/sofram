@@ -116,7 +116,7 @@ struct HistoryView: View {
                 Text("\(Int(day.calories.rounded())) kcal")
                     .font(.sofraNumericSmall)
                     .foregroundStyle(Color.textPrimary)
-                Text("\(day.mealCount) \(String(localized: "öğün"))")
+                Text("\(day.mealCount) \(String(localized: "meal_unit"))")
                     .font(.sofraCaption)
                     .foregroundStyle(Color.textMuted)
             }
