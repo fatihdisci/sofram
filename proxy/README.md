@@ -51,11 +51,12 @@ same normalized text or photo payload is served from the seven-day cache.
 
 Authorized requests are limited per anonymized installation hash (a salted
 SHA-256 of the `x-calorisor-installation-id` header), falling back to a hashed
-IP for clients that do not send it, to 10 per minute and 200 per day. Redis
-contains SHA-256 cache/rate-limit identifiers, counters, and the normalized model
-response associated with a cache identifier. Raw meal text, image data, IP
-addresses, and installation ids are not logged. Cache entries expire after seven
-days.
+IP for clients that do not send it. A shared burst ceiling of 10 requests per
+minute remains in place; daily pools are 1 photo + 2 text/voice scans for free
+users and 50 photo + 100 text/voice scans for pro users. Redis contains SHA-256
+cache/rate-limit identifiers, counters, and the normalized model response
+associated with a cache identifier. Raw meal text, image data, IP addresses, and
+installation ids are not logged. Cache entries expire after seven days.
 
 ## App Store privacy nutrition label draft
 

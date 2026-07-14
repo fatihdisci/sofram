@@ -4,12 +4,17 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "typecheck": "tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --lib ES2022,DOM --types node api/scan.ts prompts.ts"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "report": "tsx scripts/daily-report.ts",
+    "typecheck": "tsc --noEmit --target ES2022 --module NodeNext --moduleResolution NodeNext --lib ES2022,DOM --types node api/scan.ts prompts.ts scripts/daily-report.ts"
   },
   "devDependencies": {
     "@types/node": "latest",
+    "tsx": "latest",
     "typescript": "5.9.3",
-    "vercel": "latest"
+    "vercel": "latest",
+    "vitest": "latest"
   },
   "dependencies": {
     "@upstash/ratelimit": "^2.0.8",
