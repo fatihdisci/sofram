@@ -83,4 +83,44 @@ final class AIProxyRequestTests: XCTestCase {
 
         XCTAssertEqual(json["signed_transaction_info"] as? String, "eyJhbGciOiJFUzI1NiJ9.test.signature")
     }
+
+    func testWeeklyReportRequestContainsOnlyDerivedSummaryMetrics() throws {
+        let summary = WeeklySummary(
+            days: [],
+            previousDays: [],
+            dailyCalorieTarget: 2_000,
+            loggedDayCount: 4,
+            averageCalories: 1_800,
+            averageProtein: 82,
+            targetMetDayCount: 3,
+            highestCalorieDay: nil,
+            lowestCalorieDay: nil,
+            nightMealCount: 1,
+            previousAverageCalories: 1_950,
+            calorieChangeFromPreviousWeek: -150,
+            calorieChangePercentFromPreviousWeek: -7.69,
+            activeEnergyKcal: 3_100,
+            weightChangeKg: -0.3
+        )
+        let request = WeeklyReportRequest(
+            summary: WeeklyReportSummary(summary: summary),
+            week: "2026-W29",
+            locale: "tr_TR",
+            signedTransactionInfo: "test-jws",
+            appVersion: "1.0",
+            forceRefresh: true
+        )
+        let data = try JSONEncoder().encode(request)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let summaryJSON = try XCTUnwrap(json["summary"] as? [String: Any])
+
+        XCTAssertEqual(json["week"] as? String, "2026-W29")
+        XCTAssertEqual(json["signed_transaction_info"] as? String, "test-jws")
+        XCTAssertEqual(json["force_refresh"] as? Bool, true)
+        XCTAssertEqual(summaryJSON["registered_days"] as? Int, 4)
+        XCTAssertEqual(summaryJSON["average_calories"] as? Double, 1_800)
+        XCTAssertNil(json["raw_meals"])
+        XCTAssertNil(json["scan_entries"])
+        XCTAssertNil(json["healthkit_samples"])
+    }
 }

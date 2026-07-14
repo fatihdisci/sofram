@@ -144,6 +144,96 @@ struct AIProxyRequest: Encodable {
     }
 }
 
+/// The only data allowed to leave the device for the weekly AI report. This is
+/// deliberately a separate type from `WeeklySummary` so raw meal entries and
+/// HealthKit samples cannot accidentally be encoded into the report request.
+struct WeeklyReportSummary: Encodable, Equatable {
+    let periodDays: Int
+    let registeredDays: Int
+    let averageCalories: Double
+    let averageProteinG: Double
+    let targetMetDays: Int
+    let highestCalorieDay: Double?
+    let lowestCalorieDay: Double?
+    let nightMealCount: Int
+    let calorieChangeFromPreviousWeek: Double?
+    let calorieChangePercentFromPreviousWeek: Double?
+    let activeEnergyKcal: Double?
+    let weightChangeKg: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case periodDays = "period_days"
+        case registeredDays = "registered_days"
+        case averageCalories = "average_calories"
+        case averageProteinG = "average_protein_g"
+        case targetMetDays = "target_met_days"
+        case highestCalorieDay = "highest_calorie_day"
+        case lowestCalorieDay = "lowest_calorie_day"
+        case nightMealCount = "night_meal_count"
+        case calorieChangeFromPreviousWeek = "calorie_change_from_previous_week"
+        case calorieChangePercentFromPreviousWeek = "calorie_change_percent_from_previous_week"
+        case activeEnergyKcal = "active_energy_kcal"
+        case weightChangeKg = "weight_change_kg"
+    }
+
+    init(summary: WeeklySummary) {
+        periodDays = summary.days.count
+        registeredDays = summary.loggedDayCount
+        averageCalories = summary.averageCalories
+        averageProteinG = summary.averageProtein
+        targetMetDays = summary.targetMetDayCount
+        highestCalorieDay = summary.highestCalorieDay?.calories
+        lowestCalorieDay = summary.lowestCalorieDay?.calories
+        nightMealCount = summary.nightMealCount
+        calorieChangeFromPreviousWeek = summary.calorieChangeFromPreviousWeek
+        calorieChangePercentFromPreviousWeek = summary.calorieChangePercentFromPreviousWeek
+        activeEnergyKcal = summary.activeEnergyKcal
+        weightChangeKg = summary.weightChangeKg
+    }
+}
+
+struct WeeklyReportRequest: Encodable {
+    let summary: WeeklyReportSummary
+    let week: String
+    let locale: String
+    let signedTransactionInfo: String
+    let schemaVersion: Int
+    let appVersion: String
+    let forceRefresh: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case summary, week, locale
+        case signedTransactionInfo = "signed_transaction_info"
+        case schemaVersion = "schema_version"
+        case appVersion = "app_version"
+        case forceRefresh = "force_refresh"
+    }
+
+    init(
+        summary: WeeklyReportSummary,
+        week: String,
+        locale: String,
+        signedTransactionInfo: String,
+        appVersion: String = "unknown",
+        forceRefresh: Bool = false
+    ) {
+        self.summary = summary
+        self.week = week
+        self.locale = locale
+        self.signedTransactionInfo = signedTransactionInfo
+        self.schemaVersion = 1
+        self.appVersion = appVersion
+        self.forceRefresh = forceRefresh
+    }
+}
+
+struct WeeklyReport: Decodable, Equatable {
+    let headline: String
+    let summary: String
+    let observations: [String]
+    let suggestions: [String]
+}
+
 // MARK: - OpenAI request/response types (direct API mode)
 
 private struct OpenAIMessage: Encodable {
@@ -450,7 +540,41 @@ final class AIProxyClient {
         throw AIProxyError.notConfigured
     }
 
+    /// Requests the Pro-only weekly reflection. The report intentionally has
+    /// no direct-OpenAI fallback: the proxy must verify the signed StoreKit
+    /// transaction and keep the server-side cache/usage boundary intact.
+    func weeklyReport(
+        summary: WeeklySummary,
+        forceRefresh: Bool = false
+    ) async throws -> WeeklyReport {
+        guard isConfigured else { throw AIProxyError.notConfigured }
+        guard let signedTransactionInfo = await StoreKitManager.shared.currentEntitlementJWS() else {
+            throw AIProxyError.subscriptionRequired
+        }
+
+        let request = WeeklyReportRequest(
+            summary: WeeklyReportSummary(summary: summary),
+            week: Self.isoWeekKey(),
+            locale: AppLanguage.current.effectiveLocale.identifier,
+            signedTransactionInfo: signedTransactionInfo,
+            appVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "unknown",
+            forceRefresh: forceRefresh
+        )
+        return try await performWeeklyReportRequest(body: request)
+    }
+
     // MARK: - Vercel proxy
+
+    private static func isoWeekKey(date: Date = .now) -> String {
+        var calendar = Calendar(identifier: .iso8601)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0) ?? .gmt
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)
+        return String(
+            format: "%04d-W%02d",
+            components.yearForWeekOfYear ?? 0,
+            components.weekOfYear ?? 0
+        )
+    }
 
     private func performProxyRequest(body: AIProxyRequest) async throws -> ScanResult {
         var request = URLRequest(url: configuration.endpointURL)
@@ -503,6 +627,41 @@ final class AIProxyClient {
                 rawJSON: rawJSON,
                 quota: quota
             )
+        } catch {
+            throw AIProxyError.scanFailed
+        }
+    }
+
+    private func performWeeklyReportRequest(body: WeeklyReportRequest) async throws -> WeeklyReport {
+        var request = URLRequest(url: configuration.endpointURL.deletingLastPathComponent().appendingPathComponent("weekly-report"))
+        request.httpMethod = "POST"
+        request.timeoutInterval = configuration.timeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        if let key = configuration.apiKey {
+            request.setValue(key, forHTTPHeaderField: "x-calorisor-key")
+        }
+        request.setValue(InstallationIdentity.shared.headerValue,
+                         forHTTPHeaderField: "x-calorisor-installation-id")
+        request.setValue(body.appVersion, forHTTPHeaderField: "x-calorisor-app-version")
+        request.setValue("ios", forHTTPHeaderField: "x-calorisor-platform")
+        request.httpBody = try JSONEncoder().encode(body)
+
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await session.data(for: request)
+        } catch {
+            throw mappedNetworkError(error)
+        }
+        guard let http = response as? HTTPURLResponse else {
+            throw AIProxyError.scanFailed
+        }
+        if let responseError = mappedProxyError(statusCode: http.statusCode, data: data) {
+            throw responseError
+        }
+        do {
+            return try JSONDecoder().decode(WeeklyReport.self, from: data)
         } catch {
             throw AIProxyError.scanFailed
         }

@@ -254,10 +254,11 @@
   **Kabul:** Builder birim testleri; AI erişimi olmadan ekran çalışır.
   **Uygulama notu:** `WeeklySummaryBuilder` kayıtlı gün, ortalama kalori/protein, hedef günleri, en yüksek/düşük gün, gece öğünü ve önceki hafta değişimini cihazda hesaplar; HealthKit aktif enerji ve kilo değişimi varsa eklenir. `HistoryView` içindeki haftalık özet Free kullanıcıya AI erişimi olmadan gösterilir. Builder testleri ve mevcut test paketi başarıyla geçti.
 
-- [ ] **SF-1505 · Haftalık AI raporu (Pro)**
+- [x] **SF-1505 · Haftalık AI raporu (Pro)** ✅ 2026-07-14
   **Dosya:** yeni `proxy/api/weekly-report.ts` (veya scan.ts'e mode), `AIProxyClient.swift`, rapor view'ı
   **Talimat:** Sunucuya YALNIZ §21.3 özet JSON'u gider (ham öğün geçmişi ve ham HealthKit verisi ASLA). Prompt kuralları §21.4: teşhis/tıbbi tavsiye/garanti yok, 1–2 uygulanabilir öneri, utandırmayan dil. Aynı hafta cache'lenir (`calorisor:weekly:{hash}:{week}`); kullanıcı yeniden oluşturabilir; başarısızlıkta SF-1504 ekranı ayakta kalır. "AI tarafından üretildi" ibaresi gösterilir. Rapor istekleri de usage/maliyet loguna girer.
   **Kabul:** §21.6'nın tamamı.
+  **Uygulama notu:** `proxy/api/weekly-report.ts` yalnızca cihazda toplulaştırılmış haftalık metrikleri kabul eder; ham öğün/HealthKit alanlarını reddeder. Pro signed transaction doğrulaması, `calorisor:weekly:{hash}:{week}` cache’i, `force_refresh`, metadata-only token/maliyet logu ve güvenli rapor prompt’u eklendi. `AIProxyClient` signed JWS ile raporu çağırır; History ekranında Pro rapor kartı ve “AI tarafından üretildi” ibaresi gösterilir. Rapor başarısız olsa da SF-1504 temel istatistikleri görünür kalır. Proxy: 13/13 test; iOS build/test başarılı.
 
 ---
 

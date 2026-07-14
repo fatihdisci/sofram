@@ -15,6 +15,12 @@ struct WeeklySummaryView: View {
     @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
     @State private var activeEnergyKcal: Double?
     @State private var weightChangeKg: Double?
+    @State private var subscriptions = FreeScanCounter.shared
+    @State private var showPaywall = false
+    @State private var weeklyReport: WeeklyReport?
+    @State private var weeklyReportError: AIProxyError?
+    @State private var isLoadingWeeklyReport = false
+    @State private var reportTask: Task<Void, Never>?
 
     private var summary: WeeklySummary {
         WeeklySummaryBuilder.build(
@@ -56,6 +62,8 @@ struct WeeklySummaryView: View {
                 healthCard
             }
 
+            weeklyReportCard
+
             Text("Bu temel istatistikler cihazında hesaplanır; AI raporu içermez.")
                 .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
@@ -68,6 +76,12 @@ struct WeeklySummaryView: View {
             if newPhase == .active {
                 Task { await loadHealthData() }
             }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(onComplete: { showPaywall = false }, skipTitle: "Kapat")
+        }
+        .onDisappear {
+            reportTask?.cancel()
         }
     }
 
@@ -160,10 +174,139 @@ struct WeeklySummaryView: View {
         .raisedSurface(cornerRadius: Layout.Radius.card)
     }
 
+    private var weeklyReportCard: some View {
+        VStack(alignment: .leading, spacing: Layout.Spacing.md) {
+            HStack {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("HAFTALIK AI RAPORU")
+                        .font(.sofraEyebrow)
+                        .tracking(1.2)
+                        .foregroundStyle(Color.textMuted)
+                    Text("Bu haftanın özetini birlikte yorumla")
+                        .font(.sofraBody)
+                        .foregroundStyle(Color.textPrimary)
+                }
+                Spacer()
+                Image(systemName: subscriptions.isSubscribed ? "sparkles" : "lock.fill")
+                    .foregroundStyle(Color.accentFill)
+            }
+
+            if subscriptions.isSubscribed {
+                if let weeklyReport {
+                    reportContent(weeklyReport)
+                } else {
+                    Text("Yalnızca cihazında hesaplanan özet metrikler kullanılır; ham öğün ve sağlık verileri gönderilmez.")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textSecondary)
+                }
+
+                if let weeklyReportError {
+                    Text(weeklyReportError.localizedDescription)
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textSecondary)
+                }
+
+                Button {
+                    requestWeeklyReport(forceRefresh: weeklyReport != nil)
+                } label: {
+                    HStack {
+                        if isLoadingWeeklyReport {
+                            ProgressView()
+                                .tint(Color.onAccent)
+                        }
+                        Text(weeklyReport == nil ? "Raporu oluştur" : "Raporu yenile")
+                            .font(.sofraLabel)
+                        Spacer()
+                        Image(systemName: "arrow.up.right")
+                    }
+                    .foregroundStyle(Color.onAccent)
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.vertical, Layout.Spacing.md)
+                    .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+                }
+                .disabled(isLoadingWeeklyReport)
+            } else {
+                Text("Haftalık AI yorumları Pro özelliğidir. Temel istatistikler ücretsiz ve cihazında hesaplanır.")
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textSecondary)
+
+                Button("Pro'yu İncele") {
+                    showPaywall = true
+                }
+                .font(.sofraLabel)
+                .foregroundStyle(Color.onAccent)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, Layout.Spacing.md)
+                .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+            }
+        }
+        .padding(Layout.Spacing.lg)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+        .raisedSurface(cornerRadius: Layout.Radius.card)
+    }
+
+    private func reportContent(_ report: WeeklyReport) -> some View {
+        VStack(alignment: .leading, spacing: Layout.Spacing.md) {
+            Text(report.headline)
+                .font(.sofraHeading)
+                .foregroundStyle(Color.textPrimary)
+
+            Text(report.summary)
+                .font(.sofraBody)
+                .foregroundStyle(Color.textSecondary)
+
+            if !report.observations.isEmpty {
+                VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+                    ForEach(report.observations, id: \.self) { observation in
+                        Label(observation, systemImage: "circle.fill")
+                            .font(.sofraCaption)
+                            .foregroundStyle(Color.textSecondary)
+                    }
+                }
+            }
+
+            VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+                Text("Küçük adımlar")
+                    .font(.sofraLabel)
+                    .foregroundStyle(Color.textPrimary)
+                ForEach(report.suggestions, id: \.self) { suggestion in
+                    Label(suggestion, systemImage: "arrow.turn.down.right")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textSecondary)
+                }
+            }
+
+            Text("AI tarafından üretildi · tıbbi tavsiye değildir")
+                .font(.system(size: 10))
+                .foregroundStyle(Color.textMuted)
+        }
+    }
+
     private var changeLabel: String {
         guard let change = summary.calorieChangeFromPreviousWeek else { return "—" }
         if abs(change) < 1 { return "değişim yok" }
         return String(format: "%+.0f kcal", change)
+    }
+
+    private func requestWeeklyReport(forceRefresh: Bool) {
+        reportTask?.cancel()
+        weeklyReportError = nil
+        isLoadingWeeklyReport = true
+        let currentSummary = summary
+        reportTask = Task {
+            do {
+                let report = try await AIProxyClient().weeklyReport(
+                    summary: currentSummary,
+                    forceRefresh: forceRefresh
+                )
+                guard !Task.isCancelled else { return }
+                weeklyReport = report
+            } catch {
+                guard !Task.isCancelled else { return }
+                weeklyReportError = (error as? AIProxyError) ?? .scanFailed
+            }
+            isLoadingWeeklyReport = false
+        }
     }
 
     @MainActor

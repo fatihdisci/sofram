@@ -168,3 +168,41 @@ IMPORTANT RULES:
 - If you can't parse anything meaningful, set no_food_detected: true and items: [].`;
   }
 }
+
+/**
+ * Weekly reports receive only the already-aggregated, on-device summary. Keep
+ * the prompt explicit about the boundary so future changes cannot accidentally
+ * turn this endpoint into a raw meal or HealthKit upload path.
+ */
+export function weeklyReportPrompt(
+  summaryJSON: string,
+  locale: string,
+): string {
+  const isTurkish = locale.startsWith("tr");
+  const language = isTurkish ? "Turkish" : "English";
+  return `You are a supportive nutrition reflection assistant. Write in ${language}.
+
+The following is the user's on-device weekly aggregate. It contains no raw meal
+history, food names, photos, or HealthKit samples. Use only these numbers:
+${summaryJSON}
+
+Return ONLY one JSON object with exactly these fields:
+{
+  "headline": "short neutral headline",
+  "summary": "one or two concise sentences",
+  "observations": ["zero to three brief observations"],
+  "suggestions": ["one or two practical suggestions"]
+}
+
+Rules:
+- This is reflection, not medical care. Never diagnose, prescribe, or claim a
+  guaranteed health, weight, or calorie outcome.
+- Do not invent foods, symptoms, causes, goals, or measurements that are not in
+  the aggregate. Do not mention raw data because none was provided.
+- Suggestions must be small, concrete, and optional (for example, a consistent
+  meal timing habit or reviewing a portion). Keep the tone neutral and
+  non-shaming; never praise or scold the user's body, weight, or adherence.
+- Say when the sample is small or a metric is unavailable instead of guessing.
+- Do not use more than three observations or two suggestions.
+- Return valid JSON only, with no markdown and no extra fields.`;
+}
