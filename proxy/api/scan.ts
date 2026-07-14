@@ -142,12 +142,37 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+const TURKISH_QUANTITY_WORDS: Record<string, string> = {
+  bir: "1",
+  iki: "2",
+  üç: "3",
+  dört: "4",
+  beş: "5",
+  altı: "6",
+  yedi: "7",
+  sekiz: "8",
+  dokuz: "9",
+  on: "10",
+};
+
+const PORTION_UNITS = new Set([
+  "kepçe", "yemek", "su", "çay", "dilim", "avuç", "kase", "adet", "gram",
+]);
+
 function normalizedText(value: string): string {
-  return value
+  const words = value
     .normalize("NFKC")
     .toLocaleLowerCase("tr-TR")
     .trim()
-    .replace(/\s+/g, " ");
+    .replace(/\s+/g, " ")
+    .split(" ");
+
+  return words.map((word, index) => {
+    const nextWord = words[index + 1]?.replace(/[^\p{L}]/gu, "") ?? "";
+    return PORTION_UNITS.has(nextWord) && TURKISH_QUANTITY_WORDS[word]
+      ? TURKISH_QUANTITY_WORDS[word]
+      : word;
+  }).join(" ");
 }
 
 async function sha256(value: string): Promise<string> {
@@ -168,7 +193,9 @@ async function cacheKey(forRequest: ScanRequest): Promise<string> {
     forRequest.mode === "photo"
       ? (forRequest.image_base64 ?? "")
       : normalizedText(forRequest.text ?? "");
-  return `calorisor:scan:v${forRequest.schema_version}:${forRequest.mode}:${await sha256(source)}`;
+  // Bump this cache version whenever semantic input normalization changes so
+  // old, differently-keyed responses cannot keep producing split results.
+  return `calorisor:scan:v2:${forRequest.mode}:${await sha256(source)}`;
 }
 
 function isScanRequest(value: unknown): value is ScanRequest {

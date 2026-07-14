@@ -61,6 +61,7 @@ struct ResultView: View {
                                 ForEach(editableItems) { item in
                                     ResultItemCard(
                                         item: item,
+                                        showsMacros: editableItems.count > 1,
                                         onUnitChange: { newUnit in
                                             guard item.householdUnit != newUnit else { return }
                                             item.householdUnit = newUnit
@@ -193,17 +194,22 @@ struct ResultView: View {
     // MARK: - Bottom bar
 
     private var bottomBar: some View {
-        VStack(spacing: Layout.Spacing.md) {
-            // Live totals — update as portions are corrected
-            HStack(spacing: 0) {
-                totalCell(value: totalCalories, label: "kcal", emphasized: true)
-                totalCell(value: totalProtein, label: "protein")
-                totalCell(value: totalCarbs, label: "karb.")
-                totalCell(value: totalFat, label: "yağ")
+        VStack(spacing: Layout.Spacing.sm) {
+            HStack(spacing: Layout.Spacing.sm) {
+                Text("Toplam")
+                    .font(.sofraCaption.weight(.semibold))
+                    .foregroundStyle(Color.textSecondary)
+
+                Spacer()
+
+                totalValue(totalCalories, label: "kcal", emphasized: true)
+                totalValue(totalProtein, label: "protein")
+                totalValue(totalCarbs, label: "karb.")
+                totalValue(totalFat, label: "yağ")
             }
+            .padding(.horizontal, Layout.Spacing.md)
             .padding(.vertical, Layout.Spacing.sm)
-            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
-            .raisedSurface(cornerRadius: Layout.Radius.card)
+            .background(Color.surfaceRaised, in: Capsule())
 
             LogButton {
                 await save()
@@ -221,18 +227,17 @@ struct ResultView: View {
         )
     }
 
-    private func totalCell(value: Double, label: String, emphasized: Bool = false) -> some View {
-        VStack(spacing: 2) {
+    private func totalValue(_ value: Double, label: String, emphasized: Bool = false) -> some View {
+        HStack(spacing: 2) {
             Text("\(Int(value.rounded()))")
                 .font(.sofraNumericSmall)
                 .foregroundStyle(emphasized ? Color.accentText : Color.textPrimary)
                 .contentTransition(.numericText())
                 .animation(.sofraSpring, value: value)
             Text(label)
-                .font(.system(size: 10))
+                .font(.sofraCaption)
                 .foregroundStyle(Color.textMuted)
         }
-        .frame(maxWidth: .infinity)
     }
 
     // MARK: - Save

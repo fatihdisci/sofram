@@ -7,6 +7,7 @@ import SwiftUI
 
 struct ResultItemCard: View {
     let item: EditableVisionItem
+    let showsMacros: Bool
     let onUnitChange: (PortionUnit) -> Void
     let onQuantityChange: (Double) -> Void
     let onNameChange: (String) -> Void
@@ -23,10 +24,8 @@ struct ResultItemCard: View {
     ]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Layout.Spacing.md) {
-            // Header: name + a single status badge (verified match, or a
-            // low-confidence flag — never both, never a separate row each).
-            HStack(alignment: .top, spacing: Layout.Spacing.sm) {
+        VStack(alignment: .leading, spacing: Layout.Spacing.lg) {
+            HStack(alignment: .firstTextBaseline, spacing: Layout.Spacing.sm) {
                 if isEditingName {
                     TextField("Yemek adı", text: $nameDraft)
                         .font(.sofraHeading)
@@ -49,6 +48,8 @@ struct ResultItemCard: View {
                             .font(.sofraHeading)
                             .foregroundStyle(Color.textPrimary)
                             .multilineTextAlignment(.leading)
+                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                     .buttonStyle(.plain)
                     .accessibilityHint("Yemek adını düzenler")
@@ -56,26 +57,26 @@ struct ResultItemCard: View {
 
                 Spacer()
 
-                HStack(spacing: Layout.Spacing.xs) {
-                    statusBadge
-
-                    Button(action: onDelete) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 22))
-                            .foregroundStyle(Color.textMuted)
-                            .frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Öğeyi sil")
+                Button(action: onDelete) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(Color.textSecondary)
+                        .frame(width: 34, height: 34)
+                        .background(Color.surfaceFlat, in: Circle())
                 }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Öğeyi sil")
             }
 
-            // Portion correction row
+            if item.valueSource != "reference", item.confidence < 0.6 {
+                statusBadge
+            }
+
             portionCorrectionRow
 
-            // Macros row
-            macrosRow
+            if showsMacros {
+                macrosRow
+            }
 
             // Note for shared-pot items
             if let note = item.note, !note.isEmpty {
@@ -96,54 +97,42 @@ struct ResultItemCard: View {
     // MARK: - Portion correction
 
     private var portionCorrectionRow: some View {
-        VStack(spacing: Layout.Spacing.sm) {
-            // Unit picker — horizontal scroll of Turkish units. Faded trailing
-            // edge signals there's more to scroll to (previously clipped with
-            // no affordance at all, reading as a layout bug).
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: Layout.Spacing.xs) {
+        VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+            HStack {
+                Text("Porsiyon")
+                    .font(.sofraCaption.weight(.semibold))
+                    .foregroundStyle(Color.textSecondary)
+
+                Spacer()
+
+                Menu {
                     ForEach(editableUnits, id: \.self) { unit in
                         Button {
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 onUnitChange(unit)
                             }
                         } label: {
-                            HStack(spacing: 4) {
-                                if let icon = unit.icon {
-                                    CalorisorIconView(icon: icon, size: 14)
-                                }
-                                Text(unit.displayName)
-                                    .font(.sofraCaption)
-                            }
-                            .foregroundStyle(item.householdUnit == unit
-                                             ? Color.onAccent : Color.textSecondary)
-                            .padding(.horizontal, Layout.Spacing.md)
-                            .padding(.vertical, Layout.Spacing.xs)
-                            .background(
-                                item.householdUnit == unit
-                                ? Color.accentFill : Color.surfaceFlat,
-                                in: Capsule()
-                            )
+                            Text(unit.displayName)
                         }
-                        .buttonStyle(.plain)
                     }
+                } label: {
+                    HStack(spacing: 5) {
+                        if let icon = item.householdUnit.icon {
+                            CalorisorIconView(icon: icon, size: 14)
+                        }
+                        Text(item.householdUnit.displayName)
+                            .font(.sofraCaption.weight(.semibold))
+                        Image(systemName: "chevron.up.chevron.down")
+                            .font(.system(size: 10, weight: .semibold))
+                    }
+                    .foregroundStyle(Color.textPrimary)
+                    .padding(.horizontal, Layout.Spacing.md)
+                    .padding(.vertical, Layout.Spacing.xs)
+                    .background(Color.surfaceFlat, in: Capsule())
                 }
             }
-            .mask(
-                LinearGradient(
-                    stops: [
-                        .init(color: .black, location: 0),
-                        .init(color: .black, location: 0.92),
-                        .init(color: .clear, location: 1.0),
-                    ],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
 
-            // Quantity stepper
             HStack(spacing: Layout.Spacing.md) {
-                // Decrease
                 Button {
                     let step = unitStep
                     let newQty = max(unitMin, item.householdQuantity - step)
@@ -155,12 +144,11 @@ struct ResultItemCard: View {
                         .font(.system(size: 14, weight: .medium))
                         .frame(width: 36, height: 36)
                         .foregroundStyle(Color.textPrimary)
-                        .background(Color.surfaceFlat, in: Circle())
+                        .background(Color.surfaceRaised, in: Circle())
                         .accessibilityLabel(String(localized: "Azalt"))
                 }
                 .buttonStyle(.plain)
 
-                // Current quantity + estimated grams
                 VStack(spacing: 2) {
                     Text("\(item.householdQuantity, specifier: "%.1f") \(item.householdUnit.displayName)")
                         .font(.sofraBody)
@@ -171,9 +159,8 @@ struct ResultItemCard: View {
                         .font(.sofraCaption)
                         .foregroundStyle(Color.textMuted)
                 }
-                .frame(minWidth: 120)
+                .frame(maxWidth: .infinity)
 
-                // Increase
                 Button {
                     let step = unitStep
                     let newQty = min(unitMax, item.householdQuantity + step)
@@ -190,6 +177,9 @@ struct ResultItemCard: View {
                 }
                 .buttonStyle(.plain)
             }
+            .padding(.vertical, Layout.Spacing.xs)
+            .padding(.horizontal, Layout.Spacing.sm)
+            .background(Color.surfaceFlat, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
         }
     }
 
@@ -238,7 +228,7 @@ struct ResultItemCard: View {
             // (never colour alone) carry the "verified" meaning.
             badge(icon: "checkmark.circle", text: "Doğrulanmış")
         } else if item.confidence < 0.6 {
-            badge(icon: "exclamationmark.triangle.fill", text: "Emin değilim")
+            badge(icon: "exclamationmark.circle", text: "Tahmini değer")
         }
     }
 
@@ -249,10 +239,10 @@ struct ResultItemCard: View {
             Text(text)
                 .font(.sofraCaption)
         }
-        .foregroundStyle(Color.accentText)
+        .foregroundStyle(Color.textSecondary)
         .padding(.horizontal, Layout.Spacing.sm)
-        .padding(.vertical, 2)
-        .background(Color.accentText.opacity(0.12), in: Capsule())
+        .padding(.vertical, Layout.Spacing.xs)
+        .background(Color.surfaceFlat, in: Capsule())
     }
 
     // MARK: - Helpers
