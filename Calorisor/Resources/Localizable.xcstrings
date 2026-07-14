@@ -4274,6 +4274,138 @@
           }
         }
       }
+    },
+    "Dinlemeyi durdur" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop listening"
+          }
+        }
+      }
+    },
+    "Sesle ekle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add by voice"
+          }
+        }
+      }
+    },
+    "Ne yediğini söyle, metne çevrilsin" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say what you ate and it'll be turned into text"
+          }
+        }
+      }
+    },
+    "Dinliyorum… ne yediğini söyle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listening… say what you ate"
+          }
+        }
+      }
+    },
+    "Durdur" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
+    "Konuşma tanıma izni gerekli" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speech recognition permission needed"
+          }
+        }
+      }
+    },
+    "Mikrofon izni gerekli" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Microphone permission needed"
+          }
+        }
+      }
+    },
+    "Sesle eklemek için Ayarlar'dan izin ver. İstersen yazarak da ekleyebilirsin." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grant permission in Settings to add by voice. You can always type instead."
+          }
+        }
+      }
+    },
+    "Sesle ekleme kullanılamıyor" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voice input unavailable"
+          }
+        }
+      }
+    },
+    "Bu dilde ses tanıma hazır değil. Yazarak ekleyebilirsin." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speech recognition isn't ready for this language. You can type instead."
+          }
+        }
+      }
+    },
+    "Ses algılanamadı" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't capture audio"
+          }
+        }
+      }
+    },
+    "Tekrar dene ya da yazarak ekle." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again or type it in."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

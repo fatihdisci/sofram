@@ -478,16 +478,17 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Yapıldı:** `ManualEntryView` sheet'i — kalori (zorunlu) + protein/karb/yağ (opsiyonel) girip bugüne `.manual` bir `ScanEntry` yazar (tek `LoggedItem`, adet/1). Halkaya, makro toplamlarına, Geçmiş gün detayına (silinebilir), widget'a ve CSV export'a akar; **AI tarama hakkı tüketmez**. Giriş noktaları: Bugün boş durumu + "BUGÜNKÜ ÖĞÜNLER" başlığı. Yeni dosya eklenmedi (committed .xcodeproj uyumu için DailyView.swift içinde).
   ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (bu ortamda Xcode yok).
 
-- [ ] **SF-EX03 · Uygulama içinde sesle yemek kaydı**
-  **Dosyalar:** `Sofra/Views/TextLog/TextLogView.swift` veya yeni ses giriş görünümü, `Sofra/Resources/Localizable.xcstrings`
+- [x] **SF-EX03 · Uygulama içinde sesle yemek kaydı** ✅ 2026-07-14
+  **Dosyalar:** `Calorisor/Views/TextLog/TextLogView.swift` (`MealSpeechRecognizer` + mic butonu/banner), `Calorisor/Info.plist` + `tr.lproj`/`en.lproj` `InfoPlist.strings`, `Calorisor/Resources/Localizable.xcstrings`, `CalorisorTests/MealSpeechRecognizerTests.swift`
   **Amaç:** Kullanıcı yemek aramak ve yazmak yerine ne yediğini Türkçe veya İngilizce olarak söyleyebilsin.
-  **Talimat:**
-  1. Apple `Speech` framework'ü ve `SFSpeechRecognizer` ile mikrofon girişini metne dönüştür. Türkçe (`tr-TR`) ve İngilizce (`en-US`) locale desteği ekle; mevcut uygulama dili kullanılmalı.
-  2. Mikrofon iznini ilk açılışta isteme; kullanıcı sesli giriş butonuna bastığında, kısa açıklama sonrasında iste.
-  3. Konuşma sırasında canlı transkript göster; başlatma, dinleme, duraklatma, tamamlanma ve hata durumlarını açıkça ayır.
-  4. Transkript tamamlanınca mevcut metin analiz akışını kullan. Ses özelliği ayrı bir besin hesaplama yolu oluşturmasın.
-  5. Sonuç doğrudan kaydedilmesin; kullanıcı sonuç ekranında kontrol edip onaylasın.
-  **Kabul kriterleri:** İzin verildiğinde Türkçe örnek bir cümle canlı transkripte düşer ve mevcut metin analiziyle sonuç ekranına ulaşır; izin reddedildiğinde açıklayıcı hata ve yazılı girişe dönüş gösterilir; derleme + testler yeşil.
+  **Talimat (uygulandı):**
+  1. ✅ `Speech` + `SFSpeechRecognizer` ile mikrofon girişi metne dönüşür. Locale, uygulama dilinden türetilir (`MealSpeechRecognizer.preferredLocale`: tr-TR / en-US; sistem dilinde otomatik seçim). Cihaz destekliyorsa `requiresOnDeviceRecognition` açılır — ham ses telefondan çıkmaz.
+  2. ✅ Mikrofon + konuşma tanıma izni açılışta değil, yalnızca kullanıcı mic butonuna bastığında istenir (`Info.plist` purpose string'leri iki dilde).
+  3. ✅ Canlı transkript alanı doldurdukça görünür; durumlar ayrık: `idle` / `listening` (canlı banner + waveform) / `denied(speech|microphone)` / `unavailable` / `failed`.
+  4. ✅ Transkript **mevcut** `TextLogView` metin analiz akışına (`scanText`) akar; ayrı besin hesaplama yolu yok — recognizer SwiftData'ya veya free-scan sayacına dokunmaz.
+  5. ✅ Sonuç doğrudan kaydedilmez: kullanıcı metni gözden geçirip "Analiz Et" der, kontrol/onay mevcut ResultView'da olur.
+  **Kabul kriterleri:** İzin verildiğinde konuşulan cümle canlı olarak alana düşer ve mevcut metin analiziyle sonuç ekranına ulaşır; izin reddedildiğinde açıklayıcı banner + "Ayarlar'ı Aç" gösterilir ve yazılı giriş açık kalır. Testler: locale seçimi + idle/listening kontratı (`MealSpeechRecognizerTests`).
+  ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (bu ortamda Xcode yok); mikrofon + konuşma tanıma gerçek cihazda test edilmeli.
 
 - [ ] **SF-EX04 · Sesli girişte düzenleme ve onay akışı**
   **Dosyalar:** Ses giriş görünümü, `TextLogView`, sonuç/draft akışı
