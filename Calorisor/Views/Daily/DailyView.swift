@@ -541,15 +541,23 @@ struct WeekSparkline: View {
         HStack(alignment: .bottom, spacing: 5) {
             ForEach(Array(ordered.enumerated()), id: \.offset) { idx, day in
                 let isToday = idx == ordered.count - 1
-                let barHeight = max(8, 36 * day.calories / peak)
-                Capsule()
-                    .fill(isToday
-                        ? AnyShapeStyle(Color.accentFill)
-                        : AnyShapeStyle(Color.accentFill.opacity(0.35)))
-                    .frame(width: isToday ? 6 : 5, height: barHeight)
-                    .frame(maxWidth: .infinity, alignment: .bottom)
+                let barHeight = max(8, 30 * day.calories / peak)
+                // "Today" is signalled by a small tick beneath the bar, not by
+                // colour/opacity alone (a11y: never colour as the sole cue).
+                VStack(spacing: 3) {
+                    Capsule()
+                        .fill(isToday
+                            ? AnyShapeStyle(Color.accentFill)
+                            : AnyShapeStyle(Color.accentFill.opacity(0.35)))
+                        .frame(width: isToday ? 6 : 5, height: barHeight)
+                    Circle()
+                        .fill(isToday ? Color.accentFill : Color.clear)
+                        .frame(width: 3, height: 3)
+                }
+                .frame(maxWidth: .infinity, alignment: .bottom)
             }
         }
+        .accessibilityHidden(true)
     }
 }
 
