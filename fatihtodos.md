@@ -67,6 +67,26 @@
 - [ ] Aynı text-mode isteğini `-i` ile iki kez çalıştır; ilk çağrıda
   `x-calorisor-cache: miss`, tekrar çağrıda `hit` olduğunu doğrula.
 
+## 2.1 Yeni backend güncellemesi — installation hash + günlük limitler (FAZ 11)
+
+> `claude/oku-tch6nr` dalındaki proxy değişiklikleri (SF-1103/1104) canlıya
+> alınırken gerekli. Kod hazır; bunlar yalnız Vercel/OpenAI panelinde yapılır.
+
+- [ ] **Vercel env — ZORUNLU, deploy'dan ÖNCE:** `INSTALLATION_HASH_SALT` ekle
+  (güçlü rastgele değer: `openssl rand -hex 32`). Eklenmezse endpoint tüm
+  isteklere **502** döner (kasıtlı güvenlik davranışı, uygulama hatası değil).
+- [ ] Deploy sonrası smoke testte yeni yanıt header'larını doğrula:
+  `x-calorisor-tier`, `x-calorisor-photo-remaining/-limit`,
+  `x-calorisor-text-remaining/-limit` (`curl -i` ile görünür).
+- [ ] Free hesapta aynı gün **2. fotoğraf** analizinin `daily_limit_reached`
+  (429) döndüğünü; **3. metin/ses** isteğinin de limitlendiğini gözle. Ses
+  girişi metin havuzunu tüketir (1 yazılı + 1 sesli = 3. istek bloke).
+- [ ] (Opsiyonel, sonra) Tüm kullanıcılar installation header'ı gönderen sürüme
+  geçtiğinde Vercel'e `REQUIRE_INSTALLATION_ID=true` ekle; header'sız istekler
+  400 alsın (o ana kadar IP-hash fallback'i devrede).
+- [ ] (Öneri — maliyet güvenliği, §22.3) OpenAI'da ayrı project aç; hard/soft
+  bütçe ve günlük harcama alarmı kur. AI anahtarını yalnız bu proxy'de kullan.
+
 ## 3. Gerçek cihazda önce yeni özellikleri test et
 
 - [x] **Sesli giriş:** Bugün → yazı ile ekle → mikrofon. Mikrofon ve Konuşma Tanıma

@@ -29,11 +29,15 @@ interface OpenAIChatResponse {
 
 interface UpstashInfrastructure {
   redis: Redis;
+  /** Shared per-identity abuse ceiling. The per-tier daily quota below is the
+   *  primary limit; this only blunts bursts (scope doc §11.4). */
   minuteLimit: Ratelimit;
-  dailyLimit: Ratelimit;
 }
 
 const CACHE_TTL_SECONDS = 7 * 24 * 60 * 60;
+/** Daily usage counters live slightly longer than a UTC day so a request near
+ *  midnight cannot read a prematurely-expired counter. */
+const USAGE_TTL_SECONDS = 48 * 60 * 60;
 let upstashInfrastructure: UpstashInfrastructure | undefined;
 
 function getUpstashInfrastructure(): UpstashInfrastructure {
@@ -49,13 +53,70 @@ function getUpstashInfrastructure(): UpstashInfrastructure {
       limiter: Ratelimit.slidingWindow(10, "1 m"),
       prefix: "calorisor:rate:minute",
     }),
-    dailyLimit: new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(200, "1 d"),
-      prefix: "calorisor:rate:day",
-    }),
   };
   return upstashInfrastructure;
+}
+
+// MARK: - Daily usage quotas (scope doc §11.2 / §11.3)
+
+/** Which daily counter a scan draws from. Photo scans use the photo pool; typed
+ *  and voice-transcript text scans share the text pool. */
+type UsagePool = "photo" | "text";
+
+interface DailyLimit {
+  photo: number;
+  text: number;
+}
+
+/** Per-tier daily limits, enforced server-side against the installation hash.
+ *  Tier is still client-claimed until server-side verification lands (SF-1302). */
+const DAILY_LIMITS: Record<Tier, DailyLimit> = {
+  free: { photo: 1, text: 2 },
+  pro: { photo: 50, text: 100 },
+};
+
+/** UTC calendar day ("YYYY-MM-DD"). Client timezones are manipulable, so the
+ *  day boundary is always UTC (scope doc §11.5). */
+function utcDate(now: Date = new Date()): string {
+  return now.toISOString().slice(0, 10);
+}
+
+function usageKey(identityKey: string, pool: UsagePool, date: string): string {
+  return `calorisor:usage:${date}:${identityKey}:${pool}`;
+}
+
+/** Remaining-quota response headers for a successful (or blocked) scan (§16). */
+function limitHeaders(
+  tier: Tier,
+  photoUsed: number,
+  textUsed: number,
+): Record<string, string> {
+  const limit = DAILY_LIMITS[tier];
+  return {
+    "x-calorisor-tier": tier,
+    "x-calorisor-photo-remaining": String(Math.max(0, limit.photo - photoUsed)),
+    "x-calorisor-photo-limit": String(limit.photo),
+    "x-calorisor-text-remaining": String(Math.max(0, limit.text - textUsed)),
+    "x-calorisor-text-limit": String(limit.text),
+  };
+}
+
+function dailyLimitResponse(
+  pool: UsagePool,
+  tier: Tier,
+  photoUsed: number,
+  textUsed: number,
+): Response {
+  return Response.json(
+    { error: "daily_limit_reached", limit_type: pool, tier, remaining: 0 },
+    {
+      status: 429,
+      headers: {
+        "x-calorisor-cache": "miss",
+        ...limitHeaders(tier, photoUsed, textUsed),
+      },
+    },
+  );
 }
 
 const visionResponseSchema = {
@@ -329,8 +390,19 @@ export default async function handler(request: Request): Promise<Response> {
     return jsonError("invalid_request", 400);
   }
 
+  // Tier is client-claimed for now (SF-1302 will verify it). Photo scans draw
+  // from the photo pool; typed and voice text scans share the text pool.
+  const tier: Tier = body.tier;
+  const pool: UsagePool = body.mode === "photo" ? "photo" : "text";
+
   let infrastructure: UpstashInfrastructure;
   let responseCacheKey: string;
+  // Carried out of the try so the post-scan success path can increment the
+  // right daily counter and report remaining quota.
+  let usageIdentityKey = "";
+  let usageDate = "";
+  let photoUsed = 0;
+  let textUsed = 0;
   try {
     infrastructure = getUpstashInfrastructure();
 
@@ -346,14 +418,24 @@ export default async function handler(request: Request): Promise<Response> {
       return jsonError("invalid_request", 400);
     }
     const identity = await limitIdentity(rawInstallationID, request, installationSalt);
-    const [minute, daily] = await Promise.all([
+    usageIdentityKey = identity.key;
+    usageDate = utcDate();
+    const photoKey = usageKey(identity.key, "photo", usageDate);
+    const textKey = usageKey(identity.key, "text", usageDate);
+
+    // Shared minute abuse limit + today's usage counts in a single round trip.
+    const [minute, usage] = await Promise.all([
       infrastructure.minuteLimit.limit(identity.key),
-      infrastructure.dailyLimit.limit(identity.key),
+      infrastructure.redis.mget<(number | null)[]>(photoKey, textKey),
     ]);
-    if (!minute.success || !daily.success) {
+    if (!minute.success) {
       return jsonError("rate_limited", 429);
     }
+    photoUsed = Number(usage[0] ?? 0);
+    textUsed = Number(usage[1] ?? 0);
 
+    // A cache hit is free and never consumes quota (scope doc §12), so serve it
+    // ahead of the daily-limit gate — with the current remaining counts.
     responseCacheKey = await cacheKey(body);
     const cached = await infrastructure.redis.get<string>(responseCacheKey);
     if (isNonEmptyString(cached)) {
@@ -362,8 +444,15 @@ export default async function handler(request: Request): Promise<Response> {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           "x-calorisor-cache": "hit",
+          ...limitHeaders(tier, photoUsed, textUsed),
         },
       });
+    }
+
+    // Cache miss → enforce the per-pool daily limit before the paid OpenAI call.
+    const used = pool === "photo" ? photoUsed : textUsed;
+    if (used >= DAILY_LIMITS[tier][pool]) {
+      return dailyLimitResponse(pool, tier, photoUsed, textUsed);
     }
   } catch {
     return jsonError("upstream_error", 502);
@@ -419,11 +508,32 @@ export default async function handler(request: Request): Promise<Response> {
     return jsonError("upstream_error", 502);
   }
 
+  // The scan succeeded — consume one unit from the pool now, so a failed or
+  // rate-limited request never burns quota. INCR is atomic; the 48h TTL is set
+  // on the first write of the UTC day. A counter failure must not fail an
+  // otherwise-successful scan, so fall back to the pre-read value + 1.
+  let poolUsed = (pool === "photo" ? photoUsed : textUsed) + 1;
+  try {
+    const key = usageKey(usageIdentityKey, pool, usageDate);
+    poolUsed = await infrastructure.redis.incr(key);
+    if (poolUsed === 1) {
+      await infrastructure.redis.expire(key, USAGE_TTL_SECONDS);
+    }
+  } catch {
+    // Keep the fallback estimate.
+  }
+  if (pool === "photo") {
+    photoUsed = poolUsed;
+  } else {
+    textUsed = poolUsed;
+  }
+
   return new Response(content, {
     status: 200,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "x-calorisor-cache": "miss",
+      ...limitHeaders(tier, photoUsed, textUsed),
     },
   });
 }
