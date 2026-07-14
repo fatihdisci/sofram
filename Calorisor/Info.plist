@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Calorisor</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+
+	<!-- Purpose strings -->
+	<key>NSCameraUsageDescription</key>
+	<string>Calorisor, tabağınızdaki yemekleri tanıyıp kalori ve makro tahmini yapmak için kameranızı kullanır.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Yemek fotoğraflarınızı analiz için Calorisor ile paylaşabilirsiniz.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Calorisor, ne yediğinizi sesle söyleyip metne çevirebilmek için mikrofonunuzu kullanır.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Söylediğiniz öğünü yazıya dökmek için Calorisor konuşma tanımayı kullanır.</string>
+
+	<!-- Widget deep link: calorisor://daily → günlük özet -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.fatih.calorisor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>calorisor</string>
+			</array>
+		</dict>
+	</array>
+
+	<!-- AI proxy endpoint (configurable). -->
+	<key>AIProxyEndpointURL</key>
+	<string>https://REPLACE-ME.vercel.app/api/scan</string>
+	<key>AIProxyAPIKey</key>
+	<string></string>
+
+	<!-- Custom fonts: Geist Sans (UI) + Geist Mono (numeric displays) -->
+	<key>UIAppFonts</key>
+	<array>
+		<string>Geist-Regular.otf</string>
+		<string>Geist-Medium.otf</string>
+		<string>Geist-SemiBold.otf</string>
+		<string>GeistMono-Regular.otf</string>
+		<string>GeistMono-Medium.otf</string>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,4143 @@
+{
+  "foods": [
+    {
+      "name": "mercimek çorbası",
+      "name_en": "red lentil soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 175,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe (orta porsiyon)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 350,
+          "household_unit": "kepçe",
+          "household_quantity": 2,
+          "description": "2 kepçe (büyük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 63,
+        "protein_g": 3.4,
+        "carbs_g": 8.6,
+        "fat_g": 1.8
+      },
+      "nutrition_per_portion": {
+        "calories": 110,
+        "protein_g": 6.0,
+        "carbs_g": 15.0,
+        "fat_g": 3.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022 + tarif hesaplama"
+    },
+    {
+      "name": "ezogelin çorbası",
+      "name_en": "ezogelin soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 kase (yaklaşık 2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 125,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 52,
+        "protein_g": 3.4,
+        "carbs_g": 9.3,
+        "fat_g": 0.4
+      },
+      "nutrition_per_portion": {
+        "calories": 130,
+        "protein_g": 8.5,
+        "carbs_g": 23.0,
+        "fat_g": 1.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "tarif bazı hesaplama"
+    },
+    {
+      "name": "domates çorbası",
+      "name_en": "tomato soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe (orta boy)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 300,
+          "household_unit": "kepçe",
+          "household_quantity": 2,
+          "description": "2 kepçe (büyük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 35,
+        "protein_g": 0.9,
+        "carbs_g": 4.4,
+        "fat_g": 1.1
+      },
+      "nutrition_per_portion": {
+        "calories": 50,
+        "protein_g": 1.4,
+        "carbs_g": 6.6,
+        "fat_g": 1.65
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama tarife göre"
+    },
+    {
+      "name": "yayla çorbası",
+      "name_en": "yogurt soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 tabak (yaklaşık 2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 47,
+        "protein_g": 1.5,
+        "carbs_g": 6.5,
+        "fat_g": 1.6
+      },
+      "nutrition_per_portion": {
+        "calories": 94,
+        "protein_g": 3.0,
+        "carbs_g": 13.0,
+        "fat_g": 3.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "tarif bazı hesaplama"
+    },
+    {
+      "name": "işkembe çorbası",
+      "name_en": "tripe soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 kase (2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 125,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 137,
+        "protein_g": 15.1,
+        "carbs_g": 4.9,
+        "fat_g": 6.4
+      },
+      "nutrition_per_portion": {
+        "calories": 343,
+        "protein_g": 37.8,
+        "carbs_g": 12.3,
+        "fat_g": 16.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama tarife göre"
+    },
+    {
+      "name": "kelle paça çorbası",
+      "name_en": "trotter soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 240,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 kase (yaklaşık 2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 120,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 135,
+        "protein_g": 13.2,
+        "carbs_g": 4.7,
+        "fat_g": 7.0
+      },
+      "nutrition_per_portion": {
+        "calories": 324,
+        "protein_g": 31.8,
+        "carbs_g": 11.3,
+        "fat_g": 16.9
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama değerler"
+    },
+    {
+      "name": "tavuk suyu çorbası",
+      "name_en": "chicken broth soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 kase (yaklaşık 2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 125,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 52,
+        "protein_g": 2.5,
+        "carbs_g": 3.0,
+        "fat_g": 3.3
+      },
+      "nutrition_per_portion": {
+        "calories": 130,
+        "protein_g": 6.3,
+        "carbs_g": 7.5,
+        "fat_g": 8.3
+      },
+      "confidence_note": "approximate",
+      "source_context": "tarif verilerine göre"
+    },
+    {
+      "name": "düğnün çorbası",
+      "name_en": "wedding soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 kase (yaklaşık 2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 125,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 62,
+        "protein_g": 4.3,
+        "carbs_g": 1.6,
+        "fat_g": 4.1
+      },
+      "nutrition_per_portion": {
+        "calories": 155,
+        "protein_g": 10.8,
+        "carbs_g": 4.0,
+        "fat_g": 10.3
+      },
+      "confidence_note": "approximate",
+      "source_context": "tarif bazı oran"
+    },
+    {
+      "name": "sebze çorbası",
+      "name_en": "vegetable soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 300,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 kase (yaklaşık 2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 150,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 40,
+        "protein_g": 1.0,
+        "carbs_g": 6.0,
+        "fat_g": 2.0
+      },
+      "nutrition_per_portion": {
+        "calories": 120,
+        "protein_g": 3.0,
+        "carbs_g": 18.0,
+        "fat_g": 6.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama sebze tarifi"
+    },
+    {
+      "name": "mantar çorbası",
+      "name_en": "mushroom soup",
+      "category": "corba",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "kepçe",
+        "household_quantity": 2,
+        "description": "1 kase (yaklaşık 2 kepçe)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "kepçe",
+          "household_quantity": 1,
+          "description": "1 kepçe (küçük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 140,
+        "protein_g": 4.3,
+        "carbs_g": 10.3,
+        "fat_g": 8.9
+      },
+      "nutrition_per_portion": {
+        "calories": 280,
+        "protein_g": 8.6,
+        "carbs_g": 20.6,
+        "fat_g": 17.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "kremalı tarife göre"
+    },
+    {
+      "name": "haşlanmış yumurta",
+      "name_en": "boiled egg",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet (orta boy)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "adet",
+          "household_quantity": 2,
+          "description": "2 adet (büyük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 155,
+        "protein_g": 13.0,
+        "carbs_g": 1.1,
+        "fat_g": 11.0
+      },
+      "nutrition_per_portion": {
+        "calories": 78,
+        "protein_g": 6.5,
+        "carbs_g": 0.55,
+        "fat_g": 5.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "USDA"
+    },
+    {
+      "name": "yağda yumurta",
+      "name_en": "fried egg",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 55,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet (orta boy, az yağda)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 110,
+          "household_unit": "adet",
+          "household_quantity": 2,
+          "description": "2 adet (büyük porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 200,
+        "protein_g": 12.0,
+        "carbs_g": 1.0,
+        "fat_g": 17.0
+      },
+      "nutrition_per_portion": {
+        "calories": 110,
+        "protein_g": 6.6,
+        "carbs_g": 0.6,
+        "fat_g": 9.35
+      },
+      "confidence_note": "approximate",
+      "source_context": "tarif ölçülerine göre"
+    },
+    {
+      "name": "menemen",
+      "name_en": "menemen",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 porsiyon (yaklaşık 2 yumurta, domates, biber ile)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 125,
+          "household_unit": "kase",
+          "household_quantity": 0.5,
+          "description": "yarım porsiyon"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 220,
+        "protein_g": 9.0,
+        "carbs_g": 5.0,
+        "fat_g": 17.0
+      },
+      "nutrition_per_portion": {
+        "calories": 550,
+        "protein_g": 22.5,
+        "carbs_g": 12.5,
+        "fat_g": 42.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "tarif örnek alınarak hesaplama"
+    },
+    {
+      "name": "beyaz peynir",
+      "name_en": "white cheese (feta)",
+      "category": "sut-urunu",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 ince dilim (somun ekmek ile birlikte)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "dilim",
+          "household_quantity": 2,
+          "description": "2 dilim (orta porsiyon)"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 260,
+        "protein_g": 18.0,
+        "carbs_g": 3.0,
+        "fat_g": 20.0
+      },
+      "nutrition_per_portion": {
+        "calories": 130,
+        "protein_g": 9.0,
+        "carbs_g": 1.5,
+        "fat_g": 10.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "Türk Gıda Kompozisyonu"
+    },
+    {
+      "name": "kaşar peyniri",
+      "name_en": "kashar cheese",
+      "category": "sut-urunu",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim (ince)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 60,
+          "household_unit": "dilim",
+          "household_quantity": 2,
+          "description": "2 dilim"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 350,
+        "protein_g": 25.0,
+        "carbs_g": 2.0,
+        "fat_g": 27.0
+      },
+      "nutrition_per_portion": {
+        "calories": 105,
+        "protein_g": 7.5,
+        "carbs_g": 0.6,
+        "fat_g": 8.1
+      },
+      "confidence_note": "approximate",
+      "source_context": "genel besin değeri"
+    },
+    {
+      "name": "lor peyniri",
+      "name_en": "cottage cheese (lor)",
+      "category": "sut-urunu",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "yemek kaşığı",
+        "household_quantity": 3,
+        "description": "yaklaşık 3 yemek kaşığı"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "su bardağı",
+          "household_quantity": 0.5,
+          "description": "Yarım su bardağı"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 100,
+        "protein_g": 16.0,
+        "carbs_g": 2.0,
+        "fat_g": 4.0
+      },
+      "nutrition_per_portion": {
+        "calories": 50,
+        "protein_g": 8.0,
+        "carbs_g": 1.0,
+        "fat_g": 2.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama deger"
+    },
+    {
+      "name": "tulum peyniri",
+      "name_en": "tulum cheese",
+      "category": "sut-urunu",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim (ince)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 60,
+          "household_unit": "dilim",
+          "household_quantity": 2,
+          "description": "2 dilim"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 350,
+        "protein_g": 25.0,
+        "carbs_g": 3.0,
+        "fat_g": 25.0
+      },
+      "nutrition_per_portion": {
+        "calories": 105,
+        "protein_g": 7.5,
+        "carbs_g": 0.9,
+        "fat_g": 7.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "genel veri"
+    },
+    {
+      "name": "örgü peyniri",
+      "name_en": "string braided cheese",
+      "category": "sut-urunu",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 parça"
+      },
+      "alternate_portions": [
+        {
+          "grams": 60,
+          "household_unit": "dilim",
+          "household_quantity": 2,
+          "description": "2 parça"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 300,
+        "protein_g": 25.0,
+        "carbs_g": 2.0,
+        "fat_g": 20.0
+      },
+      "nutrition_per_portion": {
+        "calories": 90,
+        "protein_g": 7.5,
+        "carbs_g": 0.6,
+        "fat_g": 6.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama veriler"
+    },
+    {
+      "name": "zeytin (yeşil)",
+      "name_en": "olives (green)",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 10,
+        "household_unit": "adet",
+        "household_quantity": 5,
+        "description": "5 adet (orta boy)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 20,
+          "household_unit": "adet",
+          "household_quantity": 10,
+          "description": "10 adet"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 150,
+        "protein_g": 1.0,
+        "carbs_g": 6.0,
+        "fat_g": 15.0
+      },
+      "nutrition_per_portion": {
+        "calories": 15,
+        "protein_g": 0.1,
+        "carbs_g": 0.6,
+        "fat_g": 1.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama deger"
+    },
+    {
+      "name": "zeytin (siyah)",
+      "name_en": "olives (black)",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 10,
+        "household_unit": "adet",
+        "household_quantity": 5,
+        "description": "5 adet (orta boy)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 20,
+          "household_unit": "adet",
+          "household_quantity": 10,
+          "description": "10 adet"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 250,
+        "protein_g": 1.0,
+        "carbs_g": 6.0,
+        "fat_g": 25.0
+      },
+      "nutrition_per_portion": {
+        "calories": 25,
+        "protein_g": 0.1,
+        "carbs_g": 0.6,
+        "fat_g": 2.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama veriler"
+    },
+    {
+      "name": "tereyağı",
+      "name_en": "butter",
+      "category": "sut-urunu",
+      "typical_portion": {
+        "grams": 10,
+        "household_unit": "yemek kaşığı",
+        "household_quantity": 1,
+        "description": "1 yemek kaşığı"
+      },
+      "alternate_portions": [
+        {
+          "grams": 20,
+          "household_unit": "yemek kaşığı",
+          "household_quantity": 2,
+          "description": "2 yemek kaşığı"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 720,
+        "protein_g": 0.5,
+        "carbs_g": 1.0,
+        "fat_g": 81.0
+      },
+      "nutrition_per_portion": {
+        "calories": 72,
+        "protein_g": 0.05,
+        "carbs_g": 0.1,
+        "fat_g": 8.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "bal",
+      "name_en": "honey",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 20,
+        "household_unit": "yemek kaşığı",
+        "household_quantity": 1,
+        "description": "1 yemek kaşığı"
+      },
+      "alternate_portions": [
+        {
+          "grams": 40,
+          "household_unit": "yemek kaşığı",
+          "household_quantity": 2,
+          "description": "2 yemek kaşığı"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 300,
+        "protein_g": 0.3,
+        "carbs_g": 82.0,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 60,
+        "protein_g": 0.06,
+        "carbs_g": 16.4,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "standart besin verisi"
+    },
+    {
+      "name": "kaymak",
+      "name_en": "clotted cream",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "yemek kaşığı",
+        "household_quantity": 1,
+        "description": "yaklaşık 1 yemek kaşığı"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "yemek kaşığı",
+          "household_quantity": 2,
+          "description": "2 yemek kaşığı"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 350,
+        "protein_g": 3.0,
+        "carbs_g": 2.0,
+        "fat_g": 35.0
+      },
+      "nutrition_per_portion": {
+        "calories": 175,
+        "protein_g": 1.5,
+        "carbs_g": 1.0,
+        "fat_g": 17.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama deger"
+    },
+    {
+      "name": "reçel",
+      "name_en": "jam",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 20,
+        "household_unit": "yemek kaşığı",
+        "household_quantity": 1,
+        "description": "1 yemek kaşığı"
+      },
+      "alternate_portions": [
+        {
+          "grams": 40,
+          "household_unit": "yemek kaşığı",
+          "household_quantity": 2,
+          "description": "2 yemek kaşığı"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 250,
+        "protein_g": 0.0,
+        "carbs_g": 60.0,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 50,
+        "protein_g": 0.0,
+        "carbs_g": 12.0,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "sucuk",
+      "name_en": "Turkish sausage (sucuk)",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "dilim",
+        "household_quantity": 2,
+        "description": "2 dilim"
+      },
+      "alternate_portions": [
+        {
+          "grams": 15,
+          "household_unit": "dilim",
+          "household_quantity": 1,
+          "description": "1 dilim"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 500,
+        "protein_g": 25.0,
+        "carbs_g": 5.0,
+        "fat_g": 40.0
+      },
+      "nutrition_per_portion": {
+        "calories": 150,
+        "protein_g": 7.5,
+        "carbs_g": 1.5,
+        "fat_g": 12.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama besin değeri"
+    },
+    {
+      "name": "pastırma",
+      "name_en": "pastirma (cured beef)",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "dilim",
+        "household_quantity": 3,
+        "description": "3 dilim (ince)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 15,
+          "household_unit": "dilim",
+          "household_quantity": 1,
+          "description": "1 dilim"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 230,
+        "protein_g": 30.0,
+        "carbs_g": 0.0,
+        "fat_g": 10.0
+      },
+      "nutrition_per_portion": {
+        "calories": 69,
+        "protein_g": 9.0,
+        "carbs_g": 0.0,
+        "fat_g": 3.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama veri"
+    },
+    {
+      "name": "simit",
+      "name_en": "simit (sesame bread)",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet (yaklaşık 100 g)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 50,
+          "household_unit": "adet",
+          "household_quantity": 0.5,
+          "description": "yarım simit"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 270,
+        "protein_g": 9.0,
+        "carbs_g": 50.0,
+        "fat_g": 3.0
+      },
+      "nutrition_per_portion": {
+        "calories": 270,
+        "protein_g": 9.0,
+        "carbs_g": 50.0,
+        "fat_g": 3.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "beyaz ekmek",
+      "name_en": "white bread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 25,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [
+        {
+          "grams": 62,
+          "household_unit": "adet",
+          "household_quantity": 0.25,
+          "description": "¼ ekmek"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 265,
+        "protein_g": 8.9,
+        "carbs_g": 49.4,
+        "fat_g": 3.2
+      },
+      "nutrition_per_portion": {
+        "calories": 66,
+        "protein_g": 2.2,
+        "carbs_g": 12.4,
+        "fat_g": 0.8
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "tam buğday ekmeği",
+      "name_en": "whole wheat bread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 25,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 247,
+        "protein_g": 13.0,
+        "carbs_g": 41.2,
+        "fat_g": 3.4
+      },
+      "nutrition_per_portion": {
+        "calories": 62,
+        "protein_g": 3.3,
+        "carbs_g": 10.3,
+        "fat_g": 0.85
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "lavaş",
+      "name_en": "lavash",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 60,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 275,
+        "protein_g": 9.0,
+        "carbs_g": 55.0,
+        "fat_g": 2.5
+      },
+      "nutrition_per_portion": {
+        "calories": 165,
+        "protein_g": 5.4,
+        "carbs_g": 33.0,
+        "fat_g": 1.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "bazlama",
+      "name_en": "bazlama flatbread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 262,
+        "protein_g": 8.7,
+        "carbs_g": 50.0,
+        "fat_g": 3.0
+      },
+      "nutrition_per_portion": {
+        "calories": 314,
+        "protein_g": 10.4,
+        "carbs_g": 60.0,
+        "fat_g": 3.6
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "tandır/köy ekmeği",
+      "name_en": "tandir village bread",
+      "category": "ekmek",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 270,
+        "protein_g": 8.5,
+        "carbs_g": 52.0,
+        "fat_g": 2.5
+      },
+      "nutrition_per_portion": {
+        "calories": 81,
+        "protein_g": 2.6,
+        "carbs_g": 15.6,
+        "fat_g": 0.75
+      },
+      "confidence_note": "well-established",
+      "source_context": "TÜBER 2022"
+    },
+    {
+      "name": "poğaça",
+      "name_en": "pogaca (bun)",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 70,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet (yaklaşık 70 g)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 140,
+          "household_unit": "adet",
+          "household_quantity": 2,
+          "description": "2 adet"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 350,
+        "protein_g": 7.0,
+        "carbs_g": 40.0,
+        "fat_g": 21.0
+      },
+      "nutrition_per_portion": {
+        "calories": 245,
+        "protein_g": 4.9,
+        "carbs_g": 28.0,
+        "fat_g": 14.7
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama tarif"
+    },
+    {
+      "name": "açma",
+      "name_en": "acma (soft bagel)",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet (yaklaşık 50 g)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "adet",
+          "household_quantity": 2,
+          "description": "2 adet"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 320,
+        "protein_g": 7.0,
+        "carbs_g": 45.0,
+        "fat_g": 12.0
+      },
+      "nutrition_per_portion": {
+        "calories": 160,
+        "protein_g": 3.5,
+        "carbs_g": 22.5,
+        "fat_g": 6.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama tarif"
+    },
+    {
+      "name": "su böreği",
+      "name_en": "su boregi",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim (100 g)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 200,
+          "household_unit": "dilim",
+          "household_quantity": 2,
+          "description": "2 dilim"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 400,
+        "protein_g": 15.0,
+        "carbs_g": 40.0,
+        "fat_g": 22.0
+      },
+      "nutrition_per_portion": {
+        "calories": 400,
+        "protein_g": 15.0,
+        "carbs_g": 40.0,
+        "fat_g": 22.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama değişken"
+    },
+    {
+      "name": "kol böreği",
+      "name_en": "kol boregi",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [
+        {
+          "grams": 200,
+          "household_unit": "dilim",
+          "household_quantity": 2,
+          "description": "2 dilim"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 450,
+        "protein_g": 15.0,
+        "carbs_g": 40.0,
+        "fat_g": 27.0
+      },
+      "nutrition_per_portion": {
+        "calories": 450,
+        "protein_g": 15.0,
+        "carbs_g": 40.0,
+        "fat_g": 27.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama tarife göre"
+    },
+    {
+      "name": "sigara böreği",
+      "name_en": "sigara boregi",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet (yaklaşık 50 g)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 100,
+          "household_unit": "adet",
+          "household_quantity": 2,
+          "description": "2 adet"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 400,
+        "protein_g": 8.0,
+        "carbs_g": 38.0,
+        "fat_g": 25.0
+      },
+      "nutrition_per_portion": {
+        "calories": 200,
+        "protein_g": 4.0,
+        "carbs_g": 19.0,
+        "fat_g": 12.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "ortalama ürün"
+    },
+    {
+      "name": "ton balığı (konserve)",
+      "name_en": "canned tuna",
+      "category": "kahvalti",
+      "typical_portion": {
+        "grams": 80,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 kutu (yaklaşık 80 g, süzülmüş, suda)"
+      },
+      "alternate_portions": [
+        {
+          "grams": 160,
+          "household_unit": "adet",
+          "household_quantity": 2,
+          "description": "2 kutu"
+        }
+      ],
+      "nutrition_per_100g": {
+        "calories": 104,
+        "protein_g": 25.0,
+        "carbs_g": 0.0,
+        "fat_g": 0.9
+      },
+      "nutrition_per_portion": {
+        "calories": 83,
+        "protein_g": 20.0,
+        "carbs_g": 0.0,
+        "fat_g": 0.7
+      },
+      "confidence_note": "well-established",
+      "source_context": "USDA / ambalaj besin değeri ortalaması (suda, süzülmüş ton balığı)"
+    },
+    {
+      "name": "Kuru fasulye (etli)",
+      "name_en": "Haricot bean stew with meat",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 135,
+        "protein_g": 8.5,
+        "carbs_g": 14.5,
+        "fat_g": 4.5
+      },
+      "nutrition_per_portion": {
+        "calories": 203,
+        "protein_g": 12.8,
+        "carbs_g": 21.8,
+        "fat_g": 6.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Karnıyarık",
+      "name_en": "Stuffed eggplant with minced meat",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 180,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 115,
+        "protein_g": 4.2,
+        "carbs_g": 6.5,
+        "fat_g": 8.2
+      },
+      "nutrition_per_portion": {
+        "calories": 207,
+        "protein_g": 7.6,
+        "carbs_g": 11.7,
+        "fat_g": 14.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "İzmir köfte",
+      "name_en": "Izmir meatballs",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 145,
+        "protein_g": 9.8,
+        "carbs_g": 8.5,
+        "fat_g": 7.8
+      },
+      "nutrition_per_portion": {
+        "calories": 363,
+        "protein_g": 24.5,
+        "carbs_g": 21.3,
+        "fat_g": 19.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Taze fasulye (zeytinyağlı)",
+      "name_en": "Green bean stew with olive oil",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 55,
+        "protein_g": 1.3,
+        "carbs_g": 5.2,
+        "fat_g": 3.5
+      },
+      "nutrition_per_portion": {
+        "calories": 83,
+        "protein_g": 2.0,
+        "carbs_g": 7.8,
+        "fat_g": 5.3
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Tas kebabı",
+      "name_en": "Beef stew",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 140,
+        "protein_g": 15.2,
+        "carbs_g": 2.8,
+        "fat_g": 7.5
+      },
+      "nutrition_per_portion": {
+        "calories": 210,
+        "protein_g": 22.8,
+        "carbs_g": 4.2,
+        "fat_g": 11.3
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Yaprak sarması (etli)",
+      "name_en": "Stuffed grape leaves with meat",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 25,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 155,
+        "protein_g": 6.4,
+        "carbs_g": 14.8,
+        "fat_g": 8.0
+      },
+      "nutrition_per_portion": {
+        "calories": 39,
+        "protein_g": 1.6,
+        "carbs_g": 3.7,
+        "fat_g": 2.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Biber dolması (etli)",
+      "name_en": "Stuffed peppers with meat",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 130,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 110,
+        "protein_g": 5.0,
+        "carbs_g": 10.2,
+        "fat_g": 5.5
+      },
+      "nutrition_per_portion": {
+        "calories": 143,
+        "protein_g": 6.5,
+        "carbs_g": 13.3,
+        "fat_g": 7.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Nohut yemeği (etli)",
+      "name_en": "Chickpea stew with meat",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 130,
+        "protein_g": 8.0,
+        "carbs_g": 14.0,
+        "fat_g": 4.8
+      },
+      "nutrition_per_portion": {
+        "calories": 195,
+        "protein_g": 12.0,
+        "carbs_g": 21.0,
+        "fat_g": 7.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Türlü (sebze yemeği)",
+      "name_en": "Mixed vegetable stew",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 65,
+        "protein_g": 1.8,
+        "carbs_g": 6.5,
+        "fat_g": 3.8
+      },
+      "nutrition_per_portion": {
+        "calories": 98,
+        "protein_g": 2.7,
+        "carbs_g": 9.8,
+        "fat_g": 5.7
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Hünkar beğendi",
+      "name_en": "Sultan's delight",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 165,
+        "protein_g": 8.5,
+        "carbs_g": 5.8,
+        "fat_g": 12.2
+      },
+      "nutrition_per_portion": {
+        "calories": 413,
+        "protein_g": 21.3,
+        "carbs_g": 14.5,
+        "fat_g": 30.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kadınbudu köfte",
+      "name_en": "Rice and meat rissoles",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 60,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 225,
+        "protein_g": 13.5,
+        "carbs_g": 11.8,
+        "fat_g": 13.8
+      },
+      "nutrition_per_portion": {
+        "calories": 135,
+        "protein_g": 8.1,
+        "carbs_g": 7.1,
+        "fat_g": 8.3
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Tavuk sote",
+      "name_en": "Chicken saute",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 115,
+        "protein_g": 12.8,
+        "carbs_g": 3.1,
+        "fat_g": 5.8
+      },
+      "nutrition_per_portion": {
+        "calories": 173,
+        "protein_g": 19.2,
+        "carbs_g": 4.7,
+        "fat_g": 8.7
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Mücver",
+      "name_en": "Zucchini fritters",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 145,
+        "protein_g": 5.2,
+        "carbs_g": 12.6,
+        "fat_g": 8.4
+      },
+      "nutrition_per_portion": {
+        "calories": 73,
+        "protein_g": 2.6,
+        "carbs_g": 6.3,
+        "fat_g": 4.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Ispanak yemeği",
+      "name_en": "Cooked spinach",
+      "category": "ana-yemek",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 58,
+        "protein_g": 2.1,
+        "carbs_g": 4.2,
+        "fat_g": 3.8
+      },
+      "nutrition_per_portion": {
+        "calories": 87,
+        "protein_g": 3.2,
+        "carbs_g": 6.3,
+        "fat_g": 5.7
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Pirinç pilavı (şehriyeli)",
+      "name_en": "Rice pilaf with orzo",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 180,
+        "protein_g": 2.8,
+        "carbs_g": 28.5,
+        "fat_g": 6.2
+      },
+      "nutrition_per_portion": {
+        "calories": 180,
+        "protein_g": 2.8,
+        "carbs_g": 28.5,
+        "fat_g": 6.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Bulgur pilavı (sebzeli)",
+      "name_en": "Bulgur pilaf with vegetables",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 145,
+        "protein_g": 3.2,
+        "carbs_g": 22.8,
+        "fat_g": 4.5
+      },
+      "nutrition_per_portion": {
+        "calories": 145,
+        "protein_g": 3.2,
+        "carbs_g": 22.8,
+        "fat_g": 4.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Sade makarna",
+      "name_en": "Plain pasta",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 140,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 135,
+        "protein_g": 4.5,
+        "carbs_g": 25.0,
+        "fat_g": 1.8
+      },
+      "nutrition_per_portion": {
+        "calories": 189,
+        "protein_g": 6.3,
+        "carbs_g": 35.0,
+        "fat_g": 2.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kıymalı makarna",
+      "name_en": "Pasta with minced meat",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 165,
+        "protein_g": 7.2,
+        "carbs_g": 22.5,
+        "fat_g": 5.2
+      },
+      "nutrition_per_portion": {
+        "calories": 248,
+        "protein_g": 10.8,
+        "carbs_g": 33.8,
+        "fat_g": 7.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Salçalı makarna",
+      "name_en": "Pasta with tomato paste",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 145,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 142,
+        "protein_g": 4.4,
+        "carbs_g": 24.8,
+        "fat_g": 2.8
+      },
+      "nutrition_per_portion": {
+        "calories": 206,
+        "protein_g": 6.4,
+        "carbs_g": 36.0,
+        "fat_g": 4.1
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Domatesli makarna",
+      "name_en": "Pasta with tomatoes",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 138,
+        "protein_g": 4.2,
+        "carbs_g": 24.1,
+        "fat_g": 2.6
+      },
+      "nutrition_per_portion": {
+        "calories": 207,
+        "protein_g": 6.3,
+        "carbs_g": 36.2,
+        "fat_g": 3.9
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Mantı",
+      "name_en": "Turkish ravioli",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 175,
+        "protein_g": 6.8,
+        "carbs_g": 24.5,
+        "fat_g": 5.5
+      },
+      "nutrition_per_portion": {
+        "calories": 350,
+        "protein_g": 13.6,
+        "carbs_g": 49.0,
+        "fat_g": 11.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kuskus pilavı",
+      "name_en": "Couscous pilaf",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 160,
+        "protein_g": 3.8,
+        "carbs_g": 26.5,
+        "fat_g": 4.2
+      },
+      "nutrition_per_portion": {
+        "calories": 160,
+        "protein_g": 3.8,
+        "carbs_g": 26.5,
+        "fat_g": 4.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Meyhane pilavı",
+      "name_en": "Bulgur pilaf with vegetables and chickpeas",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 152,
+        "protein_g": 4.1,
+        "carbs_g": 24.2,
+        "fat_g": 4.8
+      },
+      "nutrition_per_portion": {
+        "calories": 152,
+        "protein_g": 4.1,
+        "carbs_g": 24.2,
+        "fat_g": 4.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Firik pilavı",
+      "name_en": "Freekeh pilaf",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 158,
+        "protein_g": 4.5,
+        "carbs_g": 23.8,
+        "fat_g": 5.2
+      },
+      "nutrition_per_portion": {
+        "calories": 158,
+        "protein_g": 4.5,
+        "carbs_g": 23.8,
+        "fat_g": 5.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Erişte (tereyağlı)",
+      "name_en": "Turkish egg noodles with butter",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 195,
+        "protein_g": 5.8,
+        "carbs_g": 29.5,
+        "fat_g": 6.2
+      },
+      "nutrition_per_portion": {
+        "calories": 195,
+        "protein_g": 5.8,
+        "carbs_g": 29.5,
+        "fat_g": 6.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Arpa şehriye pilavı",
+      "name_en": "Orzo pilaf",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 185,
+        "protein_g": 3.8,
+        "carbs_g": 29.8,
+        "fat_g": 5.5
+      },
+      "nutrition_per_portion": {
+        "calories": 185,
+        "protein_g": 3.8,
+        "carbs_g": 29.8,
+        "fat_g": 5.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Soslu makarna (bolonez)",
+      "name_en": "Bolognese pasta",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 160,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 158,
+        "protein_g": 6.8,
+        "carbs_g": 22.1,
+        "fat_g": 4.8
+      },
+      "nutrition_per_portion": {
+        "calories": 253,
+        "protein_g": 10.9,
+        "carbs_g": 35.4,
+        "fat_g": 7.7
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Makarna (peynirli)",
+      "name_en": "Pasta with white cheese",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 140,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 155,
+        "protein_g": 5.8,
+        "carbs_g": 23.2,
+        "fat_g": 4.4
+      },
+      "nutrition_per_portion": {
+        "calories": 217,
+        "protein_g": 8.1,
+        "carbs_g": 32.5,
+        "fat_g": 6.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kremalı makarna",
+      "name_en": "Creamy pasta",
+      "category": "pilav-makarna",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 185,
+        "protein_g": 5.5,
+        "carbs_g": 22.5,
+        "fat_g": 8.0
+      },
+      "nutrition_per_portion": {
+        "calories": 278,
+        "protein_g": 8.3,
+        "carbs_g": 33.8,
+        "fat_g": 12.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Elma",
+      "name_en": "Apple",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 52,
+        "protein_g": 0.3,
+        "carbs_g": 13.8,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 78,
+        "protein_g": 0.5,
+        "carbs_g": 20.7,
+        "fat_g": 0.3
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Muz",
+      "name_en": "Banana",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 89,
+        "protein_g": 1.1,
+        "carbs_g": 22.8,
+        "fat_g": 0.3
+      },
+      "nutrition_per_portion": {
+        "calories": 107,
+        "protein_g": 1.3,
+        "carbs_g": 27.4,
+        "fat_g": 0.4
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Karpuz",
+      "name_en": "Watermelon",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 30,
+        "protein_g": 0.6,
+        "carbs_g": 7.6,
+        "fat_g": 0.1
+      },
+      "nutrition_per_portion": {
+        "calories": 75,
+        "protein_g": 1.5,
+        "carbs_g": 19.0,
+        "fat_g": 0.3
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kavun",
+      "name_en": "Melon",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 34,
+        "protein_g": 0.8,
+        "carbs_g": 8.2,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 68,
+        "protein_g": 1.6,
+        "carbs_g": 16.4,
+        "fat_g": 0.4
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Mandalina",
+      "name_en": "Tangerine",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 90,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 53,
+        "protein_g": 0.8,
+        "carbs_g": 13.3,
+        "fat_g": 0.3
+      },
+      "nutrition_per_portion": {
+        "calories": 48,
+        "protein_g": 0.7,
+        "carbs_g": 12.0,
+        "fat_g": 0.3
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Portakal",
+      "name_en": "Orange",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 130,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 47,
+        "protein_g": 0.9,
+        "carbs_g": 11.8,
+        "fat_g": 0.1
+      },
+      "nutrition_per_portion": {
+        "calories": 61,
+        "protein_g": 1.2,
+        "carbs_g": 15.3,
+        "fat_g": 0.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Çilek",
+      "name_en": "Strawberry",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 32,
+        "protein_g": 0.7,
+        "carbs_g": 7.7,
+        "fat_g": 0.3
+      },
+      "nutrition_per_portion": {
+        "calories": 48,
+        "protein_g": 1.1,
+        "carbs_g": 11.6,
+        "fat_g": 0.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Üzüm",
+      "name_en": "Grape",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 80,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 69,
+        "protein_g": 0.8,
+        "carbs_g": 18.1,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 55,
+        "protein_g": 0.6,
+        "carbs_g": 14.5,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "İncir",
+      "name_en": "Fig",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 74,
+        "protein_g": 0.8,
+        "carbs_g": 19.2,
+        "fat_g": 0.4
+      },
+      "nutrition_per_portion": {
+        "calories": 37,
+        "protein_g": 0.4,
+        "carbs_g": 9.6,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Şeftali",
+      "name_en": "Peach",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 39,
+        "protein_g": 0.9,
+        "carbs_g": 9.5,
+        "fat_g": 0.3
+      },
+      "nutrition_per_portion": {
+        "calories": 59,
+        "protein_g": 1.4,
+        "carbs_g": 14.3,
+        "fat_g": 0.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kiraz",
+      "name_en": "Cherry",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 80,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 63,
+        "protein_g": 1.1,
+        "carbs_g": 16.0,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 50,
+        "protein_g": 0.9,
+        "carbs_g": 12.8,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Yeşil erik",
+      "name_en": "Green plum",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 20,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 46,
+        "protein_g": 0.5,
+        "carbs_g": 11.5,
+        "fat_g": 0.5
+      },
+      "nutrition_per_portion": {
+        "calories": 9,
+        "protein_g": 0.1,
+        "carbs_g": 2.3,
+        "fat_g": 0.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kayısı",
+      "name_en": "Apricot",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 35,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 48,
+        "protein_g": 1.4,
+        "carbs_g": 11.1,
+        "fat_g": 0.3
+      },
+      "nutrition_per_portion": {
+        "calories": 17,
+        "protein_g": 0.5,
+        "carbs_g": 3.9,
+        "fat_g": 0.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Armut",
+      "name_en": "Pear",
+      "category": "meyve",
+      "typical_portion": {
+        "grams": 160,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 57,
+        "protein_g": 0.4,
+        "carbs_g": 15.2,
+        "fat_g": 0.1
+      },
+      "nutrition_per_portion": {
+        "calories": 91,
+        "protein_g": 0.6,
+        "carbs_g": 24.3,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Domates (çiğ)",
+      "name_en": "Tomato, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 18,
+        "protein_g": 0.9,
+        "carbs_g": 3.9,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 22,
+        "protein_g": 1.1,
+        "carbs_g": 4.7,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Salatalık (çiğ)",
+      "name_en": "Cucumber, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 15,
+        "protein_g": 0.7,
+        "carbs_g": 3.6,
+        "fat_g": 0.1
+      },
+      "nutrition_per_portion": {
+        "calories": 18,
+        "protein_g": 0.8,
+        "carbs_g": 4.3,
+        "fat_g": 0.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Havuç (çiğ)",
+      "name_en": "Carrot, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 80,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 41,
+        "protein_g": 0.9,
+        "carbs_g": 9.6,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 33,
+        "protein_g": 0.7,
+        "carbs_g": 7.7,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Havuç (haşlanmış)",
+      "name_en": "Carrot, boiled",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 80,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 35,
+        "protein_g": 0.8,
+        "carbs_g": 8.2,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 28,
+        "protein_g": 0.6,
+        "carbs_g": 6.6,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Ispanak (çiğ)",
+      "name_en": "Spinach, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 23,
+        "protein_g": 3.0,
+        "carbs_g": 3.6,
+        "fat_g": 0.4
+      },
+      "nutrition_per_portion": {
+        "calories": 12,
+        "protein_g": 1.5,
+        "carbs_g": 1.8,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Ispanak (pişmiş)",
+      "name_en": "Spinach, cooked",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "kepçe",
+        "household_quantity": 1,
+        "description": "1 kepçe"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 23,
+        "protein_g": 3.0,
+        "carbs_g": 3.8,
+        "fat_g": 0.3
+      },
+      "nutrition_per_portion": {
+        "calories": 28,
+        "protein_g": 3.6,
+        "carbs_g": 4.6,
+        "fat_g": 0.4
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kabak (çiğ)",
+      "name_en": "Zucchini, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 17,
+        "protein_g": 1.2,
+        "carbs_g": 3.1,
+        "fat_g": 0.3
+      },
+      "nutrition_per_portion": {
+        "calories": 26,
+        "protein_g": 1.8,
+        "carbs_g": 4.7,
+        "fat_g": 0.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kabak (haşlanmış)",
+      "name_en": "Zucchini, boiled",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 130,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 15,
+        "protein_g": 1.1,
+        "carbs_g": 2.7,
+        "fat_g": 0.4
+      },
+      "nutrition_per_portion": {
+        "calories": 20,
+        "protein_g": 1.4,
+        "carbs_g": 3.5,
+        "fat_g": 0.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Patlıcan (çiğ)",
+      "name_en": "Eggplant, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 25,
+        "protein_g": 1.0,
+        "carbs_g": 5.9,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 50,
+        "protein_g": 2.0,
+        "carbs_g": 11.8,
+        "fat_g": 0.4
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Patlıcan (közlenmiş)",
+      "name_en": "Eggplant, roasted",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 35,
+        "protein_g": 0.8,
+        "carbs_g": 8.3,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 53,
+        "protein_g": 1.2,
+        "carbs_g": 12.5,
+        "fat_g": 0.3
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Marul (çiğ)",
+      "name_en": "Lettuce, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 15,
+        "protein_g": 1.4,
+        "carbs_g": 3.0,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 8,
+        "protein_g": 0.7,
+        "carbs_g": 1.5,
+        "fat_g": 0.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Taze soğan (çiğ)",
+      "name_en": "Green onion, raw",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 15,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 32,
+        "protein_g": 2.0,
+        "carbs_g": 7.3,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 5,
+        "protein_g": 0.3,
+        "carbs_g": 1.1,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Brokoli (haşlanmış)",
+      "name_en": "Broccoli, boiled",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 35,
+        "protein_g": 2.4,
+        "carbs_g": 7.2,
+        "fat_g": 0.4
+      },
+      "nutrition_per_portion": {
+        "calories": 35,
+        "protein_g": 2.4,
+        "carbs_g": 7.2,
+        "fat_g": 0.4
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Karnabahar (haşlanmış)",
+      "name_en": "Cauliflower, boiled",
+      "category": "sebze",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 23,
+        "protein_g": 1.8,
+        "carbs_g": 4.1,
+        "fat_g": 0.5
+      },
+      "nutrition_per_portion": {
+        "calories": 23,
+        "protein_g": 1.8,
+        "carbs_g": 4.1,
+        "fat_g": 0.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Fındık (kavrulmuş)",
+      "name_en": "Roasted hazelnuts",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 40,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 646,
+        "protein_g": 15.0,
+        "carbs_g": 17.5,
+        "fat_g": 61.3
+      },
+      "nutrition_per_portion": {
+        "calories": 258,
+        "protein_g": 6.0,
+        "carbs_g": 7.0,
+        "fat_g": 24.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Fıstık (tuzlu)",
+      "name_en": "Salted peanuts",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 40,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 585,
+        "protein_g": 24.5,
+        "carbs_g": 21.5,
+        "fat_g": 49.7
+      },
+      "nutrition_per_portion": {
+        "calories": 234,
+        "protein_g": 9.8,
+        "carbs_g": 8.6,
+        "fat_g": 19.9
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Antep fıstığı (kavrulmuş)",
+      "name_en": "Roasted pistachio",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 562,
+        "protein_g": 20.3,
+        "carbs_g": 27.7,
+        "fat_g": 45.3
+      },
+      "nutrition_per_portion": {
+        "calories": 169,
+        "protein_g": 6.1,
+        "carbs_g": 8.3,
+        "fat_g": 13.6
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kabak çekirdeği",
+      "name_en": "Pumpkin seeds",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 559,
+        "protein_g": 30.3,
+        "carbs_g": 10.7,
+        "fat_g": 49.0
+      },
+      "nutrition_per_portion": {
+        "calories": 168,
+        "protein_g": 9.1,
+        "carbs_g": 3.2,
+        "fat_g": 14.7
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Ay çekirdeği (tuzlu)",
+      "name_en": "Sunflower seeds",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 582,
+        "protein_g": 19.3,
+        "carbs_g": 24.0,
+        "fat_g": 49.7
+      },
+      "nutrition_per_portion": {
+        "calories": 175,
+        "protein_g": 5.8,
+        "carbs_g": 7.2,
+        "fat_g": 14.9
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Beyaz leblebi",
+      "name_en": "White roasted chickpea",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 368,
+        "protein_g": 19.0,
+        "carbs_g": 58.3,
+        "fat_g": 5.0
+      },
+      "nutrition_per_portion": {
+        "calories": 110,
+        "protein_g": 5.7,
+        "carbs_g": 17.5,
+        "fat_g": 1.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Patates cipsi",
+      "name_en": "Potato chips",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 40,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 536,
+        "protein_g": 7.0,
+        "carbs_g": 53.0,
+        "fat_g": 35.0
+      },
+      "nutrition_per_portion": {
+        "calories": 214,
+        "protein_g": 2.8,
+        "carbs_g": 21.2,
+        "fat_g": 14.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Çikolatalı bisküvi",
+      "name_en": "Chocolate biscuit",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 12,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 485,
+        "protein_g": 5.8,
+        "carbs_g": 65.0,
+        "fat_g": 21.7
+      },
+      "nutrition_per_portion": {
+        "calories": 58,
+        "protein_g": 0.7,
+        "carbs_g": 7.8,
+        "fat_g": 2.6
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Petibör bisküvi",
+      "name_en": "Petit Beurre biscuit",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 6,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 435,
+        "protein_g": 8.3,
+        "carbs_g": 78.3,
+        "fat_g": 10.0
+      },
+      "nutrition_per_portion": {
+        "calories": 26,
+        "protein_g": 0.5,
+        "carbs_g": 4.7,
+        "fat_g": 0.6
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Tuzlu kraker",
+      "name_en": "Salty fish-shaped cracker",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 20,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 450,
+        "protein_g": 8.5,
+        "carbs_g": 68.0,
+        "fat_g": 15.5
+      },
+      "nutrition_per_portion": {
+        "calories": 90,
+        "protein_g": 1.7,
+        "carbs_g": 13.6,
+        "fat_g": 3.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Karışık kuruyemiş",
+      "name_en": "Mixed nuts",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 40,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 610,
+        "protein_g": 18.5,
+        "carbs_g": 21.0,
+        "fat_g": 52.0
+      },
+      "nutrition_per_portion": {
+        "calories": 244,
+        "protein_g": 7.4,
+        "carbs_g": 8.4,
+        "fat_g": 20.8
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kuru üzüm",
+      "name_en": "Raisin",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 299,
+        "protein_g": 3.0,
+        "carbs_g": 79.3,
+        "fat_g": 0.7
+      },
+      "nutrition_per_portion": {
+        "calories": 90,
+        "protein_g": 0.9,
+        "carbs_g": 23.8,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kuru kayısı",
+      "name_en": "Dried apricot",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 8,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 241,
+        "protein_g": 3.8,
+        "carbs_g": 62.5,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 19,
+        "protein_g": 0.3,
+        "carbs_g": 5.0,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Ceviz içi",
+      "name_en": "Walnut halves",
+      "category": "atistirmalik",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "avuç",
+        "household_quantity": 1,
+        "description": "1 avuç"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 654,
+        "protein_g": 15.3,
+        "carbs_g": 13.7,
+        "fat_g": 65.3
+      },
+      "nutrition_per_portion": {
+        "calories": 196,
+        "protein_g": 4.6,
+        "carbs_g": 4.1,
+        "fat_g": 19.6
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Baklava (fıstıklı)",
+      "name_en": "Pistachio baklava",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 40,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 430,
+        "protein_g": 6.2,
+        "carbs_g": 51.5,
+        "fat_g": 22.7
+      },
+      "nutrition_per_portion": {
+        "calories": 172,
+        "protein_g": 2.5,
+        "carbs_g": 20.6,
+        "fat_g": 9.1
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Sütlaç (fırın)",
+      "name_en": "Baked rice pudding",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 250,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 112,
+        "protein_g": 2.8,
+        "carbs_g": 20.2,
+        "fat_g": 2.2
+      },
+      "nutrition_per_portion": {
+        "calories": 280,
+        "protein_g": 7.0,
+        "carbs_g": 50.5,
+        "fat_g": 5.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Revani",
+      "name_en": "Semolina cake in syrup",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 290,
+        "protein_g": 4.5,
+        "carbs_g": 56.0,
+        "fat_g": 5.8
+      },
+      "nutrition_per_portion": {
+        "calories": 290,
+        "protein_g": 4.5,
+        "carbs_g": 56.0,
+        "fat_g": 5.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Şekerpare",
+      "name_en": "Sweet pastry in syrup",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 50,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 310,
+        "protein_g": 4.2,
+        "carbs_g": 58.6,
+        "fat_g": 7.6
+      },
+      "nutrition_per_portion": {
+        "calories": 155,
+        "protein_g": 2.1,
+        "carbs_g": 29.3,
+        "fat_g": 3.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Tel kadayıf",
+      "name_en": "Shredded wheat dessert",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 345,
+        "protein_g": 5.0,
+        "carbs_g": 56.5,
+        "fat_g": 11.2
+      },
+      "nutrition_per_portion": {
+        "calories": 414,
+        "protein_g": 6.0,
+        "carbs_g": 67.8,
+        "fat_g": 13.4
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kemalpaşa tatlısı",
+      "name_en": "Kemalpaşa dessert",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 285,
+        "protein_g": 5.7,
+        "carbs_g": 55.0,
+        "fat_g": 4.7
+      },
+      "nutrition_per_portion": {
+        "calories": 86,
+        "protein_g": 1.7,
+        "carbs_g": 16.5,
+        "fat_g": 1.4
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kazandibi",
+      "name_en": "Caramelized milk pudding",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 135,
+        "protein_g": 3.1,
+        "carbs_g": 24.2,
+        "fat_g": 2.8
+      },
+      "nutrition_per_portion": {
+        "calories": 203,
+        "protein_g": 4.7,
+        "carbs_g": 36.3,
+        "fat_g": 4.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Muhallebi",
+      "name_en": "Milk pudding",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 110,
+        "protein_g": 2.9,
+        "carbs_g": 19.8,
+        "fat_g": 2.1
+      },
+      "nutrition_per_portion": {
+        "calories": 220,
+        "protein_g": 5.8,
+        "carbs_g": 39.6,
+        "fat_g": 4.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Keşkül",
+      "name_en": "Almond milk pudding",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 138,
+        "protein_g": 3.4,
+        "carbs_g": 21.2,
+        "fat_g": 4.5
+      },
+      "nutrition_per_portion": {
+        "calories": 276,
+        "protein_g": 6.8,
+        "carbs_g": 42.4,
+        "fat_g": 9.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Güllaç",
+      "name_en": "Güllaç",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 125,
+        "protein_g": 3.2,
+        "carbs_g": 21.5,
+        "fat_g": 2.9
+      },
+      "nutrition_per_portion": {
+        "calories": 188,
+        "protein_g": 4.8,
+        "carbs_g": 32.3,
+        "fat_g": 4.4
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "İrmik helvası",
+      "name_en": "Semolina halva",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "yemek kaşığı",
+        "household_quantity": 1,
+        "description": "1 yemek kaşığı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 320,
+        "protein_g": 4.7,
+        "carbs_g": 51.7,
+        "fat_g": 10.7
+      },
+      "nutrition_per_portion": {
+        "calories": 96,
+        "protein_g": 1.4,
+        "carbs_g": 15.5,
+        "fat_g": 3.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Un helvası",
+      "name_en": "Flour halva",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 30,
+        "household_unit": "yemek kaşığı",
+        "household_quantity": 1,
+        "description": "1 yemek kaşığı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 340,
+        "protein_g": 4.3,
+        "carbs_g": 52.7,
+        "fat_g": 12.7
+      },
+      "nutrition_per_portion": {
+        "calories": 102,
+        "protein_g": 1.3,
+        "carbs_g": 15.8,
+        "fat_g": 3.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Künefe",
+      "name_en": "Künefe",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 130,
+        "household_unit": "dilim",
+        "household_quantity": 1,
+        "description": "1 dilim"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 360,
+        "protein_g": 7.8,
+        "carbs_g": 48.5,
+        "fat_g": 15.5
+      },
+      "nutrition_per_portion": {
+        "calories": 468,
+        "protein_g": 10.1,
+        "carbs_g": 63.1,
+        "fat_g": 20.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Tulumba tatlısı",
+      "name_en": "Tulumba dessert",
+      "category": "tatli",
+      "typical_portion": {
+        "grams": 15,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 345,
+        "protein_g": 4.0,
+        "carbs_g": 58.7,
+        "fat_g": 10.7
+      },
+      "nutrition_per_portion": {
+        "calories": 52,
+        "protein_g": 0.6,
+        "carbs_g": 8.8,
+        "fat_g": 1.6
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Siyah çay (şekersiz)",
+      "name_en": "Black tea, unsweetened",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "çay bardağı",
+        "household_quantity": 1,
+        "description": "1 çay bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 1,
+        "protein_g": 0.1,
+        "carbs_g": 0.2,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 1,
+        "protein_g": 0.1,
+        "carbs_g": 0.2,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Siyah çay (tek şekerli)",
+      "name_en": "Black tea, sweetened",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "çay bardağı",
+        "household_quantity": 1,
+        "description": "1 çay bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 9,
+        "protein_g": 0.1,
+        "carbs_g": 2.1,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 9,
+        "protein_g": 0.1,
+        "carbs_g": 2.1,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Türk kahvesi (şekersiz)",
+      "name_en": "Turkish coffee, unsweetened",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 70,
+        "household_unit": "çay bardağı",
+        "household_quantity": 1,
+        "description": "1 çay bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 2,
+        "protein_g": 0.1,
+        "carbs_g": 0.3,
+        "fat_g": 0.1
+      },
+      "nutrition_per_portion": {
+        "calories": 2,
+        "protein_g": 0.1,
+        "carbs_g": 0.2,
+        "fat_g": 0.1
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Ayran",
+      "name_en": "Ayran",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 38,
+        "protein_g": 2.0,
+        "carbs_g": 2.8,
+        "fat_g": 2.1
+      },
+      "nutrition_per_portion": {
+        "calories": 76,
+        "protein_g": 4.0,
+        "carbs_g": 5.6,
+        "fat_g": 4.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Portakal suyu (taze)",
+      "name_en": "Fresh orange juice",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 45,
+        "protein_g": 0.7,
+        "carbs_g": 10.4,
+        "fat_g": 0.2
+      },
+      "nutrition_per_portion": {
+        "calories": 90,
+        "protein_g": 1.4,
+        "carbs_g": 20.8,
+        "fat_g": 0.4
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kola",
+      "name_en": "Cola",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 38,
+        "protein_g": 0.0,
+        "carbs_g": 9.5,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 76,
+        "protein_g": 0.0,
+        "carbs_g": 19.0,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Gazoz",
+      "name_en": "Carbonated soft drink",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 35,
+        "protein_g": 0.0,
+        "carbs_g": 8.8,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 70,
+        "protein_g": 0.0,
+        "carbs_g": 17.6,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Limonata",
+      "name_en": "Lemonade",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 40,
+        "protein_g": 0.1,
+        "carbs_g": 10.1,
+        "fat_g": 0.1
+      },
+      "nutrition_per_portion": {
+        "calories": 80,
+        "protein_g": 0.2,
+        "carbs_g": 20.2,
+        "fat_g": 0.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Şalgam suyu",
+      "name_en": "Turnip juice",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 5,
+        "protein_g": 0.5,
+        "carbs_g": 0.8,
+        "fat_g": 0.1
+      },
+      "nutrition_per_portion": {
+        "calories": 10,
+        "protein_g": 1.0,
+        "carbs_g": 1.6,
+        "fat_g": 0.2
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kefir",
+      "name_en": "Kefir",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 55,
+        "protein_g": 3.2,
+        "carbs_g": 4.5,
+        "fat_g": 2.8
+      },
+      "nutrition_per_portion": {
+        "calories": 110,
+        "protein_g": 6.4,
+        "carbs_g": 9.0,
+        "fat_g": 5.6
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Maden suyu",
+      "name_en": "Sparkling water",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 0,
+        "protein_g": 0.0,
+        "carbs_g": 0.0,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 0,
+        "protein_g": 0.0,
+        "carbs_g": 0.0,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Nescafe (3'ü 1 arada)",
+      "name_en": "Instant coffee 3-in-1 mix",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 180,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 42,
+        "protein_g": 0.4,
+        "carbs_g": 7.8,
+        "fat_g": 1.0
+      },
+      "nutrition_per_portion": {
+        "calories": 76,
+        "protein_g": 0.7,
+        "carbs_g": 14.0,
+        "fat_g": 1.8
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Sahlep",
+      "name_en": "Sahlep",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 95,
+        "protein_g": 2.8,
+        "carbs_g": 16.5,
+        "fat_g": 2.1
+      },
+      "nutrition_per_portion": {
+        "calories": 190,
+        "protein_g": 5.6,
+        "carbs_g": 33.0,
+        "fat_g": 4.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Filtre kahve (sade)",
+      "name_en": "Filter coffee, black",
+      "category": "icecek",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "su bardağı",
+        "household_quantity": 1,
+        "description": "1 su bardağı"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 1,
+        "protein_g": 0.1,
+        "carbs_g": 0.0,
+        "fat_g": 0.0
+      },
+      "nutrition_per_portion": {
+        "calories": 2,
+        "protein_g": 0.2,
+        "carbs_g": 0.0,
+        "fat_g": 0.0
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Et döner dürüm",
+      "name_en": "Beef doner kebab wrap",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 220,
+        "protein_g": 14.5,
+        "carbs_g": 18.2,
+        "fat_g": 9.8
+      },
+      "nutrition_per_portion": {
+        "calories": 440,
+        "protein_g": 29.0,
+        "carbs_g": 36.4,
+        "fat_g": 19.6
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Tavuk döner dürüm",
+      "name_en": "Chicken doner kebab wrap",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 195,
+        "protein_g": 13.8,
+        "carbs_g": 18.5,
+        "fat_g": 7.2
+      },
+      "nutrition_per_portion": {
+        "calories": 390,
+        "protein_g": 27.6,
+        "carbs_g": 37.0,
+        "fat_g": 14.4
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Lahmacun",
+      "name_en": "Lahmacun",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 230,
+        "protein_g": 8.5,
+        "carbs_g": 28.2,
+        "fat_g": 9.0
+      },
+      "nutrition_per_portion": {
+        "calories": 276,
+        "protein_g": 10.2,
+        "carbs_g": 33.8,
+        "fat_g": 10.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Karışık tost",
+      "name_en": "Mixed toasted sandwich",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 150,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 285,
+        "protein_g": 12.8,
+        "carbs_g": 33.5,
+        "fat_g": 11.2
+      },
+      "nutrition_per_portion": {
+        "calories": 428,
+        "protein_g": 19.2,
+        "carbs_g": 50.3,
+        "fat_g": 16.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kıymalı pide",
+      "name_en": "Minced meat pide",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 220,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 245,
+        "protein_g": 10.2,
+        "carbs_g": 30.5,
+        "fat_g": 9.1
+      },
+      "nutrition_per_portion": {
+        "calories": 539,
+        "protein_g": 22.4,
+        "carbs_g": 67.1,
+        "fat_g": 20.0
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kaşarlı pide",
+      "name_en": "Cheese pide",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 200,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 275,
+        "protein_g": 11.5,
+        "carbs_g": 33.2,
+        "fat_g": 10.8
+      },
+      "nutrition_per_portion": {
+        "calories": 550,
+        "protein_g": 23.0,
+        "carbs_g": 66.4,
+        "fat_g": 21.6
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "İzmir kumrusu",
+      "name_en": "Izmir kumru sandwich",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 180,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 310,
+        "protein_g": 13.5,
+        "carbs_g": 26.5,
+        "fat_g": 16.8
+      },
+      "nutrition_per_portion": {
+        "calories": 558,
+        "protein_g": 24.3,
+        "carbs_g": 47.7,
+        "fat_g": 30.2
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Boyoz",
+      "name_en": "Boyoz pastry",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 80,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 395,
+        "protein_g": 6.2,
+        "carbs_g": 42.5,
+        "fat_g": 22.1
+      },
+      "nutrition_per_portion": {
+        "calories": 316,
+        "protein_g": 5.0,
+        "carbs_g": 34.0,
+        "fat_g": 17.7
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Midye dolma",
+      "name_en": "Stuffed mussels",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 25,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 155,
+        "protein_g": 8.0,
+        "carbs_g": 23.6,
+        "fat_g": 3.2
+      },
+      "nutrition_per_portion": {
+        "calories": 39,
+        "protein_g": 2.0,
+        "carbs_g": 5.9,
+        "fat_g": 0.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Kokoreç (yarım ekmek)",
+      "name_en": "Kokorec sandwich",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 220,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 265,
+        "protein_g": 14.2,
+        "carbs_g": 24.1,
+        "fat_g": 12.5
+      },
+      "nutrition_per_portion": {
+        "calories": 583,
+        "protein_g": 31.2,
+        "carbs_g": 53.0,
+        "fat_g": 27.5
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Tantuni dürüm",
+      "name_en": "Tantuni wrap",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 180,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 215,
+        "protein_g": 13.2,
+        "carbs_g": 20.1,
+        "fat_g": 8.8
+      },
+      "nutrition_per_portion": {
+        "calories": 387,
+        "protein_g": 23.8,
+        "carbs_g": 36.2,
+        "fat_g": 15.8
+      },
+      "confidence_note": "approximate",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Hamburger",
+      "name_en": "Standard hamburger",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 120,
+        "household_unit": "adet",
+        "household_quantity": 1,
+        "description": "1 adet"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 250,
+        "protein_g": 12.2,
+        "carbs_g": 24.5,
+        "fat_g": 11.5
+      },
+      "nutrition_per_portion": {
+        "calories": 300,
+        "protein_g": 14.6,
+        "carbs_g": 29.4,
+        "fat_g": 13.8
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    },
+    {
+      "name": "Patates kızartması",
+      "name_en": "French fries",
+      "category": "fast-food",
+      "typical_portion": {
+        "grams": 100,
+        "household_unit": "kase",
+        "household_quantity": 1,
+        "description": "1 kase"
+      },
+      "alternate_portions": [],
+      "nutrition_per_100g": {
+        "calories": 290,
+        "protein_g": 3.4,
+        "carbs_g": 38.5,
+        "fat_g": 14.5
+      },
+      "nutrition_per_portion": {
+        "calories": 290,
+        "protein_g": 3.4,
+        "carbs_g": 38.5,
+        "fat_g": 14.5
+      },
+      "confidence_note": "well-established",
+      "source_context": "TürKomp / TÜBER 2022 / kurumsal gramaj listeleri (deep-research raporu)"
+    }
+  ],
+  "schema_version": 1
+}

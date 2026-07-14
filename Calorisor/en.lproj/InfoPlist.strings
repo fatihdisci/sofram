@@ -1,0 +1,5 @@
+"CFBundleDisplayName" = "Calorisor";
+"NSCameraUsageDescription" = "Calorisor uses your camera to recognise food on your plate and estimate calories and macros.";
+"NSPhotoLibraryUsageDescription" = "You can share food photos with Calorisor for analysis.";
+"NSMicrophoneUsageDescription" = "Calorisor uses your microphone so you can say what you ate and have it turned into text.";
+"NSSpeechRecognitionUsageDescription" = "Calorisor uses speech recognition to turn the meal you speak into text.";

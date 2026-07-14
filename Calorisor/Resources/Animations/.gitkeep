@@ -1,0 +1,5 @@
+// Bu dosya xcodegen'in Sofra/Resources/ klasörünü bundle resource olarak
+// tanımasını garantiler — Animations/ alt klasörü boş olsa bile.
+//
+// .json dosyaları buraya bırakıldığında otomatik olarak bundle'a kopyalanır.
+// Daha fazla bilgi için: Sofra/Resources/Animations/README.md

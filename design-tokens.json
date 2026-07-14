@@ -1,42 +1,50 @@
 {
-  "name": "Sofra — Yumuşak Sofra (Soft Native)",
+  "name": "Calorisor — Flat (Visual Nutrition Intelligence)",
+  "note": "Values mirror Sofra/Assets.xcassets/Colors (the source of truth at runtime). Flat, typography-led: no gradient, glass, emboss or physical-depth shadow. Hierarchy comes from fill, 1pt border and whitespace.",
   "color": {
     "light": {
-      "bg-page": "#F4F1EC",
-      "surface-raised": "#F9F6F1",
-      "surface-flat": "#EAE3D6",
+      "bg-page": "#F6F4F0",
+      "surface-raised": "#FFFFFF",
+      "surface-flat": "#EFEEE9",
+      "border-hairline": "#DEDCD6",
       "border-highlight": "#FFFFFF",
       "border-shadow": "#D0C9B9",
-      "border-hairline": "#E2DCCC",
-      "text-primary": "#3A342A",
-      "text-secondary": "#6E6659",
-      "text-muted": "#9C9488",
-      "accent-fill": "#B87333",
-      "accent-fill-pressed": "#8F5423",
-      "accent-text": "#8F5423",
-      "on-accent": "#FBF3EA",
-      "accent-tint-bg": "#F0DDC7"
+      "text-primary": "#151515",
+      "text-secondary": "#5F5C57",
+      "text-muted": "#8C8984",
+      "accent-fill": "#D3442B",
+      "accent-fill-pressed": "#A83220",
+      "accent-text": "#A83220",
+      "on-accent": "#FFFFFF",
+      "accent-tint-bg": "#F9E2DD",
+      "macro-protein": "#6A8F6B",
+      "macro-carb": "#C08A3E",
+      "macro-fat": "#B06458"
     },
     "dark": {
-      "bg-page": "#1E1B16",
-      "surface-raised": "#29241D",
-      "surface-flat": "#211D18",
-      "border-highlight": "#342E25",
+      "bg-page": "#111111",
+      "surface-raised": "#1A1A1A",
+      "surface-flat": "#161616",
+      "border-hairline": "#343434",
+      "border-highlight": "#453D30",
       "border-shadow": "#100E0B",
-      "border-hairline": "#3A342A",
-      "text-primary": "#F2ECE0",
-      "text-secondary": "#A79C8C",
-      "text-muted": "#756B5D",
-      "accent-fill": "#E0A164",
-      "accent-fill-pressed": "#EEB57F",
-      "accent-text": "#E0A164",
-      "on-accent": "#1E1B16",
-      "accent-tint-bg": "#3A2D1E"
+      "text-primary": "#F6F4F0",
+      "text-secondary": "#B7B3AE",
+      "text-muted": "#827E79",
+      "accent-fill": "#E85B43",
+      "accent-fill-pressed": "#F27C65",
+      "accent-text": "#F27C65",
+      "on-accent": "#141414",
+      "accent-tint-bg": "#3A201C",
+      "macro-protein": "#8FB791",
+      "macro-carb": "#D9A96A",
+      "macro-fat": "#CE8A7E"
     },
     "contrast_notes": {
       "text-secondary-on-bg-page": "≥4.5:1 in both modes (AA, small text)",
-      "accent-text-on-bg-page": "≥4.5:1 in both modes — use accent-fill only for icons/graphics (3:1 non-text threshold), never as small body text color",
-      "on-accent-on-accent-fill": "≥3.7:1 — acceptable for icon/large-button label, avoid for small text"
+      "accent-text-on-bg-page": "≥4.5:1 in both modes — use accent-fill only for icons/graphics/fills (3:1 non-text threshold), never as small body text color",
+      "on-accent-on-accent-fill": "white/near-black label on the flat red — acceptable for icon/large button label",
+      "border-highlight-border-shadow": "legacy tokens kept for API/asset compatibility; the flat system draws separation with border-hairline only"
     }
   },
   "typography": {
@@ -63,28 +71,11 @@
     "raised-container": 24,
     "pill": 999
   },
-  "shadow_recipe": {
-    "description": "Neomorphism iki-tonlu kenarlık tekniği — gerçek blur shadow değil, SwiftUI çift .shadow() modifier ile. Raised zemini surface-raised, pressed zemini surface-flat (çökük ton).",
-    "light": {
-      "raised": [
-        { "color": "border-highlight", "opacity": 1.0, "radius": 7, "x": -5, "y": -5 },
-        { "color": "border-shadow", "opacity": 0.7, "radius": 8, "x": 5, "y": 6 }
-      ],
-      "pressed": [
-        { "color": "border-shadow", "opacity": 0.6, "radius": 5, "x": -3, "y": -3, "inset": true },
-        { "color": "border-highlight", "opacity": 0.5, "radius": 5, "x": 3, "y": 3, "inset": true }
-      ]
-    },
-    "dark": {
-      "raised": [
-        { "color": "border-highlight", "opacity": 0.85, "radius": 7, "x": -5, "y": -5 },
-        { "color": "border-shadow", "opacity": 0.9, "radius": 8, "x": 5, "y": 6 }
-      ],
-      "pressed": [
-        { "color": "border-shadow", "opacity": 0.8, "radius": 5, "x": -3, "y": -3, "inset": true },
-        { "color": "border-highlight", "opacity": 0.3, "radius": 5, "x": 3, "y": 3, "inset": true }
-      ]
-    }
+  "surface_recipe": {
+    "description": "Flat surfaces. No blur/emboss/inset shadow. Both raised and pressed surfaces are a solid fill plus a single 1pt border-hairline stroke; hierarchy is fill tone + whitespace + type.",
+    "raised": { "fill": "surface-raised", "border": { "color": "border-hairline", "width": 1 } },
+    "pressed": { "fill": "surface-flat", "border": { "color": "border-hairline", "width": 1 } },
+    "press-feedback": "scaleEffect 0.97 + subtle flat surface-flat overlay on press; light haptic. No shadow transition."
   },
   "motion": {
     "dur-fast": 150,
@@ -92,6 +83,6 @@
     "dur-base": 300,
     "dur-slow": 500,
     "spring": { "response": 0.4, "dampingFraction": 0.75 },
-    "note": "Detaylı tetikleyici listesi mikro-etkilesimler.md dosyasında"
+    "note": "Motion kısa ve işlevsel; veri kaydı/analiz sonucunu destekler, arayüzü süslemez. Tetikleyici listesi mikro-etkilesimler.md."
   }
 }

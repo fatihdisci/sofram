@@ -40,3 +40,6 @@ Secrets.plist
 
 # Scratch
 *.orig
+
+# Local agent orchestration state
+.mavis/
