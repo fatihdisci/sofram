@@ -1,76 +1,104 @@
 //
 //  FreeScanCounterTests.swift
-//  CalorisorTests — successful-request consumption and debug bypass coverage.
+//  CalorisorTests — daily photo/text quota and server-sync coverage.
 //
-
 
 import XCTest
 @testable import Calorisor
 
 @MainActor
 final class FreeScanCounterTests: XCTestCase {
-    func testThreeSuccessfulScansCloseReleaseGateWithoutSaving() {
+    func testPhotoAndTextPoolsAreIndependent() {
         let (counter, defaults) = makeCounter()
         defer { defaults.removePersistentDomain(forName: suiteName) }
         counter.debugForcePro = false
 
-        XCTAssertTrue(counter.canScanForFree)
-        for _ in 0..<3 {
-            counter.recordScan()
-        }
+        counter.recordScan(pool: .photo)
+        XCTAssertEqual(counter.remainingPhotoScans, 0)
+        XCTAssertEqual(counter.remainingTextScans, 2)
+        XCTAssertFalse(counter.canScan(for: .photo))
+        XCTAssertTrue(counter.canScan(for: .text))
 
-        XCTAssertEqual(counter.usedScans, 3)
-        XCTAssertEqual(counter.remainingFreeScans, 0)
-        XCTAssertFalse(counter.canScanForFree)
+        counter.recordScan(pool: .text)
+        counter.recordScan(pool: .text)
+        XCTAssertEqual(counter.remainingTextScans, 0)
+        XCTAssertFalse(counter.canScan(for: .text))
     }
 
-    func testDebugForceProNeverConsumesCounter() {
+    func testDebugForceProAndSubscriptionNeverConsumeCounters() {
         let (counter, defaults) = makeCounter()
         defer { defaults.removePersistentDomain(forName: suiteName) }
+
         counter.debugForcePro = true
+        counter.recordScan(pool: .photo)
+        counter.recordScan(pool: .text)
+        XCTAssertEqual(counter.remainingPhotoScans, 1)
+        XCTAssertEqual(counter.remainingTextScans, 2)
 
-        counter.recordScan()
-
-        XCTAssertTrue(counter.canScanForFree)
-        XCTAssertEqual(counter.usedScans, 0)
-    }
-
-    func testSubscriptionNeverConsumesCounter() {
-        let (counter, defaults) = makeCounter()
-        defer { defaults.removePersistentDomain(forName: suiteName) }
         counter.debugForcePro = false
         counter.isSubscribed = true
-
-        counter.recordScan()
-
-        XCTAssertTrue(counter.canScanForFree)
-        XCTAssertEqual(counter.usedScans, 0)
+        counter.recordScan(pool: .photo)
+        XCTAssertEqual(counter.remainingPhotoScans, 1)
     }
 
-    func testWeeklyQuotaRefillsInTheNextWeek() {
-        let suite = "FreeScanCounterTests.weekly"
+    func testQuotaRefillsAtNextUtcDay() {
+        let suite = "FreeScanCounterTests.utcRollover"
         let defaults = UserDefaults(suiteName: suite)!
         defaults.removePersistentDomain(forName: suite)
         defer { defaults.removePersistentDomain(forName: suite) }
 
-        // Fixed starting instant so weekly rollover is deterministic.
         let clock = MutableClock(date: Date(timeIntervalSince1970: 1_700_000_000))
         let counter = FreeScanCounter(defaults: defaults, now: { clock.date })
         counter.debugForcePro = false
+        counter.recordScan(pool: .photo)
+        counter.recordScan(pool: .text)
 
-        // Exhaust this week's quota.
-        for _ in 0..<3 { counter.recordScan() }
-        XCTAssertEqual(counter.remainingFreeScans, 0)
-        XCTAssertFalse(counter.canScanForFree)
+        XCTAssertEqual(counter.remainingPhotoScans, 0)
+        XCTAssertEqual(counter.remainingTextScans, 1)
 
-        // Jump into the next week — the quota refills.
-        clock.date = clock.date.addingTimeInterval(8 * 24 * 3600)
-        XCTAssertTrue(counter.canScanForFree)
-        XCTAssertEqual(counter.remainingFreeScans, 3)
+        // Cross the next UTC midnight without relying on the device timezone.
+        clock.date = counter.nextResetDate.addingTimeInterval(1)
+        XCTAssertEqual(counter.remainingPhotoScans, 1)
+        XCTAssertEqual(counter.remainingTextScans, 2)
+        XCTAssertTrue(counter.canScan(for: .photo))
+    }
 
-        // A scan in the new week starts a fresh tally.
-        counter.recordScan()
-        XCTAssertEqual(counter.remainingFreeScans, 2)
+    func testServerQuotaReplacesLocalEstimate() {
+        let (counter, defaults) = makeCounter()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        counter.debugForcePro = false
+        counter.recordScan(pool: .photo)
+
+        counter.applyServerQuota(ScanQuotaSnapshot(
+            tier: "free",
+            photoRemaining: 1,
+            photoLimit: 1,
+            textRemaining: 0,
+            textLimit: 2
+        ))
+
+        XCTAssertEqual(counter.remainingPhotoScans, 1)
+        XCTAssertEqual(counter.remainingTextScans, 0)
+        XCTAssertTrue(counter.canScan(for: .photo))
+        XCTAssertFalse(counter.canScan(for: .text))
+    }
+
+    func testProServerQuotaDoesNotChangeFreeDisplay() {
+        let (counter, defaults) = makeCounter()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        counter.debugForcePro = false
+        counter.recordScan(pool: .photo)
+
+        counter.applyServerQuota(ScanQuotaSnapshot(
+            tier: "pro",
+            photoRemaining: 49,
+            photoLimit: 50,
+            textRemaining: 100,
+            textLimit: 100
+        ))
+
+        XCTAssertEqual(counter.remainingPhotoScans, 0)
+        XCTAssertEqual(counter.remainingTextScans, 2)
     }
 
     private var suiteName: String { "FreeScanCounterTests" }
@@ -82,7 +110,6 @@ final class FreeScanCounterTests: XCTestCase {
     }
 }
 
-/// A mutable clock the counter reads through its injectable `now` closure.
 private final class MutableClock {
     var date: Date
     init(date: Date) { self.date = date }

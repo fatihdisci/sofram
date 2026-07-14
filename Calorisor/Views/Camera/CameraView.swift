@@ -650,10 +650,10 @@ struct FreeScanBadge: View {
             EmptyView()
         } else {
             HStack(spacing: 4) {
-                Image(systemName: counter.canScanForFree ? "camera.fill" : "lock.fill")
+                Image(systemName: counter.canScan(for: .photo) ? "camera.fill" : "lock.fill")
                     .font(.system(size: 10))
-                Text(counter.canScanForFree
-                     ? String(localized: "\(counter.remainingFreeScans) ücretsiz tarama")
+                Text(counter.canScan(for: .photo)
+                     ? String(localized: "\(counter.remainingPhotoScans) ücretsiz fotoğraf")
                      : String(localized: "Limit doldu"))
                     .font(.sofraCaption)
             }

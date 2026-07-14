@@ -1,22 +1,32 @@
 //
 //  FreeScanCounter.swift
-//  Calorisor — device-level free-scan quota (no accounts, no server).
+//  Calorisor — device-level display of the server-enforced free scan quota.
 //
-//  Grants a fixed number of free AI scans per rolling weekly period, then gates
-//  behind the paywall until the quota refills at the start of the next calendar
-//  week. This keeps the app usable without Pro (unlike a one-time lifetime cap)
-//  while still steering heavy users to a subscription.
+//  Free users have two independent UTC-day pools: one photo scan and two
+//  text/voice scans. The proxy is authoritative when it returns quota headers;
+//  UserDefaults is only an offline display/prediction fallback.
 //
-//  Manual entry (Hızlı Ekle counters + the one-off manual meal entry) does NOT
-//  consume this quota — only successful AI recognitions do.
-//
-//  Backed by UserDefaults (device-local). Note: this is best-effort abuse
-//  prevention on the client; the proxy also enforces IP/device rate limiting
-//  server-side (out of scope here).
+//  Manual meal entry and quick counters never consume either AI quota.
 //
 
 import Foundation
 import Observation
+
+enum FreeScanPool: String, Codable, Equatable {
+    case photo
+    case text
+}
+
+/// Quota headers returned by the proxy after a successful scan (or a daily
+/// limit response). Keeping this separate from the counter makes the network
+/// response testable without coupling the proxy client to SwiftData/UI.
+struct ScanQuotaSnapshot: Equatable {
+    let tier: String
+    let photoRemaining: Int
+    let photoLimit: Int
+    let textRemaining: Int
+    let textLimit: Int
+}
 
 @MainActor
 @Observable
@@ -24,32 +34,34 @@ final class FreeScanCounter {
 
     static let shared = FreeScanCounter()
 
-    /// Free scans granted per weekly period before the paywall.
-    let maxFreeScans = 3
+    let maxFreePhotoScans = 1
+    let maxFreeTextScans = 2
 
     private let defaults: UserDefaults
-    /// Injectable clock so tests can exercise weekly rollover deterministically.
+    /// Injectable clock so tests can exercise the UTC-day rollover deterministically.
     private let now: () -> Date
 
     private enum Keys {
-        static let used = "calorisor.freeScansUsed"
+        static let photoUsed = "calorisor.freePhotoScansUsed"
+        static let textUsed = "calorisor.freeTextScansUsed"
         static let subscribed = "calorisor.isSubscribed"
-        static let periodStart = "calorisor.freeScanPeriodStart"
+        static let dayStart = "calorisor.freeScanDayStart"
     }
 
-    /// Scans consumed within the current weekly period.
-    private(set) var usedScans: Int {
-        didSet { defaults.set(usedScans, forKey: Keys.used) }
+    private(set) var usedPhotoScans: Int {
+        didSet { defaults.set(usedPhotoScans, forKey: Keys.photoUsed) }
     }
 
-    /// Start of the week that `usedScans` is counted against. Persisted so a
-    /// rollover survives relaunches.
-    private var periodStart: Date {
-        didSet { defaults.set(periodStart, forKey: Keys.periodStart) }
+    private(set) var usedTextScans: Int {
+        didSet { defaults.set(usedTextScans, forKey: Keys.textUsed) }
     }
 
-    /// STUB — wired to StoreKit 2 in a later phase. Persisted so the app can boot
-    /// with a known state before entitlements are re-checked.
+    /// Start of the UTC day that the local display counters belong to.
+    private var dayStart: Date {
+        didSet { defaults.set(dayStart, forKey: Keys.dayStart) }
+    }
+
+    /// StoreKit keeps this entitlement mirror current.
     var isSubscribed: Bool {
         didSet { defaults.set(isSubscribed, forKey: Keys.subscribed) }
     }
@@ -63,45 +75,92 @@ final class FreeScanCounter {
     init(defaults: UserDefaults = .standard, now: @escaping () -> Date = { Date() }) {
         self.defaults = defaults
         self.now = now
-        self.usedScans = defaults.integer(forKey: Keys.used)
+        self.usedPhotoScans = defaults.integer(forKey: Keys.photoUsed)
+        self.usedTextScans = defaults.integer(forKey: Keys.textUsed)
         self.isSubscribed = defaults.bool(forKey: Keys.subscribed)
-        self.periodStart = (defaults.object(forKey: Keys.periodStart) as? Date) ?? .distantPast
+        self.dayStart = (defaults.object(forKey: Keys.dayStart) as? Date) ?? .distantPast
     }
 
-    /// Start of the calendar week containing `date` (locale first-weekday).
-    private func weekStart(for date: Date) -> Date {
-        Calendar.current.dateInterval(of: .weekOfYear, for: date)?.start
-            ?? Calendar.current.startOfDay(for: date)
+    private var utcCalendar: Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar
     }
 
-    /// `usedScans` as it applies right now: zero once the stored period elapsed.
-    /// Read-only — the actual persisted rollover happens in `recordScan()`.
-    private var effectiveUsedScans: Int {
-        weekStart(for: now()) > periodStart ? 0 : usedScans
+    private func utcDayStart(for date: Date) -> Date {
+        utcCalendar.startOfDay(for: date)
     }
 
-    /// Free scans still available this period (0 once the cap is hit).
-    var remainingFreeScans: Int { max(0, maxFreeScans - effectiveUsedScans) }
-
-    /// The gate the scan flow checks before starting a scan.
-    var canScanForFree: Bool { hasUnlimitedScans || effectiveUsedScans < maxFreeScans }
-
-    /// When the current free-scan quota next refills (start of next week).
-    var nextResetDate: Date {
-        Calendar.current.date(byAdding: .weekOfYear, value: 1, to: weekStart(for: now()))
-            ?? now()
+    private var currentDayStart: Date {
+        utcDayStart(for: now())
     }
 
-    /// Call once after a successful scan completes.
-    func recordScan() {
-        guard !hasUnlimitedScans else { return }
-        let currentWeek = weekStart(for: now())
-        if currentWeek > periodStart {
-            // New weekly period — reset the tally before counting this scan.
-            periodStart = currentWeek
-            usedScans = 0
+    private func rolloverIfNeeded() {
+        let currentDay = currentDayStart
+        guard currentDay > dayStart else { return }
+        dayStart = currentDay
+        usedPhotoScans = 0
+        usedTextScans = 0
+    }
+
+    private var effectiveUsedPhotoScans: Int {
+        currentDayStart > dayStart ? 0 : usedPhotoScans
+    }
+
+    private var effectiveUsedTextScans: Int {
+        currentDayStart > dayStart ? 0 : usedTextScans
+    }
+
+    var remainingPhotoScans: Int {
+        max(0, maxFreePhotoScans - effectiveUsedPhotoScans)
+    }
+
+    var remainingTextScans: Int {
+        max(0, maxFreeTextScans - effectiveUsedTextScans)
+    }
+
+    func remaining(for pool: FreeScanPool) -> Int {
+        switch pool {
+        case .photo: return remainingPhotoScans
+        case .text: return remainingTextScans
         }
-        usedScans += 1
+    }
+
+    func canScan(for pool: FreeScanPool) -> Bool {
+        hasUnlimitedScans || remaining(for: pool) > 0
+    }
+
+    /// When the current daily quota next refills (UTC midnight).
+    var nextResetDate: Date {
+        utcCalendar.date(byAdding: .day, value: 1, to: currentDayStart) ?? now()
+    }
+
+    /// Record a successful AI scan. If the proxy supplied quota headers, they
+    /// replace the local estimate; otherwise only the relevant local pool moves.
+    func recordScan(pool: FreeScanPool, serverQuota: ScanQuotaSnapshot? = nil) {
+        guard !hasUnlimitedScans else { return }
+        rolloverIfNeeded()
+
+        if let serverQuota, serverQuota.tier == "free" {
+            applyServerQuota(serverQuota)
+            return
+        }
+
+        switch pool {
+        case .photo:
+            usedPhotoScans = min(maxFreePhotoScans, usedPhotoScans + 1)
+        case .text:
+            usedTextScans = min(maxFreeTextScans, usedTextScans + 1)
+        }
+    }
+
+    /// Synchronize the local display with server-authoritative counters. This
+    /// is also called when a daily-limit error carries the remaining headers.
+    func applyServerQuota(_ quota: ScanQuotaSnapshot) {
+        guard quota.tier == "free" else { return }
+        rolloverIfNeeded()
+        usedPhotoScans = max(0, quota.photoLimit - quota.photoRemaining)
+        usedTextScans = max(0, quota.textLimit - quota.textRemaining)
     }
 
     private var hasUnlimitedScans: Bool {
@@ -113,10 +172,11 @@ final class FreeScanCounter {
     }
 
     #if DEBUG
-    /// Test/debug helper — resets the quota to a fresh, full period.
+    /// Test/debug helper — resets both pools to a fresh UTC day.
     func resetForTesting() {
-        usedScans = 0
-        periodStart = .distantPast
+        usedPhotoScans = 0
+        usedTextScans = 0
+        dayStart = .distantPast
     }
     #endif
 }

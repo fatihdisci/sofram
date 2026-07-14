@@ -217,6 +217,10 @@ struct AnalysisOverlay: View {
             return ("antenna.radiowaves.left.and.right.slash", "Sunucu bağlı değil")
         case .rateLimited:
             return ("clock.fill", "Biraz bekle")
+        case .dailyLimitReached(let limitType):
+            return limitType == .photo
+                ? ("camera.fill", "Fotoğraf hakkı doldu")
+                : ("text.alignleft", "Metin/ses hakkı doldu")
         case .offline:
             return ("wifi.slash", "Bağlantı yok")
         case .serverError:
@@ -250,7 +254,7 @@ struct AnalysisOverlay: View {
                 let result = try await client.scan(imageData: imageData)
                 guard !Task.isCancelled else { return }
                 if !client.isDemoMode {
-                    FreeScanCounter.shared.recordScan()
+                    FreeScanCounter.shared.recordScan(pool: .photo, serverQuota: result.quota)
                 }
                 captionTask.cancel()
                 await revealItems(result.response.items, rawJSON: result.rawJSON)

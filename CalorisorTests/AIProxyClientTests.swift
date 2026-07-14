@@ -22,6 +22,30 @@ final class AIProxyClientTests: XCTestCase {
         XCTAssertFalse(result.response.noFoodDetected)
     }
 
+    func testProxyResponseCarriesServerQuotaHeaders() async throws {
+        stub(
+            statusCode: 200,
+            body: validVisionJSON,
+            headers: [
+                "x-calorisor-tier": "free",
+                "x-calorisor-photo-remaining": "1",
+                "x-calorisor-photo-limit": "1",
+                "x-calorisor-text-remaining": "2",
+                "x-calorisor-text-limit": "2",
+            ]
+        )
+
+        let result = try await makeProxyClient().scanText("çorba")
+
+        XCTAssertEqual(result.quota, ScanQuotaSnapshot(
+            tier: "free",
+            photoRemaining: 1,
+            photoLimit: 1,
+            textRemaining: 2,
+            textLimit: 2
+        ))
+    }
+
     func testProxyRequestSendsInstallationHeadersAndKeepsIDOutOfBody() async throws {
         var platform: String?
         var installationID: String?
@@ -163,13 +187,17 @@ final class AIProxyClientTests: XCTestCase {
         return URLSession(configuration: configuration)
     }
 
-    private func stub(statusCode: Int, body: String) {
+    private func stub(
+        statusCode: Int,
+        body: String,
+        headers: [String: String] = [:]
+    ) {
         AIClientMockURLProtocol.handler = { request in
             let response = HTTPURLResponse(
                 url: try XCTUnwrap(request.url),
                 statusCode: statusCode,
                 httpVersion: nil,
-                headerFields: nil
+                headerFields: headers
             )!
             return (response, Data(body.utf8))
         }

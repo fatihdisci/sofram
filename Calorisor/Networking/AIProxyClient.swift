@@ -25,6 +25,7 @@ enum AIProxyError: LocalizedError, Equatable {
     case invalidConfiguration
     case notConfigured
     case rateLimited
+    case dailyLimitReached(limitType: FreeScanPool)
     case offline
     case serverError
     case scanFailed
@@ -37,6 +38,13 @@ enum AIProxyError: LocalizedError, Equatable {
             return String(localized: "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil -- sunucu adresi yapılandırılınca tarama çalışacak.")
         case .rateLimited:
             return String(localized: "Çok sık denedin -- bir dakika sonra tekrar dene.")
+        case .dailyLimitReached(let limitType):
+            switch limitType {
+            case .photo:
+                return String(localized: "Bugünkü fotoğraf analiz hakkın doldu. Öğününü elle ekleyebilirsin.")
+            case .text:
+                return String(localized: "Bugünkü metin ve ses analiz hakkın doldu. Öğününü elle ekleyebilirsin.")
+            }
         case .offline:
             return String(localized: "İnternet bağlantısı yok görünüyor.")
         case .serverError:
@@ -292,10 +300,23 @@ private func stableSeed(for data: Data) -> Int {
 struct ScanResult: Equatable {
     let response: VisionResponse
     let rawJSON: String
+    let quota: ScanQuotaSnapshot?
+
+    init(response: VisionResponse, rawJSON: String, quota: ScanQuotaSnapshot? = nil) {
+        self.response = response
+        self.rawJSON = rawJSON
+        self.quota = quota
+    }
 }
 
 private struct ProxyErrorResponse: Decodable {
     let error: String
+    let limitType: String?
+
+    enum CodingKeys: String, CodingKey {
+        case error
+        case limitType = "limit_type"
+    }
 }
 
 final class AIProxyClient {
@@ -450,7 +471,17 @@ final class AIProxyClient {
             throw AIProxyError.scanFailed
         }
         if let responseError = mappedProxyError(statusCode: http.statusCode, data: data) {
+            // Daily-limit responses include the same authoritative headers as
+            // successful responses. Sync before throwing so the next screen
+            // cannot offer a scan the server will immediately reject.
+            if let quota = quotaSnapshot(from: http) {
+                await FreeScanCounter.shared.applyServerQuota(quota)
+            }
             throw responseError
+        }
+        let quota = quotaSnapshot(from: http)
+        if let quota {
+            await FreeScanCounter.shared.applyServerQuota(quota)
         }
         guard let rawJSON = String(data: data, encoding: .utf8) else {
             throw AIProxyError.scanFailed
@@ -458,11 +489,31 @@ final class AIProxyClient {
         do {
             return ScanResult(
                 response: try JSONDecoder().decode(VisionResponse.self, from: data).sanitized(),
-                rawJSON: rawJSON
+                rawJSON: rawJSON,
+                quota: quota
             )
         } catch {
             throw AIProxyError.scanFailed
         }
+    }
+
+    private func quotaSnapshot(from response: HTTPURLResponse) -> ScanQuotaSnapshot? {
+        guard
+            let tier = response.value(forHTTPHeaderField: "x-calorisor-tier"),
+            let photoRemaining = response.value(forHTTPHeaderField: "x-calorisor-photo-remaining").flatMap(Int.init),
+            let photoLimit = response.value(forHTTPHeaderField: "x-calorisor-photo-limit").flatMap(Int.init),
+            let textRemaining = response.value(forHTTPHeaderField: "x-calorisor-text-remaining").flatMap(Int.init),
+            let textLimit = response.value(forHTTPHeaderField: "x-calorisor-text-limit").flatMap(Int.init)
+        else {
+            return nil
+        }
+        return ScanQuotaSnapshot(
+            tier: tier,
+            photoRemaining: max(0, photoRemaining),
+            photoLimit: max(0, photoLimit),
+            textRemaining: max(0, textRemaining),
+            textLimit: max(0, textLimit)
+        )
     }
 
     // MARK: - Direct OpenAI API
@@ -632,6 +683,9 @@ private func mappedProxyError(statusCode: Int, data: Data) -> AIProxyError? {
     if let proxyError = try? JSONDecoder().decode(ProxyErrorResponse.self, from: data) {
         switch proxyError.error {
         case "rate_limited": return .rateLimited
+        case "daily_limit_reached":
+            let pool = FreeScanPool(rawValue: proxyError.limitType ?? "text") ?? .text
+            return .dailyLimitReached(limitType: pool)
         case "upstream_error": return .serverError
         case "invalid_request": return .scanFailed
         default: break

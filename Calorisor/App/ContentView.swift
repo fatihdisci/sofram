@@ -137,10 +137,10 @@ struct ScanFlowContainer: View {
         Group {
             switch nav.scanFlow {
             case .camera:
-                if FreeScanCounter.shared.canScanForFree {
+                if FreeScanCounter.shared.canScan(for: .photo) {
                     CameraView()
                 } else {
-                    FreeScanLimitView()
+                    FreeScanLimitView(pool: .photo)
                 }
 
             case .analyzing(let imageData, let uiImage):
@@ -150,10 +150,10 @@ struct ScanFlowContainer: View {
                 ResultView(uiImage: uiImage, items: items, source: source, rawJSON: rawJSON)
 
             case .textLog:
-                if FreeScanCounter.shared.canScanForFree {
+                if FreeScanCounter.shared.canScan(for: .text) {
                     TextLogView()
                 } else {
-                    FreeScanLimitView()
+                    FreeScanLimitView(pool: .text)
                 }
 
             case .none:
@@ -170,6 +170,11 @@ struct FreeScanLimitView: View {
     @Environment(NavigationModel.self) private var nav
     @State private var counter = FreeScanCounter.shared
     @State private var showPaywall = false
+    let pool: FreeScanPool
+
+    init(pool: FreeScanPool) {
+        self.pool = pool
+    }
 
     var body: some View {
         ZStack {
@@ -206,12 +211,12 @@ struct FreeScanLimitView: View {
                         .accessibilityHidden(true)
                 }
 
-                Text("Bu haftaki taramaların bitti")
+                Text(pool == .photo ? "Bugünkü fotoğraf hakkın doldu" : "Bugünkü metin ve ses hakkın doldu")
                     .font(.sofraTitle)
                     .foregroundStyle(Color.textPrimary)
                     .multilineTextAlignment(.center)
 
-                Text("Haftalık \(counter.maxFreeScans) ücretsiz taraman doldu — \(resetHint).\nÖğününü elle de ekleyebilirsin (her zaman ücretsiz) ya da sınırsız taramaya geçebilirsin.")
+                Text(limitMessage)
                     .font(.sofraBody)
                     .foregroundStyle(Color.textSecondary)
                     .multilineTextAlignment(.center)
@@ -219,7 +224,7 @@ struct FreeScanLimitView: View {
                 Button {
                     showPaywall = true
                 } label: {
-                    Text("Sınırsız Taramaya Geç")
+                    Text("Pro'yu İncele")
                         .font(.sofraLabel)
                         .foregroundStyle(Color.onAccent)
                         .frame(maxWidth: .infinity)
@@ -228,6 +233,20 @@ struct FreeScanLimitView: View {
                 }
                 .padding(.horizontal, Layout.Spacing.xl)
                 .padding(.top, Layout.Spacing.sm)
+
+                Button("Manuel ekle") {
+                    nav.goToDaily()
+                }
+                .font(.sofraLabel)
+                .foregroundStyle(Color.accentText)
+
+                if pool == .text && counter.canScan(for: .photo) {
+                    Button("Fotoğrafla devam et") {
+                        nav.goToCamera()
+                    }
+                    .font(.sofraLabel)
+                    .foregroundStyle(Color.textSecondary)
+                }
 
                 Spacer()
                 Spacer()
@@ -243,15 +262,13 @@ struct FreeScanLimitView: View {
         }
     }
 
-    /// Human-readable "refills in N days" hint for the weekly quota.
-    private var resetHint: String {
-        let days = Calendar.current.dateComponents(
-            [.day], from: Date(), to: counter.nextResetDate
-        ).day ?? 0
-        if days <= 0 { return String(localized: "yakında yenilenir") }
-        if days == 1 { return String(localized: "yarın yenilenir") }
-        return String(localized: "\(days) gün sonra yenilenir")
+    private var limitMessage: String {
+        if pool == .photo {
+            return "Günlük fotoğraf analiz hakkın doldu. Yarın yenilenir. Öğününü elle ekleyebilirsin — bu her zaman ücretsizdir."
+        }
+        return "Günlük metin ve ses analiz hakkın doldu. Yarın yenilenir. Öğününü elle ekleyebilirsin — bu her zaman ücretsizdir."
     }
+
 }
 
 // MARK: - Settings tab
@@ -408,7 +425,7 @@ struct SettingsView: View {
                                 .foregroundStyle(Color.accentFill)
                         }
                         Spacer()
-                        Text(String(localized: "\(subscriptions.remainingFreeScans) tarama kaldı"))
+                        Text(String(localized: "Fotoğraf \(subscriptions.remainingPhotoScans) · metin/ses \(subscriptions.remainingTextScans) kaldı"))
                             .font(.sofraCaption)
                             .foregroundStyle(Color.textMuted)
                     }

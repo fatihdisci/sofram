@@ -477,7 +477,7 @@ struct TextLogView: View {
                 inputSource: usedDictation ? .voiceTranscript : .typedText
             )
             if !client.isDemoMode {
-                FreeScanCounter.shared.recordScan()
+                FreeScanCounter.shared.recordScan(pool: .text, serverQuota: result.quota)
             }
             // Reuse the result screen for text-log results
             nav.showResult(

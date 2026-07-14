@@ -38,6 +38,21 @@ final class AIProxyClientErrorTests: XCTestCase {
         )
     }
 
+    func testProxyDailyPhotoLimitMapsToDailyLimit() async {
+        await assertError(
+            statusCode: 429,
+            body: #"{"error":"daily_limit_reached","limit_type":"photo","tier":"free","remaining":0}"#,
+            headers: [
+                "x-calorisor-tier": "free",
+                "x-calorisor-photo-remaining": "0",
+                "x-calorisor-photo-limit": "1",
+                "x-calorisor-text-remaining": "2",
+                "x-calorisor-text-limit": "2",
+            ],
+            equals: .dailyLimitReached(limitType: .photo)
+        )
+    }
+
     func testNotConnectedMapsToOffline() async {
         MockURLProtocol.handler = { _ in throw URLError(.notConnectedToInternet) }
 
@@ -53,6 +68,7 @@ final class AIProxyClientErrorTests: XCTestCase {
     private func assertError(
         statusCode: Int,
         body: String = "{}",
+        headers: [String: String] = [:],
         equals expected: AIProxyError
     ) async {
         MockURLProtocol.handler = { request in
@@ -60,7 +76,7 @@ final class AIProxyClientErrorTests: XCTestCase {
                 url: try XCTUnwrap(request.url),
                 statusCode: statusCode,
                 httpVersion: nil,
-                headerFields: nil
+                headerFields: headers
             )!
             return (response, Data(body.utf8))
         }
