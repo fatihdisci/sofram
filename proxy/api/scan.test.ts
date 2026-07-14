@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const fakes = vi.hoisted(() => {
   const values = new Map<string, number | string>();
+  const requestLogs: string[] = [];
   const minuteLimit = {
     limit: vi.fn(async () => ({ success: true })),
   };
@@ -22,6 +23,16 @@ const fakes = vi.hoisted(() => {
       return next;
     }),
     expire: vi.fn(async () => 1),
+    incrby: vi.fn(async (key: string, amount: number) => {
+      const next = Number(values.get(key) ?? 0) + amount;
+      values.set(key, next);
+      return next;
+    }),
+    lpush: vi.fn(async (_key: string, value: string) => {
+      requestLogs.unshift(value);
+      return requestLogs.length;
+    }),
+    ltrim: vi.fn(async () => "OK"),
   };
 
   const fetch = vi.fn();
@@ -32,6 +43,7 @@ const fakes = vi.hoisted(() => {
     minuteLimit,
     fetch,
     values,
+    requestLogs,
     get incrementCount() {
       return incrementCount;
     },
@@ -48,6 +60,10 @@ const fakes = vi.hoisted(() => {
         return next;
       });
       redis.expire.mockClear();
+      redis.incrby.mockClear();
+      redis.lpush.mockClear();
+      redis.ltrim.mockClear();
+      requestLogs.length = 0;
       minuteLimit.limit.mockClear();
       fetch.mockReset();
     },
@@ -212,6 +228,28 @@ describe("POST /api/scan proxy contract", () => {
     expect(withoutUsage.headers.get("x-calorisor-estimated-cost-microusd")).toBe("0");
   });
 
+  it("records aggregate metrics and a metadata-only request log", async () => {
+    const response = await handler(request(textBody("elma")));
+
+    expect(response.status).toBe(200);
+    const date = new Date().toISOString().slice(0, 10);
+    expect(fakes.values.get(`metrics:${date}:requests:total`)).toBe(1);
+    expect(fakes.values.get(`metrics:${date}:requests:free`)).toBe(1);
+    expect(fakes.values.get(`metrics:${date}:mode:text`)).toBe(1);
+    expect(fakes.values.get(`metrics:${date}:cache:miss`)).toBe(1);
+    expect(fakes.requestLogs).toHaveLength(1);
+
+    const log = JSON.parse(fakes.requestLogs[0]) as Record<string, unknown>;
+    expect(log.request_id).toBe(response.headers.get("x-calorisor-request-id"));
+    expect(log.input_chars).toBe(4);
+    expect(log).not.toHaveProperty("text");
+    expect(log).not.toHaveProperty("prompt");
+    expect(log).not.toHaveProperty("response");
+    expect(log).not.toHaveProperty("installation_id");
+    expect(log).not.toHaveProperty("ip");
+    expect(fakes.redis.ltrim).toHaveBeenCalledWith("calorisor:request-logs", 0, 999);
+  });
+
   it("enforces the free text quota while allowing the photo pool separately", async () => {
     expect((await handler(request(textBody("elma")))).status).toBe(200);
     expect((await handler(request(textBody("armut")))).status).toBe(200);
@@ -234,6 +272,7 @@ describe("POST /api/scan proxy contract", () => {
     );
 
     expect(response.status).toBe(401);
+    expect(await response.json()).toEqual({ error: "unauthorized" });
     expect(fakes.redis.mget).not.toHaveBeenCalled();
     expect(fakes.fetch).not.toHaveBeenCalled();
   });

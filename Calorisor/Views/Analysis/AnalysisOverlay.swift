@@ -215,6 +215,10 @@ struct AnalysisOverlay: View {
         switch error {
         case .notConfigured:
             return ("antenna.radiowaves.left.and.right.slash", "Sunucu bağlı değil")
+        case .invalidRequest:
+            return ("exclamationmark.triangle", "Geçersiz istek")
+        case .unauthorized:
+            return ("lock.slash", "Yetkilendirme başarısız")
         case .rateLimited:
             return ("clock.fill", "Biraz bekle")
         case .dailyLimitReached(let limitType):
@@ -225,6 +229,12 @@ struct AnalysisOverlay: View {
             return ("wifi.slash", "Bağlantı yok")
         case .serverError:
             return ("server.rack", "Sunucu sorunu")
+        case .serviceUnavailable:
+            return ("server.rack", "Servis kullanılamıyor")
+        case .subscriptionRequired:
+            return ("lock.fill", "Pro gerekli")
+        case .subscriptionVerificationFailed:
+            return ("checkmark.shield", "Abonelik doğrulanamadı")
         case .invalidConfiguration, .scanFailed:
             return ("wifi.exclamationmark", "Analiz başarısız")
         }

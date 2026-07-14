@@ -17,6 +17,7 @@ interface ScanRequest {
   tier: Tier;
   schema_version: number;
   app_version: string;
+  input_source?: "photo" | "typed_text" | "voice_transcript";
 }
 
 interface OpenAIChatResponse {
@@ -96,6 +97,161 @@ function telemetryHeaders(telemetry: RequestTelemetry): Record<string, string> {
     "x-calorisor-output-tokens": String(outputTokens),
     "x-calorisor-estimated-cost-microusd": String(telemetry.estimatedCostMicrousd),
     "x-calorisor-cache": telemetry.cacheStatus,
+  };
+}
+
+const METRIC_RETENTION_SECONDS = 35 * 24 * 60 * 60;
+const REQUEST_LOG_RETENTION_SECONDS = 30 * 24 * 60 * 60;
+const REQUEST_LOG_KEY = "calorisor:request-logs";
+const METRIC_NAMES = [
+  "requests:total",
+  "requests:free",
+  "requests:pro",
+  "mode:photo",
+  "mode:text",
+  "source:voice",
+  "cache:hit",
+  "cache:miss",
+  "tokens:input",
+  "tokens:output",
+  "cost:microusd",
+  "status:error",
+  "rate_limited",
+] as const;
+type MetricName = (typeof METRIC_NAMES)[number];
+
+interface MetricsEvent {
+  date: string;
+  tier?: Tier;
+  mode?: ScanMode;
+  inputSource?: ScanRequest["input_source"];
+  status: "success" | "error";
+  error?: "rate_limited" | "error";
+  telemetry: RequestTelemetry;
+  inputChars: number;
+  imageBytes: number;
+  itemCount: number;
+  averageConfidence: number | null;
+  noFoodDetected: boolean | null;
+}
+
+function metricKey(date: string, name: MetricName): string {
+  return `metrics:${date}:${name}`;
+}
+
+function imageByteCount(imageBase64: string | undefined): number {
+  if (!imageBase64) return 0;
+  const padding = imageBase64.endsWith("==") ? 2 : imageBase64.endsWith("=") ? 1 : 0;
+  return Math.max(0, Math.floor(imageBase64.length * 3 / 4) - padding);
+}
+
+function responseMetadata(content: string): Pick<MetricsEvent, "itemCount" | "averageConfidence" | "noFoodDetected"> {
+  try {
+    const parsed = JSON.parse(content) as {
+      items?: Array<{ confidence?: unknown }>;
+      no_food_detected?: unknown;
+    };
+    const confidences = (parsed.items ?? [])
+      .map((item) => typeof item.confidence === "number" ? item.confidence : null)
+      .filter((value): value is number => value !== null && Number.isFinite(value));
+    return {
+      itemCount: Array.isArray(parsed.items) ? parsed.items.length : 0,
+      averageConfidence: confidences.length === 0
+        ? null
+        : confidences.reduce((sum, value) => sum + value, 0) / confidences.length,
+      noFoodDetected: typeof parsed.no_food_detected === "boolean"
+        ? parsed.no_food_detected
+        : null,
+    };
+  } catch {
+    return { itemCount: 0, averageConfidence: null, noFoodDetected: null };
+  }
+}
+
+/** Best-effort observability write. The scan response must stay available if
+ * Redis metrics/logging is temporarily unavailable. The payload intentionally
+ * contains metadata only: never raw IP, installation ID, image, prompt, text,
+ * or model response. */
+async function recordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
+  const increments: Array<[MetricName, number]> = [];
+  if (event.tier) {
+    increments.push(["requests:total", 1]);
+    increments.push(event.tier === "free" ? ["requests:free", 1] : ["requests:pro", 1]);
+  }
+  if (event.mode) increments.push(event.mode === "photo" ? ["mode:photo", 1] : ["mode:text", 1]);
+  if (event.inputSource === "voice_transcript") increments.push(["source:voice", 1]);
+  increments.push([`cache:${event.telemetry.cacheStatus}`, 1]);
+  increments.push(["tokens:input", nonNegativeInteger(event.telemetry.usage?.prompt_tokens)]);
+  increments.push(["tokens:output", nonNegativeInteger(event.telemetry.usage?.completion_tokens)]);
+  increments.push(["cost:microusd", event.telemetry.estimatedCostMicrousd]);
+  if (event.status === "error") increments.push(["status:error", 1]);
+  if (event.error === "rate_limited") increments.push(["rate_limited", 1]);
+
+  const log = {
+    request_id: event.telemetry.requestID,
+    timestamp: new Date().toISOString(),
+    tier: event.tier ?? null,
+    mode: event.mode ?? null,
+    input_source: event.inputSource ?? null,
+    status: event.status,
+    error: event.error ?? null,
+    cache_status: event.telemetry.cacheStatus,
+    response_time_ms: Math.max(0, Date.now() - event.telemetry.startedAt),
+    openai_response_time_ms: event.telemetry.openAIResponseTimeMs,
+    redis_lookup_time_ms: event.telemetry.redisLookupTimeMs,
+    input_tokens: nonNegativeInteger(event.telemetry.usage?.prompt_tokens),
+    output_tokens: nonNegativeInteger(event.telemetry.usage?.completion_tokens),
+    estimated_cost_microusd: event.telemetry.estimatedCostMicrousd,
+    input_chars: event.inputChars,
+    image_bytes: event.imageBytes,
+    item_count: event.itemCount,
+    average_confidence: event.averageConfidence,
+    no_food_detected: event.noFoodDetected,
+  };
+
+  await Promise.all([
+    ...increments.map(([name, amount]) => redis.incrby(metricKey(event.date, name), amount)),
+    ...METRIC_NAMES.map((name) => redis.expire(metricKey(event.date, name), METRIC_RETENTION_SECONDS)),
+    redis.lpush(REQUEST_LOG_KEY, JSON.stringify(log)),
+  ]);
+  await Promise.all([
+    redis.ltrim(REQUEST_LOG_KEY, 0, 999),
+    redis.expire(REQUEST_LOG_KEY, REQUEST_LOG_RETENTION_SECONDS),
+  ]);
+}
+
+async function safeRecordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
+  try {
+    await recordMetrics(redis, event);
+  } catch {
+    // Observability must never turn a valid scan into a user-visible failure.
+  }
+}
+
+function eventFor(
+  body: ScanRequest | undefined,
+  telemetry: RequestTelemetry,
+  date: string,
+  content: string | undefined,
+  status: MetricsEvent["status"] = "success",
+  error?: MetricsEvent["error"],
+): MetricsEvent {
+  const metadata = content ? responseMetadata(content) : {
+    itemCount: 0,
+    averageConfidence: null,
+    noFoodDetected: null,
+  };
+  return {
+    date,
+    tier: body?.tier,
+    mode: body?.mode,
+    inputSource: body?.input_source ?? (body?.mode === "photo" ? "photo" : "typed_text"),
+    status,
+    error,
+    telemetry,
+    inputChars: body?.text?.length ?? 0,
+    imageBytes: imageByteCount(body?.image_base64),
+    ...metadata,
   };
 }
 
@@ -259,7 +415,7 @@ const visionResponseSchema = {
 } as const;
 
 function jsonError(
-  error: "rate_limited" | "invalid_request" | "upstream_error",
+  error: "rate_limited" | "invalid_request" | "unauthorized" | "daily_limit_reached" | "subscription_required" | "subscription_verification_failed" | "upstream_error" | "service_unavailable",
   status: number,
 ): Response {
   return Response.json(
@@ -390,6 +546,15 @@ function isScanRequest(value: unknown): value is ScanRequest {
     return false;
   }
 
+  if (
+    body.input_source !== undefined &&
+    body.input_source !== "photo" &&
+    body.input_source !== "typed_text" &&
+    body.input_source !== "voice_transcript"
+  ) {
+    return false;
+  }
+
   if (body.mode === "photo") {
     return (
       isNonEmptyString(body.image_base64) &&
@@ -452,12 +617,12 @@ export default async function handler(request: Request): Promise<Response> {
 
   const clientKey = process.env.CALORISOR_CLIENT_KEY;
   if (!clientKey || request.headers.get("x-calorisor-key") !== clientKey) {
-    return jsonError("invalid_request", 401);
+    return jsonError("unauthorized", 401);
   }
 
   const openAIKey = process.env.OPENAI_API_KEY;
   if (!openAIKey) {
-    return jsonError("upstream_error", 502);
+    return jsonError("service_unavailable", 503);
   }
 
   // The installation-hash salt is required infrastructure: without it we cannot
@@ -466,7 +631,7 @@ export default async function handler(request: Request): Promise<Response> {
   // hashing with an empty salt.
   const installationSalt = process.env.INSTALLATION_HASH_SALT;
   if (!installationSalt) {
-    return jsonError("upstream_error", 502);
+    return jsonError("service_unavailable", 503);
   }
 
   let body: unknown;
@@ -522,6 +687,7 @@ export default async function handler(request: Request): Promise<Response> {
     ]);
     telemetry.redisLookupTimeMs = Date.now() - redisStartedAt;
     if (!minute.success) {
+      await safeRecordMetrics(infrastructure.redis, eventFor(body, telemetry, usageDate, undefined, "error", "rate_limited"));
       return jsonError("rate_limited", 429);
     }
     photoUsed = Number(usage[0] ?? 0);
@@ -535,6 +701,7 @@ export default async function handler(request: Request): Promise<Response> {
     telemetry.redisLookupTimeMs += Date.now() - cacheReadStartedAt;
     if (isNonEmptyString(cached)) {
       telemetry.cacheStatus = "hit";
+      await safeRecordMetrics(infrastructure.redis, eventFor(body, telemetry, usageDate, cached));
       return new Response(cached, {
         status: 200,
         headers: {
@@ -548,6 +715,7 @@ export default async function handler(request: Request): Promise<Response> {
     // Cache miss → enforce the per-pool daily limit before the paid OpenAI call.
     const used = pool === "photo" ? photoUsed : textUsed;
     if (used >= DAILY_LIMITS[tier][pool]) {
+      await safeRecordMetrics(infrastructure.redis, eventFor(body, telemetry, usageDate, undefined, "error"));
       return dailyLimitResponse(pool, tier, photoUsed, textUsed);
     }
   } catch {
@@ -628,6 +796,8 @@ export default async function handler(request: Request): Promise<Response> {
   } else {
     textUsed = poolUsed;
   }
+
+  await safeRecordMetrics(infrastructure.redis, eventFor(body, telemetry, usageDate, content));
 
   return new Response(content, {
     status: 200,

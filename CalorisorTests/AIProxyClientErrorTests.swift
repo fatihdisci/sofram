@@ -38,6 +38,43 @@ final class AIProxyClientErrorTests: XCTestCase {
         )
     }
 
+    func testProxyInvalidRequestBodyMapsToInvalidRequest() async {
+        await assertError(
+            statusCode: 400,
+            body: #"{"error":"invalid_request"}"#,
+            equals: .invalidRequest
+        )
+    }
+
+    func testProxyUnauthorizedBodyMapsToUnauthorized() async {
+        await assertError(
+            statusCode: 401,
+            body: #"{"error":"unauthorized"}"#,
+            equals: .unauthorized
+        )
+    }
+
+    func testProxySubscriptionErrorsMapPrecisely() async {
+        await assertError(
+            statusCode: 402,
+            body: #"{"error":"subscription_required"}"#,
+            equals: .subscriptionRequired
+        )
+        await assertError(
+            statusCode: 403,
+            body: #"{"error":"subscription_verification_failed"}"#,
+            equals: .subscriptionVerificationFailed
+        )
+    }
+
+    func testProxyServiceUnavailableBodyMapsToServiceUnavailable() async {
+        await assertError(
+            statusCode: 503,
+            body: #"{"error":"service_unavailable"}"#,
+            equals: .serviceUnavailable
+        )
+    }
+
     func testProxyDailyPhotoLimitMapsToDailyLimit() async {
         await assertError(
             statusCode: 429,

@@ -160,15 +160,17 @@
   **Talimat:** `OpenAIChatResponse`'a `usage` alanını ekle (§14 tipi). `MODEL_PRICING` sabiti (deployment günü resmi fiyatlarla doldur — §2.7'deki yorum hatasına dikkat). `estimated_cost_microusd` integer hesapla. Her isteğe `crypto.randomUUID()` request_id; `response_time_ms`, `openai_response_time_ms`, `redis_lookup_time_ms` ölç. Cache hit'te token=0, cost=0, cache_status=hit (§12). `usage` alanı yoksa loglama çökmez.
   **Kabul:** §27: "Usage alanı yoksa sistem çökmüyor", "Cache hit cost 0", "Token maliyet hesabı doğru" (birim test). `npm test`: 5/5; `npm run typecheck` temiz.
 
-- [ ] **SF-1202 · Redis günlük aggregate metrikler + kısa request log**
+- [x] **SF-1202 · Redis günlük aggregate metrikler + kısa request log** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts` (veya yeni `proxy/lib/metrics.ts`)
   **Talimat:** §15.1 key seti: `metrics:{date}:requests:total|free|pro`, `mode:photo|text`, `source:voice`, `cache:hit|miss`, `tokens:input|output`, `cost:microusd`, `status:error`, `rate_limited` (INCRBY + 35 gün EXPIRE). Son istekler `calorisor:request-logs` list/stream'ine §13.1 zorunlu alanlarla (LPUSH+LTRIM ~1000, retention 7–30 gün). §13.2 yasak alanlar (foto, base64, tam metin, prompt, cevap, ham IP, ham installation ID) ASLA yazılmaz; izinli metadata: input karakter sayısı, image byte size, item count, average_confidence, no_food_detected.
   **Kabul:** Bir istek sonrası tüm sayaçlar artar; log kaydında yasaklı alan olmadığı testle taranır.
+  **Uygulama notu:** Günlük sayaçlar 35 gün TTL ile, metadata-only son istek listesi 30 gün TTL ve 1000 kayıt sınırıyla yazılıyor. Proxy testi yasak alanları tarıyor; `npm test`: 6/6, `npm run typecheck`: temiz. ✅
 
-- [ ] **SF-1203 · Hata türlerini standardize et (proxy + istemci)**
+- [x] **SF-1203 · Hata türlerini standardize et (proxy + istemci)** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts`, `Calorisor/Networking/AIProxyClient.swift`, `CalorisorTests/AIProxyClientErrorTests.swift`
   **Talimat:** §16 error seti: `invalid_request, unauthorized, rate_limited, daily_limit_reached, subscription_required, subscription_verification_failed, upstream_error, service_unavailable`. Geçersiz client key artık `unauthorized` (401) döner (bugün `invalid_request` dönüyor — istemci mapping'i iki değeri de tanısın). `mappedProxyError` yeni türleri ayrıştırır.
   **Kabul:** §27 "Geçersiz client key → 401"; her hata türü için istemci map testi.
+  **Uygulama notu:** Proxy hata gövdesi ve HTTP kodları standardize edildi; iOS mapping ve overlay exhaustive hale getirildi. Xcode Simulator: 109 test, 0 hata. ✅
 
 - [x] **SF-1204 · Basit rapor script'i + proxy test altyapısı** ✅ 2026-07-14
   **Dosya:** yeni `proxy/scripts/daily-report.ts`, `proxy/package.json` (vitest), yeni `proxy/api/scan.test.ts`

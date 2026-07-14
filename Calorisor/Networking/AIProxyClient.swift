@@ -24,10 +24,15 @@ import UIKit
 enum AIProxyError: LocalizedError, Equatable {
     case invalidConfiguration
     case notConfigured
+    case invalidRequest
+    case unauthorized
     case rateLimited
     case dailyLimitReached(limitType: FreeScanPool)
+    case subscriptionRequired
+    case subscriptionVerificationFailed
     case offline
     case serverError
+    case serviceUnavailable
     case scanFailed
 
     var errorDescription: String? {
@@ -36,6 +41,10 @@ enum AIProxyError: LocalizedError, Equatable {
             return String(localized: "Yapılandırma hatası.")
         case .notConfigured:
             return String(localized: "AI sunucusu henüz bağlanmadı. Bu bir uygulama hatası değil -- sunucu adresi yapılandırılınca tarama çalışacak.")
+        case .invalidRequest:
+            return String(localized: "İstek geçersiz. Lütfen tekrar deneyin.")
+        case .unauthorized:
+            return String(localized: "AI servisi yetkilendirilemedi.")
         case .rateLimited:
             return String(localized: "Çok sık denedin -- bir dakika sonra tekrar dene.")
         case .dailyLimitReached(let limitType):
@@ -45,10 +54,16 @@ enum AIProxyError: LocalizedError, Equatable {
             case .text:
                 return String(localized: "Bugünkü metin ve ses analiz hakkın doldu. Öğününü elle ekleyebilirsin.")
             }
+        case .subscriptionRequired:
+            return String(localized: "Bu analiz için Calorisor Pro gerekiyor.")
+        case .subscriptionVerificationFailed:
+            return String(localized: "Abonelik doğrulanamadı. Lütfen tekrar deneyin.")
         case .offline:
             return String(localized: "İnternet bağlantısı yok görünüyor.")
         case .serverError:
             return String(localized: "Sunucuda geçici bir sorun var, birazdan düzelir.")
+        case .serviceUnavailable:
+            return String(localized: "AI servisi şu anda kullanılamıyor. Lütfen biraz sonra tekrar deneyin.")
         case .scanFailed:
             return String(localized: "Tarama başarısız oldu, lütfen tekrar deneyin.")
         }
@@ -671,7 +686,11 @@ final class AIProxyClient {
 private func mappedHTTPError(statusCode: Int) -> AIProxyError? {
     switch statusCode {
     case 200..<300: return nil
+    case 400: return .invalidRequest
+    case 401: return .unauthorized
+    case 403: return .subscriptionRequired
     case 429: return .rateLimited
+    case 503: return .serviceUnavailable
     case 500..<600: return .serverError
     default: return .scanFailed
     }
@@ -682,12 +701,16 @@ private func mappedProxyError(statusCode: Int, data: Data) -> AIProxyError? {
 
     if let proxyError = try? JSONDecoder().decode(ProxyErrorResponse.self, from: data) {
         switch proxyError.error {
+        case "invalid_request": return .invalidRequest
+        case "unauthorized": return .unauthorized
         case "rate_limited": return .rateLimited
         case "daily_limit_reached":
             let pool = FreeScanPool(rawValue: proxyError.limitType ?? "text") ?? .text
             return .dailyLimitReached(limitType: pool)
+        case "subscription_required": return .subscriptionRequired
+        case "subscription_verification_failed": return .subscriptionVerificationFailed
         case "upstream_error": return .serverError
-        case "invalid_request": return .scanFailed
+        case "service_unavailable": return .serviceUnavailable
         default: break
         }
     }
