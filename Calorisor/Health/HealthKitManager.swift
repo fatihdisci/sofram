@@ -119,9 +119,60 @@ final class HealthKitManager {
         }
     }
 
-    /// Writes one meal's nutrition only after the caller has explicitly
-    /// requested HealthKit authorization. `externalID` is stable for future
-    /// duplicate/update/delete handling in SF-1503.
+    /// Replaces the HealthKit samples for one logged meal. All nutrient
+    /// samples share the meal's stable ScanEntry UUID, so retrying an upload
+    /// or editing a meal cannot create a second copy.
+    func syncMealNutrition(
+        externalID: UUID,
+        date: Date,
+        calories: Double,
+        protein: Double,
+        carbs: Double,
+        fat: Double
+    ) async -> Bool {
+        guard [calories, protein, carbs, fat].allSatisfy({ $0.isFinite && $0 >= 0 }) else {
+            return false
+        }
+        guard await deleteMealNutrition(externalID: externalID) else { return false }
+        return await writeMealNutrition(
+            externalID: externalID,
+            date: date,
+            calories: calories,
+            protein: protein,
+            carbs: carbs,
+            fat: fat
+        )
+    }
+
+    /// Deletes every nutrient sample associated with one meal UUID. Deleting
+    /// a meal remains safe when HealthKit is unavailable or permission is
+    /// missing: the local SwiftData meal is still deleted by its caller.
+    func deleteMealNutrition(externalID: UUID) async -> Bool {
+        guard Self.isAvailable else { return false }
+        let predicate = HKQuery.predicateForObjects(
+            withMetadataKey: HKMetadataKeyExternalUUID,
+            allowedValues: [externalID.uuidString]
+        )
+
+        do {
+            try await withThrowingTaskGroup(of: Void.self) { group in
+                for type in writeTypes {
+                    group.addTask {
+                        try await self.store.deleteObjects(of: type, predicate: predicate)
+                    }
+                }
+                try await group.waitForAll()
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    /// Writes one meal's nutrition after the caller has explicitly requested
+    /// HealthKit authorization. Callers should normally use
+    /// syncMealNutrition(externalID:date:calories:protein:carbs:fat:) so
+    /// retries and edits remain duplicate-free.
     func writeMealNutrition(
         externalID: UUID,
         date: Date,

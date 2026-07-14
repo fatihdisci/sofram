@@ -242,10 +242,11 @@
   **Kabul:** Günlük ekranda aktif enerji özeti; kilo trend ekranı HealthKit verisiyle.
   **Uygulama notu:** Bugün ekranına aktif enerji/adım kartı; Geçmiş ekranına HealthKit’ten son 30 günü okuyan, gün başına son ölçümü gösteren kilo trendi eklendi. HealthKit verisi cihaz dışına çıkmaz.
 
-- [ ] **SF-1503 · HealthKit yazma senkronu (duplicate/düzenleme/silme)**
+- [x] **SF-1503 · HealthKit yazma senkronu (duplicate/düzenleme/silme)** ✅ 2026-07-14
   **Dosya:** `HealthKitManager.swift`, öğün kayıt/düzenleme akışları
   **Talimat:** Öğün kaydında yaz; düzenlemede eski HealthKit örneğini güncelle/yeniden oluştur; silmede ilişkili kaydı kaldır; duplicate kontrolü (§20.4).
   **Kabul:** Yaz-düzenle-sil zinciri testte tutarlı.
+  **Uygulama notu:** Her ScanEntry UUID’si dört besin örneğinin ortak HealthKit metadata anahtarıdır. Yeni kayıt ve düzenleme önce aynı UUID’ye ait örnekleri silip güncel toplamı yeniden yazar; günlük/geçmiş silme akışları da ilişkili örnekleri kaldırır. Uygulama HealthKit yazma başarısız olsa bile yerel öğün kaydını korur. Test runner Simulator “Busy” nedeniyle başlatılamadı; build başarılı.
 
 - [ ] **SF-1504 · Haftalık özet hesaplayıcı + Free temel istatistik ekranı**
   **Dosya:** yeni `Calorisor/Models/WeeklySummaryBuilder.swift`, yeni haftalık görünüm

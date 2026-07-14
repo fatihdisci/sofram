@@ -28,4 +28,25 @@ final class HealthKitManagerTests: XCTestCase {
             XCTAssertFalse(result)
         }
     }
+
+    func testSyncRejectsInvalidNutritionWithoutTouchingHealthKit() async {
+        let result = await HealthKitManager().syncMealNutrition(
+            externalID: UUID(),
+            date: .now,
+            calories: -1,
+            protein: 25,
+            carbs: 50,
+            fat: 12
+        )
+
+        XCTAssertFalse(result)
+    }
+
+    func testDeleteDoesNotThrowWhenHealthKitIsUnavailable() async {
+        let result = await HealthKitManager().deleteMealNutrition(externalID: UUID())
+
+        if !HealthKitManager.isAvailable {
+            XCTAssertFalse(result)
+        }
+    }
 }

@@ -460,8 +460,20 @@ struct DailyView: View {
 
     private func addFrequentMeal(_ meal: FrequentMeal) {
         withAnimation(.sofraSpring) {
-            _ = FrequentMealsBuilder.deepCopy(meal, into: modelContext)
+            let entry = FrequentMealsBuilder.deepCopy(meal, into: modelContext)
             try? modelContext.save()
+            let externalID = entry.id
+            let mealDate = entry.timestamp
+            Task {
+                _ = await HealthKitManager.shared.syncMealNutrition(
+                    externalID: externalID,
+                    date: mealDate,
+                    calories: meal.totalCalories,
+                    protein: meal.totalProtein,
+                    carbs: meal.totalCarbs,
+                    fat: meal.totalFat
+                )
+            }
         }
         WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
         MealReminderService.shared.reschedule(modelContext: modelContext)
@@ -582,9 +594,13 @@ struct DailyView: View {
     }
 
     private func delete(_ entry: ScanEntry) {
+        let externalID = entry.id
         withAnimation(.sofraSpring) {
             modelContext.delete(entry)
             try? modelContext.save()
+        }
+        Task {
+            _ = await HealthKitManager.shared.deleteMealNutrition(externalID: externalID)
         }
         WidgetDataStore.saveCurrentDaySummary(
             modelContext: modelContext,
@@ -895,6 +911,23 @@ struct ManualEntryView: View {
         modelContext.insert(entry)
         try? modelContext.save()
 
+        let externalID = entry.id
+        let mealDate = entry.timestamp
+        let mealCalories = item.calories
+        let mealProtein = item.protein
+        let mealCarbs = item.carbs
+        let mealFat = item.fat
+        Task {
+            _ = await HealthKitManager.shared.syncMealNutrition(
+                externalID: externalID,
+                date: mealDate,
+                calories: mealCalories,
+                protein: mealProtein,
+                carbs: mealCarbs,
+                fat: mealFat
+            )
+        }
+
         WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
         MealReminderService.shared.reschedule(modelContext: modelContext)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -1102,6 +1135,27 @@ struct LoggedItemEditorView: View {
         item.carbs = carbs
         item.fat = fat
         try? modelContext.save()
+
+        if let entry = item.scanEntry {
+            let externalID = entry.id
+            let mealDate = entry.timestamp
+            let mealTotals = entry.itemsOrEmpty.reduce(into: (calories: 0.0, protein: 0.0, carbs: 0.0, fat: 0.0)) { totals, item in
+                totals.calories += item.calories
+                totals.protein += item.protein
+                totals.carbs += item.carbs
+                totals.fat += item.fat
+            }
+            Task {
+                _ = await HealthKitManager.shared.syncMealNutrition(
+                    externalID: externalID,
+                    date: mealDate,
+                    calories: mealTotals.calories,
+                    protein: mealTotals.protein,
+                    carbs: mealTotals.carbs,
+                    fat: mealTotals.fat
+                )
+            }
+        }
 
         WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
         MealReminderService.shared.reschedule(modelContext: modelContext)

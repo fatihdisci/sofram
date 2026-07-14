@@ -266,6 +266,21 @@ struct ResultView: View {
         modelContext.insert(entry)
         try? modelContext.save()
 
+        let totals = loggedItems.reduce(into: (calories: 0.0, protein: 0.0, carbs: 0.0, fat: 0.0)) { totals, item in
+            totals.calories += item.calories
+            totals.protein += item.protein
+            totals.carbs += item.carbs
+            totals.fat += item.fat
+        }
+        _ = await HealthKitManager.shared.syncMealNutrition(
+            externalID: entry.id,
+            date: entry.timestamp,
+            calories: totals.calories,
+            protein: totals.protein,
+            carbs: totals.carbs,
+            fat: totals.fat
+        )
+
         // A logged text entry consumes its draft
         if source == .text {
             nav.textLogDraft = ""

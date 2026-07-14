@@ -217,9 +217,13 @@ struct DayDetailView: View {
     }
 
     private func delete(_ entry: ScanEntry) {
+        let externalID = entry.id
         withAnimation(.sofraSpring) {
             modelContext.delete(entry)
             try? modelContext.save()
+        }
+        Task {
+            _ = await HealthKitManager.shared.deleteMealNutrition(externalID: externalID)
         }
 
         if Calendar.current.isDateInToday(date) {
