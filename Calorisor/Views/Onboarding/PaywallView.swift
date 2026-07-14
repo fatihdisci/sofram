@@ -134,7 +134,9 @@ struct PaywallView: View {
         VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
             featureRow(icon: "infinity", text: "Sınırsız fotoğrafla kalori takibi")
             featureRow(icon: "text.alignleft", text: "Sınırsız yazarak öğün ekleme")
-            featureRow(icon: "sparkles", text: "Daha akıllı AI ile daha isabetli tanıma")
+            // `target` (accuracy/isabet), not `sparkles` — Calorisor avoids
+            // generic AI clichés; the honest promise is a more accurate model.
+            featureRow(icon: "target", text: "Daha akıllı AI ile daha isabetli tanıma")
             featureRow(icon: "star.fill", text: "Yeni Pro özelliklerine ilk erişim")
         }
         .frame(maxWidth: .infinity, alignment: .leading)

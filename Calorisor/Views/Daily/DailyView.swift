@@ -205,8 +205,7 @@ struct DailyView: View {
                 nav.goToCamera()
             } label: {
                 HStack(spacing: Layout.Spacing.md) {
-                    Image(systemName: "camera.fill")
-                        .font(.system(size: 18))
+                    CalorisorIconView(icon: .capture, size: 20)
                         .foregroundStyle(Color.onAccent)
                         .frame(width: 40, height: 40)
                         .background(Circle().fill(Color.accentFill))
@@ -226,8 +225,7 @@ struct DailyView: View {
             Button {
                 nav.goToTextLog(from: .daily)
             } label: {
-                Image(systemName: "text.alignleft")
-                    .font(.system(size: 18))
+                CalorisorIconView(icon: .mealNote, size: 22)
                     .foregroundStyle(Color.textSecondary)
                     .frame(width: 56, height: 56)
                     .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))

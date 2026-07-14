@@ -375,7 +375,7 @@ struct SettingsView: View {
         Section {
             if subscriptions.isSubscribed {
                 HStack {
-                    Label("Calorisor Pro", systemImage: "checkmark.seal.fill")
+                    Label("Calorisor Pro", systemImage: "checkmark.circle.fill")
                         .foregroundStyle(Color.accentFill)
                     Spacer()
                     Text("Aktif")

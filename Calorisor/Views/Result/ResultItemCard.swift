@@ -233,7 +233,10 @@ struct ResultItemCard: View {
     @ViewBuilder
     private var statusBadge: some View {
         if item.valueSource == "reference" {
-            badge(icon: "checkmark.seal.fill", text: "Doğrulanmış")
+            // A plain check, not a `seal` — trusted reference data must not read
+            // as an official / medical certification. Icon + text together
+            // (never colour alone) carry the "verified" meaning.
+            badge(icon: "checkmark.circle", text: "Doğrulanmış")
         } else if item.confidence < 0.6 {
             badge(icon: "exclamationmark.triangle.fill", text: "Emin değilim")
         }
