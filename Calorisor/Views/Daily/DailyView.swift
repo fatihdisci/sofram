@@ -373,14 +373,19 @@ struct DailyView: View {
 
     private var emptyMealsCard: some View {
         VStack(spacing: Layout.Spacing.md) {
-            // Lottie asset'i gelene kadar marka ikonunun kasıtlı nefes fallback'i.
-            CalorisorLottieView("sofra_empty_plate", speed: 0.85) {
-                SofraPulseShine {
-                    CalorisorIconView(icon: .calorisor, size: 44)
-                        .foregroundStyle(Color.accentFill)
-                }
+            // Purpose-built static empty graphic: an empty plate on a flat
+            // surface disc. Deliberately motionless — nothing is "waiting", so
+            // there is no perpetual animation (and nothing to disable under
+            // Reduce Motion). If a brand-approved sofra_empty_plate.json is ever
+            // added, this is the one place to swap back to CalorisorLottieView.
+            ZStack {
+                Circle()
+                    .fill(Color.surfaceFlat)
+                    .frame(width: 80, height: 80)
+                CalorisorIconView(icon: .emptyPlate, size: 40)
+                    .foregroundStyle(Color.textMuted)
             }
-            .frame(width: 80, height: 80)
+            .accessibilityHidden(true)
 
             Text("Bugün henüz öğün eklemedin")
                 .font(.sofraBody)
@@ -396,8 +401,7 @@ struct DailyView: View {
                     nav.goToCamera()
                 } label: {
                     HStack(spacing: 6) {
-                        Image(systemName: "camera.fill")
-                            .font(.system(size: 13))
+                        CalorisorIconView(icon: .capture, size: 16)
                         Text("Fotoğrafla ekle")
                             .font(.sofraLabel)
                     }
