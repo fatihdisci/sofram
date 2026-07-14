@@ -32,15 +32,23 @@ eklenir, ek bir build config gerekmez.
 - **Adobe After Effects + Bodymovin plugini**: tasarımcı varsa, bu tercih.
 - **Lottie iOS Previewer** (App Store): telefonda canlı test için.
 
-## Mevcut kullanım yerleri (Faz 2 itibarıyla)
+## Mevcut durum (görsel farklılaştırma geçişi sonrası)
 
-| View                       | Asset adı                 | speed | Not |
-|----------------------------|---------------------------|-------|-----|
-| `DailyView.emptyMealsCard` | `sofra_empty_plate`       | 0.85  | "Bugün henüz öğün eklemedin" ekranı |
+Şu an marka onaylı **hiçbir Lottie asset'i yok**, bu yüzden `CalorisorLottieView`
+wrapper'ının **aktif tüketicisi yok**. Boş durumlar (ör. `DailyView.emptyMealsCard`,
+`ResultView` "yemek bulunamadı") artık amaca özel **statik SwiftUI vektör**
+kompozisyonları kullanıyor — Reduce Motion güvenli, eksik asset'e bağımlı değil ve
+sonsuz "nefes" döngüsü içermiyor.
 
-Asset bulunmadığında boş durum `SofraPulseShine` ile 1,8 saniyelik sakin bir
-nefes animasyonuna düşer. Wrapper kaldırılmamalı; aşağıdaki dosyalardan biri
-eklendiğinde aynı çağrı otomatik olarak Lottie'yi kullanır.
+Wrapper **kaldırılmadı**: tek ve belgelenmiş gelecek entegrasyon noktası olarak
+korunuyor. Marka onaylı bir `.json` bu klasöre eklendiğinde, yüksek değerli **tek**
+bir ekran (aşağıdaki adaylardan biri) `CalorisorLottieView`'e geri bağlanır.
+
+Uygun aday konumlar (en fazla ikisi):
+- gerçek boş geçmiş durumu,
+- ilk-tarama / onboarding açıklaması,
+- nadir bir kilometre taşı,
+- foto/yazı/ses yakınsamasını anlatan paywall değer görseli.
 
 ## Beklenen asset adları
 

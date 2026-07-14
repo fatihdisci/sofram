@@ -451,8 +451,7 @@ struct CameraView: View {
                     Circle()
                         .fill(Color.accentFill)
                         .frame(width: 74, height: 74)
-                    Image(systemName: "camera.fill")
-                        .font(.system(size: 26, weight: .medium))
+                    CalorisorIconView(icon: .capture, size: 30)
                         .foregroundStyle(Color.onAccent)
                 }
                 .accessibilityLabel(String(localized: "Fotoğraf çek"))

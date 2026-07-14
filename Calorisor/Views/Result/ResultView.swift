@@ -165,9 +165,9 @@ struct ResultView: View {
     private var emptyResultView: some View {
         VStack(spacing: Layout.Spacing.lg) {
             Spacer()
-            Image(systemName: "photo.badge.exclamationmark")
-                .font(.system(size: 48))
+            CalorisorIconView(icon: .emptyPlate, size: 56)
                 .foregroundStyle(Color.textMuted)
+                .accessibilityHidden(true)
             Text(source == .text ? "Yazdıklarından yemek çıkaramadık." : "Fotoğrafta yemek bulunamadı.")
                 .font(.sofraHeading)
                 .foregroundStyle(Color.textPrimary)

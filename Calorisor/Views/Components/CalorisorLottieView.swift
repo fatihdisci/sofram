@@ -3,6 +3,14 @@
 //  Calorisor — Lottie wrapper for brand animations (empty states, paywall hero,
 //  onboarding intro, rare celebration moments).
 //
+//  STATUS (see VISUAL_DIFFERENTIATION_NOTES.md §B): no brand-approved Lottie
+//  asset ships yet, so this wrapper currently has NO consumer — it is retained
+//  deliberately as the single, documented future integration point. The empty
+//  states that would use it render purpose-built static SwiftUI vectors for now
+//  (Reduce-Motion-safe, no dependence on a missing asset). Drop a brand asset
+//  into Resources/Animations/ and re-wire one high-value screen to light it up;
+//  do NOT add stock LottieFiles content that doesn't match Calorisor's language.
+//
 //  Why a wrapper around LottieView?
 //  - Loads `LottieAnimation.named("…")` from the main bundle. If the asset is
 //    missing, the lookup returns nil and the SwiftUI placeholder renders —

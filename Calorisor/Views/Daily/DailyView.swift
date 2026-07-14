@@ -205,8 +205,7 @@ struct DailyView: View {
                 nav.goToCamera()
             } label: {
                 HStack(spacing: Layout.Spacing.md) {
-                    Image(systemName: "camera.fill")
-                        .font(.system(size: 18))
+                    CalorisorIconView(icon: .capture, size: 20)
                         .foregroundStyle(Color.onAccent)
                         .frame(width: 40, height: 40)
                         .background(Circle().fill(Color.accentFill))
@@ -226,8 +225,7 @@ struct DailyView: View {
             Button {
                 nav.goToTextLog(from: .daily)
             } label: {
-                Image(systemName: "text.alignleft")
-                    .font(.system(size: 18))
+                CalorisorIconView(icon: .mealNote, size: 22)
                     .foregroundStyle(Color.textSecondary)
                     .frame(width: 56, height: 56)
                     .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
@@ -375,14 +373,19 @@ struct DailyView: View {
 
     private var emptyMealsCard: some View {
         VStack(spacing: Layout.Spacing.md) {
-            // Lottie asset'i gelene kadar marka ikonunun kasıtlı nefes fallback'i.
-            CalorisorLottieView("sofra_empty_plate", speed: 0.85) {
-                SofraPulseShine {
-                    CalorisorIconView(icon: .calorisor, size: 44)
-                        .foregroundStyle(Color.accentFill)
-                }
+            // Purpose-built static empty graphic: an empty plate on a flat
+            // surface disc. Deliberately motionless — nothing is "waiting", so
+            // there is no perpetual animation (and nothing to disable under
+            // Reduce Motion). If a brand-approved sofra_empty_plate.json is ever
+            // added, this is the one place to swap back to CalorisorLottieView.
+            ZStack {
+                Circle()
+                    .fill(Color.surfaceFlat)
+                    .frame(width: 80, height: 80)
+                CalorisorIconView(icon: .emptyPlate, size: 40)
+                    .foregroundStyle(Color.textMuted)
             }
-            .frame(width: 80, height: 80)
+            .accessibilityHidden(true)
 
             Text("Bugün henüz öğün eklemedin")
                 .font(.sofraBody)
@@ -398,8 +401,7 @@ struct DailyView: View {
                     nav.goToCamera()
                 } label: {
                     HStack(spacing: 6) {
-                        Image(systemName: "camera.fill")
-                            .font(.system(size: 13))
+                        CalorisorIconView(icon: .capture, size: 16)
                         Text("Fotoğrafla ekle")
                             .font(.sofraLabel)
                     }
@@ -540,15 +542,23 @@ struct WeekSparkline: View {
         HStack(alignment: .bottom, spacing: 5) {
             ForEach(Array(ordered.enumerated()), id: \.offset) { idx, day in
                 let isToday = idx == ordered.count - 1
-                let barHeight = max(8, 36 * day.calories / peak)
-                Capsule()
-                    .fill(isToday
-                        ? AnyShapeStyle(Color.accentFill)
-                        : AnyShapeStyle(Color.accentFill.opacity(0.35)))
-                    .frame(width: isToday ? 6 : 5, height: barHeight)
-                    .frame(maxWidth: .infinity, alignment: .bottom)
+                let barHeight = max(8, 30 * day.calories / peak)
+                // "Today" is signalled by a small tick beneath the bar, not by
+                // colour/opacity alone (a11y: never colour as the sole cue).
+                VStack(spacing: 3) {
+                    Capsule()
+                        .fill(isToday
+                            ? AnyShapeStyle(Color.accentFill)
+                            : AnyShapeStyle(Color.accentFill.opacity(0.35)))
+                        .frame(width: isToday ? 6 : 5, height: barHeight)
+                    Circle()
+                        .fill(isToday ? Color.accentFill : Color.clear)
+                        .frame(width: 3, height: 3)
+                }
+                .frame(maxWidth: .infinity, alignment: .bottom)
             }
         }
+        .accessibilityHidden(true)
     }
 }
 
