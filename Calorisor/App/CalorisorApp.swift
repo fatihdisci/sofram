@@ -46,6 +46,26 @@ struct CalorisorApp: App {
                     navigation.presentIntentMeal(meal)
                 }
 
+                // Widget/Siri quick-adds are value snapshots. Materialize each
+                // as a fresh SwiftData graph; no AI request or source reference
+                // is involved.
+                let pendingFrequentMeals = WidgetDataStore.consumeFrequentMeals()
+                    + (IntentMealInbox.consumeFrequentMeal().map { [$0] } ?? [])
+                if !pendingFrequentMeals.isEmpty {
+                    for snapshot in pendingFrequentMeals {
+                        _ = FrequentMealsBuilder.deepCopy(
+                            FrequentMealsBuilder.meal(from: snapshot),
+                            into: context
+                        )
+                    }
+                    try? context.save()
+                    WidgetDataStore.saveCurrentDaySummary(
+                        modelContext: context,
+                        calorieTarget: target
+                    )
+                    MealReminderService.shared.reschedule(modelContext: context)
+                }
+
                 // A tapped notification (SF-EX06/07) asked to open the daily log.
                 if UserDefaults.standard.bool(forKey: NotificationPrefs.openDailyKey) {
                     UserDefaults.standard.set(false, forKey: NotificationPrefs.openDailyKey)

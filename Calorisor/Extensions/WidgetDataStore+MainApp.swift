@@ -104,6 +104,7 @@ extension WidgetDataStore {
             carbs: scanCarbs + quickSum { $0.carbsPerUnit },
             fat: scanFat + quickSum { $0.fatPerUnit },
             topQuickAdds: topQuickAdds,
+            frequentMeals: FrequentMealsBuilder.build(scans: allScans).map(\.widgetSnapshot),
             breadSlices: breadSlices,
             teaGlasses: teaGlasses,
             lastUpdated: Date()

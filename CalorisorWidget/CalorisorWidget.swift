@@ -9,6 +9,7 @@
 
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 @main
 struct CalorisorWidgets: WidgetBundle {
@@ -31,5 +32,29 @@ struct CalorisorDailyWidget: Widget {
         .description("Bugünkü kalori ve makro durumunuz.")
         .supportedFamilies([.systemSmall, .systemMedium, .accessoryCircular, .accessoryInline])
         .contentMarginsDisabled()
+    }
+}
+
+struct AddFrequentMealIntent: AppIntent {
+    static var title: LocalizedStringResource = "Sık eklenen öğünü ekle"
+    static var description = IntentDescription("Seçili sık eklenen öğünü AI çağrısı yapmadan bugüne ekler.")
+    static var openAppWhenRun = false
+
+    @Parameter(title: "Öğün")
+    var mealID: String
+
+    init() {}
+
+    init(mealID: String) {
+        self.mealID = mealID
+    }
+
+    func perform() async throws -> some IntentResult {
+        guard let meal = WidgetDataStore.load().frequentMeals.first(where: { $0.id == mealID }) else {
+            return .result()
+        }
+        WidgetDataStore.enqueueFrequentMeal(meal)
+        WidgetCenter.shared.reloadAllTimelines()
+        return .result()
     }
 }

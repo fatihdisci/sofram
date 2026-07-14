@@ -20,6 +20,7 @@ enum WidgetDataStore {
 
     /// Key under which the JSON blob is stored in shared UserDefaults.
     static let summaryKey = "calorisor.widget.dailySummary"
+    static let pendingFrequentMealsKey = "calorisor.widget.pendingFrequentMeals"
 
     // MARK: - Shared UserDefaults
 
@@ -60,5 +61,38 @@ enum WidgetDataStore {
             return .empty
         }
         return summary
+    }
+
+    /// Queues a value snapshot for the main app to materialize as SwiftData.
+    /// The widget cannot safely open the app's ModelContainer, so it writes a
+    /// durable App Group command and updates its displayed totals immediately.
+    static func enqueueFrequentMeal(_ meal: FrequentMealSnapshot) {
+        guard let defaults else { return }
+        var pending = (defaults.data(forKey: pendingFrequentMealsKey)
+            .flatMap { try? JSONDecoder().decode([FrequentMealSnapshot].self, from: $0) }) ?? []
+        pending.append(meal)
+        if let data = try? JSONEncoder().encode(pending) {
+            defaults.set(data, forKey: pendingFrequentMealsKey)
+        }
+
+        var summary = load()
+        summary.calories += meal.totalCalories
+        summary.protein += meal.totalProtein
+        summary.carbs += meal.totalCarbs
+        summary.fat += meal.totalFat
+        summary.lastUpdated = .now
+        summary.progress = min(summary.calories / max(summary.target, 1), 1)
+        summary.remaining = max(summary.target - summary.calories, 0)
+        save(summary)
+    }
+
+    /// Main-app side of the widget/Siri command bridge.
+    static func consumeFrequentMeals() -> [FrequentMealSnapshot] {
+        guard let defaults,
+              let data = defaults.data(forKey: pendingFrequentMealsKey),
+              let meals = try? JSONDecoder().decode([FrequentMealSnapshot].self, from: data)
+        else { return [] }
+        defaults.removeObject(forKey: pendingFrequentMealsKey)
+        return meals
     }
 }

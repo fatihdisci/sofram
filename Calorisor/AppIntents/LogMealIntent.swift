@@ -24,6 +24,7 @@ import Foundation
 /// is required for this in-app intent.
 enum IntentMealInbox {
     private static let key = "calorisor.pendingIntentMeal"
+    private static let frequentMealKey = "calorisor.pendingIntentFrequentMeal"
 
     static func store(_ text: String) {
         UserDefaults.standard.set(text, forKey: key)
@@ -38,6 +39,19 @@ enum IntentMealInbox {
         }
         let trimmed = value?.trimmingCharacters(in: .whitespacesAndNewlines)
         return (trimmed?.isEmpty == false) ? trimmed : nil
+    }
+
+    static func storeFrequentMeal(_ meal: FrequentMealSnapshot) {
+        guard let data = try? JSONEncoder().encode(meal) else { return }
+        UserDefaults.standard.set(data, forKey: frequentMealKey)
+    }
+
+    static func consumeFrequentMeal() -> FrequentMealSnapshot? {
+        guard let data = UserDefaults.standard.data(forKey: frequentMealKey),
+              let meal = try? JSONDecoder().decode(FrequentMealSnapshot.self, from: data)
+        else { return nil }
+        UserDefaults.standard.removeObject(forKey: frequentMealKey)
+        return meal
     }
 }
 
@@ -73,8 +87,16 @@ struct LogMealIntent: AppIntent {
     )
     var meal: String
 
+    @Parameter(title: "Sık eklenen öğün", default: nil)
+    var frequentMealID: String?
+
     @MainActor
     func perform() async throws -> some IntentResult {
+        if let frequentMealID,
+           let snapshot = WidgetDataStore.load().frequentMeals.first(where: { $0.id == frequentMealID }) {
+            IntentMealInbox.storeFrequentMeal(snapshot)
+            return .result()
+        }
         let trimmed = meal.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
             throw LogMealIntentError.emptyDescription

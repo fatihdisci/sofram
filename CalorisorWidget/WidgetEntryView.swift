@@ -109,6 +109,15 @@ struct CalorisorWidgetEntryView: View {
                             counterPill(count: item.count, unit: item.unit)
                         }
                     }
+
+                    ForEach(entry.summary.frequentMeals.prefix(2)) { meal in
+                        Button(intent: AddFrequentMealIntent(mealID: meal.id)) {
+                            Label(meal.name, systemImage: "plus.circle.fill")
+                                .font(.caption2)
+                                .lineLimit(1)
+                        }
+                        .tint(Color.accentFill)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

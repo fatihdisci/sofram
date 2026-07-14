@@ -150,6 +150,8 @@ struct DailyView: View {
 
                     sevenDaySection
 
+                    frequentMealsSection
+
                     todayEntriesSection
 
                     // Safe area for tab bar clearance
@@ -332,6 +334,62 @@ struct DailyView: View {
         let days = weekSummaries.filter { $0.calories > 0 }
         guard !days.isEmpty else { return 0 }
         return days.reduce(0) { $0 + $1.calories } / Double(days.count)
+    }
+
+    // MARK: - Frequent meals
+
+    private var frequentMeals: [FrequentMeal] {
+        FrequentMealsBuilder.build(scans: scanEntries)
+    }
+
+    @ViewBuilder
+    private var frequentMealsSection: some View {
+        if !frequentMeals.isEmpty {
+            VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+                Text("SIK EKLENENLER")
+                    .font(.sofraEyebrow)
+                    .tracking(1.2)
+                    .foregroundStyle(Color.textMuted)
+
+                ForEach(frequentMeals) { meal in
+                    Button {
+                        addFrequentMeal(meal)
+                    } label: {
+                        HStack(spacing: Layout.Spacing.md) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(meal.name)
+                                    .font(.sofraLabel)
+                                    .foregroundStyle(Color.textPrimary)
+                                    .lineLimit(2)
+                                Text("\(Int(meal.totalCalories)) kcal · \(meal.usageCount)x")
+                                    .font(.sofraCaption)
+                                    .foregroundStyle(Color.textMuted)
+                            }
+                            Spacer()
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 22))
+                                .foregroundStyle(Color.accentFill)
+                                .accessibilityLabel(String(localized: "Öğünü ekle"))
+                        }
+                        .padding(Layout.Spacing.lg)
+                        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+                        .raisedSurface(cornerRadius: Layout.Radius.card)
+                    }
+                    .buttonStyle(SofraPressButtonStyle(cornerRadius: Layout.Radius.card))
+                    .accessibilityLabel(String(localized: "\(meal.name), \(Int(meal.totalCalories)) kilokalori, ekle"))
+                }
+            }
+            .padding(.horizontal, Layout.Spacing.lg)
+        }
+    }
+
+    private func addFrequentMeal(_ meal: FrequentMeal) {
+        withAnimation(.sofraSpring) {
+            _ = FrequentMealsBuilder.deepCopy(meal, into: modelContext)
+            try? modelContext.save()
+        }
+        WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
+        MealReminderService.shared.reschedule(modelContext: modelContext)
     }
 
     // MARK: - Today's entries

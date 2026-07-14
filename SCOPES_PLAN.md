@@ -209,20 +209,23 @@
 
 ## FAZ 14 — RETENTION: HIZLI TEKRAR EKLEME (kaynak Faz 4)
 
-- [ ] **SF-1401 · Normalize öğün kimliği + sık eklenenler hesaplayıcı**
+- [x] **SF-1401 · Normalize öğün kimliği + sık eklenenler hesaplayıcı** ✅ 2026-07-14
   **Dosya:** yeni `Calorisor/Models/FrequentMealsBuilder.swift`, test
   **Talimat:** İlk sürümde ayrı FavoriteMeal @Model'i YOK (§19.3): son 30 günün kayıtlarını normalize kimlikle grupla — lowercased adlar + sıralı item adları + porsiyon birimi + yuvarlanmış miktar → SHA256 (§19.4). Kullanım sayısına göre ilk 5.
   **Kabul:** Aynı öğünün farklı sıralı itemları aynı kimliği üretir; birim testleri.
+  **Uygulama notu:** Son 30 gün kayıtları; normalize ad + sıralı item + birim + iki ondalık miktar üzerinden SHA-256 ile gruplanıyor, ilk 5 kullanım sıklığına göre dönüyor. ✅ `FrequentMealsBuilderTests`.
 
-- [ ] **SF-1402 · Bugün ekranına "Sık Eklenenler" + tek dokunuş derin kopya**
+- [x] **SF-1402 · Bugün ekranına "Sık Eklenenler" + tek dokunuş derin kopya** ✅ 2026-07-14
   **Dosya:** `Calorisor/Views/Daily/DailyView.swift`, ilgili modeller
   **Talimat:** Kart: öğün adı, toplam kalori, son kullanım, ekle butonu. Eklemede **derin kopya** yeni SwiftData kaydı (eski kaydın referansı tekrar KULLANILMAZ, §19.5); AI çağrısı YAPILMAZ; widget özeti (`WidgetDataStore`) ve `MealReminderService` güncellenir; CloudKit senkronu bozulmaz.
   **Kabul:** §19.6 kriterlerinin tamamı: bağımsız nesne, eski kayıt değişmez, makrolar aynen, porsiyon eklemeden önce değiştirilebilir, proxy çağrısı yok, widget/bildirim güncel.
+  **Uygulama notu:** DailyView kartı yeni manual `ScanEntry` + yeni `LoggedItem` graph’ı oluşturuyor; kaynak kayıt referansı kullanılmıyor. Kaydetme sonrası widget özeti ve hatırlatıcı yeniden hesaplanıyor; mevcut editör üzerinden porsiyon değiştirilebiliyor. ✅
 
-- [ ] **SF-1403 · Widget ve Siri quick-add**
+- [x] **SF-1403 · Widget ve Siri quick-add** ✅ 2026-07-14
   **Dosya:** `CalorisorWidget/`, `Calorisor/AppIntents/LogMealIntent.swift`
   **Talimat:** SF-701'in QuickAdd modeli üstüne: widget'tan sık eklenen öğünü tek dokunuşla ekleme; `LogMealIntent`'i favori/sık eklenen parametresiyle genişlet.
   **Kabul:** Widget'tan ekleme AI çağrısı yapmaz; günlük özet anında yenilenir.
+  **Uygulama notu:** Widget interactive AppIntent’i App Group kuyruğuna snapshot yazar ve özeti anında günceller; uygulama foreground olduğunda bağımsız SwiftData kaydı üretir. `LogMealIntent` sık eklenen ID parametresini destekliyor. ✅
 
 ---
 

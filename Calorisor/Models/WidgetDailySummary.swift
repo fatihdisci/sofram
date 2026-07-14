@@ -18,6 +18,32 @@ struct QuickAddSnapshot: Codable, Equatable {
     var iconName: String
 }
 
+struct FrequentMealItemSnapshot: Codable, Equatable {
+    var name: String
+    var nameEn: String
+    var portionUnit: String
+    var quantity: Double
+    var estimatedGrams: Double
+    var calories: Double
+    var protein: Double
+    var carbs: Double
+    var fat: Double
+    var confidence: Double
+    var note: String?
+    var valueSource: String?
+}
+
+struct FrequentMealSnapshot: Codable, Equatable, Identifiable {
+    var id: String
+    var name: String
+    var totalCalories: Double
+    var totalProtein: Double
+    var totalCarbs: Double
+    var totalFat: Double
+    var lastUsed: Date
+    var items: [FrequentMealItemSnapshot]
+}
+
 /// Lightweight, precomputed daily summary for the home screen widget.
 /// Pure Foundation — no SwiftData, SwiftUI, or WidgetKit imports.
 struct WidgetDailySummary: Codable, Equatable {
@@ -41,6 +67,9 @@ struct WidgetDailySummary: Codable, Equatable {
 
     /// The two most-used quick-add counters for today.
     var topQuickAdds: [QuickAddSnapshot]
+
+    /// Up to five normalized meals used by the widget and App Intent.
+    var frequentMeals: [FrequentMealSnapshot]
 
     /// Legacy fields remain optional so previously saved widget JSON decodes.
     var breadSlices: Int?
@@ -66,6 +95,7 @@ struct WidgetDailySummary: Codable, Equatable {
         carbs: Double = 0,
         fat: Double = 0,
         topQuickAdds: [QuickAddSnapshot] = [],
+        frequentMeals: [FrequentMealSnapshot] = [],
         breadSlices: Int? = nil,
         teaGlasses: Int? = nil,
         lastUpdated: Date = Date()
@@ -76,6 +106,7 @@ struct WidgetDailySummary: Codable, Equatable {
         self.carbs = carbs
         self.fat = fat
         self.topQuickAdds = topQuickAdds
+        self.frequentMeals = frequentMeals
         self.breadSlices = breadSlices
         self.teaGlasses = teaGlasses
         self.lastUpdated = lastUpdated
@@ -90,7 +121,7 @@ struct WidgetDailySummary: Codable, Equatable {
 
     private enum CodingKeys: String, CodingKey {
         case calories, target, protein, carbs, fat
-        case topQuickAdds, breadSlices, teaGlasses
+        case topQuickAdds, frequentMeals, breadSlices, teaGlasses
         case lastUpdated, progress, remaining
     }
 
@@ -102,6 +133,7 @@ struct WidgetDailySummary: Codable, Equatable {
         carbs = try container.decodeIfPresent(Double.self, forKey: .carbs) ?? 0
         fat = try container.decodeIfPresent(Double.self, forKey: .fat) ?? 0
         topQuickAdds = try container.decodeIfPresent([QuickAddSnapshot].self, forKey: .topQuickAdds) ?? []
+        frequentMeals = try container.decodeIfPresent([FrequentMealSnapshot].self, forKey: .frequentMeals) ?? []
         breadSlices = try container.decodeIfPresent(Int.self, forKey: .breadSlices)
         teaGlasses = try container.decodeIfPresent(Int.self, forKey: .teaGlasses)
         lastUpdated = try container.decodeIfPresent(Date.self, forKey: .lastUpdated) ?? .now
