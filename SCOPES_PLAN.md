@@ -27,7 +27,7 @@
 | Ses girişi | `MealSpeechRecognizer`, `Calorisor/Views/TextLog/TextLogView.swift` içinde — transkript text akışına akıyor | Var |
 | Free limit sayacı | `Calorisor/Networking/FreeScanCounter.swift` | Var ama modeli farklı (aşağıda) |
 | Installation ID / Keychain | — | **Yok** (repo'da hiç Keychain kullanımı yok) |
-| Usage/maliyet logu | — | **Yok** (proxy `usage` alanını parse etmiyor) |
+| Usage/maliyet logu | `proxy/api/scan.ts` | SF-1201: usage parse + integer maliyet hazır; Redis aggregate logları SF-1202'de |
 | Signed transaction doğrulama | — | **Yok** (tier istemci beyanı) |
 | HealthKit | — | **Yok** |
 | Haftalık AI raporu | — | **Yok** |
@@ -69,9 +69,9 @@
 - `AIProxyClient.swift:52-105` (`AIProxyRequest`): `input_source` yok (ses, text olarak gidiyor — voice/typed ayrımı sunucuya ulaşmıyor), installation header'ları yok, `claimed_tier`/JWS alanları yok.
 - Proxy `isScanRequest` (`scan.ts:201-230`) `schema_version === 1`'e sabitlenmiş; bilinmeyen alanları yok saydığı için alan EKLEMEK geriye uyumlu, alan zorunlu kılmak eski istemcileri kırar. Yeni alanlar opsiyonel başlamalı.
 
-### 2.7 Ölçüm/loglama sıfır
-- `scan.ts:22-28` `OpenAIChatResponse` tipinde `usage` alanı bile yok; token, maliyet, response time, request_id, cache metrikleri hiçbir yerde tutulmuyor.
-- DİKKAT: `AIProxyClient.swift:11-12` ve `MODEL_RESEARCH.md`'deki fiyat yorumları ("$0.25/$0.025", "$0.05/$0.005") **hatalı görünüyor** (output fiyatı input'tan ucuz olamaz; resmi liste: nano $0.05/$0.40, mini $0.25/$2.00 per 1M). `MODEL_PRICING` doldurulurken deployment günü resmi sayfadan doğrula (§14).
+### 2.7 Ölçüm/loglama
+- SF-1201 ile proxy `usage` alanını güvenli parse ediyor; request ID, response/OpenAI/Redis süreleri, input-output tokenları ve integer microusd maliyeti response metadata olarak hazır.
+- `MODEL_PRICING`: gpt-5-nano $0.05/$0.40, gpt-5-mini $0.25/$2.00 per 1M input/output token; Redis aggregate ve kısa request logları SF-1202'de yazılacak.
 
 ### 2.8 Hata sözleşmesi dar
 - Proxy yalnız `rate_limited | invalid_request | upstream_error` dönüyor (`scan.ts:128-139`); istemci `mappedProxyError` (`AIProxyClient.swift:589`) bilinmeyen hataları `scanFailed`'e düşürüyor → yeni hata türleri (daily_limit_reached, subscription_required, …) geriye uyumlu eklenebilir ama istemci ayrımı için istemci de güncellenecek.
@@ -155,10 +155,10 @@
 
 ## FAZ 12 — ÖLÇÜM VE GÖZLEMLENEBİLİRLİK (kaynak Faz 2)
 
-- [ ] **SF-1201 · Usage parse + maliyet hesabı + request_id**
+- [x] **SF-1201 · Usage parse + maliyet hesabı + request_id** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts`
   **Talimat:** `OpenAIChatResponse`'a `usage` alanını ekle (§14 tipi). `MODEL_PRICING` sabiti (deployment günü resmi fiyatlarla doldur — §2.7'deki yorum hatasına dikkat). `estimated_cost_microusd` integer hesapla. Her isteğe `crypto.randomUUID()` request_id; `response_time_ms`, `openai_response_time_ms`, `redis_lookup_time_ms` ölç. Cache hit'te token=0, cost=0, cache_status=hit (§12). `usage` alanı yoksa loglama çökmez.
-  **Kabul:** §27: "Usage alanı yoksa sistem çökmüyor", "Cache hit cost 0", "Token maliyet hesabı doğru" (birim test).
+  **Kabul:** §27: "Usage alanı yoksa sistem çökmüyor", "Cache hit cost 0", "Token maliyet hesabı doğru" (birim test). `npm test`: 5/5; `npm run typecheck` temiz.
 
 - [ ] **SF-1202 · Redis günlük aggregate metrikler + kısa request log**
   **Dosya:** `proxy/api/scan.ts` (veya yeni `proxy/lib/metrics.ts`)

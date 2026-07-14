@@ -173,8 +173,43 @@ describe("POST /api/scan proxy contract", () => {
     expect(second.status).toBe(200);
     expect(second.headers.get("x-calorisor-cache")).toBe("hit");
     expect(second.headers.get("x-calorisor-text-remaining")).toBe("1");
+    expect(second.headers.get("x-calorisor-input-tokens")).toBe("0");
+    expect(second.headers.get("x-calorisor-output-tokens")).toBe("0");
+    expect(second.headers.get("x-calorisor-estimated-cost-microusd")).toBe("0");
+    expect(second.headers.get("x-calorisor-request-id")).toMatch(/^[0-9a-f-]{36}$/);
     expect(fakes.incrementCount).toBe(1);
     expect(fakes.fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("parses usage and calculates integer nano cost without requiring usage", async () => {
+    fakes.fetch.mockImplementationOnce(async () =>
+      new Response(
+        JSON.stringify({
+          choices: [{ message: { content: successfulVisionResponse } }],
+          usage: { prompt_tokens: 1_000, completion_tokens: 500, total_tokens: 1_500 },
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
+
+    const response = await handler(request(textBody("elma")));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("x-calorisor-input-tokens")).toBe("1000");
+    expect(response.headers.get("x-calorisor-output-tokens")).toBe("500");
+    // 1,000 × $0.05/M + 500 × $0.40/M = 250 microusd.
+    expect(response.headers.get("x-calorisor-estimated-cost-microusd")).toBe("250");
+    expect(response.headers.get("x-calorisor-openai-response-time-ms")).toMatch(/^\d+$/);
+    expect(response.headers.get("x-calorisor-redis-lookup-time-ms")).toMatch(/^\d+$/);
+
+    fakes.fetch.mockImplementationOnce(async () =>
+      new Response(
+        JSON.stringify({ choices: [{ message: { content: successfulVisionResponse } }] }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
+    const withoutUsage = await handler(request(textBody("armut")));
+    expect(withoutUsage.status).toBe(200);
+    expect(withoutUsage.headers.get("x-calorisor-estimated-cost-microusd")).toBe("0");
   });
 
   it("enforces the free text quota while allowing the photo pool separately", async () => {

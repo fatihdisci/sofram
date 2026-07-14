@@ -25,6 +25,78 @@ interface OpenAIChatResponse {
       content?: string | null;
     };
   }>;
+  usage?: {
+    prompt_tokens?: number;
+    completion_tokens?: number;
+    total_tokens?: number;
+  };
+}
+
+export interface OpenAIUsage {
+  prompt_tokens?: number;
+  completion_tokens?: number;
+  total_tokens?: number;
+}
+
+/** Prices are USD per 1M tokens, represented as microusd per 1M tokens.
+ * Verified against the pricing values recorded in the project scope:
+ * gpt-5-nano $0.05/$0.40 and gpt-5-mini $0.25/$2.00 (input/output).
+ * Keeping the numerator integer makes the stored cost integer microusd. */
+export const MODEL_PRICING = {
+  "gpt-5-nano": {
+    inputMicrousdPerMillion: 50_000,
+    outputMicrousdPerMillion: 400_000,
+  },
+  "gpt-5-mini": {
+    inputMicrousdPerMillion: 250_000,
+    outputMicrousdPerMillion: 2_000_000,
+  },
+} as const;
+
+function nonNegativeInteger(value: number | undefined): number {
+  return typeof value === "number" && Number.isFinite(value)
+    ? Math.max(0, Math.floor(value))
+    : 0;
+}
+
+export function estimatedCostMicrousd(
+  model: string,
+  usage: OpenAIUsage | undefined,
+): number {
+  const pricing = MODEL_PRICING[model as keyof typeof MODEL_PRICING];
+  if (!pricing || !usage) return 0;
+
+  const inputTokens = nonNegativeInteger(usage.prompt_tokens);
+  const outputTokens = nonNegativeInteger(usage.completion_tokens);
+  return Math.round(
+    (inputTokens * pricing.inputMicrousdPerMillion
+      + outputTokens * pricing.outputMicrousdPerMillion) / 1_000_000,
+  );
+}
+
+interface RequestTelemetry {
+  requestID: string;
+  startedAt: number;
+  cacheStatus: "hit" | "miss";
+  redisLookupTimeMs: number;
+  openAIResponseTimeMs: number;
+  usage?: OpenAIUsage;
+  estimatedCostMicrousd: number;
+}
+
+function telemetryHeaders(telemetry: RequestTelemetry): Record<string, string> {
+  const inputTokens = nonNegativeInteger(telemetry.usage?.prompt_tokens);
+  const outputTokens = nonNegativeInteger(telemetry.usage?.completion_tokens);
+  return {
+    "x-calorisor-request-id": telemetry.requestID,
+    "x-calorisor-response-time-ms": String(Math.max(0, Date.now() - telemetry.startedAt)),
+    "x-calorisor-openai-response-time-ms": String(telemetry.openAIResponseTimeMs),
+    "x-calorisor-redis-lookup-time-ms": String(telemetry.redisLookupTimeMs),
+    "x-calorisor-input-tokens": String(inputTokens),
+    "x-calorisor-output-tokens": String(outputTokens),
+    "x-calorisor-estimated-cost-microusd": String(telemetry.estimatedCostMicrousd),
+    "x-calorisor-cache": telemetry.cacheStatus,
+  };
 }
 
 interface UpstashInfrastructure {
@@ -365,6 +437,15 @@ function messages(forRequest: ScanRequest): Array<Record<string, unknown>> {
 }
 
 export default async function handler(request: Request): Promise<Response> {
+  const telemetry: RequestTelemetry = {
+    requestID: crypto.randomUUID(),
+    startedAt: Date.now(),
+    cacheStatus: "miss",
+    redisLookupTimeMs: 0,
+    openAIResponseTimeMs: 0,
+    estimatedCostMicrousd: 0,
+  };
+
   if (request.method !== "POST") {
     return jsonError("invalid_request", 400);
   }
@@ -434,10 +515,12 @@ export default async function handler(request: Request): Promise<Response> {
     const textKey = usageKey(identity.key, "text", usageDate);
 
     // Shared minute abuse limit + today's usage counts in a single round trip.
+    const redisStartedAt = Date.now();
     const [minute, usage] = await Promise.all([
       infrastructure.minuteLimit.limit(identity.key),
       infrastructure.redis.mget<(number | null)[]>(photoKey, textKey),
     ]);
+    telemetry.redisLookupTimeMs = Date.now() - redisStartedAt;
     if (!minute.success) {
       return jsonError("rate_limited", 429);
     }
@@ -447,13 +530,16 @@ export default async function handler(request: Request): Promise<Response> {
     // A cache hit is free and never consumes quota (scope doc §12), so serve it
     // ahead of the daily-limit gate — with the current remaining counts.
     responseCacheKey = await cacheKey(body, model);
+    const cacheReadStartedAt = Date.now();
     const cached = await infrastructure.redis.get<string>(responseCacheKey);
+    telemetry.redisLookupTimeMs += Date.now() - cacheReadStartedAt;
     if (isNonEmptyString(cached)) {
+      telemetry.cacheStatus = "hit";
       return new Response(cached, {
         status: 200,
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          "x-calorisor-cache": "hit",
+          ...telemetryHeaders(telemetry),
           ...limitHeaders(tier, photoUsed, textUsed),
         },
       });
@@ -469,6 +555,7 @@ export default async function handler(request: Request): Promise<Response> {
   }
 
   let upstream: Response;
+  const openAIStartedAt = Date.now();
   try {
     upstream = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -490,6 +577,7 @@ export default async function handler(request: Request): Promise<Response> {
   } catch {
     return jsonError("upstream_error", 502);
   }
+  telemetry.openAIResponseTimeMs = Date.now() - openAIStartedAt;
 
   if (upstream.status === 429) {
     return jsonError("rate_limited", 429);
@@ -509,6 +597,9 @@ export default async function handler(request: Request): Promise<Response> {
   if (!isNonEmptyString(content)) {
     return jsonError("upstream_error", 502);
   }
+
+  telemetry.usage = completion.usage;
+  telemetry.estimatedCostMicrousd = estimatedCostMicrousd(model, completion.usage);
 
   try {
     await infrastructure.redis.set(responseCacheKey, content, {
@@ -542,7 +633,7 @@ export default async function handler(request: Request): Promise<Response> {
     status: 200,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "x-calorisor-cache": "miss",
+      ...telemetryHeaders(telemetry),
       ...limitHeaders(tier, photoUsed, textUsed),
     },
   });
