@@ -140,6 +140,18 @@ struct TextLogView: View {
         }
         .onAppear {
             textInput = nav.textLogDraft
+            // SF-EX05 — a Siri / App-Intents request prefilled the draft and
+            // asked for it to be analyzed straight away. Run the existing text
+            // analysis so the user lands on the ResultView confirmation screen;
+            // don't raise the keyboard in that case.
+            if nav.pendingIntentAutoAnalyze {
+                nav.pendingIntentAutoAnalyze = false
+                let hasText = !textInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                if hasText {
+                    Task { await scan() }
+                    return
+                }
+            }
             // Slight delay so the screen transition lands before the keyboard rises.
             Task {
                 try? await Task.sleep(nanoseconds: 350_000_000)

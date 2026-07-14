@@ -66,6 +66,22 @@ final class NavigationModel {
     /// Draft of the text-log input, kept so backing out of a result doesn't lose it.
     var textLogDraft: String = ""
 
+    /// Set when a Siri / App-Intents meal request should be analyzed as soon as
+    /// the text-log screen appears. Consumed once by `TextLogView`.
+    var pendingIntentAutoAnalyze: Bool = false
+
+    /// Route a meal phrase from Siri / App Intents into the standard text-log
+    /// flow: prefill the draft, open the text-log screen over the Bugün tab, and
+    /// flag it for automatic analysis so the user lands on the confirmation
+    /// (result) screen. Nothing is logged without their confirmation there.
+    func presentIntentMeal(_ text: String) {
+        textLogOrigin = .daily
+        textLogDraft = text
+        pendingIntentAutoAnalyze = true
+        selectedTab = .today
+        scanFlow = .textLog
+    }
+
     // MARK: - Scan-flow navigation (names preserved from v1)
 
     func goToCamera() {

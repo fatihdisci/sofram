@@ -32,6 +32,13 @@ struct CalorisorApp: App {
                     modelContext: context,
                     calorieTarget: target
                 )
+
+                // A Siri / App-Intents meal request (SF-EX05) waiting to be
+                // analyzed — route it into the text-log → result confirmation
+                // flow now that the app is foreground.
+                if let meal = IntentMealInbox.consume() {
+                    navigation.presentIntentMeal(meal)
+                }
             }
         }
     }

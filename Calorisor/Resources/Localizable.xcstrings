@@ -4406,6 +4406,72 @@
           }
         }
       }
+    },
+    "Yemek Ekle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a Meal"
+          }
+        }
+      }
+    },
+    "Ne yediğini söyle; Calorisor kalori ve makro tahmini için hazırlasın, sen onayla." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say what you ate; Calorisor will prepare a calorie and macro estimate for you to confirm."
+          }
+        }
+      }
+    },
+    "Öğün" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meal"
+          }
+        }
+      }
+    },
+    "Ne yediğin — örn. 2 kepçe mercimek çorbası, 1 dilim ekmek" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What you ate — e.g. a bowl of lentil soup, 1 slice of bread"
+          }
+        }
+      }
+    },
+    "Ne yedin?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What did you eat?"
+          }
+        }
+      }
+    },
+    "Ne yediğini anlayamadım, tekrar dener misin?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I couldn't catch what you ate — could you try again?"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

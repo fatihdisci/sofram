@@ -500,16 +500,17 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   4. ✅ İptal/geri dönüşte kayıt oluşmaz (`dismissResult` → save yok; düzenleme varsa "kaydedilmedi" onayı). Recognizer ham ses saklamaz; ekrandan çıkışta `cancel()` ile ses oturumu kapatılır.
   **Kabul kriterleri:** Sesli giriş iptal edildiğinde geçmişte kayıt oluşmaz; kullanıcı transkripti düzelttiğinde analiz düzeltilmiş metinle çalışır; onaydan sonra mevcut sonuç/kayıt akışıyla aynı değerler oluşur.
 
-- [ ] **SF-EX05 · Siri ve App Intents ile yemek ekleme**
-  **Dosyalar:** Yeni `Sofra/AppIntents/` dosyaları, `Sofra/Resources/Localizable.xcstrings`, `project.yml` gerekirse
+- [x] **SF-EX05 · Siri ve App Intents ile yemek ekleme** ✅ 2026-07-14
+  **Dosyalar:** `Calorisor/AppIntents/LogMealIntent.swift` (yeni), `Calorisor/App/NavigationModel.swift` (`presentIntentMeal`), `Calorisor/App/CalorisorApp.swift` (scenePhase inbox tüketimi), `Calorisor/Views/TextLog/TextLogView.swift` (auto-analyze), `Calorisor/Resources/Localizable.xcstrings`, `Calorisor.xcodeproj` (yeni dosya + AppIntents grubu)
   **Amaç:** Kullanıcı Siri veya Kestirmeler üzerinden Calorisor'a yemek ekleyebilsin.
-  **Talimat:**
-  1. App Intents ile "Yemek Ekle" intent'i oluştur; yemek açıklamasını metin parametresi olarak al.
-  2. Türkçe ve İngilizce App Shortcut phrase'leri ekle: uygulama adı üzerinden doğal komutlar kullanılmalı.
-  3. İlk sürümde Siri isteği taslak oluşturup uygulamayı onay ekranında açsın; belirsiz öğünleri arka planda otomatik kaydetme.
-  4. Intent, uygulama içindeki mevcut metin analiz akışını çağırsın; ikinci bir besin hesaplama mantığı yazılmasın.
-  5. Uygulama kapalıyken, ağ yokken ve kullanıcı onaylamadan çıkarken davranışı tanımlı hata mesajlarıyla ele al.
+  **Talimat (uygulandı):**
+  1. ✅ `LogMealIntent` (App Intents) — `meal` metin parametresi, `requestValueDialog` "Ne yedin?".
+  2. ✅ `CalorisorAppShortcuts` ile TR + EN phrase'leri; `\(.applicationName)` üzerinden doğal komutlar ("Calorisor'a yemek ekle" / "Add a meal to Calorisor").
+  3. ✅ `openAppWhenRun = true` — intent yalnızca ifadeyi `IntentMealInbox`'a (UserDefaults) yazar; app öne gelince taslak text-log'a doldurulup analiz edilir ve **onay ekranına** (ResultView) düşer. Arka planda sessiz kayıt yok.
+  4. ✅ İkinci besin hesaplama mantığı yok: aynı `scanText` metin analiz akışı çağrılır (`presentIntentMeal` → TextLogView auto-analyze).
+  5. ✅ Uygulama kapalıyken `openAppWhenRun` açar; ağ yoksa mevcut analiz hata alert'i gösterilir ve taslak korunur; boş ifadede `LogMealIntentError.emptyDescription`; free-scan limiti dolmuşsa mevcut FreeScanLimitView devreye girer.
   **Kabul kriterleri:** Kestirmeler'de intent görünür; Siri örnek komutuyla taslak oluşur ve onay ekranı açılır; onay verilmeden geçmişe kayıt yazılmaz; Türkçe/İngilizce kopyalar yerelleştirilmiştir.
+  ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (bu ortamda Xcode yok); Siri/Kestirmeler ve intent bağış gerçek cihazda test edilmeli.
 
 - [ ] **SF-EX06 · Kullanıcı kontrollü öğün hatırlatmaları**
   **Dosyalar:** Bildirim ayarları, `Sofra/Resources/Localizable.xcstrings`, `UNUserNotificationCenter` kullanan yeni bildirim servisi
