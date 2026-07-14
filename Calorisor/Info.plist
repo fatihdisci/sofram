@@ -65,7 +65,7 @@
 
 	<!-- AI proxy endpoint (configurable). -->
 	<key>AIProxyEndpointURL</key>
-	<string>https://REPLACE-ME.vercel.app/api/scan</string>
+	<string>https://sofram-five.vercel.app/api/scan</string>
 	<key>AIProxyAPIKey</key>
 	<string></string>
 
