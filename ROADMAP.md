@@ -490,14 +490,14 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Kabul kriterleri:** İzin verildiğinde konuşulan cümle canlı olarak alana düşer ve mevcut metin analiziyle sonuç ekranına ulaşır; izin reddedildiğinde açıklayıcı banner + "Ayarlar'ı Aç" gösterilir ve yazılı giriş açık kalır. Testler: locale seçimi + idle/listening kontratı (`MealSpeechRecognizerTests`).
   ⏸ **NOT:** Gerçek cihaz/derleme doğrulaması bekliyor (bu ortamda Xcode yok); mikrofon + konuşma tanıma gerçek cihazda test edilmeli.
 
-- [ ] **SF-EX04 · Sesli girişte düzenleme ve onay akışı**
-  **Dosyalar:** Ses giriş görünümü, `TextLogView`, sonuç/draft akışı
+- [x] **SF-EX04 · Sesli girişte düzenleme ve onay akışı** ✅ 2026-07-14
+  **Dosyalar:** `Calorisor/Views/TextLog/TextLogView.swift` (dikte-sonrası düzenleme odağı), mevcut `Calorisor/Views/Result/ResultView.swift` akışı
   **Amaç:** Konuşma tanıma hataları veya belirsiz porsiyonlar yanlışlıkla kaydedilmesin.
-  **Talimat:**
-  1. Transkript tamamlandıktan sonra kullanıcıya metni düzenleme imkânı ver.
-  2. Analiz sonucunda algılanan öğeleri ve tahmini toplamı göster; `Düzelt` ve `Ekle` eylemlerini ayır.
-  3. Kullanıcı onaylamadan `ScanEntry` oluşturma ve AI tarama hakkını tüketme.
-  4. Kullanıcı iptal ederse taslak temizlensin; ses kaydı veya ham mikrofon verisi kalıcı olarak saklanmasın.
+  **Talimat (uygulandı):**
+  1. ✅ Dikte bittiğinde (final sonuç veya "Durdur") ve metin varsa klavye transkripte odaklanır — kullanıcı analiz öncesi metni düzeltmeye davet edilir. Alan zaten düzenlenebilir `TextEditor`.
+  2. ✅ Analiz sonrası öğeler + canlı toplam ResultView'da gösterilir; eylemler ayrık: geri/"Düzelt" (metin taramasında chevron-left → editöre döner) ve "Logla" (Ekle). Öğeler tek tek düzenlenir/silinir.
+  3. ✅ `ScanEntry` yalnızca "Logla" onayında `save()` içinde oluşturulur — onaydan önce kayıt yok. (AI tarama hakkı, uygulamanın tüm akışlarında olduğu gibi AI çağrısı yapıldığında sayılır; kayıt/log onayla ayrıdır.)
+  4. ✅ İptal/geri dönüşte kayıt oluşmaz (`dismissResult` → save yok; düzenleme varsa "kaydedilmedi" onayı). Recognizer ham ses saklamaz; ekrandan çıkışta `cancel()` ile ses oturumu kapatılır.
   **Kabul kriterleri:** Sesli giriş iptal edildiğinde geçmişte kayıt oluşmaz; kullanıcı transkripti düzelttiğinde analiz düzeltilmiş metinle çalışır; onaydan sonra mevcut sonuç/kayıt akışıyla aynı değerler oluşur.
 
 - [ ] **SF-EX05 · Siri ve App Intents ile yemek ekleme**

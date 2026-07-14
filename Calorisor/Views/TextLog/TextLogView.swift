@@ -162,6 +162,15 @@ struct TextLogView: View {
             let base = textBeforeDictation.trimmingCharacters(in: .whitespacesAndNewlines)
             textInput = base.isEmpty ? dictated : "\(base) \(dictated)"
         }
+        // SF-EX04 — when dictation ends with content, hand control back to the
+        // user for review/editing: raise the keyboard on the transcript so the
+        // text can be corrected before analysis. Nothing is analyzed or logged
+        // until the user taps "Analiz Et" → reviews on ResultView → "Logla".
+        .onChange(of: speech.isListening) { wasListening, isListening in
+            guard wasListening, !isListening else { return }
+            let hasText = !textInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            if hasText { isFocused = true }
+        }
         // Free the audio session / recognizer if the user leaves mid-dictation.
         .onDisappear { speech.cancel() }
         .alert("Analiz başarısız", isPresented: Binding(
