@@ -5,7 +5,7 @@
 //  Each recognized item can be edited: household unit (Turkish vocabulary only),
 //  quantity (stepper), calories/macros shown. Low-confidence items are flagged.
 //  Nutrition scales with the corrected quantity (the AI estimate is treated as
-//  per-portion density). A live totals bar sits above "Logla", which saves to
+//  per-portion density). A live totals bar sits above "Kaydet", which saves to
 //  SwiftData and transitions to the daily ring.
 //
 

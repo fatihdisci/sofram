@@ -1,6 +1,6 @@
 //
 //  LogButton.swift
-//  Calorisor — animated "Logla" button with checkmark morph + celebration spray.
+//  Calorisor — animated "Kaydet" button with checkmark morph + celebration spray.
 //
 //  Per mikro-etkilesimler.md:
 //  - scale(0.96) + .impact(medium) on tap
@@ -69,7 +69,7 @@ struct LogButton: View {
                     Image(systemName: "arrow.down.doc.fill")
                         .font(.system(size: 16))
                 }
-                Text("Logla")
+                Text("Kaydet")
                     .font(.sofraLabel)
             }
             .foregroundStyle(Color.onAccent)

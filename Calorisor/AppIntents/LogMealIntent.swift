@@ -7,7 +7,7 @@
 //  a *draft-then-confirm* flow: the intent never analyzes or logs anything on
 //  its own. It stashes the phrase, opens the app, and the app runs the SAME
 //  text-analysis path used by the typed/voice log — landing the user on the
-//  ResultView confirmation screen, where nothing is saved until they tap Logla.
+//  ResultView confirmation screen, where nothing is saved until they tap Kaydet.
 //
 //  Communication with the app is via UserDefaults (`IntentMealInbox`): the
 //  intent writes the pending phrase, `CalorisorApp` reads and clears it the next

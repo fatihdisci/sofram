@@ -495,8 +495,8 @@ Uygulamanın tek işi doğru sayı göstermek — bu faz bitmeden hiçbir görse
   **Amaç:** Konuşma tanıma hataları veya belirsiz porsiyonlar yanlışlıkla kaydedilmesin.
   **Talimat (uygulandı):**
   1. ✅ Dikte bittiğinde (final sonuç veya "Durdur") ve metin varsa klavye transkripte odaklanır — kullanıcı analiz öncesi metni düzeltmeye davet edilir. Alan zaten düzenlenebilir `TextEditor`.
-  2. ✅ Analiz sonrası öğeler + canlı toplam ResultView'da gösterilir; eylemler ayrık: geri/"Düzelt" (metin taramasında chevron-left → editöre döner) ve "Logla" (Ekle). Öğeler tek tek düzenlenir/silinir.
-  3. ✅ `ScanEntry` yalnızca "Logla" onayında `save()` içinde oluşturulur — onaydan önce kayıt yok. (AI tarama hakkı, uygulamanın tüm akışlarında olduğu gibi AI çağrısı yapıldığında sayılır; kayıt/log onayla ayrıdır.)
+  2. ✅ Analiz sonrası öğeler + canlı toplam ResultView'da gösterilir; eylemler ayrık: geri/"Düzelt" (metin taramasında chevron-left → editöre döner) ve "Kaydet" (Ekle). Öğeler tek tek düzenlenir/silinir.
+  3. ✅ `ScanEntry` yalnızca "Kaydet" onayında `save()` içinde oluşturulur — onaydan önce kayıt yok. (AI tarama hakkı, uygulamanın tüm akışlarında olduğu gibi AI çağrısı yapıldığında sayılır; kayıt/log onayla ayrıdır.)
   4. ✅ İptal/geri dönüşte kayıt oluşmaz (`dismissResult` → save yok; düzenleme varsa "kaydedilmedi" onayı). Recognizer ham ses saklamaz; ekrandan çıkışta `cancel()` ile ses oturumu kapatılır.
   **Kabul kriterleri:** Sesli giriş iptal edildiğinde geçmişte kayıt oluşmaz; kullanıcı transkripti düzelttiğinde analiz düzeltilmiş metinle çalışır; onaydan sonra mevcut sonuç/kayıt akışıyla aynı değerler oluşur.
 
