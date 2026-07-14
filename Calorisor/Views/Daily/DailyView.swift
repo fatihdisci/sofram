@@ -109,6 +109,7 @@ struct DailyView: View {
     /// cards get their motion from `.scrollTransition` instead.
     @State private var appeared = false
     @State private var showManualEntry = false
+    @State private var editingLoggedItem: LoggedItem?
 
     private func entrance(_ delay: Double) -> some ViewModifier {
         EntranceModifier(appeared: appeared, delay: delay)
@@ -170,6 +171,12 @@ struct DailyView: View {
         }
         .sheet(isPresented: $showManualEntry) {
             ManualEntryView(calorieTarget: calorieTarget)
+                .presentationCornerRadius(24)
+                .presentationBackground(Color.bgPage)
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(item: $editingLoggedItem) { item in
+            LoggedItemEditorView(item: item, calorieTarget: calorieTarget)
                 .presentationCornerRadius(24)
                 .presentationBackground(Color.bgPage)
                 .presentationDragIndicator(.visible)
@@ -356,9 +363,11 @@ struct DailyView: View {
                 emptyMealsCard
             } else {
                 ForEach(todayScans, id: \.id) { entry in
-                    MealEntryCard(entry: entry) {
-                        delete(entry)
-                    }
+                    MealEntryCard(
+                        entry: entry,
+                        onEdit: { item in editingLoggedItem = item },
+                        onDelete: { delete(entry) }
+                    )
                     .padding(.horizontal, Layout.Spacing.lg)
                     .scrollTransition { content, phase in
                         content
@@ -566,6 +575,7 @@ struct WeekSparkline: View {
 
 struct MealEntryCard: View {
     let entry: ScanEntry
+    let onEdit: (LoggedItem) -> Void
     let onDelete: () -> Void
 
     private var entryCalories: Double {
@@ -604,23 +614,32 @@ struct MealEntryCard: View {
             Divider().overlay(Color.borderHairline)
 
             ForEach(entry.itemsOrEmpty, id: \.persistentModelID) { item in
-                HStack(spacing: Layout.Spacing.sm) {
-                    CalorisorIconView(icon: item.portionUnit.icon ?? .tabak, size: 20)
-                        .foregroundStyle(Color.accentFill)
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(item.name)
-                            .font(.sofraBody)
-                            .foregroundStyle(Color.textPrimary)
-                        Text("\(item.quantity, specifier: "%.1f") \(item.portionUnit.displayName)")
-                            .font(.sofraCaption)
+                Button {
+                    onEdit(item)
+                } label: {
+                    HStack(spacing: Layout.Spacing.sm) {
+                        CalorisorIconView(icon: item.portionUnit.icon ?? .tabak, size: 20)
+                            .foregroundStyle(Color.accentFill)
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(item.name)
+                                .font(.sofraBody)
+                                .foregroundStyle(Color.textPrimary)
+                            Text("\(item.quantity, specifier: "%.1f") \(item.portionUnit.displayName)")
+                                .font(.sofraCaption)
+                                .foregroundStyle(Color.textMuted)
+                        }
+                        Spacer()
+                        Text("\(Int(item.calories)) kcal")
+                            .font(.sofraNumericSmall)
+                            .foregroundStyle(Color.textSecondary)
+                            .contentTransition(.numericText())
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 11, weight: .semibold))
                             .foregroundStyle(Color.textMuted)
                     }
-                    Spacer()
-                    Text("\(Int(item.calories)) kcal")
-                        .font(.sofraNumericSmall)
-                        .foregroundStyle(Color.textSecondary)
-                        .contentTransition(.numericText())
                 }
+                .buttonStyle(.plain)
+                .accessibilityHint("Öğeyi düzenler")
             }
         }
         .padding(Layout.Spacing.lg)
@@ -752,5 +771,216 @@ struct ManualEntryView: View {
     /// Accepts both "," and "." as the decimal separator (Turkish keyboards).
     private func parse(_ text: String) -> Double {
         Double(text.replacingOccurrences(of: ",", with: ".")) ?? 0
+    }
+}
+
+// MARK: - Logged meal editor
+
+/// Edits a saved AI or manual item in place. Portion changes preserve the
+/// item's per-portion density; the optional manual mode is for correcting an
+/// uncertain AI estimate without having to delete and create the meal again.
+struct LoggedItemEditorView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+
+    let item: LoggedItem
+    let calorieTarget: Double
+
+    private let originalQuantity: Double
+    private let originalEstimatedGrams: Double
+    private let originalCalories: Double
+    private let originalProtein: Double
+    private let originalCarbs: Double
+    private let originalFat: Double
+
+    @State private var name: String
+    @State private var portionUnit: PortionUnit
+    @State private var quantity: Double
+    @State private var isManuallyEditingMacros = false
+    @State private var caloriesText: String
+    @State private var proteinText: String
+    @State private var carbsText: String
+    @State private var fatText: String
+
+    private enum Field: Hashable { case name, calories, protein, carbs, fat }
+    @FocusState private var focusedField: Field?
+
+    init(item: LoggedItem, calorieTarget: Double) {
+        self.item = item
+        self.calorieTarget = calorieTarget
+        self.originalQuantity = max(item.quantity, 1)
+        self.originalEstimatedGrams = item.estimatedGrams
+        self.originalCalories = item.calories
+        self.originalProtein = item.protein
+        self.originalCarbs = item.carbs
+        self.originalFat = item.fat
+        _name = State(initialValue: item.name)
+        _portionUnit = State(initialValue: item.portionUnit)
+        _quantity = State(initialValue: max(item.quantity, 1))
+        _caloriesText = State(initialValue: Self.numberString(item.calories))
+        _proteinText = State(initialValue: Self.numberString(item.protein))
+        _carbsText = State(initialValue: Self.numberString(item.carbs))
+        _fatText = State(initialValue: Self.numberString(item.fat))
+    }
+
+    private var quantityScale: Double { quantity / originalQuantity }
+    private var estimatedGrams: Double { originalEstimatedGrams * quantityScale }
+    private var calories: Double { isManuallyEditingMacros ? parse(caloriesText) : originalCalories * quantityScale }
+    private var protein: Double { isManuallyEditingMacros ? parse(proteinText) : originalProtein * quantityScale }
+    private var carbs: Double { isManuallyEditingMacros ? parse(carbsText) : originalCarbs * quantityScale }
+    private var fat: Double { isManuallyEditingMacros ? parse(fatText) : originalFat * quantityScale }
+
+    private var quantityStep: Double {
+        switch portionUnit {
+        case .adet, .dilim: return 1
+        default: return 0.5
+        }
+    }
+
+    private var quantityMinimum: Double {
+        switch portionUnit {
+        case .dilim: return 0.5
+        default: return 1
+        }
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Öğe") {
+                    TextField("Yemek adı", text: $name)
+                        .focused($focusedField, equals: .name)
+                }
+
+                Section("Porsiyon") {
+                    Picker("Birim", selection: $portionUnit) {
+                        ForEach(PortionUnit.allCases) { unit in
+                            Text(unit.displayName).tag(unit)
+                        }
+                    }
+
+                    Stepper(value: $quantity, in: quantityMinimum...20, step: quantityStep) {
+                        HStack {
+                            Text("Miktar")
+                            Spacer()
+                            Text("\(quantity, specifier: "%.1f") \(portionUnit.displayName)")
+                                .font(.sofraNumericSmall)
+                                .foregroundStyle(Color.textPrimary)
+                        }
+                    }
+
+                    if estimatedGrams > 0 {
+                        LabeledContent("Tahmini ağırlık") {
+                            Text("~\(Int(estimatedGrams.rounded())) g")
+                                .foregroundStyle(Color.textSecondary)
+                        }
+                    }
+                }
+
+                Section {
+                    Toggle("Besin değerlerini elle düzenle", isOn: $isManuallyEditingMacros)
+                        .onChange(of: isManuallyEditingMacros) { _, isEditing in
+                            if isEditing { loadScaledMacroValues() }
+                        }
+
+                    if isManuallyEditingMacros {
+                        nutrientRow(title: "Kalori", text: $caloriesText, unit: "kcal", field: .calories)
+                        nutrientRow(title: "Protein", text: $proteinText, unit: "g", field: .protein)
+                        nutrientRow(title: "Karbonhidrat", text: $carbsText, unit: "g", field: .carbs)
+                        nutrientRow(title: "Yağ", text: $fatText, unit: "g", field: .fat)
+                    } else {
+                        previewRow(title: "Kalori", value: calories, unit: "kcal")
+                        previewRow(title: "Protein", value: protein, unit: "g")
+                        previewRow(title: "Karbonhidrat", value: carbs, unit: "g")
+                        previewRow(title: "Yağ", value: fat, unit: "g")
+                    }
+                } header: {
+                    Text("Besin değerleri")
+                } footer: {
+                    Text(isManuallyEditingMacros
+                         ? "Elle girdiğin değerler kaydedilir."
+                         : "Miktarı değiştirdiğinde besin değerleri orantılı güncellenir.")
+                }
+            }
+            .scrollContentBackground(.hidden)
+            .background(Color.bgPage.ignoresSafeArea())
+            .scrollDismissesKeyboard(.interactively)
+            .navigationTitle("Öğeyi Düzenle")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Vazgeç") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Kaydet") { save() }
+                        .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Bitti") { focusedField = nil }
+                        .fontWeight(.semibold)
+                }
+            }
+        }
+        .tint(Color.accentFill)
+    }
+
+    private func previewRow(title: String, value: Double, unit: String) -> some View {
+        LabeledContent(title) {
+            Text("\(Self.numberString(value)) \(unit)")
+                .font(.sofraNumericSmall)
+                .foregroundStyle(Color.textPrimary)
+        }
+    }
+
+    private func nutrientRow(title: String, text: Binding<String>, unit: String, field: Field) -> some View {
+        HStack {
+            Text(title)
+            Spacer()
+            TextField("0", text: text)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .frame(width: 78)
+                .font(.sofraNumericSmall)
+                .focused($focusedField, equals: field)
+            Text(unit)
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+        }
+    }
+
+    private func loadScaledMacroValues() {
+        caloriesText = Self.numberString(originalCalories * quantityScale)
+        proteinText = Self.numberString(originalProtein * quantityScale)
+        carbsText = Self.numberString(originalCarbs * quantityScale)
+        fatText = Self.numberString(originalFat * quantityScale)
+    }
+
+    private func save() {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else { return }
+
+        item.name = trimmedName
+        item.portionUnit = portionUnit
+        item.quantity = quantity
+        item.estimatedGrams = estimatedGrams
+        item.calories = calories
+        item.protein = protein
+        item.carbs = carbs
+        item.fat = fat
+        try? modelContext.save()
+
+        WidgetDataStore.saveCurrentDaySummary(modelContext: modelContext, calorieTarget: calorieTarget)
+        MealReminderService.shared.reschedule(modelContext: modelContext)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        dismiss()
+    }
+
+    private func parse(_ text: String) -> Double {
+        Double(text.replacingOccurrences(of: ",", with: ".")) ?? 0
+    }
+
+    private static func numberString(_ value: Double) -> String {
+        value.rounded() == value ? String(Int(value)) : String(format: "%.1f", value)
     }
 }

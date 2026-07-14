@@ -19,6 +19,7 @@ struct DayDetailView: View {
     @Query private var quickCounts: [QuickAddCount]
 
     @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
+    @State private var editingLoggedItem: LoggedItem?
 
     let date: Date
 
@@ -80,6 +81,12 @@ struct DayDetailView: View {
         }
         .navigationTitle(Self.titleFormatter.string(from: date))
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $editingLoggedItem) { item in
+            LoggedItemEditorView(item: item, calorieTarget: calorieTarget)
+                .presentationCornerRadius(24)
+                .presentationBackground(Color.bgPage)
+                .presentationDragIndicator(.visible)
+        }
     }
 
     private var calorieSummary: some View {
@@ -146,9 +153,11 @@ struct DayDetailView: View {
                 emptyRow("Bu gün için kayıtlı öğün yok.")
             } else {
                 ForEach(dayScans, id: \.id) { entry in
-                    MealEntryCard(entry: entry) {
-                        delete(entry)
-                    }
+                    MealEntryCard(
+                        entry: entry,
+                        onEdit: { item in editingLoggedItem = item },
+                        onDelete: { delete(entry) }
+                    )
                 }
             }
         }

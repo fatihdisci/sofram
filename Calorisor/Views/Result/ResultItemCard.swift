@@ -44,15 +44,20 @@ struct ResultItemCard: View {
                         isEditingName = true
                         isNameFieldFocused = true
                     } label: {
-                        Text(item.name)
-                            .font(.sofraHeading)
-                            .foregroundStyle(Color.textPrimary)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(2)
-                            .fixedSize(horizontal: false, vertical: true)
+                        HStack(alignment: .firstTextBaseline, spacing: Layout.Spacing.sm) {
+                            Text(item.name)
+                                .font(.sofraHeading)
+                                .foregroundStyle(Color.textPrimary)
+                                .multilineTextAlignment(.leading)
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Image(systemName: "pencil")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(Color.textMuted)
+                        }
                     }
                     .buttonStyle(.plain)
-                    .accessibilityHint("Yemek adını düzenler")
+                    .accessibilityLabel("Yemek adını düzenle")
                 }
 
                 Spacer()
