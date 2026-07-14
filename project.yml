@@ -68,6 +68,8 @@ targets:
         ENABLE_PREVIEWS: "YES"
         TARGETED_DEVICE_FAMILY: "1"
         CODE_SIGN_STYLE: Automatic
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "Calorisor reads weight, height, active energy, and steps to personalize your nutrition view."
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Calorisor writes meal calories and macros to Health."
     dependencies:
       - target: CalorisorWidgetExtension
       - package: Pow

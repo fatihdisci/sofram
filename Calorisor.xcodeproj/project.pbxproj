@@ -67,11 +67,13 @@
 		86D6F1186D5EA0767A20B8C5 /* GeistMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9A26520421B1683756057FE5 /* GeistMono-Regular.otf */; };
 		8A71C748C5FDB2199F43BC48 /* DayDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6D4F2FC6A62DF734DE8C13 /* DayDetailView.swift */; };
 		8CB6A114EFD2596DE465C9E9 /* WidgetDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80C942567606EED9541078F /* WidgetDataStore.swift */; };
+		8FEECFC6E7775D27B3DEEA89 /* HealthKitManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5CB1E3BAB77746A9CD9E17 /* HealthKitManagerTests.swift */; };
 		91F0978BD4FB7F473672647C /* VisionResponseValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961E76B66A836E2BDA9327BD /* VisionResponseValidatorTests.swift */; };
 		944921502320EA0453ECF138 /* NotificationPrefsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA2A9608E664470F180974 /* NotificationPrefsTests.swift */; };
 		94DE47CB24FDA7683F2D0A97 /* FoodReferenceReconcilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A132B9E017CD4AF07CF09EB /* FoodReferenceReconcilerTests.swift */; };
 		973E5ACAB8A73B8AC3DCE0AC /* AIProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D95B56B98BDABCD29B420 /* AIProxyClient.swift */; };
 		97F302F921D64DF81BDF741F /* MealReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647B6347EF21DA8F4A3828A9 /* MealReminderService.swift */; };
+		98C1432070956FB356DAEA68 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540B9AB44C0A0E95BBD3ED3 /* HealthKitManager.swift */; };
 		A077F31F8ECBBAD139BDAF4D /* ResultItemCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A4062F575039286C2B1647 /* ResultItemCard.swift */; };
 		A9D6A7FB2F3C1F4E24FFC244 /* NutritionCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CAEE7F6CAA43D64781CAE6 /* NutritionCalculator.swift */; };
 		B03FF078F3D309F69712EAC5 /* AIProxyClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67C6E53607281F76AC6445A1 /* AIProxyClientTests.swift */; };
@@ -147,6 +149,7 @@
 		0110C615AE66FDDD46F02FCC /* LoggedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedItem.swift; sourceTree = "<group>"; };
 		07EAC6401ADBAB3BC97E85DA /* PortionRecalculationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortionRecalculationTests.swift; sourceTree = "<group>"; };
 		0A132B9E017CD4AF07CF09EB /* FoodReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReferenceReconcilerTests.swift; sourceTree = "<group>"; };
+		0A5CB1E3BAB77746A9CD9E17 /* HealthKitManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManagerTests.swift; sourceTree = "<group>"; };
 		0AC399C35E81AC1142CA0E2F /* HistoryDaySummaryBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDaySummaryBuilderTests.swift; sourceTree = "<group>"; };
 		0DC28ACD3FE8E3F41C23A8DD /* ReferenceReconcilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceReconcilerTests.swift; sourceTree = "<group>"; };
 		0E89733ADAA1DC50CA8A2680 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -188,6 +191,7 @@
 		6ED898EF8BECF183F475003B /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
 		70A4062F575039286C2B1647 /* ResultItemCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultItemCard.swift; sourceTree = "<group>"; };
 		7164A3C29CA80409500E3BB0 /* GeistMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeistMono-Medium.otf"; sourceTree = "<group>"; };
+		7540B9AB44C0A0E95BBD3ED3 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		7686DB3C16E23422A50BFE60 /* SevenDaySummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SevenDaySummaryView.swift; sourceTree = "<group>"; };
 		7728E02F48116D511BFC3748 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		77B7233EFB24FF4164AD5868 /* turkish_food_reference.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = turkish_food_reference.json; sourceTree = "<group>"; };
@@ -461,6 +465,7 @@
 				0A132B9E017CD4AF07CF09EB /* FoodReferenceReconcilerTests.swift */,
 				A476FF2A8C46A9EE66351659 /* FreeScanCounterTests.swift */,
 				6486817DB465C238D084C52A /* FrequentMealsBuilderTests.swift */,
+				0A5CB1E3BAB77746A9CD9E17 /* HealthKitManagerTests.swift */,
 				0AC399C35E81AC1142CA0E2F /* HistoryDaySummaryBuilderTests.swift */,
 				D5A0607010C75AC0543D1AE0 /* ImageDownscalerTests.swift */,
 				A636A3CB150DE35B6ED56F2F /* InstallationIdentityTests.swift */,
@@ -501,6 +506,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		B00853B5F8C48C86B8729BCE /* Health */ = {
+			isa = PBXGroup;
+			children = (
+				7540B9AB44C0A0E95BBD3ED3 /* HealthKitManager.swift */,
+			);
+			path = Health;
+			sourceTree = "<group>";
+		};
 		B10287F08B56E6D974207B34 /* AppIntents */ = {
 			isa = PBXGroup;
 			children = (
@@ -516,6 +529,7 @@
 				B10287F08B56E6D974207B34 /* AppIntents */,
 				4D19A22A381C5D92E77AFCE2 /* DesignSystem */,
 				9369E32448AC67156BAEB7EF /* Extensions */,
+				B00853B5F8C48C86B8729BCE /* Health */,
 				7B178695AC984F294A40936D /* InfoPlist.strings */,
 				D0FF11916F3C49D4815EF503 /* Models */,
 				69FC7434FBB7406D106D5293 /* Networking */,
@@ -744,6 +758,7 @@
 				94DE47CB24FDA7683F2D0A97 /* FoodReferenceReconcilerTests.swift in Sources */,
 				3828C395523EB59D6136A686 /* FreeScanCounterTests.swift in Sources */,
 				C937844343A5BBC4E8E5FEB2 /* FrequentMealsBuilderTests.swift in Sources */,
+				8FEECFC6E7775D27B3DEEA89 /* HealthKitManagerTests.swift in Sources */,
 				B16403C34CFC241F2C7277F5 /* HistoryDaySummaryBuilderTests.swift in Sources */,
 				E17D91CEFF75904926060CF3 /* ImageDownscalerTests.swift in Sources */,
 				02A997C493742DB259429542 /* InstallationIdentityTests.swift in Sources */,
@@ -789,6 +804,7 @@
 				5888B5DC3D758F17573F97B2 /* FoodReference.swift in Sources */,
 				001E4CBDE943ECF01C255CE1 /* FreeScanCounter.swift in Sources */,
 				C281FE61B3BD11981443FF5A /* FrequentMealsBuilder.swift in Sources */,
+				98C1432070956FB356DAEA68 /* HealthKitManager.swift in Sources */,
 				7074C3F697E8D480D5021ACA /* HistoryView.swift in Sources */,
 				2118432E37E742A0347AD94B /* InstallationIdentity.swift in Sources */,
 				E41F4454AA923268CA26623D /* Layout.swift in Sources */,
@@ -993,6 +1009,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Calorisor/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Calorisor reads weight, height, active energy, and steps to personalize your nutrition view.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Calorisor writes meal calories and macros to Health.";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1037,6 +1055,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Calorisor/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Calorisor reads weight, height, active energy, and steps to personalize your nutrition view.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Calorisor writes meal calories and macros to Health.";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

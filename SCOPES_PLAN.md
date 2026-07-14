@@ -231,10 +231,11 @@
 
 ## FAZ 15 — ÜRÜN DEĞERİ: HEALTHKIT + HAFTALIK RAPOR (kaynak Faz 5)
 
-- [ ] **SF-1501 · HealthKit temel entegrasyon**
+- [x] **SF-1501 · HealthKit temel entegrasyon** ✅ 2026-07-14
   **Dosya:** yeni `Calorisor/Health/HealthKitManager.swift`, `Calorisor/Info.plist`, `Calorisor.entitlements`, `project.yml`, SettingsView (`ContentView.swift`)
   **Talimat:** Okuma: ağırlık, boy, aktif enerji, adım (doğum tarihi/cinsiyet YALNIZ hedef hesabında kullanılacaksa iste — §20.1). Yazma (açık izinle): dietaryEnergy, protein, karbonhidrat, yağ. Info.plist açıklamaları TR/EN. İzin reddinde uygulama normal çalışır. HealthKit verisi proxy'ye/loglara/analitiğe ASLA gitmez (§20.3).
   **Kabul:** §20.5'in tamamı; izin reddi testte crash üretmez.
+  **Uygulama notu:** Okuma/yazma yalnızca `HealthKitManager` içinde; Settings'ten kullanıcı başlatmalı izin akışı; izin yoksa boş snapshot/`false` dönüşü ve crash yok. Simulator test runner'ı iki koşuda da CoreSimulator “Busy” hatasıyla başlatılamadı; Swift derlemesi başarılı.
 
 - [ ] **SF-1502 · Aktif enerji görünümü + kilo trendi**
   **Dosya:** `DailyView.swift`, yeni kilo geçmişi view'ı

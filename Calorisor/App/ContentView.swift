@@ -309,6 +309,7 @@ struct SettingsView: View {
     @State private var exportedFile: ExportedFile?
     @State private var exportError: String?
     @State private var showFeedbackUnavailableAlert = false
+    @State private var healthKitPermissionMessage: String?
 
     /// The numeric keypad has no system "done" key — this drives a keyboard
     /// toolbar with a dismiss button (see `.toolbar { ... .keyboard }` below).
@@ -325,6 +326,7 @@ struct SettingsView: View {
                 proSection
                 targetsSection
                 profileSection
+                healthKitSection
                 languageSection
                 notificationsSection
                 dataSection
@@ -605,6 +607,35 @@ struct SettingsView: View {
             Text("Dil")
         } footer: {
             Text("Değişiklik bir sonraki açılışta uygulanır.")
+        }
+    }
+
+    // MARK: HealthKit (SF-1501)
+
+    private var healthKitSection: some View {
+        Section {
+            Button {
+                Task { @MainActor in
+                    let granted = await HealthKitManager.shared.requestAuthorization()
+                    healthKitPermissionMessage = granted
+                        ? String(localized: "Sağlık verisi erişimi güncellendi.")
+                        : String(localized: "Sağlık verisi izni verilmedi. Uygulama normal şekilde çalışmaya devam eder.")
+                }
+            } label: {
+                Label(String(localized: "Sağlık verilerini bağla"), systemImage: "heart.text.square")
+            }
+
+            Text(String(localized: "Calorisor kilo, boy, aktif enerji ve adım verilerini yalnızca cihazda kullanır; AI servisine göndermez."))
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+
+            if let healthKitPermissionMessage {
+                Text(healthKitPermissionMessage)
+                    .font(.sofraCaption)
+                    .foregroundStyle(Color.textSecondary)
+            }
+        } header: {
+            Text("Sağlık")
         }
     }
 
