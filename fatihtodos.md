@@ -22,7 +22,7 @@
 
 ## 1. Başlangıç — doğru projeyi aç
 
-- [ ] Terminalde güncel kodu al:
+- [x] Terminalde güncel kodu al:
 
   ```bash
   cd /Users/fatihdisci/apps/sofram
@@ -31,45 +31,49 @@
   open Calorisor.xcodeproj
   ```
 
-- [ ] Xcode üst çubuğunda scheme olarak **Calorisor**, hedef olarak kendi iPhone'un seçili.
-- [ ] `Signing & Capabilities` altında hem **Calorisor** hem de
+- [x] Xcode üst çubuğunda scheme olarak **Calorisor**, hedef olarak kendi iPhone'un seçili.
+- [x] `Signing & Capabilities` altında hem **Calorisor** hem de
   **CalorisorWidgetExtension** için aynı Team seçili: `8XPP7Z37GF`.
-- [ ] Her iki target için `Automatically manage signing` açık.
-- [ ] `Cmd + R` ile telefona kur ve uygulamayı aç.
+- [x] Her iki target için `Automatically manage signing` açık.
+- [x] `Cmd + R` ile telefona kur ve uygulamayı aç.
 
 > Not: `xcodegen generate` çalıştırman gerekirse Team ayarı artık `project.yml`de
 > kayıtlı. Generate sonrası `Calorisor.xcodeproj` değişikliğini de commit et.
 
 ## 2. Proxy'yi canlıya al
 
-- [ ] Upstash'te Redis veritabanı oluştur ve şunları kaydet:
+- [x] Upstash'te Redis veritabanı oluştur ve şunları kaydet:
   - `UPSTASH_REDIS_REST_URL`
   - `UPSTASH_REDIS_REST_TOKEN`
-- [ ] Güçlü istemci anahtarı üret:
+- [x] Güçlü istemci anahtarı üret:
 
   ```bash
   openssl rand -hex 32
   ```
 
-- [ ] Vercel'de GitHub'daki `sofram` reposunu içe aktar; **Root Directory**: `proxy`.
-- [ ] Vercel Environment Variables'a şunları ekle:
+- [x] Vercel'de GitHub'daki `sofram` reposunu içe aktar; **Root Directory**: `proxy`.
+- [x] Vercel Environment Variables'a şunları ekle:
   - `OPENAI_API_KEY`
   - `CALORISOR_CLIENT_KEY`
   - `UPSTASH_REDIS_REST_URL`
   - `UPSTASH_REDIS_REST_TOKEN`
-- [ ] Production deploy tamamlanınca adresi al:
-  `https://PROJE-ADI.vercel.app/api/scan`
-- [ ] Yerelde [Calorisor/Info.plist](/Users/fatihdisci/apps/sofram/Calorisor/Info.plist:67) içindeki
+- [x] Production deploy tamamlanınca adresi al:
+  `https://sofram-five.vercel.app/api/scan`
+- [x] Yerelde [Calorisor/Info.plist](/Users/fatihdisci/apps/sofram/Calorisor/Info.plist:67) içindeki
   `AIProxyEndpointURL` ve `AIProxyAPIKey` değerlerini güncelle. OpenAI API anahtarını
   iOS uygulamasına asla koyma ve bu iki gerçek değeri Git'e commit etme.
-- [ ] `proxy/README.md`deki text-mode smoke testini canlı endpoint'e karşı çalıştır.
-  İlk çağrı 200 + `x-calorisor-cache: miss`, tekrar çağrı `hit` olmalı.
+- [x] `proxy/README.md`deki text-mode smoke testini canlı endpoint'e karşı çalıştır;
+  JSON analiz yanıtının döndüğünü doğrula.
+- [ ] Aynı text-mode isteğini `-i` ile iki kez çalıştır; ilk çağrıda
+  `x-calorisor-cache: miss`, tekrar çağrıda `hit` olduğunu doğrula.
 
 ## 3. Gerçek cihazda önce yeni özellikleri test et
 
-- [ ] **Sesli giriş:** Bugün → yazı ile ekle → mikrofon. Mikrofon ve Konuşma Tanıma
+- [x] **Sesli giriş:** Bugün → yazı ile ekle → mikrofon. Mikrofon ve Konuşma Tanıma
   izinlerini ver; Türkçe bir öğün söyle; canlı transkripti düzelt; `Analiz Et` →
   sonuç → `Kaydet` akışını tamamla.
+- [x] Sonuç ekranında porsiyon/ad düzenleme; kayıttan sonra Bugün ve Geçmiş ekranında
+  öğeye dokunarak ad, porsiyon ve gerekirse makroları düzenleme akışını doğrula.
 - [ ] İzinleri reddedip tekrar dene; açıklayıcı hata ve `Ayarlar'ı Aç` seçeneği görünmeli,
   yazılı giriş çalışmaya devam etmeli.
 - [ ] **Siri/Kestirmeler:** Kestirmeler'de Calorisor eylemini bul ya da Siri'ye
