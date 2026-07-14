@@ -97,10 +97,11 @@
 
 ## FAZ 11 — YAYIN ÖNCESİ KRİTİK (kaynak Faz 1)
 
-- [ ] **SF-1101 · InstallationIdentity: Keychain'de anonim kurulum kimliği**
+- [ ] **SF-1101 · InstallationIdentity: Keychain'de anonim kurulum kimliği** ⏸ NOT: Kod + testler yazıldı ve pbxproj'a elle eklendi; `xcodebuild test` Mac'te doğrulanacak (Linux ajan ortamında Xcode yok).
   **Dosya:** yeni `Calorisor/Networking/InstallationIdentity.swift`, test `CalorisorTests/InstallationIdentityTests.swift`
   **Talimat:** İlk erişimde UUID üret, Keychain'e `com.fatih.calorisor.installation-id` anahtarıyla yaz (kSecClassGenericPassword, ThisDeviceOnly erişilebilirlik). UserDefaults KULLANMA. Okuma başarısızsa yeni UUID üret (silme sonrası kalıcılık garanti edilmez, §8.1). Keychain erişimi test edilebilir olsun (protokolle soyutla).
   **Kabul:** ID bir kez üretilir, ikinci okuma aynı değeri döner; mock-keychain testleri geçer.
+  **Uygulama notu:** `InstallationKeychainStore` protokolü + `SystemKeychainStore` (AfterFirstUnlockThisDeviceOnly) + kilitli/cache'li `InstallationIdentity` sınıfı (`.shared`, `headerValue` SF-1102 için hazır). Testler in-memory + write-count spy ile: tek üretim, kalıcılık (ayrı instance aynı değeri okur), bozuk değerin yenilenmesi, ayrı kurulumların farklı ID'si.
 
 - [ ] **SF-1102 · İstemci request sözleşmesi: input_source + header'lar + claimed_tier**
   **Dosya:** `Calorisor/Networking/AIProxyClient.swift`, `Calorisor/Views/TextLog/TextLogView.swift`, `CalorisorTests/AIProxyRequestTests.swift`
