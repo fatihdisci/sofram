@@ -1,6 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { textPrompt, visionPrompt } from "../prompts.js";
+import { textPrompt, visionPrompt, PROMPT_VERSION } from "../prompts.js";
 
 export const config = {
   runtime: "edge",
@@ -283,14 +283,23 @@ async function limitIdentity(
   return { key: await sha256(clientIP(request)), source: "ip" };
 }
 
-async function cacheKey(forRequest: ScanRequest): Promise<string> {
+/** tier → model. The chosen model is part of the cache key so a free (nano)
+ *  result is never served to a pro (mini) request or vice versa (scope doc §12). */
+function modelForTier(tier: Tier): string {
+  return tier === "pro" ? "gpt-5-mini" : "gpt-5-nano";
+}
+
+async function cacheKey(forRequest: ScanRequest, model: string): Promise<string> {
   const source =
     forRequest.mode === "photo"
       ? (forRequest.image_base64 ?? "")
       : normalizedText(forRequest.text ?? "");
-  // Bump this cache version whenever semantic input normalization changes so
-  // old, differently-keyed responses cannot keep producing split results.
-  return `calorisor:scan:v2:${forRequest.mode}:${await sha256(source)}`;
+  const inputHash = await sha256(source);
+  // v3 splits the cache by model, locale and prompt version as well as the
+  // normalized input, so nano/mini results, per-language prompts, and old prompt
+  // revisions can never cross-serve each other. Bump v3 if input normalization
+  // itself changes; bump PROMPT_VERSION when the prompt text changes.
+  return `calorisor:scan:v3:${forRequest.mode}:${forRequest.locale}:${model}:${PROMPT_VERSION}:${inputHash}`;
 }
 
 function isScanRequest(value: unknown): value is ScanRequest {
@@ -394,6 +403,7 @@ export default async function handler(request: Request): Promise<Response> {
   // from the photo pool; typed and voice text scans share the text pool.
   const tier: Tier = body.tier;
   const pool: UsagePool = body.mode === "photo" ? "photo" : "text";
+  const model = modelForTier(tier);
 
   let infrastructure: UpstashInfrastructure;
   let responseCacheKey: string;
@@ -436,7 +446,7 @@ export default async function handler(request: Request): Promise<Response> {
 
     // A cache hit is free and never consumes quota (scope doc §12), so serve it
     // ahead of the daily-limit gate — with the current remaining counts.
-    responseCacheKey = await cacheKey(body);
+    responseCacheKey = await cacheKey(body, model);
     const cached = await infrastructure.redis.get<string>(responseCacheKey);
     if (isNonEmptyString(cached)) {
       return new Response(cached, {
@@ -467,7 +477,7 @@ export default async function handler(request: Request): Promise<Response> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: body.tier === "pro" ? "gpt-5-mini" : "gpt-5-nano",
+        model,
         messages: messages(body),
         reasoning_effort: body.mode === "photo" ? "low" : "minimal",
         response_format: {

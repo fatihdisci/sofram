@@ -1,5 +1,13 @@
 // MUST MATCH Sofra/Networking/AIProxyClient.swift prompts — update both together.
 
+/**
+ * Bump whenever the prompt text below meaningfully changes. It is part of the
+ * response cache key (see api/scan.ts) so responses produced by an older prompt
+ * are bypassed rather than served stale (scope doc §12), and it lets a prompt
+ * revision invalidate the cache without waiting out the 7-day TTL.
+ */
+export const PROMPT_VERSION = 1;
+
 function commonPromptContract(locale: string): string {
   const isTurkish = locale.startsWith("tr");
 

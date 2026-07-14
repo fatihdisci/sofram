@@ -122,10 +122,11 @@
   **Kabul:** §27 senaryoları: free foto 2. istek limit; free text 3. istek limit; voice text havuzunu düşürüyor; pro 51. foto limit; cache hit sayaç artırmıyor.
   **Uygulama notu:** `DAILY_LIMITS` sabiti (free 1/2, pro 50/100); havuz `mode`'dan (`photo`→photo, `text`→text, voice zaten mode text). Eski 200/gün IP sliding-window kaldırıldı, 10/dk kaldı. Akış: dakika limiti + `mget(photoKey,textKey)` tek turda → cache hit ise header'larla dön (INCR yok) → miss'te `used >= limit` kontrolü → OpenAI → **başarıdan sonra** `incr` (+ ilk yazımda 48h expire). Başarısız tarama / limit / cache hit hak yakmaz. `daily_limit_reached` gövdesi + §16 header'ları. Sayaç hatası taramayı düşürmez (fallback tahmin). NOT: iOS `mappedProxyError` şu an `daily_limit_reached`'i generic 429'a düşürüyor — düzgün UX + hata tipi SF-1106/SF-1203'te.
 
-- [ ] **SF-1105 · Proxy: cache key v3 (model + locale + prompt_version ayrımı)**
+- [~] **SF-1105 · Proxy: cache key v3 (model + locale + prompt_version ayrımı)** ⏸ NOT: Kod yazıldı + `npm run typecheck` temiz. Otomatik cache-key testleri SF-1204 vitest harness'ında.
   **Dosya:** `proxy/api/scan.ts`, `proxy/prompts.ts`
   **Talimat:** Key: `calorisor:scan:v3:{mode}:{locale}:{model}:{prompt_version}:{input_hash}`. `PROMPT_VERSION` sabitini `prompts.ts`'e koy (SF-104 istemci tarafında prompt sürümü hazırlamıştı — uyumlu isimlendir). Nano ve mini sonuçları ayrışır; v2 anahtarları doğal TTL ile ölür.
   **Kabul:** Aynı input free/pro için farklı key üretir (test); locale değişince key değişir; cache hit'te OpenAI çağrısı yok.
+  **Uygulama notu:** `PROMPT_VERSION = 1` `prompts.ts`'te export (prompt metni değişince bump → cache bypass). İstemcide prompt_version yoktu (SF-104 yalnız `schema_version` eklemişti), cache sunucu-taraflı olduğundan tek kaynak sunucu. `modelForTier(tier)` tek yerde model seçiyor; `model` handler üstünde bir kez hesaplanıp hem `cacheKey(body, model)`'e hem OpenAI fetch'ine gidiyor (önceki inline `body.tier === "pro" ? ...` ikilemesi kaldırıldı). **Düzeltilen aktif bug:** v2 key'i model/locale içermediğinden free-nano sonucu pro-mini kullanıcıya (ve TR cevabı EN kullanıcıya) cache'ten dönebiliyordu. Deploy sonrası ilk istekler v3 miss (yeniden dolar), v2 doğal TTL ile ölür.
 
 - [ ] **SF-1106 · iOS: FreeScanCounter'ı günlük 1 foto + 2 metin/ses modeline geçir, sunucu esas**
   **Dosya:** `Calorisor/Networking/FreeScanCounter.swift`, `Calorisor/Networking/AIProxyClient.swift`, `Calorisor/App/ContentView.swift`, `CalorisorTests/FreeScanCounterTests.swift`
