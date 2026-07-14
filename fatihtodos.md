@@ -7,7 +7,7 @@
 
 ## Mevcut teknik durum
 
-- Aktif dal: `roadmap`
+- Aktif dal: `main`
 - Proje: `Calorisor.xcodeproj`
 - Uygulama bundle ID: `com.fatih.calorisor`
 - Widget bundle ID: `com.fatih.calorisor.widget`
@@ -26,8 +26,8 @@
 
   ```bash
   cd /Users/fatihdisci/apps/sofram
-  git switch roadmap
-  git pull --ff-only origin roadmap
+  git switch main
+  git pull --ff-only origin main
   open Calorisor.xcodeproj
   ```
 
@@ -119,7 +119,7 @@
 - [ ] TestFlight build yükle; en az bir gerçek cihazda tekrar test et.
 - [ ] App Store Connect'te uygulama, abonelikler, privacy alanları ve review notlarını
   aynı sürümde `Ready for Review` durumuna getir.
-- [ ] `PHASE_QA_NOTES.md`de kritik ❌ kalmadığında `roadmap` → `main` PR/merge kararı ver.
+- [ ] `PHASE_QA_NOTES.md`de kritik ❌ kalmadığında App Store gönderimi için sürüm/commit kararını ver.
 
 ---
 
