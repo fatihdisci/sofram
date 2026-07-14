@@ -87,6 +87,19 @@
 - [ ] (Öneri — maliyet güvenliği, §22.3) OpenAI'da ayrı project aç; hard/soft
   bütçe ve günlük harcama alarmı kur. AI anahtarını yalnız bu proxy'de kullan.
 
+## 2.2 SF-1110 — yayın öncesi manuel işler
+
+- [ ] App Store Connect'te TR lansman fiyatlarını doğrula: aylık 129,99 TL / yıllık 799,99 TL.
+- [ ] Sonraki TR fiyatlarını planla: aylık 149,99 TL / yıllık 899,99 TL; haftalık ürün ekleme.
+- [ ] Global fiyatları doğrula: aylık 6,99 USD / yıllık 29,99 USD.
+- [ ] Yalnız yıllık üründe Free / 1 Week introductory offer bırak; aylık üründe deneme olmadığını doğrula.
+- [ ] Her iki üründe Family Sharing'i App Store Connect'te aç.
+- [ ] App Store açıklaması ve ekran görüntülerinde “sınırsız AI” vaadi kullanma; günlük yüksek limitli analiz kopyasını kullan.
+- [ ] Vercel Production env'e `INSTALLATION_HASH_SALT` eklemeden deploy etme; ardından yeni quota header'larıyla smoke test yap.
+- [ ] OpenAI için ayrı project aç; hard/soft bütçe ve günlük harcama alarmı kur; anahtarı yalnız Vercel'de tut.
+- [ ] `https://calorisor.app/privacy` ve `/terms` sayfalarını gerçek veri akışıyla güncelle: installation hash, 7 günlük cache, token/maliyet kaydı, AI sonuçlarının tahmin olduğu ve adil kullanım.
+- [ ] App Store Privacy Nutrition Label'ı proxy'nin 7 günlük cache davranışıyla tutarlı doldur; “hiç veri toplanmıyor” seçme.
+
 ## 3. Gerçek cihazda önce yeni özellikleri test et
 
 - [x] **Sesli giriş:** Bugün → yazı ile ekle → mikrofon. Mikrofon ve Konuşma Tanıma
