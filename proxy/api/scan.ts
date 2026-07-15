@@ -2,6 +2,12 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { textPrompt, visionPrompt, PROMPT_VERSION } from "../prompts.js";
 import { resolveEntitlement } from "../lib/entitlement.js";
+import {
+  calculatedCostMicrousd,
+  tokenBreakdown,
+  type OpenAIUsage,
+} from "../lib/openai-cost.js";
+import { recordOpenAICost } from "../lib/metrics.js";
 
 export const config = {
   runtime: "edge",
@@ -28,77 +34,42 @@ interface OpenAIChatResponse {
       content?: string | null;
     };
   }>;
-  usage?: {
-    prompt_tokens?: number;
-    completion_tokens?: number;
-    total_tokens?: number;
-  };
-}
-
-export interface OpenAIUsage {
-  prompt_tokens?: number;
-  completion_tokens?: number;
-  total_tokens?: number;
-}
-
-/** Prices are USD per 1M tokens, represented as microusd per 1M tokens.
- * Verified against the pricing values recorded in the project scope:
- * gpt-5-nano $0.05/$0.40 and gpt-5-mini $0.25/$2.00 (input/output).
- * Keeping the numerator integer makes the stored cost integer microusd. */
-export const MODEL_PRICING = {
-  "gpt-5-nano": {
-    inputMicrousdPerMillion: 50_000,
-    outputMicrousdPerMillion: 400_000,
-  },
-  "gpt-5-mini": {
-    inputMicrousdPerMillion: 250_000,
-    outputMicrousdPerMillion: 2_000_000,
-  },
-} as const;
-
-function nonNegativeInteger(value: number | undefined): number {
-  return typeof value === "number" && Number.isFinite(value)
-    ? Math.max(0, Math.floor(value))
-    : 0;
-}
-
-export function estimatedCostMicrousd(
-  model: string,
-  usage: OpenAIUsage | undefined,
-): number {
-  const pricing = MODEL_PRICING[model as keyof typeof MODEL_PRICING];
-  if (!pricing || !usage) return 0;
-
-  const inputTokens = nonNegativeInteger(usage.prompt_tokens);
-  const outputTokens = nonNegativeInteger(usage.completion_tokens);
-  return Math.round(
-    (inputTokens * pricing.inputMicrousdPerMillion
-      + outputTokens * pricing.outputMicrousdPerMillion) / 1_000_000,
-  );
+  usage?: OpenAIUsage;
 }
 
 interface RequestTelemetry {
   requestID: string;
   startedAt: number;
+  /** Redis response-cache outcome — NOT OpenAI's prompt cache. A "hit" is served
+   *  entirely from Redis with no OpenAI call, so usage/cost stay zero. */
   cacheStatus: "hit" | "miss";
   redisLookupTimeMs: number;
   openAIResponseTimeMs: number;
+  /** The OpenAI model this request used (nano/mini), reported even on a cache
+   *  hit since the cache is keyed by model. */
+  model: string;
   usage?: OpenAIUsage;
-  estimatedCostMicrousd: number;
+  calculatedCostMicrousd: number;
   verificationFailed?: boolean;
 }
 
 function telemetryHeaders(telemetry: RequestTelemetry): Record<string, string> {
-  const inputTokens = nonNegativeInteger(telemetry.usage?.prompt_tokens);
-  const outputTokens = nonNegativeInteger(telemetry.usage?.completion_tokens);
+  const tokens = tokenBreakdown(telemetry.usage);
   return {
     "x-calorisor-request-id": telemetry.requestID,
     "x-calorisor-response-time-ms": String(Math.max(0, Date.now() - telemetry.startedAt)),
     "x-calorisor-openai-response-time-ms": String(telemetry.openAIResponseTimeMs),
     "x-calorisor-redis-lookup-time-ms": String(telemetry.redisLookupTimeMs),
-    "x-calorisor-input-tokens": String(inputTokens),
-    "x-calorisor-output-tokens": String(outputTokens),
-    "x-calorisor-estimated-cost-microusd": String(telemetry.estimatedCostMicrousd),
+    "x-calorisor-model": telemetry.model,
+    "x-calorisor-input-tokens": String(tokens.promptTokens),
+    "x-calorisor-output-tokens": String(tokens.completionTokens),
+    "x-calorisor-cached-input-tokens": String(tokens.cachedInputTokens),
+    "x-calorisor-reasoning-tokens": String(tokens.reasoningTokens),
+    "x-calorisor-calculated-cost-microusd": String(telemetry.calculatedCostMicrousd),
+    // Deprecated alias, kept one release so clients reading the old header keep
+    // working; it mirrors x-calorisor-calculated-cost-microusd exactly.
+    "x-calorisor-estimated-cost-microusd": String(telemetry.calculatedCostMicrousd),
+    // Redis response-cache outcome (NOT OpenAI's prompt cache).
     "x-calorisor-cache": telemetry.cacheStatus,
   };
 }
@@ -106,6 +77,9 @@ function telemetryHeaders(telemetry: RequestTelemetry): Record<string, string> {
 const METRIC_RETENTION_SECONDS = 35 * 24 * 60 * 60;
 const REQUEST_LOG_RETENTION_SECONDS = 30 * 24 * 60 * 60;
 const REQUEST_LOG_KEY = "calorisor:request-logs";
+// Cost counters (cost:microusd, cost:scan, cost:model:*, cost:mode:*) are NOT
+// listed here: they are owned exclusively by recordOpenAICost (lib/metrics.ts)
+// so the day's total is aggregated in exactly one place and never double-counted.
 const METRIC_NAMES = [
   "requests:total",
   "requests:free",
@@ -116,8 +90,9 @@ const METRIC_NAMES = [
   "cache:hit",
   "cache:miss",
   "tokens:input",
+  "tokens:cached_input",
   "tokens:output",
-  "cost:microusd",
+  "tokens:reasoning",
   "status:error",
   "rate_limited",
   "verification_failed",
@@ -188,6 +163,8 @@ function responseMetadata(content: string): Pick<MetricsEvent, "itemCount" | "av
  * contains metadata only: never raw IP, installation ID, image, prompt, text,
  * or model response. */
 async function recordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
+  const tokens = tokenBreakdown(event.telemetry.usage);
+  const cost = event.telemetry.calculatedCostMicrousd;
   const increments: Array<[MetricName, number]> = [];
   if (event.tier) {
     increments.push(["requests:total", 1]);
@@ -196,33 +173,45 @@ async function recordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
   if (event.mode) increments.push(event.mode === "photo" ? ["mode:photo", 1] : ["mode:text", 1]);
   if (event.inputSource === "voice_transcript") increments.push(["source:voice", 1]);
   increments.push([`cache:${event.telemetry.cacheStatus}`, 1]);
-  increments.push(["tokens:input", nonNegativeInteger(event.telemetry.usage?.prompt_tokens)]);
-  increments.push(["tokens:output", nonNegativeInteger(event.telemetry.usage?.completion_tokens)]);
-  increments.push(["cost:microusd", event.telemetry.estimatedCostMicrousd]);
+  increments.push(["tokens:input", tokens.promptTokens]);
+  increments.push(["tokens:cached_input", tokens.cachedInputTokens]);
+  increments.push(["tokens:output", tokens.completionTokens]);
+  increments.push(["tokens:reasoning", tokens.reasoningTokens]);
   if (event.status === "error") increments.push(["status:error", 1]);
   if (event.error === "rate_limited") increments.push(["rate_limited", 1]);
   if (event.error === "subscription_verification_failed") increments.push(["verification_failed", 1]);
   const anomalies: Array<[AnomalyName, number]> = [];
   if (event.error === "rate_limited") anomalies.push(["installation_burst", 1]);
   if (event.error === "subscription_verification_failed") anomalies.push(["verification_failure", 1]);
-  const costThreshold = Number(process.env.CALORISOR_DAILY_COST_ALERT_MICROUSD ?? 10_000_000);
-  if (event.telemetry.estimatedCostMicrousd >= costThreshold) anomalies.push(["daily_cost_threshold", 1]);
+  // NOTE: the daily_cost_threshold anomaly is raised by recordOpenAICost against
+  // the cumulative daily total below — never per single request.
 
   const log = {
     request_id: event.telemetry.requestID,
     timestamp: new Date().toISOString(),
     tier: event.tier ?? null,
     mode: event.mode ?? null,
+    model: event.telemetry.model,
     input_source: event.inputSource ?? null,
     status: event.status,
     error: event.error ?? null,
+    // Redis response-cache outcome. `cache_status` is kept for backward
+    // compatibility; `response_cache_status` is the explicit new name that
+    // distinguishes it from OpenAI's prompt cache (openai_cached_input_tokens).
     cache_status: event.telemetry.cacheStatus,
+    response_cache_status: event.telemetry.cacheStatus,
+    openai_cached_input_tokens: tokens.cachedInputTokens,
     response_time_ms: Math.max(0, Date.now() - event.telemetry.startedAt),
     openai_response_time_ms: event.telemetry.openAIResponseTimeMs,
     redis_lookup_time_ms: event.telemetry.redisLookupTimeMs,
-    input_tokens: nonNegativeInteger(event.telemetry.usage?.prompt_tokens),
-    output_tokens: nonNegativeInteger(event.telemetry.usage?.completion_tokens),
-    estimated_cost_microusd: event.telemetry.estimatedCostMicrousd,
+    input_tokens: tokens.promptTokens,
+    cached_input_tokens: tokens.cachedInputTokens,
+    uncached_input_tokens: tokens.uncachedInputTokens,
+    output_tokens: tokens.completionTokens,
+    reasoning_tokens: tokens.reasoningTokens,
+    calculated_cost_microusd: cost,
+    // Deprecated alias kept one release; identical to calculated_cost_microusd.
+    estimated_cost_microusd: cost,
     input_chars: event.inputChars,
     image_bytes: event.imageBytes,
     item_count: event.itemCount,
@@ -241,6 +230,17 @@ async function recordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
     redis.ltrim(REQUEST_LOG_KEY, 0, 999),
     redis.expire(REQUEST_LOG_KEY, REQUEST_LOG_RETENTION_SECONDS),
   ]);
+
+  // Fold this request's cost into the day's cumulative OpenAI total (shared with
+  // weekly reports) and let it raise the daily-cost alarm once per day. A cache
+  // hit or a usage-less response costs 0 and needs no aggregation.
+  if (cost > 0 && event.mode) {
+    await recordOpenAICost(redis, {
+      date: event.date,
+      costMicrousd: cost,
+      buckets: ["scan", `model:${event.telemetry.model}`, `mode:${event.mode}`],
+    });
+  }
 }
 
 async function safeRecordMetrics(redis: Redis, event: MetricsEvent): Promise<void> {
@@ -609,6 +609,10 @@ function messages(forRequest: ScanRequest): Array<Record<string, unknown>> {
             type: "image_url",
             image_url: {
               url: `data:image/jpeg;base64,${forRequest.image_base64}`,
+              // Pin the vision detail tier explicitly. "auto" lets OpenAI pick
+              // (and change) the tier, which makes image token counts — and so
+              // cost — unpredictable and inconsistent between free and pro.
+              detail: "high",
             },
           },
         ],
@@ -636,7 +640,8 @@ export default async function handler(request: Request): Promise<Response> {
     cacheStatus: "miss",
     redisLookupTimeMs: 0,
     openAIResponseTimeMs: 0,
-    estimatedCostMicrousd: 0,
+    model: modelForTier("free"),
+    calculatedCostMicrousd: 0,
   };
 
   if (request.method !== "POST") {
@@ -715,6 +720,7 @@ export default async function handler(request: Request): Promise<Response> {
     );
     tier = entitlement.tier;
     model = modelForTier(tier);
+    telemetry.model = model;
     body.tier = tier;
     telemetry.verificationFailed = entitlement.verificationFailed;
     const photoKey = usageKey(identity.key, "photo", usageDate);
@@ -808,7 +814,7 @@ export default async function handler(request: Request): Promise<Response> {
   }
 
   telemetry.usage = completion.usage;
-  telemetry.estimatedCostMicrousd = estimatedCostMicrousd(model, completion.usage);
+  telemetry.calculatedCostMicrousd = calculatedCostMicrousd(model, completion.usage);
 
   try {
     await infrastructure.redis.set(responseCacheKey, content, {

@@ -8,6 +8,13 @@
  */
 export const PROMPT_VERSION = 1;
 
+/**
+ * Bump whenever `weeklyReportPrompt` below meaningfully changes. It is part of
+ * the weekly-report response cache key (see api/weekly-report.ts) so a prompt
+ * revision invalidates cached reports without waiting out the 7-day TTL.
+ */
+export const WEEKLY_PROMPT_VERSION = 1;
+
 function commonPromptContract(locale: string): string {
   const isTurkish = locale.startsWith("tr");
 
