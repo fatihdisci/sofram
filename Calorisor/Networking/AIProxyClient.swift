@@ -7,9 +7,10 @@
 //    2. OpenAI Chat Completions API direct (dev/testing) — key from Secrets.plist
 //    3. Demo data (DEBUG only) — when neither is configured
 //
-//  Tier-based model selection (see MODEL_RESEARCH.md):
-//    free → GPT-5-nano    ($0.05/$0.005 per 1M)
-//    pro  → GPT-5-mini    ($0.25/$0.025 per 1M, fallback GPT-5-nano)
+//  Tier-based model selection (see MODEL_RESEARCH.md). Prices are per 1M tokens
+//  as input / cached input / output:
+//    free → GPT-5-nano    ($0.05 / $0.005 / $0.40)
+//    pro  → GPT-5-mini    ($0.25 / $0.025 / $2.00, fallback GPT-5-nano)
 //
 //  The client sends {tier: "free"|"pro"} to the proxy or picks the model directly
 //  in direct OpenAI mode. The proxy can override model choice at any time.
@@ -293,12 +294,16 @@ private struct OpenAIContentPart: Encodable {
     }
 
     static func image(base64: String) -> OpenAIContentPart {
-        OpenAIContentPart(type: "image_url", text: nil, imageUrl: OpenAIImageURL(url: "data:image/jpeg;base64,\(base64)"))
+        OpenAIContentPart(type: "image_url", text: nil, imageUrl: OpenAIImageURL(url: "data:image/jpeg;base64,\(base64)", detail: "high"))
     }
 }
 
 private struct OpenAIImageURL: Encodable {
     let url: String
+    /// Pin the vision detail tier so image token usage — and therefore cost —
+    /// stays predictable and matches the production proxy path (see
+    /// proxy/api/scan.ts). "auto" would let OpenAI change the tier over time.
+    let detail: String
 }
 
 private struct OpenAIRequest: Encodable {
@@ -743,7 +748,8 @@ final class AIProxyClient {
 
     private func openAIModel(for tier: String) -> String {
         // tier → model mapping. Models confirmed on OpenAI official pricing page (July 2026).
-        // gpt-5-mini: $0.25/$0.025 | gpt-5-nano: $0.05/$0.005
+        // Per 1M tokens (input / cached input / output):
+        //   gpt-5-mini: $0.25 / $0.025 / $2.00   gpt-5-nano: $0.05 / $0.005 / $0.40
         // Dated snapshots exist (gpt-5-mini-2025-08-07, gpt-5-nano-2025-08-07) but
         // rolling aliases are preferred to track improvements automatically.
         tier == "pro" ? "gpt-5-mini" : "gpt-5-nano"
