@@ -14,8 +14,12 @@ Birden fazla 2025-2026 çalışması şu tabloyu çiziyor:
 
 ### OpenAI (vision-capable modeller)
 
-| Model | Input | Output | Blended | Vision |
-|-------|-------|--------|---------|--------|
+Fiyatlar 1M token başına USD. Sütunlar: normal input / cached input / output.
+(Önceki sürümde başlıklar yanlıştı — "output" sütunu aslında cached input,
+"blended" sütunu ise gerçek output fiyatıydı. Aşağıdaki tablo düzeltilmiştir.)
+
+| Model | Input | Cached input | Output | Vision |
+|-------|-------|--------------|--------|--------|
 | **GPT-4.1 mini** | $0.40 | $0.10 | $1.60 | ✅ En hızlı, güvenilir |
 | **GPT-4.1 nano** | $0.10 | $0.025 | $0.40 | ✅ En ucuz OpenAI |
 | GPT-5-mini | $0.25 | $0.025 | $2.00 | ✅ |
@@ -31,27 +35,47 @@ Birden fazla 2025-2026 çalışması şu tabloyu çiziyor:
 | Gemini 2.5 Flash-Lite | $0.10 | ~$0.40 | ✅ Reddetme riski var |
 | Gemini 3.1 Flash-Lite | $0.25 | $1.50 | ✅ |
 
-### Tarama başına gerçek maliyet
+### Tarama başına maliyet — neden tek bir sabit sayı vermiyoruz
 
-Bir tarama = görsel (~500 input token) + kısa prompt + JSON çıktı (~200 output token):
+> **Eski ve hatalı hesap (kaldırıldı):** Önceki sürümdeki "~$0.000026 (nano) /
+> ~$0.00013 (mini) tarama başı" değerleri yanlıştı. O hesap, output tokenları
+> yanlışlıkla cached-input fiyatıyla (nano $0.005, mini $0.025) çarpıyordu;
+> gerçek output fiyatı nano $0.40, mini $2.00'dır — yani eski rakamlar
+> gerçeğin ~4 katı altındaydı. Ayrıca `detail: high` görselin ~500 tokenden
+> daha fazla token tükettiğini hesaba katmıyordu. Bu sayılara güvenmeyin.
 
-| Model | Maliyet/tarama | 100 tarama/gün (aylık) |
-|-------|---------------|----------------------|
-| **GPT-5-nano** ★ free | **~$0.000026** | ~$0.08 |
-| **GPT-5-mini** ★ pro | **~$0.00013** | ~$0.39 |
-| GPT-5.4-mini | ~$0.00039 | ~$1.17 |
-| GPT-4.1 mini | ~$0.00022 | ~$0.66 |
-| GPT-4.1 nano | ~$0.000055 | ~$0.17 |
-| GPT-4o-mini | ~$0.00009 | ~$0.27 |
-| Gemini 2.5 Flash-Lite | ~$0.00013 | ~$0.39 |
+Tek bir sabit "tarama başı maliyet" vermek yanıltıcıdır çünkü maliyet şunlara
+göre değişir:
 
-**Sonuç:** GPT-5-mini, Gemini 2.5 Flash-Lite ile aynı fiyata geliyor ama daha yeni ve refusal riski yok. GPT-5-nano ise neredeyse bedava.
+- **Görsel çözünürlüğü / oranı** — daha büyük veya daha uzun kenarlı görseller
+  daha çok tile → daha çok input token.
+- **`detail` seviyesi** — `high` (bizim seçtiğimiz) öngörülebilir ama `low`'dan
+  daha çok token kullanır; `auto` zamanla değişebilir.
+- **Prompt uzunluğu** — locale'e göre değişen sistem/temel prompt.
+- **JSON Schema (Structured Outputs)** — şema da input tokenlarına dâhildir.
+- **Completion tokenları** — modelin ürettiği JSON'un uzunluğu (kaç yemek, kaç
+  alan).
+- **Reasoning tokenları** — `reasoning_effort` (`low`/`minimal`) completion
+  içinde faturalanır; ikinci kez ücretlendirilmez.
+- **OpenAI prompt cache** — tekrar eden prompt önekleri cached-input fiyatına
+  düşer (nano $0.005, mini $0.025 / 1M).
+- **Calorisor Redis cache** — aynı normalize girdi 7 gün içinde tekrar gelirse
+  OpenAI hiç çağrılmaz; o taramanın maliyeti $0'dır.
+
+**Canlı sistemde gerçek maliyet, tahminle değil, OpenAI `usage` cevabından
+hesaplanır** (`proxy/lib/openai-cost.ts` → `calculatedCostMicrousd`). Normal ve
+cached input ayrı fiyatlandırılır, output ayrı; günlük toplam ve model bazlı
+kırılım günlük raporda (`proxy/scripts/daily-report.ts`) görülür.
+
+**Sonuç (model seçimi):** GPT-5-mini, Gemini 2.5 Flash-Lite ile benzer fiyat
+sınıfındadır ama daha yeni ve refusal riski yoktur. GPT-5-nano ise en ucuz
+seçenektir. Mutlak maliyeti günlük rapordan takip edin.
 
 ## Tavsiye (güncellendi — Temmuz 2026)
 
-**Birincil model (pro): GPT-5-mini** — $0.25/$0.025, GPT-5 ailesi (en yeni jenerasyon), GPT-4.1 mini'den hem daha ucuz hem daha yeni. Görsel tanıma kalitesi GPT-4.1 mini ile en az eşdeğer, muhtemelen daha iyi.
+**Birincil model (pro): GPT-5-mini** — input $0.25 / cached $0.025 / output $2.00 (1M), GPT-5 ailesi (en yeni jenerasyon), GPT-4.1 mini'den hem daha ucuz hem daha yeni. Görsel tanıma kalitesi GPT-4.1 mini ile en az eşdeğer, muhtemelen daha iyi.
 
-**Free model: GPT-5-nano** — $0.05/$0.005, ultra ucuz (~$0.000026/tarama). 3 free taramanın toplam maliyeti ~$0.00008 — yani bedava. GPT-5 ailesinden, aynı davranış profili.
+**Free model: GPT-5-nano** — input $0.05 / cached $0.005 / output $0.40 (1M), GPT-5 ailesinin en ucuz üyesi, aynı davranış profili. Free tarama maliyeti düşüktür ama sabit değildir; gerçek değer OpenAI `usage`'dan hesaplanır (yukarı bkz.).
 
 **Gemini artık kullanılmıyor.** Refusal riski production'da kabul edilemez. GPT-5 ailesi hem daha ucuz hem daha güvenilir.
 
@@ -59,14 +83,17 @@ Bir tarama = görsel (~500 input token) + kısa prompt + JSON çıktı (~200 out
 
 Client, her istekte `tier` alanını gönderir (`"free"` veya `"pro"`). Değer `FreeScanCounter.shared.isSubscribed` (StoreKit 2) üzerinden belirlenir.
 
-| Tier | Primary | Fallback | Maliyet/tarama |
-|------|---------|----------|---------------|
-| **free** | GPT-5-nano | Yok | ~$0.000026 |
-| **pro** | GPT-5-mini | GPT-5-nano | ~$0.00013 |
+| Tier | Primary | Fallback | Fiyat (1M: input / cached / output) |
+|------|---------|----------|-------------------------------------|
+| **free** | GPT-5-nano | Yok | $0.05 / $0.005 / $0.40 |
+| **pro** | GPT-5-mini | GPT-5-nano | $0.25 / $0.025 / $2.00 |
+
+Tarama başı sabit maliyet vermiyoruz (yukarıdaki "neden" bölümüne bakın);
+gerçek maliyet OpenAI `usage`'dan hesaplanır.
 
 **Neden böyle?**
-- GPT-5-mini: GPT-5 ailesi (en yeni), $0.25/$0.025, GPT-4.1 mini'den %40 daha ucuz ve daha yeni jenerasyon
-- GPT-5-nano: $0.05/$0.005 — 3 free tarama toplam ~$0.00008 (bedava). Aynı aile, tutarlı davranış
+- GPT-5-mini: GPT-5 ailesi (en yeni), input $0.25 / output $2.00, GPT-4.1 mini'den daha yeni jenerasyon
+- GPT-5-nano: input $0.05 / output $0.40 — en ucuz üye. Aynı aile, tutarlı davranış
 - İkisi de OpenAI GPT-5 ailesi → aynı token formatı, aynı API, cross-provider sorunu yok
 - Free'de fallback yok (3 tarama, GPT-5-nano'nun hata oranı ihmal edilebilir)
 - Pro'da GPT-5-mini primary, hata alırsa GPT-5-nano'ya düşer
