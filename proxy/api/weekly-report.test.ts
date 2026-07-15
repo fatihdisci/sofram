@@ -161,6 +161,24 @@ describe("POST /api/weekly-report proxy contract", () => {
     expect(missLog).not.toHaveProperty("prompt");
   });
 
+  it("keys the cache by locale, model, and prompt version", async () => {
+    await handler(request(body()));
+    const trKeys = [...fakes.values.keys()].filter((key) => key.startsWith("calorisor:weekly:"));
+    expect(trKeys).toHaveLength(1);
+    // calorisor:weekly:v2:{locale}:{model}:{promptVersion}:{summaryHash}:{week}
+    expect(trKeys[0]).toMatch(
+      /^calorisor:weekly:v2:tr_TR:gpt-5-mini:1:[0-9a-f]{64}:2026-W29$/,
+    );
+
+    // A different locale, same summary/week, must NOT reuse the Turkish entry —
+    // so an English user never gets the Turkish report back from cache.
+    await handler(request(body({ locale: "en_US" })));
+    const allKeys = [...fakes.values.keys()].filter((key) => key.startsWith("calorisor:weekly:v2:"));
+    expect(allKeys.some((key) => key.includes(":tr_TR:"))).toBe(true);
+    expect(allKeys.some((key) => key.includes(":en_US:"))).toBe(true);
+    expect(fakes.fetch).toHaveBeenCalledTimes(2);
+  });
+
   it("allows an explicit refresh to replace the same week's cache", async () => {
     await handler(request(body()));
     const refreshed = await handler(request(body({ force_refresh: true })));
