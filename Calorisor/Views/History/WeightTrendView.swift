@@ -4,6 +4,9 @@ struct WeightTrendView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var rawPoints: [HealthKitWeightPoint] = []
+    /// Most recent measurement of any age — shown when the 30-day window is
+    /// empty but Health still holds older weigh-ins.
+    @State private var latestKnownWeight: HealthKitWeightPoint?
     @State private var isLoaded = false
 
     private var points: [HealthKitWeightPoint] {
@@ -23,12 +26,15 @@ struct WeightTrendView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity)
                             .padding(.top, Layout.Spacing.xxl)
-                    } else if points.isEmpty {
-                        emptyState
-                    } else {
+                    } else if !points.isEmpty {
                         summaryCard
                         chartCard
                         readingNote
+                    } else if let latestKnownWeight {
+                        staleWeightCard(latestKnownWeight)
+                        readingNote
+                    } else {
+                        emptyState
                     }
 
                     Spacer(minLength: Layout.Spacing.xxl)
@@ -40,6 +46,11 @@ struct WeightTrendView: View {
         .navigationTitle("Kilo trendi")
         .navigationBarTitleDisplayMode(.inline)
         .task {
+            // Ask for Health access on entering the screen. If the user reached
+            // here without granting weight-read (or granted it only partially in
+            // the Settings connect flow), this is where it's actually needed.
+            // No-op once authorization has been determined.
+            await HealthKitManager.shared.requestAuthorization()
             await loadWeightHistory()
         }
         .onChange(of: scenePhase) { _, newPhase in
@@ -116,16 +127,64 @@ struct WeightTrendView: View {
         .padding(.horizontal, Layout.Spacing.sm)
     }
 
+    /// Shown when there is no measurement in the last 30 days but Health still
+    /// holds an older weigh-in — a connected account simply hasn't logged weight
+    /// recently. Avoids the misleading "connect Health" empty state.
+    private func staleWeightCard(_ point: HealthKitWeightPoint) -> some View {
+        VStack(alignment: .leading, spacing: Layout.Spacing.md) {
+            Text("SON KİLO")
+                .font(.sofraEyebrow)
+                .tracking(1.2)
+                .foregroundStyle(Color.textMuted)
+
+            Text("\(point.kilograms, specifier: "%.1f") kg")
+                .font(.sofraDisplayNumeric)
+                .foregroundStyle(Color.textPrimary)
+
+            Text("Son ölçüm: \(Self.dateFormatter.string(from: point.date))")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+
+            Text("Son 30 günde yeni ölçüm yok. Sağlık uygulamasına kilo ekledikçe trend burada oluşur.")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textSecondary)
+        }
+        .padding(Layout.Spacing.lg)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+        .raisedSurface(cornerRadius: Layout.Radius.card)
+    }
+
     private var emptyState: some View {
         VStack(spacing: Layout.Spacing.md) {
             Image(systemName: "scalemass")
                 .font(.system(size: 32, weight: .medium))
                 .foregroundStyle(Color.textMuted)
-            Text("Henüz kilo ölçümü yok")
+            Text("Kilo verisi görünmüyor")
                 .font(.sofraBody)
                 .foregroundStyle(Color.textSecondary)
-            Text("Sağlık verilerini Ayarlar’dan bağladığında kilo trendin burada görünecek.")
+            Text("Sağlık uygulamasında kilo ölçümü yoksa ya da Calorisor’a kilo okuma izni verilmediyse burası boş kalır.")
                 .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+                .multilineTextAlignment(.center)
+
+            Button {
+                Task {
+                    await HealthKitManager.shared.requestAuthorization()
+                    await loadWeightHistory()
+                }
+            } label: {
+                Text("Sağlık erişimini aç")
+                    .font(.sofraLabel)
+                    .foregroundStyle(Color.onAccent)
+                    .padding(.horizontal, Layout.Spacing.lg)
+                    .padding(.vertical, Layout.Spacing.md)
+                    .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+            }
+            .padding(.top, Layout.Spacing.xs)
+
+            Text("Zaten bağladıysan: Sağlık uygulaması › Profil › Uygulamalar › Calorisor’dan “Kilo” okumasına izin ver.")
+                .font(.system(size: 11))
                 .foregroundStyle(Color.textMuted)
                 .multilineTextAlignment(.center)
         }
@@ -146,6 +205,11 @@ struct WeightTrendView: View {
         let loadedPoints = await HealthKitManager.shared.readWeightHistory()
         guard !Task.isCancelled else { return }
         rawPoints = loadedPoints
+        // Only pay for the fallback query when the 30-day window came back empty.
+        latestKnownWeight = loadedPoints.isEmpty
+            ? await HealthKitManager.shared.latestWeight()
+            : nil
+        guard !Task.isCancelled else { return }
         isLoaded = true
     }
 

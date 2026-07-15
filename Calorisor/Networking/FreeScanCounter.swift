@@ -69,8 +69,26 @@ final class FreeScanCounter {
     #if DEBUG
     /// Keeps development flows unlocked without pretending StoreKit granted an
     /// entitlement. Tests can disable this to exercise release counter logic.
+    /// Toggleable at runtime from Ayarlar → Geliştirici (Pro / Ücretsiz).
     var debugForcePro = true
     #endif
+
+    /// Canonical "does this user have Pro access" for **local UI gating** — the
+    /// weekly AI report card, the free-scan badge, the Ayarlar Pro row, etc.
+    /// In DEBUG this honors `debugForcePro` so every Pro surface can be
+    /// exercised without a sandbox purchase; in release it is exactly the
+    /// StoreKit entitlement mirror.
+    ///
+    /// Network calls that claim a tier to the proxy must keep reading
+    /// `isSubscribed` directly — a forced-Pro debug session has no signed
+    /// entitlement and the proxy would (correctly) reject a "pro" claim.
+    var isProUnlocked: Bool {
+        #if DEBUG
+        return isSubscribed || debugForcePro
+        #else
+        return isSubscribed
+        #endif
+    }
 
     init(defaults: UserDefaults = .standard, now: @escaping () -> Date = { Date() }) {
         self.defaults = defaults
@@ -163,13 +181,7 @@ final class FreeScanCounter {
         usedTextScans = max(0, quota.textLimit - quota.textRemaining)
     }
 
-    private var isQuotaBypassed: Bool {
-        #if DEBUG
-        return isSubscribed || debugForcePro
-        #else
-        return isSubscribed
-        #endif
-    }
+    private var isQuotaBypassed: Bool { isProUnlocked }
 
     #if DEBUG
     /// Test/debug helper — resets both pools to a fresh UTC day.

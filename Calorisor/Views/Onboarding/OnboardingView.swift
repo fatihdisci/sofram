@@ -401,108 +401,114 @@ struct ResultStepView: View {
     @State private var showsCalculationDetails = false
 
     var body: some View {
-        VStack(spacing: Layout.Spacing.xl) {
-            Spacer()
+        ScrollView {
+            VStack(spacing: Layout.Spacing.lg) {
+                Text("Günlük Hedefin")
+                    .font(.sofraTitle)
+                    .foregroundStyle(Color.textPrimary)
+                    .multilineTextAlignment(.center)
 
-            Text("Günlük Hedefin")
-                .font(.sofraTitle)
-                .foregroundStyle(Color.textPrimary)
+                // Calorie target
+                VStack(spacing: 0) {
+                    Text("\(Int(model.dailyCalorieTarget))")
+                        .font(.sofraDisplayNumeric)
+                        .foregroundStyle(Color.accentText)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                    Text("kalori/gün")
+                        .font(.sofraCaption)
+                        .foregroundStyle(Color.textMuted)
+                }
+                .frame(width: 180, height: 180)
+                .background(Color.surfaceRaised, in: Circle())
+                .raisedSurface(cornerRadius: 999)
 
-            // Calorie target
-            VStack(spacing: 0) {
-                Text("\(Int(model.dailyCalorieTarget))")
-                    .font(.sofraDisplayNumeric)
-                    .foregroundStyle(Color.accentText)
-                Text("kalori/gün")
+                // Foreground the core value: from here, capture is all it takes.
+                Text("Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek.")
                     .font(.sofraCaption)
-                    .foregroundStyle(Color.textMuted)
-            }
-            .frame(width: 180, height: 180)
-            .background(Color.surfaceRaised, in: Circle())
-            .raisedSurface(cornerRadius: 999)
+                    .foregroundStyle(Color.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
 
-            // Foreground the core value: from here, capture is all it takes.
-            Text("Hazırsın. Bundan sonra tek yapman gereken tabağını çekmek.")
-                .font(.sofraCaption)
-                .foregroundStyle(Color.textSecondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+                // Floor-applied hint (Phase A4): shown only when the sex-aware
+                // safety minimum clipped the raw target upward.
+                if model.dailyTargetResult.floorApplied {
+                    HStack(alignment: .top, spacing: Layout.Spacing.sm) {
+                        Image(systemName: "info.circle.fill")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Color.accentFill)
+                        Text(floorHintText)
+                            .font(.sofraCaption)
+                            .foregroundStyle(Color.textSecondary)
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(Layout.Spacing.md)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color.accentTintBg, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+                }
 
-            // Floor-applied hint (Phase A4): shown only when the sex-aware
-            // safety minimum clipped the raw target upward.
-            if model.dailyTargetResult.floorApplied {
-                HStack(alignment: .top, spacing: Layout.Spacing.sm) {
-                    Image(systemName: "info.circle.fill")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Color.accentFill)
-                    Text(floorHintText)
+                // Macro breakdown
+                VStack(spacing: Layout.Spacing.md) {
+                    Text("Makro Dağılımı")
+                        .font(.sofraLabel)
+                        .foregroundStyle(Color.textSecondary)
+
+                    HStack(spacing: Layout.Spacing.xl) {
+                        macroPill(label: "Protein", value: model.proteinTargetG, color: .macroProtein)
+                        macroPill(label: "Karb.", value: model.carbsTargetG, color: .macroCarb)
+                        macroPill(label: "Yağ", value: model.fatTargetG, color: .macroFat)
+                    }
+                }
+                .padding(Layout.Spacing.lg)
+                .frame(maxWidth: .infinity)
+                .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
+                .raisedSurface(cornerRadius: Layout.Radius.card)
+
+                // Start button
+                Button {
+                    onSave?()
+                } label: {
+                    Text("Devam Et")
+                        .font(.sofraLabel)
+                        .foregroundStyle(Color.onAccent)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, Layout.Spacing.md)
+                        .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
+                }
+
+                DisclosureGroup(isExpanded: $showsCalculationDetails) {
+                    VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
+                        calculationDetail("BMR (Mifflin-St Jeor)", value: "\(Int(model.bmr)) kcal")
+                        calculationDetail(
+                            "Aktivite çarpanı",
+                            value: "×\(model.activityMultiplier.formatted(.number.precision(.fractionLength(2))))"
+                        )
+                        calculationDetail("Hedef düzeltmesi", value: formattedGoalDelta)
+                    }
+                    .padding(.top, Layout.Spacing.sm)
+                } label: {
+                    Text("Nasıl hesapladık?")
                         .font(.sofraCaption)
                         .foregroundStyle(Color.textSecondary)
-                        .multilineTextAlignment(.leading)
-                        .fixedSize(horizontal: false, vertical: true)
                 }
-                .padding(Layout.Spacing.md)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.accentTintBg, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
-            }
+                .tint(Color.accentFill)
 
-            // Macro breakdown
-            VStack(spacing: Layout.Spacing.md) {
-                Text("Makro Dağılımı")
-                    .font(.sofraLabel)
-                    .foregroundStyle(Color.textSecondary)
-
-                HStack(spacing: Layout.Spacing.xl) {
-                    macroPill(label: "Protein", value: model.proteinTargetG, color: .macroProtein)
-                    macroPill(label: "Karb.", value: model.carbsTargetG, color: .macroCarb)
-                    macroPill(label: "Yağ", value: model.fatTargetG, color: .macroFat)
-                }
-            }
-            .padding(Layout.Spacing.lg)
-            .background(Color.surfaceRaised, in: RoundedRectangle(cornerRadius: Layout.Radius.card))
-            .raisedSurface(cornerRadius: Layout.Radius.card)
-
-            // Start button
-            Button {
-                onSave?()
-            } label: {
-                Text("Devam Et")
-                    .font(.sofraLabel)
-                    .foregroundStyle(Color.onAccent)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, Layout.Spacing.md)
-                    .background(Color.accentFill, in: RoundedRectangle(cornerRadius: Layout.Radius.control))
-            }
-
-            DisclosureGroup(isExpanded: $showsCalculationDetails) {
-                VStack(alignment: .leading, spacing: Layout.Spacing.sm) {
-                    calculationDetail("BMR (Mifflin-St Jeor)", value: "\(Int(model.bmr)) kcal")
-                    calculationDetail(
-                        "Aktivite çarpanı",
-                        value: "×\(model.activityMultiplier.formatted(.number.precision(.fractionLength(2))))"
-                    )
-                    calculationDetail("Hedef düzeltmesi", value: formattedGoalDelta)
-                }
-                .padding(.top, Layout.Spacing.sm)
-            } label: {
-                Text("Nasıl hesapladık?")
+                // Medical disclaimer (Phase A4): required alongside every computed
+                // target, shown below the primary action.
+                Text(NutritionConstants.medicalDisclaimer)
                     .font(.sofraCaption)
-                    .foregroundStyle(Color.textSecondary)
+                    .foregroundStyle(Color.textMuted)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, Layout.Spacing.sm)
             }
-            .tint(Color.accentFill)
-
-            // Medical disclaimer (Phase A4): required alongside every computed
-            // target. Sits below the fold but above the final spacer.
-            Text(NutritionConstants.medicalDisclaimer)
-                .font(.sofraCaption)
-                .foregroundStyle(Color.textMuted)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, Layout.Spacing.sm)
-
-            Spacer()
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, Layout.Spacing.xl)
+            .padding(.top, Layout.Spacing.md)
+            .padding(.bottom, Layout.Spacing.xl)
         }
-        .padding(.horizontal, Layout.Spacing.xl)
+        .scrollBounceBehavior(.basedOnSize)
     }
 
     /// Hint shown when the sex-aware floor clipped the raw target. Always

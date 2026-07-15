@@ -324,6 +324,9 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 proSection
+                #if DEBUG
+                developerSection
+                #endif
                 targetsSection
                 profileSection
                 healthKitSection
@@ -404,7 +407,7 @@ struct SettingsView: View {
     @ViewBuilder
     private var proSection: some View {
         Section {
-            if subscriptions.isSubscribed {
+            if subscriptions.isProUnlocked {
                 HStack {
                     Label("Calorisor Pro", systemImage: "checkmark.circle.fill")
                         .foregroundStyle(Color.accentFill)
@@ -450,6 +453,38 @@ struct SettingsView: View {
             Text("Abonelik")
         }
     }
+
+    // MARK: Developer (DEBUG only)
+
+    #if DEBUG
+    /// Runtime Pro / Ücretsiz switch so Pro-gated surfaces (weekly AI report,
+    /// scan badge, paywall) can be exercised without a sandbox subscription.
+    /// Flips `FreeScanCounter.debugForcePro`, which drives `isProUnlocked`
+    /// everywhere. Compiled out of release builds entirely.
+    private var developerSection: some View {
+        Section {
+            Toggle(isOn: Binding(
+                get: { subscriptions.debugForcePro },
+                set: { subscriptions.debugForcePro = $0 }
+            )) {
+                Label(
+                    subscriptions.debugForcePro ? "Pro (tüm özellikler açık)" : "Ücretsiz",
+                    systemImage: subscriptions.debugForcePro ? "crown.fill" : "lock.fill"
+                )
+            }
+
+            Text(subscriptions.debugForcePro
+                 ? "Tüm Pro özellikleri açık — haftalık AI raporu dahil. Gerçek abonelik gerekmez."
+                 : "Ücretsiz kullanıcı deneyimi: Pro yüzeyleri kilitli, paywall görünür.")
+                .font(.sofraCaption)
+                .foregroundStyle(Color.textMuted)
+        } header: {
+            Text("Geliştirici")
+        } footer: {
+            Text("Yalnızca DEBUG derlemelerinde görünür.")
+        }
+    }
+    #endif
 
     // MARK: Targets
 

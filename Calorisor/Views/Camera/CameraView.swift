@@ -646,7 +646,7 @@ struct FreeScanBadge: View {
     @State private var counter = FreeScanCounter.shared
 
     var body: some View {
-        if counter.isSubscribed {
+        if counter.isProUnlocked {
             EmptyView()
         } else {
             HStack(spacing: 4) {

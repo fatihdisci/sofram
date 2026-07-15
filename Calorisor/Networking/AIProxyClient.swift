@@ -234,6 +234,43 @@ struct WeeklyReport: Decodable, Equatable {
     let suggestions: [String]
 }
 
+#if DEBUG
+extension WeeklyReport {
+    /// Locally-built stand-in for the proxy's Pro weekly report, used only when
+    /// a debug force-Pro session (no signed entitlement) opens the report. Reads
+    /// a few real numbers off the on-device summary so the card looks plausible.
+    static func debugSample(from summary: WeeklySummary) -> WeeklyReport {
+        let avg = Int(summary.averageCalories.rounded())
+        let protein = Int(summary.averageProtein.rounded())
+        let logged = summary.loggedDayCount
+        let change = summary.calorieChangeFromPreviousWeek
+
+        var observations = [
+            "\(logged) günün \(summary.targetMetDayCount) tanesinde hedefe yakın kaldın.",
+            "Günlük ortalama \(protein) g protein aldın.",
+        ]
+        if let change, abs(change) >= 1 {
+            observations.append(
+                change < 0
+                    ? "Önceki haftaya göre günde ~\(Int(abs(change))) kcal daha az."
+                    : "Önceki haftaya göre günde ~\(Int(change)) kcal daha fazla."
+            )
+        }
+
+        return WeeklyReport(
+            headline: "Bu hafta ortalama \(avg) kcal",
+            summary: "Örnek rapor (DEBUG). Bu özet cihazındaki metriklerden üretildi; "
+                + "gerçek AI raporu için etkin bir Pro aboneliği gerekir.",
+            observations: observations,
+            suggestions: [
+                "Protein hedefini sabah öğününe yaymayı dene.",
+                "Gece öğünlerini bir sonraki güne kaydırmayı düşün.",
+            ]
+        )
+    }
+}
+#endif
+
 // MARK: - OpenAI request/response types (direct API mode)
 
 private struct OpenAIMessage: Encodable {
@@ -547,6 +584,18 @@ final class AIProxyClient {
         summary: WeeklySummary,
         forceRefresh: Bool = false
     ) async throws -> WeeklyReport {
+        #if DEBUG
+        // A debug force-Pro session has no signed StoreKit entitlement, so the
+        // proxy would reject it with `subscriptionRequired`. Serve a locally
+        // built sample instead, so the Pro weekly-report flow can be exercised
+        // end to end without a sandbox subscription. A real sandbox sub (JWS
+        // present) still takes the live path below.
+        if await FreeScanCounter.shared.debugForcePro,
+           await StoreKitManager.shared.currentEntitlementJWS() == nil {
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            return WeeklyReport.debugSample(from: summary)
+        }
+        #endif
         guard isConfigured else { throw AIProxyError.notConfigured }
         guard let signedTransactionInfo = await StoreKitManager.shared.currentEntitlementJWS() else {
             throw AIProxyError.subscriptionRequired

@@ -54,7 +54,10 @@ final class HealthKitManager {
     }
 
     /// Requests only the types used by this feature. A denial is a normal state;
-    /// callers can keep the rest of the app fully functional.
+    /// callers can keep the rest of the app fully functional. Some callers only
+    /// need the side effect (surfacing the permission sheet), so the result is
+    /// discardable.
+    @discardableResult
     func requestAuthorization() async -> Bool {
         guard Self.isAvailable else { return false }
         do {
@@ -128,6 +131,38 @@ final class HealthKitManager {
                     return HealthKitWeightPoint(date: sample.endDate, kilograms: value)
                 }
                 continuation.resume(returning: points)
+            }
+            self.store.execute(query)
+        }
+    }
+
+    /// The single most recent body-mass sample, regardless of age. The weight
+    /// trend falls back to this when the trailing 30-day window is empty but the
+    /// user does have older measurements in Health — so a connected account with
+    /// infrequent weigh-ins still sees its last known weight instead of a blank
+    /// "connect Health" state.
+    func latestWeight(now: Date = .now) async -> HealthKitWeightPoint? {
+        guard Self.isAvailable,
+              let type = HKObjectType.quantityType(forIdentifier: .bodyMass) else { return nil }
+        let predicate = HKQuery.predicateForSamples(withStart: nil, end: now, options: .strictEndDate)
+
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: type,
+                predicate: predicate,
+                limit: 1,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)]
+            ) { _, samples, _ in
+                guard let sample = samples?.first as? HKQuantitySample else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                let value = sample.quantity.doubleValue(for: .gramUnit(with: .kilo))
+                guard value.isFinite, value > 0 else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                continuation.resume(returning: HealthKitWeightPoint(date: sample.endDate, kilograms: value))
             }
             self.store.execute(query)
         }

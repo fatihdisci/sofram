@@ -17,6 +17,10 @@ struct HistoryView: View {
 
     @AppStorage("calorisor.dailyCalorieTarget") private var calorieTarget: Double = 2000
 
+    // Paywall is owned here (a stable ancestor) rather than inside the scrolling
+    // WeeklySummaryView, so "Pro'yu İncele" presents reliably on the first tap.
+    @State private var showPaywall = false
+
     private var monthSections: [HistoryMonthSection] {
         HistoryDaySummaryBuilder.monthSections(
             scans: scanEntries,
@@ -36,7 +40,7 @@ struct HistoryView: View {
                             .font(.sofraTitle)
                             .foregroundStyle(Color.textPrimary)
 
-                        WeeklySummaryView()
+                        WeeklySummaryView(onUpgrade: { showPaywall = true })
 
                         weightTrendLink
 
@@ -51,6 +55,9 @@ struct HistoryView: View {
             .navigationDestination(for: Date.self) { date in
                 DayDetailView(date: date)
             }
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(onComplete: { showPaywall = false }, skipTitle: "Kapat")
         }
     }
 

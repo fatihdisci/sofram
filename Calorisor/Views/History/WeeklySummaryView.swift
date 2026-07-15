@@ -2,6 +2,12 @@ import SwiftData
 import SwiftUI
 
 struct WeeklySummaryView: View {
+    /// Paywall presentation is owned by the parent (HistoryView) so the sheet
+    /// lives on a stable ancestor. Presenting it from here — a subview whose
+    /// body re-renders whenever async health data loads — intermittently
+    /// dropped the first tap ("birkaç tıklamada bir açılıyordu").
+    var onUpgrade: () -> Void = {}
+
     @Environment(\.scenePhase) private var scenePhase
 
     @Query(sort: \QuickAddItem.sortOrder)
@@ -16,7 +22,6 @@ struct WeeklySummaryView: View {
     @State private var activeEnergyKcal: Double?
     @State private var weightChangeKg: Double?
     @State private var subscriptions = FreeScanCounter.shared
-    @State private var showPaywall = false
     @State private var weeklyReport: WeeklyReport?
     @State private var weeklyReportError: AIProxyError?
     @State private var isLoadingWeeklyReport = false
@@ -76,9 +81,6 @@ struct WeeklySummaryView: View {
             if newPhase == .active {
                 Task { await loadHealthData() }
             }
-        }
-        .sheet(isPresented: $showPaywall) {
-            PaywallView(onComplete: { showPaywall = false }, skipTitle: "Kapat")
         }
         .onDisappear {
             reportTask?.cancel()
@@ -187,11 +189,11 @@ struct WeeklySummaryView: View {
                         .foregroundStyle(Color.textPrimary)
                 }
                 Spacer()
-                Image(systemName: subscriptions.isSubscribed ? "sparkles" : "lock.fill")
+                Image(systemName: subscriptions.isProUnlocked ? "sparkles" : "lock.fill")
                     .foregroundStyle(Color.accentFill)
             }
 
-            if subscriptions.isSubscribed {
+            if subscriptions.isProUnlocked {
                 if let weeklyReport {
                     reportContent(weeklyReport)
                 } else {
@@ -231,7 +233,7 @@ struct WeeklySummaryView: View {
                     .foregroundStyle(Color.textSecondary)
 
                 Button("Pro'yu İncele") {
-                    showPaywall = true
+                    onUpgrade()
                 }
                 .font(.sofraLabel)
                 .foregroundStyle(Color.onAccent)
