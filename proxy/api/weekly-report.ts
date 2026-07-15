@@ -60,7 +60,7 @@ interface WeeklyTelemetry {
   calculatedCostMicrousd: number;
 }
 
-const REPORT_LOG_KEY = "calorisor:weekly-request-logs";
+const REPORT_LOG_KEY = "calp:weekly-request-logs";
 const REPORT_RETENTION_SECONDS = 35 * 24 * 60 * 60;
 const REPORT_LOG_RETENTION_SECONDS = 30 * 24 * 60 * 60;
 const CACHE_TTL_SECONDS = 7 * 24 * 60 * 60;
@@ -98,7 +98,7 @@ function jsonError(
 ): Response {
   return Response.json(
     { error },
-    { status, headers: { "x-calorisor-cache": "miss" } },
+    { status, headers: { "x-calp-cache": "miss" } },
   );
 }
 
@@ -186,19 +186,19 @@ function isWeeklyReportRequest(value: unknown): value is WeeklyReportRequest {
 function telemetryHeaders(telemetry: WeeklyTelemetry): Record<string, string> {
   const tokens = tokenBreakdown(telemetry.usage);
   return {
-    "x-calorisor-request-id": telemetry.requestID,
-    "x-calorisor-response-time-ms": String(Math.max(0, Date.now() - telemetry.startedAt)),
-    "x-calorisor-openai-response-time-ms": String(telemetry.openAIResponseTimeMs),
-    "x-calorisor-model": telemetry.model,
-    "x-calorisor-input-tokens": String(tokens.promptTokens),
-    "x-calorisor-output-tokens": String(tokens.completionTokens),
-    "x-calorisor-cached-input-tokens": String(tokens.cachedInputTokens),
-    "x-calorisor-reasoning-tokens": String(tokens.reasoningTokens),
-    "x-calorisor-calculated-cost-microusd": String(telemetry.calculatedCostMicrousd),
+    "x-calp-request-id": telemetry.requestID,
+    "x-calp-response-time-ms": String(Math.max(0, Date.now() - telemetry.startedAt)),
+    "x-calp-openai-response-time-ms": String(telemetry.openAIResponseTimeMs),
+    "x-calp-model": telemetry.model,
+    "x-calp-input-tokens": String(tokens.promptTokens),
+    "x-calp-output-tokens": String(tokens.completionTokens),
+    "x-calp-cached-input-tokens": String(tokens.cachedInputTokens),
+    "x-calp-reasoning-tokens": String(tokens.reasoningTokens),
+    "x-calp-calculated-cost-microusd": String(telemetry.calculatedCostMicrousd),
     // Deprecated alias kept one release; mirrors the calculated cost exactly.
-    "x-calorisor-estimated-cost-microusd": String(telemetry.calculatedCostMicrousd),
+    "x-calp-estimated-cost-microusd": String(telemetry.calculatedCostMicrousd),
     // Redis response-cache outcome (NOT OpenAI's prompt cache).
-    "x-calorisor-cache": telemetry.cacheStatus,
+    "x-calp-cache": telemetry.cacheStatus,
   };
 }
 
@@ -349,8 +349,12 @@ export default async function handler(request: Request): Promise<Response> {
 
   if (request.method !== "POST") return jsonError("invalid_request", 400);
 
-  const clientKey = process.env.CALORISOR_CLIENT_KEY;
-  if (!clientKey || request.headers.get("x-calorisor-key") !== clientKey) {
+  // brand-keep: new CALP_* env wins; the old name is a transition fallback.
+  const clientKey = process.env.CALP_CLIENT_KEY ?? process.env.CALORISOR_CLIENT_KEY; // brand-keep
+  // brand-keep: accept the pre-rename request header during the client rollout.
+  const presentedClientKey = request.headers.get("x-calp-key")
+    ?? request.headers.get("x-calorisor-key"); // brand-keep
+  if (!clientKey || presentedClientKey !== clientKey) {
     return jsonError("unauthorized", 401);
   }
 
@@ -374,8 +378,10 @@ export default async function handler(request: Request): Promise<Response> {
   // model swap can't serve a stale report, and a prompt revision invalidates the
   // cache without waiting out the 7-day TTL.
   const cacheKey =
-    `calorisor:weekly:v2:${body.locale}:${WEEKLY_MODEL}:${WEEKLY_PROMPT_VERSION}:${summaryHash}:${body.week}`;
-  const installationID = request.headers.get("x-calorisor-installation-id")?.trim();
+    `calp:weekly:v2:${body.locale}:${WEEKLY_MODEL}:${WEEKLY_PROMPT_VERSION}:${summaryHash}:${body.week}`;
+  // brand-keep: accept the pre-rename installation-id header during the transition.
+  const installationID = (request.headers.get("x-calp-installation-id")
+    ?? request.headers.get("x-calorisor-installation-id"))?.trim(); // brand-keep
   const identitySource = isNonEmptyString(installationID) ? installationID : clientIP(request);
   const installationHash = await sha256(identitySource + installationSalt);
 

@@ -33,11 +33,11 @@ function anomalyCount(redis: ReturnType<typeof makeRedis>, date: string): number
 }
 
 beforeEach(() => {
-  process.env.CALORISOR_DAILY_COST_ALERT_MICROUSD = "1000";
+  process.env.CALP_DAILY_COST_ALERT_MICROUSD = "1000";
 });
 
 afterEach(() => {
-  delete process.env.CALORISOR_DAILY_COST_ALERT_MICROUSD;
+  delete process.env.CALP_DAILY_COST_ALERT_MICROUSD;
 });
 
 describe("recordOpenAICost cumulative daily alarm", () => {

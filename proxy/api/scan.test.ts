@@ -97,8 +97,8 @@ function request(
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-calorisor-key": "test-client-key",
-      "x-calorisor-installation-id": "installation-a",
+      "x-calp-key": "test-client-key",
+      "x-calp-installation-id": "installation-a",
       ...headers,
     },
     body: JSON.stringify(body),
@@ -136,7 +136,7 @@ function photoBody(
 }
 
 beforeEach(() => {
-  process.env.CALORISOR_CLIENT_KEY = "test-client-key";
+  process.env.CALP_CLIENT_KEY = "test-client-key";
   process.env.OPENAI_API_KEY = "test-openai-key";
   process.env.INSTALLATION_HASH_SALT = "test-installation-salt";
   delete process.env.REQUIRE_INSTALLATION_ID;
@@ -175,9 +175,9 @@ describe("POST /api/scan proxy contract", () => {
     expect(englishResponse.status).toBe(200);
     expect(cachedEnglishResponse.status).toBe(200);
     expect(fakes.fetch).toHaveBeenCalledTimes(2);
-    expect(cachedEnglishResponse.headers.get("x-calorisor-cache")).toBe("hit");
+    expect(cachedEnglishResponse.headers.get("x-calp-cache")).toBe("hit");
     expect(
-      [...fakes.values.keys()].filter((key) => key.startsWith("calorisor:scan:v3:")),
+      [...fakes.values.keys()].filter((key) => key.startsWith("calp:scan:v3:")),
     ).toHaveLength(2);
   });
 
@@ -187,19 +187,19 @@ describe("POST /api/scan proxy contract", () => {
 
     expect(first.status).toBe(200);
     expect(second.status).toBe(200);
-    expect(second.headers.get("x-calorisor-cache")).toBe("hit");
-    expect(second.headers.get("x-calorisor-text-remaining")).toBe("1");
-    expect(second.headers.get("x-calorisor-input-tokens")).toBe("0");
-    expect(second.headers.get("x-calorisor-output-tokens")).toBe("0");
-    expect(second.headers.get("x-calorisor-cached-input-tokens")).toBe("0");
-    expect(second.headers.get("x-calorisor-reasoning-tokens")).toBe("0");
+    expect(second.headers.get("x-calp-cache")).toBe("hit");
+    expect(second.headers.get("x-calp-text-remaining")).toBe("1");
+    expect(second.headers.get("x-calp-input-tokens")).toBe("0");
+    expect(second.headers.get("x-calp-output-tokens")).toBe("0");
+    expect(second.headers.get("x-calp-cached-input-tokens")).toBe("0");
+    expect(second.headers.get("x-calp-reasoning-tokens")).toBe("0");
     // A Redis response-cache hit makes no OpenAI call, so the calculated cost is 0.
-    expect(second.headers.get("x-calorisor-calculated-cost-microusd")).toBe("0");
+    expect(second.headers.get("x-calp-calculated-cost-microusd")).toBe("0");
     // Deprecated alias must still mirror the canonical value for old clients.
-    expect(second.headers.get("x-calorisor-estimated-cost-microusd")).toBe("0");
+    expect(second.headers.get("x-calp-estimated-cost-microusd")).toBe("0");
     // The model is still reported on a cache hit (the cache is keyed by model).
-    expect(second.headers.get("x-calorisor-model")).toBe("gpt-5-nano");
-    expect(second.headers.get("x-calorisor-request-id")).toMatch(/^[0-9a-f-]{36}$/);
+    expect(second.headers.get("x-calp-model")).toBe("gpt-5-nano");
+    expect(second.headers.get("x-calp-request-id")).toMatch(/^[0-9a-f-]{36}$/);
     expect(fakes.incrementCount).toBe(1);
     expect(fakes.fetch).toHaveBeenCalledTimes(1);
   });
@@ -217,12 +217,12 @@ describe("POST /api/scan proxy contract", () => {
 
     const response = await handler(request(textBody("elma")));
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-calorisor-input-tokens")).toBe("1000");
-    expect(response.headers.get("x-calorisor-output-tokens")).toBe("500");
+    expect(response.headers.get("x-calp-input-tokens")).toBe("1000");
+    expect(response.headers.get("x-calp-output-tokens")).toBe("500");
     // 1,000 × $0.05/M + 500 × $0.40/M = 250 microusd.
-    expect(response.headers.get("x-calorisor-estimated-cost-microusd")).toBe("250");
-    expect(response.headers.get("x-calorisor-openai-response-time-ms")).toMatch(/^\d+$/);
-    expect(response.headers.get("x-calorisor-redis-lookup-time-ms")).toMatch(/^\d+$/);
+    expect(response.headers.get("x-calp-estimated-cost-microusd")).toBe("250");
+    expect(response.headers.get("x-calp-openai-response-time-ms")).toMatch(/^\d+$/);
+    expect(response.headers.get("x-calp-redis-lookup-time-ms")).toMatch(/^\d+$/);
 
     fakes.fetch.mockImplementationOnce(async () =>
       new Response(
@@ -232,7 +232,7 @@ describe("POST /api/scan proxy contract", () => {
     );
     const withoutUsage = await handler(request(textBody("armut")));
     expect(withoutUsage.status).toBe(200);
-    expect(withoutUsage.headers.get("x-calorisor-estimated-cost-microusd")).toBe("0");
+    expect(withoutUsage.headers.get("x-calp-estimated-cost-microusd")).toBe("0");
   });
 
   it("breaks out cached input and reasoning tokens and bills cache cheaply", async () => {
@@ -254,13 +254,13 @@ describe("POST /api/scan proxy contract", () => {
 
     const response = await handler(request(textBody("pilav")));
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-calorisor-model")).toBe("gpt-5-nano");
-    expect(response.headers.get("x-calorisor-input-tokens")).toBe("2000");
-    expect(response.headers.get("x-calorisor-cached-input-tokens")).toBe("1500");
-    expect(response.headers.get("x-calorisor-reasoning-tokens")).toBe("250");
+    expect(response.headers.get("x-calp-model")).toBe("gpt-5-nano");
+    expect(response.headers.get("x-calp-input-tokens")).toBe("2000");
+    expect(response.headers.get("x-calp-cached-input-tokens")).toBe("1500");
+    expect(response.headers.get("x-calp-reasoning-tokens")).toBe("250");
     // 500 uncached × $0.05 + 1500 cached × $0.005 + 400 × $0.40 (per 1M) = 193.
-    expect(response.headers.get("x-calorisor-calculated-cost-microusd")).toBe("193");
-    expect(response.headers.get("x-calorisor-estimated-cost-microusd")).toBe("193");
+    expect(response.headers.get("x-calp-calculated-cost-microusd")).toBe("193");
+    expect(response.headers.get("x-calp-estimated-cost-microusd")).toBe("193");
 
     const date = new Date().toISOString().slice(0, 10);
     // Cost lands in the single cumulative daily total (shared with weekly).
@@ -283,14 +283,14 @@ describe("POST /api/scan proxy contract", () => {
     expect(fakes.requestLogs).toHaveLength(1);
 
     const log = JSON.parse(fakes.requestLogs[0]) as Record<string, unknown>;
-    expect(log.request_id).toBe(response.headers.get("x-calorisor-request-id"));
+    expect(log.request_id).toBe(response.headers.get("x-calp-request-id"));
     expect(log.input_chars).toBe(4);
     expect(log).not.toHaveProperty("text");
     expect(log).not.toHaveProperty("prompt");
     expect(log).not.toHaveProperty("response");
     expect(log).not.toHaveProperty("installation_id");
     expect(log).not.toHaveProperty("ip");
-    expect(fakes.redis.ltrim).toHaveBeenCalledWith("calorisor:request-logs", 0, 999);
+    expect(fakes.redis.ltrim).toHaveBeenCalledWith("calp:request-logs", 0, 999);
   });
 
   it("enforces the free text quota while allowing the photo pool separately", async () => {
@@ -311,7 +311,7 @@ describe("POST /api/scan proxy contract", () => {
 
   it("rejects an invalid client key before touching infrastructure", async () => {
     const response = await handler(
-      request(textBody("elma"), { "x-calorisor-key": "wrong-key" }),
+      request(textBody("elma"), { "x-calp-key": "wrong-key" }),
     );
 
     expect(response.status).toBe(401);

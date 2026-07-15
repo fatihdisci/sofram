@@ -217,7 +217,7 @@ export function formatDailyReport(report: DailyReport): string {
     (model) => `  ${model}: ${money(cost.model[model] ?? 0)}`,
   );
   return [
-    `Calorisor proxy report — ${report.date}`,
+    `Calp proxy report — ${report.date}`,
     "",
     "SCAN REQUESTS",
     `  Total: ${scan["requests:total"]} | free: ${scan["requests:free"]} | pro: ${scan["requests:pro"]}`,

@@ -1,8 +1,13 @@
 import { compactVerify, decodeProtectedHeader, decodeJwt, importX509 } from "jose";
 
 export const PRO_PRODUCT_IDS = new Set([
-  "com.fatih.calorisor.monthly",
-  "com.fatih.calorisor.annual",
+  "com.fatih.calp.monthly",
+  "com.fatih.calp.annual",
+  // brand-keep: legacy pre-rename product IDs stay entitled for anyone who
+  // subscribed before the Calp rename. App Store Connect product IDs are
+  // immutable once created, so old subscriptions keep their original IDs.
+  "com.fatih.calorisor.monthly", // brand-keep
+  "com.fatih.calorisor.annual", // brand-keep
 ]);
 
 export interface EntitlementDecision {
@@ -99,8 +104,12 @@ export async function resolveEntitlement(
   claimedPro: boolean,
   now: number = Date.now(),
 ): Promise<EntitlementDecision> {
-  const key = `calorisor:entitlement:${installationHash}`;
-  const cached = await redis.get<string>(key);
+  const key = `calp:entitlement:${installationHash}`;
+  // brand-keep: dual-read the pre-rename namespace during the migration window so
+  // any debug build cached under the old key keeps its entitlement until TTL
+  // expiry. New entries are always written under the calp: namespace below.
+  const legacyKey = `calorisor:entitlement:${installationHash}`; // brand-keep
+  const cached = (await redis.get<string>(key)) ?? (await redis.get<string>(legacyKey));
   if (cached) {
     try {
       const decision = JSON.parse(cached) as EntitlementDecision;

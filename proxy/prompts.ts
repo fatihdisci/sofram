@@ -1,4 +1,4 @@
-// MUST MATCH Sofra/Networking/AIProxyClient.swift prompts — update both together.
+// MUST MATCH Calp/Networking/AIProxyClient.swift prompts — update both together.
 
 /**
  * Bump whenever the prompt text below meaningfully changes. It is part of the

@@ -56,27 +56,27 @@ interface RequestTelemetry {
 function telemetryHeaders(telemetry: RequestTelemetry): Record<string, string> {
   const tokens = tokenBreakdown(telemetry.usage);
   return {
-    "x-calorisor-request-id": telemetry.requestID,
-    "x-calorisor-response-time-ms": String(Math.max(0, Date.now() - telemetry.startedAt)),
-    "x-calorisor-openai-response-time-ms": String(telemetry.openAIResponseTimeMs),
-    "x-calorisor-redis-lookup-time-ms": String(telemetry.redisLookupTimeMs),
-    "x-calorisor-model": telemetry.model,
-    "x-calorisor-input-tokens": String(tokens.promptTokens),
-    "x-calorisor-output-tokens": String(tokens.completionTokens),
-    "x-calorisor-cached-input-tokens": String(tokens.cachedInputTokens),
-    "x-calorisor-reasoning-tokens": String(tokens.reasoningTokens),
-    "x-calorisor-calculated-cost-microusd": String(telemetry.calculatedCostMicrousd),
+    "x-calp-request-id": telemetry.requestID,
+    "x-calp-response-time-ms": String(Math.max(0, Date.now() - telemetry.startedAt)),
+    "x-calp-openai-response-time-ms": String(telemetry.openAIResponseTimeMs),
+    "x-calp-redis-lookup-time-ms": String(telemetry.redisLookupTimeMs),
+    "x-calp-model": telemetry.model,
+    "x-calp-input-tokens": String(tokens.promptTokens),
+    "x-calp-output-tokens": String(tokens.completionTokens),
+    "x-calp-cached-input-tokens": String(tokens.cachedInputTokens),
+    "x-calp-reasoning-tokens": String(tokens.reasoningTokens),
+    "x-calp-calculated-cost-microusd": String(telemetry.calculatedCostMicrousd),
     // Deprecated alias, kept one release so clients reading the old header keep
-    // working; it mirrors x-calorisor-calculated-cost-microusd exactly.
-    "x-calorisor-estimated-cost-microusd": String(telemetry.calculatedCostMicrousd),
+    // working; it mirrors x-calp-calculated-cost-microusd exactly.
+    "x-calp-estimated-cost-microusd": String(telemetry.calculatedCostMicrousd),
     // Redis response-cache outcome (NOT OpenAI's prompt cache).
-    "x-calorisor-cache": telemetry.cacheStatus,
+    "x-calp-cache": telemetry.cacheStatus,
   };
 }
 
 const METRIC_RETENTION_SECONDS = 35 * 24 * 60 * 60;
 const REQUEST_LOG_RETENTION_SECONDS = 30 * 24 * 60 * 60;
-const REQUEST_LOG_KEY = "calorisor:request-logs";
+const REQUEST_LOG_KEY = "calp:request-logs";
 // Cost counters (cost:microusd, cost:scan, cost:model:*, cost:mode:*) are NOT
 // listed here: they are owned exclusively by recordOpenAICost (lib/metrics.ts)
 // so the day's total is aggregated in exactly one place and never double-counted.
@@ -302,7 +302,7 @@ function getUpstashInfrastructure(): UpstashInfrastructure {
     minuteLimit: new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(10, "1 m"),
-      prefix: "calorisor:rate:minute",
+      prefix: "calp:rate:minute",
     }),
   };
   return upstashInfrastructure;
@@ -333,7 +333,7 @@ function utcDate(now: Date = new Date()): string {
 }
 
 function usageKey(identityKey: string, pool: UsagePool, date: string): string {
-  return `calorisor:usage:${date}:${identityKey}:${pool}`;
+  return `calp:usage:${date}:${identityKey}:${pool}`;
 }
 
 /** Remaining-quota response headers for a successful (or blocked) scan (§16). */
@@ -344,11 +344,11 @@ function limitHeaders(
 ): Record<string, string> {
   const limit = DAILY_LIMITS[tier];
   return {
-    "x-calorisor-tier": tier,
-    "x-calorisor-photo-remaining": String(Math.max(0, limit.photo - photoUsed)),
-    "x-calorisor-photo-limit": String(limit.photo),
-    "x-calorisor-text-remaining": String(Math.max(0, limit.text - textUsed)),
-    "x-calorisor-text-limit": String(limit.text),
+    "x-calp-tier": tier,
+    "x-calp-photo-remaining": String(Math.max(0, limit.photo - photoUsed)),
+    "x-calp-photo-limit": String(limit.photo),
+    "x-calp-text-remaining": String(Math.max(0, limit.text - textUsed)),
+    "x-calp-text-limit": String(limit.text),
   };
 }
 
@@ -363,7 +363,7 @@ function dailyLimitResponse(
     {
       status: 429,
       headers: {
-        "x-calorisor-cache": "miss",
+        "x-calp-cache": "miss",
         ...limitHeaders(tier, photoUsed, textUsed),
       },
     },
@@ -445,7 +445,7 @@ function jsonError(
     { error },
     {
       status,
-      headers: { "x-calorisor-cache": "miss" },
+      headers: { "x-calp-cache": "miss" },
     },
   );
 }
@@ -500,7 +500,10 @@ function clientIP(request: Request): string {
   return forwarded || request.headers.get("x-real-ip")?.trim() || "unknown";
 }
 
-const INSTALLATION_ID_HEADER = "x-calorisor-installation-id";
+const INSTALLATION_ID_HEADER = "x-calp-installation-id";
+// brand-keep: the pre-rename installation-id header is still accepted while
+// older debug builds remain in circulation.
+const LEGACY_INSTALLATION_ID_HEADER = "x-calorisor-installation-id"; // brand-keep
 
 interface LimitIdentity {
   /** SHA-256 rate-limit key. Never the raw installation UUID or a raw IP. */
@@ -512,7 +515,7 @@ interface LimitIdentity {
  * Resolve the anonymous rate-limit identity for a request.
  *
  * Preferred: `SHA256(installation_id + INSTALLATION_HASH_SALT)` from the
- * `x-calorisor-installation-id` header — a stable per-install key that survives
+ * `x-calp-installation-id` header — a stable per-install key that survives
  * IP changes and shared networks (scope doc §8.2 / §11.1). The raw UUID is
  * hashed with a server-held salt and is never logged or stored in the clear.
  *
@@ -550,7 +553,7 @@ async function cacheKey(forRequest: ScanRequest, model: string): Promise<string>
   // normalized input, so nano/mini results, per-language prompts, and old prompt
   // revisions can never cross-serve each other. Bump v3 if input normalization
   // itself changes; bump PROMPT_VERSION when the prompt text changes.
-  return `calorisor:scan:v3:${forRequest.mode}:${forRequest.locale}:${model}:${PROMPT_VERSION}:${inputHash}`;
+  return `calp:scan:v3:${forRequest.mode}:${forRequest.locale}:${model}:${PROMPT_VERSION}:${inputHash}`;
 }
 
 function isScanRequest(value: unknown): value is ScanRequest {
@@ -648,8 +651,13 @@ export default async function handler(request: Request): Promise<Response> {
     return jsonError("invalid_request", 400);
   }
 
-  const clientKey = process.env.CALORISOR_CLIENT_KEY;
-  if (!clientKey || request.headers.get("x-calorisor-key") !== clientKey) {
+  // brand-keep: new CALP_* env wins; the old name is a transition fallback so a
+  // not-yet-updated Vercel environment keeps authenticating.
+  const clientKey = process.env.CALP_CLIENT_KEY ?? process.env.CALORISOR_CLIENT_KEY; // brand-keep
+  // brand-keep: accept the pre-rename request header during the client rollout.
+  const presentedClientKey = request.headers.get("x-calp-key")
+    ?? request.headers.get("x-calorisor-key"); // brand-keep
+  if (!clientKey || presentedClientKey !== clientKey) {
     try {
       await Redis.fromEnv().incrby(anomalyKey(utcDate(), "invalid_key"), 1);
     } catch { /* an alert must not reveal infrastructure state */ }
@@ -702,7 +710,8 @@ export default async function handler(request: Request): Promise<Response> {
     // falling back to a hashed IP for clients that predate the header. Once every
     // shipped build sends it, set REQUIRE_INSTALLATION_ID=true to reject the
     // missing-header case instead of falling back.
-    const rawInstallationID = request.headers.get(INSTALLATION_ID_HEADER)?.trim();
+    const rawInstallationID = (request.headers.get(INSTALLATION_ID_HEADER)
+      ?? request.headers.get(LEGACY_INSTALLATION_ID_HEADER))?.trim();
     if (
       !isNonEmptyString(rawInstallationID) &&
       process.env.REQUIRE_INSTALLATION_ID === "true"

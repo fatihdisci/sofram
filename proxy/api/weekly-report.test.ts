@@ -7,7 +7,7 @@ const fakes = vi.hoisted(() => {
   let entitlement = "pro";
   const redis = {
     get: vi.fn(async (key: string) => {
-      if (key.startsWith("calorisor:entitlement:")) {
+      if (key.startsWith("calp:entitlement:")) {
         return JSON.stringify({
           tier: entitlement,
           verificationFailed: false,
@@ -83,8 +83,8 @@ function request(body: Record<string, unknown>): Request {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-calorisor-key": "test-client-key",
-      "x-calorisor-installation-id": "installation-a",
+      "x-calp-key": "test-client-key",
+      "x-calp-installation-id": "installation-a",
     },
     body: JSON.stringify(body),
   });
@@ -103,7 +103,7 @@ function body(overrides: Record<string, unknown> = {}): Record<string, unknown> 
 }
 
 beforeEach(() => {
-  process.env.CALORISOR_CLIENT_KEY = "test-client-key";
+  process.env.CALP_CLIENT_KEY = "test-client-key";
   process.env.OPENAI_API_KEY = "test-openai-key";
   process.env.INSTALLATION_HASH_SALT = "test-installation-salt";
   vi.stubGlobal("crypto", webcrypto);
@@ -136,8 +136,8 @@ describe("POST /api/weekly-report proxy contract", () => {
 
     expect(first.status).toBe(200);
     expect(second.status).toBe(200);
-    expect(first.headers.get("x-calorisor-cache")).toBe("miss");
-    expect(second.headers.get("x-calorisor-cache")).toBe("hit");
+    expect(first.headers.get("x-calp-cache")).toBe("miss");
+    expect(second.headers.get("x-calp-cache")).toBe("hit");
     expect(fakes.fetch).toHaveBeenCalledTimes(1);
 
     const openAIRequest = JSON.parse(String(fakes.fetch.mock.calls[0][1].body)) as {
@@ -163,17 +163,17 @@ describe("POST /api/weekly-report proxy contract", () => {
 
   it("keys the cache by locale, model, and prompt version", async () => {
     await handler(request(body()));
-    const trKeys = [...fakes.values.keys()].filter((key) => key.startsWith("calorisor:weekly:"));
+    const trKeys = [...fakes.values.keys()].filter((key) => key.startsWith("calp:weekly:"));
     expect(trKeys).toHaveLength(1);
-    // calorisor:weekly:v2:{locale}:{model}:{promptVersion}:{summaryHash}:{week}
+    // calp:weekly:v2:{locale}:{model}:{promptVersion}:{summaryHash}:{week}
     expect(trKeys[0]).toMatch(
-      /^calorisor:weekly:v2:tr_TR:gpt-5-mini:1:[0-9a-f]{64}:2026-W29$/,
+      /^calp:weekly:v2:tr_TR:gpt-5-mini:1:[0-9a-f]{64}:2026-W29$/,
     );
 
     // A different locale, same summary/week, must NOT reuse the Turkish entry —
     // so an English user never gets the Turkish report back from cache.
     await handler(request(body({ locale: "en_US" })));
-    const allKeys = [...fakes.values.keys()].filter((key) => key.startsWith("calorisor:weekly:v2:"));
+    const allKeys = [...fakes.values.keys()].filter((key) => key.startsWith("calp:weekly:v2:"));
     expect(allKeys.some((key) => key.includes(":tr_TR:"))).toBe(true);
     expect(allKeys.some((key) => key.includes(":en_US:"))).toBe(true);
     expect(fakes.fetch).toHaveBeenCalledTimes(2);
@@ -184,7 +184,7 @@ describe("POST /api/weekly-report proxy contract", () => {
     const refreshed = await handler(request(body({ force_refresh: true })));
 
     expect(refreshed.status).toBe(200);
-    expect(refreshed.headers.get("x-calorisor-cache")).toBe("miss");
+    expect(refreshed.headers.get("x-calp-cache")).toBe("miss");
     expect(fakes.fetch).toHaveBeenCalledTimes(2);
   });
 

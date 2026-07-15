@@ -18,7 +18,8 @@ const DEFAULT_DAILY_COST_ALERT_MICROUSD = 10_000_000;
 
 /** Resolve the daily spend ceiling (microusd) from the environment. */
 export function dailyCostAlertMicrousd(): number {
-  const raw = Number(process.env.CALORISOR_DAILY_COST_ALERT_MICROUSD);
+  // brand-keep: new CALP_* env wins; the old name is a transition fallback.
+  const raw = Number(process.env.CALP_DAILY_COST_ALERT_MICROUSD ?? process.env.CALORISOR_DAILY_COST_ALERT_MICROUSD); // brand-keep
   return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_DAILY_COST_ALERT_MICROUSD;
 }
 
