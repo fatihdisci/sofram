@@ -1,14 +1,14 @@
 #
-#  project.yml — XcodeGen spec for Calorisor
+#  project.yml — XcodeGen spec for Calp
 #
 #  Regenerate the .xcodeproj after changing this file (or adding/removing sources):
 #      xcodegen generate
 #
-#  Both project.yml and the generated Calorisor.xcodeproj are committed, so the app can
+#  Both project.yml and the generated Calp.xcodeproj are committed, so the app can
 #  be opened directly without XcodeGen installed.
 #
 
-name: Calorisor
+name: Calp
 
 options:
   bundleIdPrefix: com.fatih
@@ -45,12 +45,12 @@ settings:
     ENABLE_USER_SCRIPT_SANDBOXING: "YES"
 
 targets:
-  Calorisor:
+  Calp:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
     sources:
-      - path: Calorisor
+      - path: Calp
         excludes:
           - "**/*.md"
           - "Info.plist"
@@ -58,59 +58,59 @@ targets:
           - "*.entitlements"
     settings:
       base:
-        PRODUCT_NAME: Calorisor
-        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calorisor
-        INFOPLIST_FILE: Calorisor/Info.plist
-        CODE_SIGN_ENTITLEMENTS: Calorisor/Calorisor.entitlements
+        PRODUCT_NAME: Calp
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calp
+        INFOPLIST_FILE: Calp/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Calp/Calp.entitlements
         GENERATE_INFOPLIST_FILE: "NO"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ENABLE_PREVIEWS: "YES"
         TARGETED_DEVICE_FAMILY: "1"
         CODE_SIGN_STYLE: Automatic
-        INFOPLIST_KEY_NSHealthShareUsageDescription: "Calorisor reads weight, height, active energy, and steps to personalize your nutrition view."
-        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Calorisor writes meal calories and macros to Health."
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "Calp reads weight, height, active energy, and steps to personalize your nutrition view."
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Calp writes meal calories and macros to Health."
     dependencies:
-      - target: CalorisorWidgetExtension
+      - target: CalpWidgetExtension
       - package: Pow
         product: Pow
       - package: Lottie
         product: Lottie
     scheme:
       testTargets:
-        - CalorisorTests
+        - CalpTests
       gatherCoverageData: false
-      storeKitConfiguration: Calorisor/StoreKit/Products.storekit
+      storeKitConfiguration: Calp/StoreKit/Products.storekit
 
-  CalorisorTests:
+  CalpTests:
     type: bundle.unit-test
     platform: iOS
     deploymentTarget: "17.0"
     sources:
-      - path: CalorisorTests
+      - path: CalpTests
     dependencies:
-      - target: Calorisor
+      - target: Calp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calorisor.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calp.tests
         GENERATE_INFOPLIST_FILE: "YES"
         TARGETED_DEVICE_FAMILY: "1"
 
-  CalorisorWidgetExtension:
+  CalpWidgetExtension:
     type: app-extension
     platform: iOS
     deploymentTarget: "17.0"
     sources:
-      - path: CalorisorWidget
-      - path: Calorisor/Models/WidgetDailySummary.swift
-      - path: Calorisor/Models/WidgetDataStore.swift
-      - path: Calorisor/Assets.xcassets
+      - path: CalpWidget
+      - path: Calp/Models/WidgetDailySummary.swift
+      - path: Calp/Models/WidgetDataStore.swift
+      - path: Calp/Assets.xcassets
     settings:
       base:
-        PRODUCT_NAME: "Calorisor Widget"
-        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calorisor.widget
-        INFOPLIST_FILE: CalorisorWidget/Info.plist
-        CODE_SIGN_ENTITLEMENTS: CalorisorWidget/CalorisorWidget.entitlements
+        PRODUCT_NAME: "Calp Widget"
+        PRODUCT_BUNDLE_IDENTIFIER: com.fatih.calp.widget
+        INFOPLIST_FILE: CalpWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: CalpWidget/CalpWidget.entitlements
         GENERATE_INFOPLIST_FILE: "NO"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1"

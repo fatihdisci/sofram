@@ -1,0 +1,7 @@
+"CFBundleDisplayName" = "Calp";
+"NSCameraUsageDescription" = "Calp uses your camera to recognise food on your plate and estimate calories and macros.";
+"NSPhotoLibraryUsageDescription" = "You can share food photos with Calp for analysis.";
+"NSMicrophoneUsageDescription" = "Calp uses your microphone so you can say what you ate and have it turned into text.";
+"NSSpeechRecognitionUsageDescription" = "Calp uses speech recognition to turn the meal you speak into text.";
+"NSHealthShareUsageDescription" = "Calp reads your weight, height, active energy, and steps to personalize your nutrition view.";
+"NSHealthUpdateUsageDescription" = "Calp writes meal calories and macros to Health.";

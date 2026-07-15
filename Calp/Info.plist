@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Calp</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+
+	<!-- Purpose strings -->
+	<key>NSCameraUsageDescription</key>
+	<string>Calp, tabağınızdaki yemekleri tanıyıp kalori ve makro tahmini yapmak için kameranızı kullanır.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Yemek fotoğraflarınızı analiz için Calp ile paylaşabilirsiniz.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Calp, ne yediğinizi sesle söyleyip metne çevirebilmek için mikrofonunuzu kullanır.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Söylediğiniz öğünü yazıya dökmek için Calp konuşma tanımayı kullanır.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Calp, beslenme görünümünüzü kişiselleştirmek için kilo, boy, aktif enerji ve adım verilerinizi okur.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Calp, öğün kalorilerini ve makrolarını Sağlık uygulamasına kaydeder.</string>
+
+	<!-- Widget deep link: calp://daily → günlük özet -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.fatih.calp</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>calp</string>
+			</array>
+		</dict>
+	</array>
+
+	<!-- AI proxy endpoint (configurable). -->
+	<key>AIProxyEndpointURL</key>
+	<string>https://sofram-five.vercel.app/api/scan</string>
+	<key>AIProxyAPIKey</key>
+	<string>0acf371e226a6ce980b1f177b07f6f65602b15a79862c5c64d732815db62d1f3</string>
+
+	<!-- Custom fonts: Geist Sans (UI) + Geist Mono (numeric displays) -->
+	<key>UIAppFonts</key>
+	<array>
+		<string>Geist-Regular.otf</string>
+		<string>Geist-Medium.otf</string>
+		<string>Geist-SemiBold.otf</string>
+		<string>GeistMono-Regular.otf</string>
+		<string>GeistMono-Medium.otf</string>
+	</array>
+</dict>
+</plist>
