@@ -188,10 +188,10 @@ Every screen-to-screen transition uses the standard `spring(response: 0.4, dampi
 Per `mikro-etkilesimler.md`: "widget'a dokunma → app açılışında halka zaten doğru değerde, ayrıca bir yükleme durumu görünmemeli."
 
 Verified the following path works correctly:
-1. Widget tap sends `sofra://daily` URL.
+1. Widget tap sends `calp://daily` URL.
 2. `ContentView.onOpenURL` catches it → calls `nav.goToDaily()`.
 3. If onboarding is completed (normal widget user), the DailyView is shown immediately.
-4. The calorie ring reads from `@AppStorage("sofra.dailyCalorieTarget")` and SwiftData `@Query` — both already in memory. No loading state.
+4. The calorie ring reads from `@AppStorage("calp.dailyCalorieTarget")` and SwiftData `@Query` — both already in memory. No loading state.
 5. If onboarding is NOT completed (edge case: widget added before onboarding), the URL handler still fires but the user sees OnboardingView. This is correct — we cannot bypass onboarding. Once completed, the daily view shows.
 
 No fix needed — the widget transition already meets the catalog requirement.
@@ -202,15 +202,15 @@ No fix needed — the widget transition already meets the catalog requirement.
 
 The following catalog entries are for features that don't exist yet — skipped per phase prompt:
 
-- **Tencere kalibrasyonu (pot calibration)** — "Sofra Modu" feature, v1.1. Skip.
-- **Sofra Modu table photo analysis** — v1.1. Skip.
+- **Tencere kalibrasyonu (pot calibration)** — "Calp Modu" feature, v1.1. Skip.
+- **Calp Modu table photo analysis** — v1.1. Skip.
 - **Porsiyon seçimi dolma animasyonu** — v1.1. Skip.
 
 ---
 
 ## Verification performed
 
-- `xcodebuild -scheme Sofra -sdk iphonesimulator build` → **BUILD SUCCEEDED** — zero errors, zero warnings, both targets.
+- `xcodebuild -scheme Calp -sdk iphonesimulator build` → **BUILD SUCCEEDED** — zero errors, zero warnings, both targets.
 - Manual code audit of every `.swift` file for animation conformance.
 - Haptic dictionary mapping verified across all interactive screens.
 - Screen transition audit: zero `.easeInOut`, `.linear`, or `.default` animations remain.

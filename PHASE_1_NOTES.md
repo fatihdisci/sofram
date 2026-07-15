@@ -1,11 +1,11 @@
 # Phase 1 Notes — Project Skeleton + Design Tokens + AI Proxy Client
 
-Buildable foundation for **Sofra**. No feature UI yet (camera, scanning, onboarding,
+Buildable foundation for **Calp**. No feature UI yet (camera, scanning, onboarding,
 paywall are later phases) — this is project structure, the SwiftData/CloudKit data
-layer, the "Yumuşak Sofra" design-system wiring, and the model-agnostic AI proxy client.
+layer, the "Yumuşak Calp" design-system wiring, and the model-agnostic AI proxy client.
 
 Verified: builds against the iOS 26.5 SDK (min deployment **iOS 17.0**), installs, and
-launches on the simulator rendering the placeholder **Sofra** screen (see
+launches on the simulator rendering the placeholder **Calp** screen (see
 "Verification" below). CloudKit private-DB mirroring activates in signed/entitled builds.
 
 ---
@@ -13,10 +13,10 @@ launches on the simulator rendering the placeholder **Sofra** screen (see
 ## How to open / build / run
 
 The Xcode project is generated with **XcodeGen** from `project.yml`. Both `project.yml`
-and the generated `Sofra.xcodeproj` are committed, so you can just open the project:
+and the generated `Calp.xcodeproj` are committed, so you can just open the project:
 
 ```bash
-open Sofra.xcodeproj
+open Calp.xcodeproj
 ```
 
 If you change `project.yml` or add/remove source files, regenerate:
@@ -28,14 +28,14 @@ xcodegen generate
 Command-line build used to verify this phase (unsigned simulator build):
 
 ```bash
-xcodebuild -project Sofra.xcodeproj -scheme Sofra -sdk iphonesimulator \
+xcodebuild -project Calp.xcodeproj -scheme Calp -sdk iphonesimulator \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
   -configuration Debug CODE_SIGNING_ALLOWED=NO build
 ```
 
 **To run on a device / enable real CloudKit sync:** set `DEVELOPMENT_TEAM` in
 `project.yml` (or select your team in Xcode → Signing & Capabilities), then regenerate.
-The CloudKit capability + the container `iCloud.com.fatih.sofra` must be created in your
+The CloudKit capability + the container `iCloud.com.fatih.calp` must be created in your
 Apple Developer account (Xcode's "Signing & Capabilities" will offer to create it).
 
 ---
@@ -43,15 +43,15 @@ Apple Developer account (Xcode's "Signing & Capabilities" will offer to create i
 ## Project layout
 
 ```
-Sofra/
-  App/            SofraApp.swift (@main, injects the model container), ContentView.swift
+Calp/
+  App/            CalpApp.swift (@main, injects the model container), ContentView.swift
   Models/         SwiftData @Model types + PortionUnit
-  DesignSystem/   Color+/Font+/Layout/Surfaces/SofraIcon (design-token wiring)
+  DesignSystem/   Color+/Font+/Layout/Surfaces/CalpIcon (design-token wiring)
   Networking/     AIProxyClient, VisionResponse (DTOs), FreeScanCounter
-  Persistence/    SofraModelContainer (SwiftData + CloudKit private DB)
+  Persistence/    CalpModelContainer (SwiftData + CloudKit private DB)
   Resources/Fonts README.md (Geist drop-in slot)
   Assets.xcassets Colors/ (14 token color sets), AccentColor, AppIcon
-  Info.plist, Sofra.entitlements
+  Info.plist, Calp.entitlements
 project.yml       XcodeGen spec
 ```
 
@@ -60,16 +60,16 @@ project.yml       XcodeGen spec
 ## 1. SVG → SwiftUI icon approach (**chosen: Shape-based, parsed at runtime**)
 
 The 8 line icons are rendered as **SwiftUI `Shape` views**, not PDF/PNG assets.
-`SofraIcon.swift` embeds each icon's geometry *verbatim* (the original SVG `d` path
+`CalpIcon.swift` embeds each icon's geometry *verbatim* (the original SVG `d` path
 strings + `<circle>`/`<ellipse>` params) and a tiny built-in SVG-path parser
-(`SVGPath`) turns them into a `Path`, which `SofraIconView` strokes (1.5px @ 24pt,
+(`SVGPath`) turns them into a `Path`, which `CalpIconView` strokes (1.5px @ 24pt,
 round caps/joins — matching the source SVG attributes).
 
 Why this over converting to PDF vector assets:
 
 - **Exact geometry, zero transcription risk** — the path strings are copied as-is; the
   parser reproduces them. (Verified: the 8 icons were rendered by compiling the *actual*
-  shipping `SofraIcon.swift` into a macOS tool and rasterizing — all correct, including
+  shipping `CalpIcon.swift` into a macOS tool and rasterizing — all correct, including
   the `S`-curve reflections in çay bardağı/ekmek dilimi.)
 - **True `currentColor`** — tint with `.foregroundStyle(...)`; no template-image plumbing.
 - **Crisp at any size**, stroke scales proportionally.
@@ -81,9 +81,9 @@ Why this over converting to PDF vector assets:
 
 The parser intentionally supports only the commands these icons use: `M/L/H/V/C/S/Z`
 (absolute + relative) plus circle/ellipse. No elliptical-arc (`A`) or quadratic (`Q`)
-— none appear in the source set. Usage: `SofraIconView(icon: .kepce, size: 28)`.
+— none appear in the source set. Usage: `CalpIconView(icon: .kepce, size: 28)`.
 
-Icons: `kepce, tabak, cayBardagi, ekmekDilimi, kase, kasik, sofra, tencere`.
+Icons: `kepce, tabak, cayBardagi, ekmekDilimi, kase, kasik, calp, tencere`.
 
 ---
 
@@ -92,7 +92,7 @@ Icons: `kepce, tabak, cayBardagi, ekmekDilimi, kase, kasik, sofra, tencere`.
 Transport: **HTTP POST, JSON body, base64-encoded JPEG** (chosen over multipart for
 simplicity and to match the assumed Arvia-style proxy). Endpoint is configurable via the
 Info.plist key `AIProxyEndpointURL` (placeholder `https://REPLACE-ME.vercel.app/api/scan`
-this phase), optional shared secret via `AIProxyAPIKey` → sent as header `x-sofra-key`.
+this phase), optional shared secret via `AIProxyAPIKey` → sent as header `x-calp-key`.
 
 **Request** (`AIProxyRequest`):
 ```json
@@ -145,8 +145,8 @@ of **3** free scans. `canScanForFree = isSubscribed || usedScans < maxFreeScans`
 ## 3. Assumptions & decisions where the prompt/context was ambiguous
 
 1. **Bundle id / CloudKit container.** Proceeded with the blessed placeholder
-   `com.fatih.sofra` and container `iCloud.com.fatih.sofra`. Change in `project.yml`,
-   `Sofra.entitlements`, and `SofraModelContainer.cloudKitContainerID` if you want a
+   `com.fatih.calp` and container `iCloud.com.fatih.calp`. Change in `project.yml`,
+   `Calp.entitlements`, and `CalpModelContainer.cloudKitContainerID` if you want a
    different reverse-DNS.
 
 2. **`PortionUnit` is a superset** reconciling two differing lists in the source docs:
@@ -186,7 +186,7 @@ of **3** free scans. `canScanForFree = isSubscribed || usedScans < maxFreeScans`
 6. **Fonts: system fallback (Geist not bundled).** Per the prompt, the typography scale
    is wired to `.system(...)` with the exact token sizes/weights (mono uses `.monospaced`
    design → tabular figures). Switching to Geist is a documented 3-step drop-in
-   (`Sofra/Resources/Fonts/README.md` + flip `SofraTypography.geistAvailable`). No
+   (`Calp/Resources/Fonts/README.md` + flip `CalpTypography.geistAvailable`). No
    network fetch was done, to keep the phase self-contained.
 
 7. **Icons converted, not replaced.** All 8 custom icons are preserved as vector Shapes
@@ -203,7 +203,7 @@ of **3** free scans. `canScanForFree = isSubscribed || usedScans < maxFreeScans`
     `UIBackgroundModes: remote-notification` for CloudKit sync, and
     `ITSAppUsesNonExemptEncryption = false`.
 
-11. **Motion tokens** (`Layout.Motion`, `Animation.sofraSpring`) are exposed as constants
+11. **Motion tokens** (`Layout.Motion`, `Animation.calpSpring`) are exposed as constants
     only — the actual micro-interactions in `mikro-etkilesimler.md` are out of scope and
     not implemented.
 
@@ -216,8 +216,8 @@ of **3** free scans. `canScanForFree = isSubscribed || usedScans < maxFreeScans`
   (`Color.bgPage`, `.surfaceRaised`, `.accentFill`, `.textPrimary`, …). `AccentColor`
   set = accent-fill. Usage rule enforced by naming: `accentText` for emphasized
   text/numbers, `accentFill` for fills/icons only (it fails 4.5:1 as text).
-- **Typography** — `Font+Tokens.swift`: `.sofraDisplayNumeric/.sofraTitle/.sofraHeading/
-  .sofraBody/.sofraLabel/.sofraCaption/.sofraNumericSmall` matching `typography.scale`.
+- **Typography** — `Font+Tokens.swift`: `.calpDisplayNumeric/.calpTitle/.calpHeading/
+  .calpBody/.calpLabel/.calpCaption/.calpNumericSmall` matching `typography.scale`.
 - **Spacing / Radius / Motion** — `Layout.swift` (`Layout.Spacing.*`, `Layout.Radius.*`,
   `Layout.Motion.*`).
 - **Shadows** — `Surfaces.swift`: `.raisedSurface()` (two `.drop` shadows) and
@@ -225,9 +225,9 @@ of **3** free scans. `canScanForFree = isSubscribed || usedScans < maxFreeScans`
   SwiftUI's `.shadow()` view modifier can't do insets, so ShapeStyle shadows are used).
   Per-mode opacities copied verbatim from `shadow_recipe`; colors are the light/dark
   `borderHighlight`/`borderShadow` assets.
-- **Icons** — `SofraIcon.swift` (see §1).
+- **Icons** — `CalpIcon.swift` (see §1).
 
-`ContentView` exercises a color token, a font token, `.raisedSurface()`, and the `sofra`
+`ContentView` exercises a color token, a font token, `.raisedSurface()`, and the `calp`
 icon together as a compile+render smoke test of the whole design system.
 
 ---
@@ -235,8 +235,8 @@ icon together as a compile+render smoke test of the whole design system.
 ## Verification performed
 
 - `xcodebuild … build` → **BUILD SUCCEEDED** (iOS 26.5 SDK, min iOS 17.0, unsigned sim).
-- Icon parser validated by rendering the real shipping `SofraIcon.swift` to a PNG contact
+- Icon parser validated by rendering the real shipping `CalpIcon.swift` to a PNG contact
   sheet — all 8 icons correct.
 - App installed + launched on the iPhone 17 Pro simulator; process stays alive (no
-  crash); the placeholder **Sofra** screen renders with the correct bg color, raised
-  neomorphic card, copper `sofra` icon, and title/caption typography.
+  crash); the placeholder **Calp** screen renders with the correct bg color, raised
+  neomorphic card, copper `calp` icon, and title/caption typography.

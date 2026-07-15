@@ -1,17 +1,17 @@
-# Calorisor — Visual Differentiation & Polish Audit
+# Calp — Visual Differentiation & Polish Audit
 
-Branch: `roadmap` (dev branch `claude/calorisor-visual-polish-5idq85`).
+Branch: `roadmap` (dev branch `claude/calp-visual-polish-5idq85`).
 Date: 2026-07-14.
 
 This is a focused differentiation pass, **not** a redesign. The existing design
-system (`design-tokens.json`, `Calorisor/DesignSystem/`) and current product
+system (`design-tokens.json`, `Calp/DesignSystem/`) and current product
 behavior are the source of truth. Nothing about nutrition, persistence,
 StoreKit, scan/text/manual/edit/save flows changes.
 
 > Build note: this working copy is Linux-only — no `swift`, `xcodegen` or
 > `xcodebuild` toolchain is present, so the app/widget build and the test suite
 > must be run on a Mac. All source changes are written to be picked up by
-> `project.yml`'s existing `path: Calorisor` / `path: CalorisorTests` globs; a
+> `project.yml`'s existing `path: Calp` / `path: CalpTests` globs; a
 > `xcodegen generate` is required before building because the committed
 > `.xcodeproj` uses explicit file references (only the icon test file is new —
 > every app-facing change lands in an already-referenced file, so the app target
@@ -64,7 +64,7 @@ its pre-state sibling stays an SF Symbol. It also carries the literal text
 "Logla", so the icon is not load-bearing. Replacing it would break the morph for
 zero legibility gain.
 
-### A.2 Core product action → REPLACE_WITH_CALORISOR_ICON
+### A.2 Core product action → REPLACE_WITH_CALP_ICON
 
 Product-defining actions, replaced with the custom family **where rendered at a
 size the 1.5px line family stays legible (≥16pt)**. See the legibility policy in
@@ -105,7 +105,7 @@ but:
   restrained. The badge already pairs **icon + text** ("Doğrulanmış" /
   "Emin değilim") in a single `accentText` tone, so source is never signalled by
   colour alone — that contract is preserved.
-- `App/ContentView.swift:378` "Calorisor Pro" active row: `checkmark.seal.fill`
+- `App/ContentView.swift:378` "Calp Pro" active row: `checkmark.seal.fill`
   → `checkmark.circle.fill` for the same "not a certification seal" reason.
 - Low-confidence flags (`exclamationmark.triangle.fill` at
   `ResultItemCard.swift:237`, `AnalysisOverlay.swift:322`) are kept — a warning
@@ -124,14 +124,14 @@ at micro size. Custom line icons collapse here; kept as SF Symbols by the same
 
 - **Declared:** `project.yml:34-36` (`airbnb/lottie-spm`, `branch: main`) and as a
   target dependency (`project.yml:75-76`).
-- **Wrapper:** yes — `Views/Components/CalorisorLottieView.swift` (`import Lottie`,
+- **Wrapper:** yes — `Views/Components/CalpLottieView.swift` (`import Lottie`,
   bundle lookup + SwiftUI placeholder fallback).
-- **Animation assets:** **none.** `Calorisor/Resources/Animations/` contains only
+- **Animation assets:** **none.** `Calp/Resources/Animations/` contains only
   `.gitkeep` + `README.md` (the README lists four *expected* `.json` names, all
   unchecked). The only `.json` in the app is `Resources/turkish_food_reference.json`
   (nutrition data, unrelated).
 - **Consumers:** exactly one — `DailyView.swift:379`, the "no meals today" empty
-  state, calling `CalorisorLottieView("sofra_empty_plate", …)`. Because the asset
+  state, calling `CalpLottieView("calp_empty_plate", …)`. Because the asset
   is absent, this has **always** rendered the fallback, never Lottie.
 
 **Verdict: integrated but effectively unused (asset-pending).** The package
@@ -140,21 +140,21 @@ compiles (the wrapper imports it) but renders no animation anywhere.
 **Decision — Path B (keep declared + document), with the dead call site fixed.**
 
 Removing the SPM package would require hand-editing the committed
-`Calorisor.xcodeproj/project.pbxproj` package references (no `xcodegen` available
+`Calp.xcodeproj/project.pbxproj` package references (no `xcodegen` available
 here to regenerate it safely), which is exactly the kind of package-resolution
 churn the acceptance criteria warn against doing blind. So Lottie stays declared,
-the `CalorisorLottieView` wrapper is retained as the **single documented future
+the `CalpLottieView` wrapper is retained as the **single documented future
 integration point**, and its wrapper header + the Animations `README.md` already
-specify the exact required asset (`sofra_empty_plate.json`, brand line-drawing,
+specify the exact required asset (`calp_empty_plate.json`, brand line-drawing,
 3–5s quiet idle). What changes: the **one** consumer no longer leans on a missing
 asset via an always-on breathing fallback. The empty state becomes a purpose-built
 static `.emptyPlate` composition (Phase 4), so:
 
 - no screen depends on an absent Lottie file;
-- the perpetual `SofraPulseShine` breathing loop (which ran even under Reduce
+- the perpetual `CalpPulseShine` breathing loop (which ran even under Reduce
   Motion, and looped with nothing "genuinely waiting") is gone;
-- if/when a brand-approved `sofra_empty_plate.json` is dropped in, re-wiring is a
-  one-line change back to `CalorisorLottieView`.
+- if/when a brand-approved `calp_empty_plate.json` is dropped in, re-wiring is a
+  one-line change back to `CalpLottieView`.
 
 No stock LottieFiles asset is downloaded or invented.
 
@@ -178,7 +178,7 @@ addressed in this pass; others are logged for a designer/real-device review.
 3. **`sparkles` AI cliché** in the paywall value list (`PaywallView:137`).
    **(fix** → `target`).
 4. **Empty-state motion violates Reduce Motion** — `DailyView.emptyMealsCard`
-   drives an infinite `SofraPulseShine` breathe with no `accessibilityReduceMotion`
+   drives an infinite `CalpPulseShine` breathe with no `accessibilityReduceMotion`
    guard, and loops with nothing pending. **(fix** — static composition).
 5. **"Today" distinguished by colour alone in charts.** `WeekSparkline`
    (`DailyView:531`) and `WeekBarChart` (`SevenDaySummaryView:287`) mark today as
@@ -191,7 +191,7 @@ addressed in this pass; others are logged for a designer/real-device review.
    state) and 10pt (badge). **(partial fix** — unify the ≥16pt ones to `.capture`;
    the sub-16pt ones stay SF by the legibility policy, documented).
 7. **Stroke weight of the custom family is fixed at 1.5px/24** and scales
-   linearly (`CalorisorIconView.lineWidth`). Verified the new icons keep the same
+   linearly (`CalpIconView.lineWidth`). Verified the new icons keep the same
    `lineWidth` contract so they sit next to `.tabak`/`.kepce` without weight drift.
 8. **Dark mode:** all colours resolve through asset-catalog tokens
    (`Color+Tokens.swift`); no raw hex in views. New icons inherit

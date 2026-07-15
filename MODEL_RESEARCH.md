@@ -7,7 +7,7 @@ Birden fazla 2025-2026 çalışması şu tabloyu çiziyor:
 - **GPT-4o / GPT-4.1 ailesi ve Gemini 2.5 Flash**, yemek tanımada (occlusion/örtüşme dahil) Qwen QVQ-Max ve Claude Sonnet 4'ten belirgin şekilde daha güçlü çıkıyor.
 - **Gemini 2.5 Flash, kütle/hacim/enerji tahmininde GPT-4o'ya göre hafif üstün** (enerji tahmini ortalama hata: Gemini %18.2 vs GPT-4o %18.7 — referans nesne varken; referans yokken de benzer küçük fark).
 - **Kritik risk:** Bir çalışmada Gemini, hacim/kütle tahmini görevini **zaman zaman reddetti** (muhtemelen güvenlik/temkinlilik davranışı) — bu yüzden o araştırma ekibi üretim workflow'unda GPT'yi tercih etti, sadece doğruluk yüzünden değil, **güvenilirlik/kesinlik** yüzünden. **Bu risk production'da kabul edilemez — free kullanıcının 3 hakkından biri Gemini refusal yüzünden yanmasın.**
-- **Qwen-VL ailesi** (QVQ-Max, Qwen2.5-VL, Qwen3-VL) genel tanımada zayıf kalıyor, özellikle **örtüşen/karışık tabaklarda** (occlusion >%80'de doğruluk ~%60'a düşüyor) — bu doğrudan bizim "sofra" ve ev yemeği (güveç, mercimek çorbası gibi tek renkli/karışık dokulu yemekler) senaryomuz için risk.
+- **Qwen-VL ailesi** (QVQ-Max, Qwen2.5-VL, Qwen3-VL) genel tanımada zayıf kalıyor, özellikle **örtüşen/karışık tabaklarda** (occlusion >%80'de doğruluk ~%60'a düşüyor) — bu doğrudan bizim "calp" ve ev yemeği (güveç, mercimek çorbası gibi tek renkli/karışık dokulu yemekler) senaryomuz için risk.
 - Latency: GPT-4.1 mini en hızlı (~5-6sn), Qwen-VL-Max en yavaş (>15sn), Gemini 2.5 Flash orta ama daha uzun/detaylı yanıt üretme eğiliminde (token maliyetini artırıyor).
 
 ## Maliyet karşılaştırması (Temmuz 2026 güncel fiyatları)
@@ -59,7 +59,7 @@ göre değişir:
   içinde faturalanır; ikinci kez ücretlendirilmez.
 - **OpenAI prompt cache** — tekrar eden prompt önekleri cached-input fiyatına
   düşer (nano $0.005, mini $0.025 / 1M).
-- **Calorisor Redis cache** — aynı normalize girdi 7 gün içinde tekrar gelirse
+- **Calp Redis cache** — aynı normalize girdi 7 gün içinde tekrar gelirse
   OpenAI hiç çağrılmaz; o taramanın maliyeti $0'dır.
 
 **Canlı sistemde gerçek maliyet, tahminle değil, OpenAI `usage` cevabından

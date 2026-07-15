@@ -13,13 +13,13 @@ Main App                                    Widget Extension
 ─────────                                  ─────────────────
 ResultView.save()                          Provider.getTimeline()
 DailyView.saveCounters()                         │
-SofraApp.scenePhase(.active)               WidgetDataStore.load()
+CalpApp.scenePhase(.active)               WidgetDataStore.load()
        │                                         │
        └──► WidgetDataStore.save() ◄─────────────┘
               │                         Shared UserDefaults
-              └──► UserDefaults(suiteName: "group.com.fatih.sofra")
+              └──► UserDefaults(suiteName: "group.com.fatih.calp")
                          │
-                   sofra.widget.dailySummary (JSON blob)
+                   calp.widget.dailySummary (JSON blob)
 ```
 
 **Data-sharing approach:** App Group UserDefaults with a precomputed Codable struct.  
@@ -31,41 +31,41 @@ SofraApp.scenePhase(.active)               WidgetDataStore.load()
 
 ### New: shared data layer (both targets)
 ```
-Sofra/Models/
+Calp/Models/
   WidgetDailySummary.swift    Codable contract: calories, target, macros, counters, progress, remaining
   WidgetDataStore.swift       Static save()/load() via shared UserDefaults (pure Foundation)
 ```
 
 ### New: main-app-only convenience
 ```
-Sofra/Extensions/
+Calp/Extensions/
   WidgetDataStore+MainApp.swift   saveCurrentDaySummary(modelContext:calorieTarget:)
                                   Queries SwiftData, builds summary, saves, reloads timelines.
                                   Imports SwiftData + WidgetKit. Widget target excluded.
 ```
 
-### New: widget extension target (SofraWidgetExtension)
+### New: widget extension target (CalpWidgetExtension)
 ```
-SofraWidget/
-  SofraWidget.swift              @main WidgetBundle — static config, systemSmall + systemMedium
+CalpWidget/
+  CalpWidget.swift              @main WidgetBundle — static config, systemSmall + systemMedium
   Provider.swift                 TimelineProvider, 30-min default reload
   WidgetEntryView.swift          Small (ring + remaining) and Medium (ring + macros + counters) layouts
   Extensions/
     Color+Widget.swift           Minimal Color.tokenName accessors (shared Assets.xcassets)
-    Font+Widget.swift            Minimal Font.sofraXxx aliases (system fonts)
+    Font+Widget.swift            Minimal Font.calpXxx aliases (system fonts)
   Info.plist                     WidgetKit NSExtension type
-  SofraWidget.entitlements       App Group only (no CloudKit needed)
+  CalpWidget.entitlements       App Group only (no CloudKit needed)
 ```
 
 ### Modified files
 ```
-project.yml                     Added SofraWidgetExtension target + dependency
-Sofra/Sofra.entitlements        Added App Group key
-Sofra/Info.plist                Added CFBundleURLTypes (sofra:// scheme)
-Sofra/App/SofraApp.swift        scenePhase observer → catch-up widget update on foreground
-Sofra/App/ContentView.swift     .onOpenURL handler → navigate to .daily on widget tap
-Sofra/Views/Result/ResultView.swift   WidgetDataStore.saveCurrentDaySummary() after log
-Sofra/Views/Daily/DailyView.swift     WidgetDataStore.saveCurrentDaySummary() after counter change
+project.yml                     Added CalpWidgetExtension target + dependency
+Calp/Calp.entitlements        Added App Group key
+Calp/Info.plist                Added CFBundleURLTypes (calp:// scheme)
+Calp/App/CalpApp.swift        scenePhase observer → catch-up widget update on foreground
+Calp/App/ContentView.swift     .onOpenURL handler → navigate to .daily on widget tap
+Calp/Views/Result/ResultView.swift   WidgetDataStore.saveCurrentDaySummary() after log
+Calp/Views/Daily/DailyView.swift     WidgetDataStore.saveCurrentDaySummary() after counter change
 ```
 
 ---
@@ -83,9 +83,9 @@ Sofra/Views/Daily/DailyView.swift     WidgetDataStore.saveCurrentDaySummary() af
 
 ## Deep link
 
-- Widget applies `.widgetURL(URL(string: "sofra://daily")!)` on the root container.
-- Main app registers `sofra://` scheme via `CFBundleURLTypes` in Info.plist.
-- `ContentView.onOpenURL` checks `url.scheme == "sofra" && url.host == "daily"` → `nav.goToDaily()`.
+- Widget applies `.widgetURL(URL(string: "calp://daily")!)` on the root container.
+- Main app registers `calp://` scheme via `CFBundleURLTypes` in Info.plist.
+- `ContentView.onOpenURL` checks `url.scheme == "calp" && url.host == "daily"` → `nav.goToDaily()`.
 - Per `mikro-etkilesimler.md`: the ring is already at the correct value (same precomputed data source), so there is no loading state on the transition.
 
 ---
@@ -100,7 +100,7 @@ Sofra/Views/Daily/DailyView.swift     WidgetDataStore.saveCurrentDaySummary() af
 
 4. **No animations.** WidgetKit renders static snapshots. The progress ring is drawn at its computed position with no `withAnimation` wrapper.
 
-5. **Emoji for bread/tea icons** in the medium widget. The `SofraIconView` Shape approach requires the full `SofraIcon.swift` renderer which pulls in the SVG path parser — overkill for 12pt icons in a widget. Standard emoji (🍞, 🍵) are used instead. This is a deliberate simplification; custom icons can be added later if `SofraIcon` shapes are extracted into a shared lightweight module.
+5. **Emoji for bread/tea icons** in the medium widget. The `CalpIconView` Shape approach requires the full `CalpIcon.swift` renderer which pulls in the SVG path parser — overkill for 12pt icons in a widget. Standard emoji (🍞, 🍵) are used instead. This is a deliberate simplification; custom icons can be added later if `CalpIcon` shapes are extracted into a shared lightweight module.
 
 ---
 
@@ -123,19 +123,19 @@ Sofra/Views/Daily/DailyView.swift     WidgetDataStore.saveCurrentDaySummary() af
 
 2. **CloudKit multi-device sync.** Changes from a second device won't update the widget on the first device until the app on the first device becomes active. The widget reads from local UserDefaults, not CloudKit.
 
-3. **Asset catalog sharing.** The widget target includes `Sofra/Assets.xcassets` directly. This means all asset instances (including unused ones) are compiled into the widget bundle. For MVP this is negligible; a production optimization would be a dedicated lightweight widget asset catalog.
+3. **Asset catalog sharing.** The widget target includes `Calp/Assets.xcassets` directly. This means all asset instances (including unused ones) are compiled into the widget bundle. For MVP this is negligible; a production optimization would be a dedicated lightweight widget asset catalog.
 
 4. **No custom widget fonts.** Geist is not bundled. If Geist is added later, the widget's `Font+Widget.swift` needs a corresponding update (or a shared font extension module).
 
-5. **Bread/tea emoji.** The medium widget uses 🍞/🍵 emoji instead of `SofraIconView`. Emoji rendering varies by iOS version. If consistency is critical, extract `SofraIconShape` primitives into a lightweight shared module.
+5. **Bread/tea emoji.** The medium widget uses 🍞/🍵 emoji instead of `CalpIconView`. Emoji rendering varies by iOS version. If consistency is critical, extract `CalpIconShape` primitives into a lightweight shared module.
 
 ---
 
 ## App Store Connect / Provisioning
 
-The App Group `group.com.fatih.sofra` must exist in the developer's Apple Developer account:
-1. Go to **Certificates, Identifiers & Profiles** → **App Groups** → add `group.com.fatih.sofra`.
-2. Add the App Group capability to both the **Sofra** App ID and the **Sofra Widget** App ID.
+The App Group `group.com.fatih.calp` must exist in the developer's Apple Developer account:
+1. Go to **Certificates, Identifiers & Profiles** → **App Groups** → add `group.com.fatih.calp`.
+2. Add the App Group capability to both the **Calp** App ID and the **Calp Widget** App ID.
 3. Regenerate provisioning profiles for both targets.
 
 This is a manual developer action — the coding agent cannot perform it.
@@ -144,8 +144,8 @@ This is a manual developer action — the coding agent cannot perform it.
 
 ## Verification performed
 
-- `xcodegen generate` → **Created project successfully** (SofraWidgetExtension target included).
-- `xcodebuild -scheme Sofra -sdk iphonesimulator ... build` → **BUILD SUCCEEDED** — zero errors, zero warnings, both targets.
+- `xcodegen generate` → **Created project successfully** (CalpWidgetExtension target included).
+- `xcodebuild -scheme Calp -sdk iphonesimulator ... build` → **BUILD SUCCEEDED** — zero errors, zero warnings, both targets.
 
 ---
 

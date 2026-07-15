@@ -1,7 +1,7 @@
 # Vision/Text Prompt Contract
 
 This file is the human-readable source contract for the prompts in
-`Sofra/Networking/AIProxyClient.swift`. The shared rules below are emitted by
+`Calp/Networking/AIProxyClient.swift`. The shared rules below are emitted by
 `commonPromptContract(locale:)` into both the photo and text prompts.
 
 ## Shared response contract

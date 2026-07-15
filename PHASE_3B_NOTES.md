@@ -31,8 +31,8 @@ Entitlement wiring:
 
 | ID | Name | Price | Trial |
 |---|---|---|---|
-| `com.fatih.sofra.monthly` | Sofra Aylık | ₺129,99/ay (placeholder) | 3 gün ücretsiz |
-| `com.fatih.sofra.annual` | Sofra Yıllık | ₺799,99/yıl (placeholder) | 3 gün ücretsiz |
+| `com.fatih.calp.monthly` | Calp Aylık | ₺129,99/ay (placeholder) | 3 gün ücretsiz |
+| `com.fatih.calp.annual` | Calp Yıllık | ₺799,99/yıl (placeholder) | 3 gün ücretsiz |
 
 All pricing is placeholder — StoreKit's native `Product.displayPrice` renders whatever is configured in App Store Connect, no hardcoded currency conversion.
 
@@ -42,26 +42,26 @@ All pricing is placeholder — StoreKit's native `Product.displayPrice` renders 
 
 ### New:
 ```
-Sofra/StoreKit/
+Calp/StoreKit/
   Products.storekit        StoreKit sandbox configuration for Xcode testing
   StoreKitManager.swift    Product fetch, purchase, restore, entitlements, trial notify
 
-Sofra/Views/Onboarding/
+Calp/Views/Onboarding/
   PaywallView.swift        "Dürüst Paywall" — honest subscription UI
 ```
 
 ### Modified:
 ```
-Sofra/Views/Onboarding/
+Calp/Views/Onboarding/
   OnboardingView.swift     Replaced PaywallPlaceholderView with PaywallView
 
-Sofra/App/
+Calp/App/
   NavigationModel.swift    Default screen changed to .daily (home, not camera)
 
-Sofra/Views/Daily/
+Calp/Views/Daily/
   DailyView.swift          Added text-log button in top bar
 
-Sofra/Views/Camera/
+Calp/Views/Camera/
   CameraView.swift         Fixed PreviewView for proper layout
 ```
 
@@ -91,7 +91,7 @@ The paywall meets all non-negotiable requirements from `PROJECT_CONTEXT.md`:
 
 1. **`offerType` deprecation warning.** `Transaction.offerType` (iOS 17.0) is deprecated in favor of `Transaction.offer?.type` (iOS 17.2+). We use `offerType` for backward compatibility with our iOS 17.0 deployment target. The deprecation warning is cosmetic — the API functions correctly on all iOS 17.x versions.
 
-2. **Trial notification not yet requested.** `UNUserNotificationCenter.requestAuthorization()` needs to be called before scheduling notifications. Add this to `SofraApp` or during onboarding (Phase 3d polish).
+2. **Trial notification not yet requested.** `UNUserNotificationCenter.requestAuthorization()` needs to be called before scheduling notifications. Add this to `CalpApp` or during onboarding (Phase 3d polish).
 
 3. **StoreKit testing requires Xcode sandbox.** The `.storekit` file enables local testing via Xcode's "StoreKit Configuration" scheme setting. Real App Store transactions require products to be created in App Store Connect (see below).
 
@@ -103,18 +103,18 @@ The paywall meets all non-negotiable requirements from `PROJECT_CONTEXT.md`:
 
 The coding agent cannot perform these steps. The developer must configure in ASC:
 
-1. **Create a Subscription Group** with ID matching the `.storekit` group (reference name: "Sofra Premium").
+1. **Create a Subscription Group** with ID matching the `.storekit` group (reference name: "Calp Premium").
 
 2. **Create two Auto-Renewable Subscriptions:**
-   - `com.fatih.sofra.monthly` — 1 month, with Introductory Offer: 3-day free trial
-   - `com.fatih.sofra.annual` — 1 year, with Introductory Offer: 3-day free trial
+   - `com.fatih.calp.monthly` — 1 month, with Introductory Offer: 3-day free trial
+   - `com.fatih.calp.annual` — 1 year, with Introductory Offer: 3-day free trial
 
 3. **Set pricing** per market:
    - Turkey: monthly ~₺99-129, annual ~₺699-799
    - US: monthly $4.99, annual $29.99
    - Other markets: let ASC auto-convert or set individually
 
-4. **Create the CloudKit container** `iCloud.com.fatih.sofra` (if not already created for Phase 1).
+4. **Create the CloudKit container** `iCloud.com.fatih.calp` (if not already created for Phase 1).
 
 5. **Enable the "Remote Notifications" background mode** capability for `UNUserNotificationCenter` (trial-end notification).
 

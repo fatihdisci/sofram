@@ -1,6 +1,6 @@
 # SCOPES_PLAN — Fiyatlandırma, Limitler, Analitik ve Ürün Geliştirme Uygulama Planı
 
-> Kaynak: "CALORISOR — FİYATLANDIRMA, KULLANIM LİMİTLERİ, ANALİTİK ALTYAPISI VE ÜRÜN GELİŞTİRME PLANI"
+> Kaynak: "CALP — FİYATLANDIRMA, KULLANIM LİMİTLERİ, ANALİTİK ALTYAPISI VE ÜRÜN GELİŞTİRME PLANI"
 > (scopes.md, 14 Temmuz 2026). Bu dosya o dokümanın 30. bölümündeki talimat gereği
 > repo incelemesi sonrası çıkarılmış **dosya bazlı uygulama planıdır**.
 > Görev formatı ROADMAP.md ile aynıdır (SF-XXX, kabul kriterleri, fazlar).
@@ -14,25 +14,25 @@
 | Gereksinim | Repo karşılığı | Durum |
 |---|---|---|
 | Vercel proxy endpoint | `proxy/api/scan.ts` (Edge runtime) | Var — deploy edilmiş, istemci bağlı |
-| StoreKit manager | `Calorisor/StoreKit/StoreKitManager.swift` | Var |
-| Paywall view | `Calorisor/Views/Onboarding/PaywallView.swift` | Var |
-| StoreKit configuration | `Calorisor/StoreKit/Products.storekit` | Var |
-| Info.plist | `Calorisor/Info.plist`, `CalorisorWidget/Info.plist` | Var |
-| SwiftData modelleri | `Calorisor/Models/` (LoggedItem, ScanEntry, UserProfile, DailyQuickCounter) + `Persistence/CalorisorModelContainer.swift` | Var |
-| Günlük öğün ekranı | `Calorisor/Views/Daily/DailyView.swift` (kabuk: `App/ContentView.swift`) | Var |
-| Widget data store | `Calorisor/Models/WidgetDataStore.swift` + `Extensions/WidgetDataStore+MainApp.swift` + `CalorisorWidget/` | Var |
-| Notification service | `Calorisor/Notifications/MealReminderService.swift` | Var |
-| CSV export | `Calorisor/Models/DataExporter.swift` | Var |
-| Settings screen | `SettingsView`, `Calorisor/App/ContentView.swift` içinde (ayrı dosya değil) | Var |
-| Ses girişi | `MealSpeechRecognizer`, `Calorisor/Views/TextLog/TextLogView.swift` içinde — transkript text akışına akıyor | Var |
-| Free limit sayacı | `Calorisor/Networking/FreeScanCounter.swift` | Var ama modeli farklı (aşağıda) |
+| StoreKit manager | `Calp/StoreKit/StoreKitManager.swift` | Var |
+| Paywall view | `Calp/Views/Onboarding/PaywallView.swift` | Var |
+| StoreKit configuration | `Calp/StoreKit/Products.storekit` | Var |
+| Info.plist | `Calp/Info.plist`, `CalpWidget/Info.plist` | Var |
+| SwiftData modelleri | `Calp/Models/` (LoggedItem, ScanEntry, UserProfile, DailyQuickCounter) + `Persistence/CalpModelContainer.swift` | Var |
+| Günlük öğün ekranı | `Calp/Views/Daily/DailyView.swift` (kabuk: `App/ContentView.swift`) | Var |
+| Widget data store | `Calp/Models/WidgetDataStore.swift` + `Extensions/WidgetDataStore+MainApp.swift` + `CalpWidget/` | Var |
+| Notification service | `Calp/Notifications/MealReminderService.swift` | Var |
+| CSV export | `Calp/Models/DataExporter.swift` | Var |
+| Settings screen | `SettingsView`, `Calp/App/ContentView.swift` içinde (ayrı dosya değil) | Var |
+| Ses girişi | `MealSpeechRecognizer`, `Calp/Views/TextLog/TextLogView.swift` içinde — transkript text akışına akıyor | Var |
+| Free limit sayacı | `Calp/Networking/FreeScanCounter.swift` | Var ama modeli farklı (aşağıda) |
 | Installation ID / Keychain | — | **Yok** (repo'da hiç Keychain kullanımı yok) |
 | Usage/maliyet logu | `proxy/api/scan.ts` | SF-1201: usage parse + integer maliyet hazır; Redis aggregate logları SF-1202'de |
 | Signed transaction doğrulama | — | **Yok** (tier istemci beyanı) |
 | HealthKit | — | **Yok** |
 | Haftalık AI raporu | — | **Yok** |
 | Hızlı tekrar ekleme / favoriler | — | **Yok** (`DailyQuickCounter` ekmek/çay sayacıdır, bu özellik DEĞİLDİR) |
-| Proxy testleri | — | **Yok** (`proxy/` altında test altyapısı yok; iOS testleri `CalorisorTests/` güçlü) |
+| Proxy testleri | — | **Yok** (`proxy/` altında test altyapısı yok; iOS testleri `CalpTests/` güçlü) |
 
 ---
 
@@ -41,22 +41,22 @@
 ### 2.1 Free limit modeli çelişiyor
 - Mevcut: `FreeScanCounter` günlük **1 foto + 2 metin/ses** ayrı havuz, UTC gün sınırı; proxy installation hash ile sunucu esaslı, UserDefaults yalnız çevrimdışı gösterim/fallback (`FreeScanCounter.swift`, `ContentView.swift`).
 - Hedef: **günlük 1 foto + günlük 2 metin/ses** (ayrı havuzlar), esas uygulama **sunucuda** installation hash ile, UTC günü.
-- `CalorisorTests/FreeScanCounterTests.swift` UTC günlük rollover, bağımsız havuz ve server quota senkronunu doğruluyor.
+- `CalpTests/FreeScanCounterTests.swift` UTC günlük rollover, bağımsız havuz ve server quota senkronunu doğruluyor.
 
 ### 2.2 Proxy'de kullanım limiti yok, tier doğrulanmıyor
 - `proxy/api/scan.ts:294-299`: yalnız IP-hash bazlı 10/dk + 200/gün genel rate limit var. Tier bazlı günlük hak yok.
 - `scan.ts:326`: model seçimi doğrudan istemcinin gönderdiği `tier` alanından — jailbreak/proxy manipülasyonuyla bedava gpt-5-mini alınabilir.
 
 ### 2.3 Cache key eksik ayrıştırıyor (aktif hata)
-- `scan.ts:198`: key = `calorisor:scan:v2:{mode}:{sha256(input)}`. **Model/tier, locale ve prompt sürümü key'de yok.**
+- `scan.ts:198`: key = `calp:scan:v2:{mode}:{sha256(input)}`. **Model/tier, locale ve prompt sürümü key'de yok.**
 - Sonuç 1: Free'nin nano sonucu Pro kullanıcıya cache'ten dönebilir (dokümanın §12'de uyardığı durum bugün gerçek).
 - Sonuç 2: Aynı input'un TR locale cevabı EN kullanıcıya dönebilir (promptlar locale'e göre farklı ama key değil).
 
 ### 2.4 "Sınırsız" ifadeleri (kaldırılacak yerlerin tam listesi)
-- `Calorisor/Views/Onboarding/PaywallView.swift:135-136` — "Sınırsız fotoğrafla kalori takibi", "Sınırsız yazarak öğün ekleme"
-- `Calorisor/App/ContentView.swift:214,222` — limit sheet metni + "Sınırsız Taramaya Geç" butonu
-- `Calorisor/StoreKit/Products.storekit:23,49` — iki ürün açıklaması
-- `Calorisor/Resources/Localizable.xcstrings` — yukarıdakilerin EN/TR karşılıkları
+- `Calp/Views/Onboarding/PaywallView.swift:135-136` — "Sınırsız fotoğrafla kalori takibi", "Sınırsız yazarak öğün ekleme"
+- `Calp/App/ContentView.swift:214,222` — limit sheet metni + "Sınırsız Taramaya Geç" butonu
+- `Calp/StoreKit/Products.storekit:23,49` — iki ürün açıklaması
+- `Calp/Resources/Localizable.xcstrings` — yukarıdakilerin EN/TR karşılıkları
 - `PHASE_QA_NOTES.md:122` — "Unlimited photo calorie tracking..." QA satırı
 - Gerçekten sınırsız olanlar (manuel kayıt, geçmiş, düzenleme) için kelime serbest (§7).
 
@@ -98,39 +98,39 @@
 ## FAZ 11 — YAYIN ÖNCESİ KRİTİK (kaynak Faz 1)
 
 - [x] **SF-1101 · InstallationIdentity: Keychain'de anonim kurulum kimliği** ✅ 2026-07-14
-  **Dosya:** yeni `Calorisor/Networking/InstallationIdentity.swift`, test `CalorisorTests/InstallationIdentityTests.swift`
-  **Talimat:** İlk erişimde UUID üret, Keychain'e `com.fatih.calorisor.installation-id` anahtarıyla yaz (kSecClassGenericPassword, ThisDeviceOnly erişilebilirlik). UserDefaults KULLANMA. Okuma başarısızsa yeni UUID üret (silme sonrası kalıcılık garanti edilmez, §8.1). Keychain erişimi test edilebilir olsun (protokolle soyutla).
+  **Dosya:** yeni `Calp/Networking/InstallationIdentity.swift`, test `CalpTests/InstallationIdentityTests.swift`
+  **Talimat:** İlk erişimde UUID üret, Keychain'e `com.fatih.calp.installation-id` anahtarıyla yaz (kSecClassGenericPassword, ThisDeviceOnly erişilebilirlik). UserDefaults KULLANMA. Okuma başarısızsa yeni UUID üret (silme sonrası kalıcılık garanti edilmez, §8.1). Keychain erişimi test edilebilir olsun (protokolle soyutla).
   **Kabul:** ID bir kez üretilir, ikinci okuma aynı değeri döner; mock-keychain testleri geçer.
   **Uygulama notu:** `InstallationKeychainStore` protokolü + `SystemKeychainStore` (AfterFirstUnlockThisDeviceOnly) + kilitli/cache'li `InstallationIdentity` sınıfı (`.shared`, `headerValue` SF-1102 için hazır). Testler in-memory + write-count spy ile: tek üretim, kalıcılık (ayrı instance aynı değeri okur), bozuk değerin yenilenmesi, ayrı kurulumların farklı ID'si. ✅ Xcode Simulator: 105 test, 0 hata.
 
 - [x] **SF-1102 · İstemci request sözleşmesi: input_source + header'lar + claimed_tier** ✅ 2026-07-14
-  **Dosya:** `Calorisor/Networking/AIProxyClient.swift`, `Calorisor/Views/TextLog/TextLogView.swift`, `CalorisorTests/AIProxyRequestTests.swift`
-  **Talimat:** `AIProxyRequest`'e `input_source: "photo"|"typed_text"|"voice_transcript"` ekle; TextLog akışı transkript kullanıldıysa `voice_transcript` göndersin (MealSpeechRecognizer'dan gelen metin `textInput`'a yansıyor — son analiz girdisinin kaynağını izle). Geçiş için body'de hem `tier` (eski) hem `claimed_tier` gönder. Header'lar: `x-calorisor-installation-id` (ham UUID), `x-calorisor-app-version`, `x-calorisor-platform: ios` (`x-calorisor-key` zaten var). Installation ID body'ye KONMAZ.
+  **Dosya:** `Calp/Networking/AIProxyClient.swift`, `Calp/Views/TextLog/TextLogView.swift`, `CalpTests/AIProxyRequestTests.swift`
+  **Talimat:** `AIProxyRequest`'e `input_source: "photo"|"typed_text"|"voice_transcript"` ekle; TextLog akışı transkript kullanıldıysa `voice_transcript` göndersin (MealSpeechRecognizer'dan gelen metin `textInput`'a yansıyor — son analiz girdisinin kaynağını izle). Geçiş için body'de hem `tier` (eski) hem `claimed_tier` gönder. Header'lar: `x-calp-installation-id` (ham UUID), `x-calp-app-version`, `x-calp-platform: ios` (`x-calp-key` zaten var). Installation ID body'ye KONMAZ.
   **Kabul:** Encode edilen JSON ve header'lar testle doğrulanır; eski proxy'ye karşı geriye uyumlu (yeni alanlar eklenince mevcut deploy 400 dönmüyor — `isScanRequest` bilinmeyen alanı umursamıyor, doğrulanacak).
   **Uygulama notu:** `AIProxyInputSource` enum'u; `AIProxyRequest`'e `input_source` + `claimed_tier` (=tier). `scanText(_:inputSource:)` (varsayılan `.typedText`). Header'lar `performProxyRequest`'te `InstallationIdentity.shared.headerValue` ile eklendi (hem foto hem text yolunda). TextLogView `usedDictation` bayrağı: transkript gelince true, alan boşalınca / öneri dokununca false → `scan()` `voice_transcript`/`typed_text` seçer. **Geriye uyumluluk doğrulandı:** deploy'daki `isScanRequest` yalnız mevcut alanları doğruluyor, `tier` hâlâ gönderiliyor, `JSONEncoder` nil `image_base64`'ü atlıyor → 400 yok. Testler: `input_source`/`claimed_tier` (typed/voice/photo) encode + mock-URLProtocol header + installation ID'nin gövdede olmadığı. ✅ Xcode Simulator: 105 test, 0 hata.
 
 - [x] **SF-1103 · Proxy: installation hash** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts`, `proxy/.env.example`, `proxy/README.md`
-  **Talimat:** `x-calorisor-installation-id` header'ını al; `SHA256(installation_id + INSTALLATION_HASH_SALT)` üret (`INSTALLATION_HASH_SALT` yeni Vercel env). Ham ID hiçbir log/Redis değerine yazılmaz; her yerde yalnız `installation_hash` kullanılır. Header yoksa: eski sürümler için IP-hash fallback'iyle çalışmaya devam et (geçiş dönemi), yeni app_version'larda `invalid_request`.
+  **Talimat:** `x-calp-installation-id` header'ını al; `SHA256(installation_id + INSTALLATION_HASH_SALT)` üret (`INSTALLATION_HASH_SALT` yeni Vercel env). Ham ID hiçbir log/Redis değerine yazılmaz; her yerde yalnız `installation_hash` kullanılır. Header yoksa: eski sürümler için IP-hash fallback'iyle çalışmaya devam et (geçiş dönemi), yeni app_version'larda `invalid_request`.
   **Kabul:** Salt olmadan boot hatası değil kontrollü 502; hash deterministik; ham ID grep'le hiçbir çıktıda yok.
   **Uygulama notu:** `limitIdentity()` yardımcısı: header varsa `sha256(id + salt)` (source "installation"), yoksa `sha256(ip)` (source "ip"). Salt env yoksa handler üstünde kontrollü 502 (OpenAI key kontrolüyle aynı desen). Rate-limit anahtarı artık `identity.key` (ipHash yerine). "Yeni sürümde zorunlu" kısmı kırılgan semver yerine `REQUIRE_INSTALLATION_ID=true` env bayrağıyla (varsayılan kapalı → IP fallback; açılınca header'sız istek 400). `.env.example` + README güncellendi. **Doğrulama:** `npm run typecheck` (tsc --noEmit) temiz geçti; `grep console.` → hiç log yok, ham ID yalnız hash girdisinde. Otomatik proxy senaryoları SF-1204 Vitest harness'ında doğrulandı.
   **⚠ Deploy notu:** Bu kod canlıya çıkmadan ÖNCE Vercel'de `INSTALLATION_HASH_SALT` set edilmeli, aksi halde endpoint tüm isteklere 502 döner (kasıtlı — SF-1110).
 
 - [x] **SF-1104 · Proxy: cihaz bazlı günlük limitler (Free 1+2, Pro 50+100)** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts`
-  **Talimat:** UTC gününe göre `calorisor:usage:{date}:{installation_hash}:photo|text` sayaçları (INCR + 48h EXPIRE). `input_source: voice_transcript` **text havuzunu** tüketir. Limitler: free photo 1 / text 2; pro photo 50 / text 100. 10/dk minüt limiti ortak kalır; IP limiti ikincil sinyale iner (ana kimlik installation_hash). Aşımda 429 + gövde `{"error":"daily_limit_reached","limit_type":"photo|text","tier":"...","remaining":0}`. Başarılı cevaplara header'lar: `x-calorisor-tier`, `x-calorisor-photo-remaining/-limit`, `x-calorisor-text-remaining/-limit` (§16). Cache hit de hak TÜKETMEZ (önce limit mi cache mi: cache-hit bedavadır → önce cache bak, hit ise sayaç artırma).
+  **Talimat:** UTC gününe göre `calp:usage:{date}:{installation_hash}:photo|text` sayaçları (INCR + 48h EXPIRE). `input_source: voice_transcript` **text havuzunu** tüketir. Limitler: free photo 1 / text 2; pro photo 50 / text 100. 10/dk minüt limiti ortak kalır; IP limiti ikincil sinyale iner (ana kimlik installation_hash). Aşımda 429 + gövde `{"error":"daily_limit_reached","limit_type":"photo|text","tier":"...","remaining":0}`. Başarılı cevaplara header'lar: `x-calp-tier`, `x-calp-photo-remaining/-limit`, `x-calp-text-remaining/-limit` (§16). Cache hit de hak TÜKETMEZ (önce limit mi cache mi: cache-hit bedavadır → önce cache bak, hit ise sayaç artırma).
   **Kabul:** §27 senaryoları: free foto 2. istek limit; free text 3. istek limit; voice text havuzunu düşürüyor; pro 51. foto limit; cache hit sayaç artırmıyor.
   **Uygulama notu:** `DAILY_LIMITS` sabiti (free 1/2, pro 50/100); havuz `mode`'dan (`photo`→photo, `text`→text, voice zaten mode text). Eski 200/gün IP sliding-window kaldırıldı, 10/dk kaldı. Akış: dakika limiti + `mget(photoKey,textKey)` tek turda → cache hit ise header'larla dön (INCR yok) → miss'te `used >= limit` kontrolü → OpenAI → **başarıdan sonra** `incr` (+ ilk yazımda 48h expire). Başarısız tarama / limit / cache hit hak yakmaz. `daily_limit_reached` gövdesi + §16 header'ları. Sayaç hatası taramayı düşürmez (fallback tahmin). Otomatik doğrulama: `proxy/api/scan.test.ts` içinde free foto/text limitleri, ayrı havuzlar ve cache-hit quota davranışı.
 
 - [x] **SF-1105 · Proxy: cache key v3 (model + locale + prompt_version ayrımı)** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts`, `proxy/prompts.ts`
-  **Talimat:** Key: `calorisor:scan:v3:{mode}:{locale}:{model}:{prompt_version}:{input_hash}`. `PROMPT_VERSION` sabitini `prompts.ts`'e koy (SF-104 istemci tarafında prompt sürümü hazırlamıştı — uyumlu isimlendir). Nano ve mini sonuçları ayrışır; v2 anahtarları doğal TTL ile ölür.
+  **Talimat:** Key: `calp:scan:v3:{mode}:{locale}:{model}:{prompt_version}:{input_hash}`. `PROMPT_VERSION` sabitini `prompts.ts`'e koy (SF-104 istemci tarafında prompt sürümü hazırlamıştı — uyumlu isimlendir). Nano ve mini sonuçları ayrışır; v2 anahtarları doğal TTL ile ölür.
   **Kabul:** Aynı input free/pro için farklı key üretir (test); locale değişince key değişir; cache hit'te OpenAI çağrısı yok.
   **Uygulama notu:** `PROMPT_VERSION = 1` `prompts.ts`'te export (prompt metni değişince bump → cache bypass). İstemcide prompt_version yoktu (SF-104 yalnız `schema_version` eklemişti), cache sunucu-taraflı olduğundan tek kaynak sunucu. `modelForTier(tier)` tek yerde model seçiyor; `model` handler üstünde bir kez hesaplanıp hem `cacheKey(body, model)`'e hem OpenAI fetch'ine gidiyor (önceki inline `body.tier === "pro" ? ...` ikilemesi kaldırıldı). **Düzeltilen aktif bug:** v2 key'i model/locale içermediğinden free-nano sonucu pro-mini kullanıcıya (ve TR cevabı EN kullanıcıya) cache'ten dönebiliyordu. Deploy sonrası ilk istekler v3 miss (yeniden dolar), v2 doğal TTL ile ölür. Otomatik doğrulama: Vitest cache-key ayrımı, locale ayrımı ve aynı anahtarda OpenAI çağrısının tekrarlanmaması.
 
 - [x] **SF-1106 · iOS: FreeScanCounter'ı günlük 1 foto + 2 metin/ses modeline geçir, sunucu esas** ✅ 2026-07-14
-  **Dosya:** `Calorisor/Networking/FreeScanCounter.swift`, `Calorisor/Networking/AIProxyClient.swift`, `Calorisor/App/ContentView.swift`, `CalorisorTests/FreeScanCounterTests.swift`
-  **Talimat:** İki ayrı günlük havuz (photo:1, textOrVoice:2), gün sınırı **UTC** (Calendar(identifier:.gregorian)+UTC). Proxy cevabındaki `x-calorisor-*-remaining` header'larını okuyup yerel sayacı sunucu değerine eşitle (sunucu esas, yerel değer yalnız gösterim/çevrimdışı tahmin). `daily_limit_reached` gövdesi yeni `AIProxyError.dailyLimitReached(limitType:)`'e map edilir. Limit UX metinleri §17'deki kopyalarla: foto bitti / metin-ses bitti ayrı mesajlar; manuel giriş asla engellenmez; sheet agresif değil (Kısa açıklama · "Manuel ekle" · "Pro'yu incele" · Kapat).
+  **Dosya:** `Calp/Networking/FreeScanCounter.swift`, `Calp/Networking/AIProxyClient.swift`, `Calp/App/ContentView.swift`, `CalpTests/FreeScanCounterTests.swift`
+  **Talimat:** İki ayrı günlük havuz (photo:1, textOrVoice:2), gün sınırı **UTC** (Calendar(identifier:.gregorian)+UTC). Proxy cevabındaki `x-calp-*-remaining` header'larını okuyup yerel sayacı sunucu değerine eşitle (sunucu esas, yerel değer yalnız gösterim/çevrimdışı tahmin). `daily_limit_reached` gövdesi yeni `AIProxyError.dailyLimitReached(limitType:)`'e map edilir. Limit UX metinleri §17'deki kopyalarla: foto bitti / metin-ses bitti ayrı mesajlar; manuel giriş asla engellenmez; sheet agresif değil (Kısa açıklama · "Manuel ekle" · "Pro'yu incele" · Kapat).
   **Kabul:** Eski haftalık testler silinip günlük testlerle değiştirildi; UTC gün dönümü ve iki bağımsız havuz testleri geçti; limit ekranında manuel giriş açık ve fotoğraf/metin yolu ayrık; header senkronu ve `daily_limit_reached` mapping'i mock URLProtocol ile doğrulandı. ✅ Xcode Simulator: 105 test, 0 hata.
 
 - [x] **SF-1107 · "Sınırsız" temizliği + paywall şeffaflık kopyası** ✅ 2026-07-14
@@ -139,7 +139,7 @@
   **Kabul:** Paywall’da günlük yüksek limitli AI analizi, Pro ile daha fazla analiz ve Family Sharing kopyaları görünür; yıllık toplam fiyat aylık eşdeğerden daha baskın; deneme sonrası gerçek tutar, otomatik yenileme ve App Store iptal yolu açıkça gösterilir. EN/TR kopyalar güncellendi; kullanıcı-facing “sınırsız”/haftalık/ömür boyu ifadeler temizlendi, `hasUnlimitedScans` teknik adı `isQuotaBypassed` olarak yenilendi. JSON geçerli, Xcode Simulator 105 test/0 hata.
 
 - [x] **SF-1108 · Products.storekit: Family Sharing + açıklama metinleri** ✅ 2026-07-14
-  **Dosya:** `Calorisor/StoreKit/Products.storekit`
+  **Dosya:** `Calp/StoreKit/Products.storekit`
   **Talimat:** İki üründe `familyShareable: true`; açıklamalardan "Sınırsız" çıkar (SF-1107 ile aynı terminoloji). Fiyatlar lansman değerlerinde kalır (129,99/799,99 — §4.2). Deneme: yalnız yıllıkta P1W ✓ (değişiklik yok).
   **Kabul:** İki ürün `familyShareable: true`; açıklamalarda “Sınırsız” kaldırıldı; aylık/yıllık fiyatlar ve yıllık P1W denemesi korundu. JSON geçerli, Xcode Simulator test/build zinciri 105/105 geçti. Paywall’daki görünür Family Sharing kopyası SF-1107 kapsamında ele alınacak.
 
@@ -162,12 +162,12 @@
 
 - [x] **SF-1202 · Redis günlük aggregate metrikler + kısa request log** ✅ 2026-07-14
   **Dosya:** `proxy/api/scan.ts` (veya yeni `proxy/lib/metrics.ts`)
-  **Talimat:** §15.1 key seti: `metrics:{date}:requests:total|free|pro`, `mode:photo|text`, `source:voice`, `cache:hit|miss`, `tokens:input|output`, `cost:microusd`, `status:error`, `rate_limited` (INCRBY + 35 gün EXPIRE). Son istekler `calorisor:request-logs` list/stream'ine §13.1 zorunlu alanlarla (LPUSH+LTRIM ~1000, retention 7–30 gün). §13.2 yasak alanlar (foto, base64, tam metin, prompt, cevap, ham IP, ham installation ID) ASLA yazılmaz; izinli metadata: input karakter sayısı, image byte size, item count, average_confidence, no_food_detected.
+  **Talimat:** §15.1 key seti: `metrics:{date}:requests:total|free|pro`, `mode:photo|text`, `source:voice`, `cache:hit|miss`, `tokens:input|output`, `cost:microusd`, `status:error`, `rate_limited` (INCRBY + 35 gün EXPIRE). Son istekler `calp:request-logs` list/stream'ine §13.1 zorunlu alanlarla (LPUSH+LTRIM ~1000, retention 7–30 gün). §13.2 yasak alanlar (foto, base64, tam metin, prompt, cevap, ham IP, ham installation ID) ASLA yazılmaz; izinli metadata: input karakter sayısı, image byte size, item count, average_confidence, no_food_detected.
   **Kabul:** Bir istek sonrası tüm sayaçlar artar; log kaydında yasaklı alan olmadığı testle taranır.
   **Uygulama notu:** Günlük sayaçlar 35 gün TTL ile, metadata-only son istek listesi 30 gün TTL ve 1000 kayıt sınırıyla yazılıyor. Proxy testi yasak alanları tarıyor; `npm test`: 6/6, `npm run typecheck`: temiz. ✅
 
 - [x] **SF-1203 · Hata türlerini standardize et (proxy + istemci)** ✅ 2026-07-14
-  **Dosya:** `proxy/api/scan.ts`, `Calorisor/Networking/AIProxyClient.swift`, `CalorisorTests/AIProxyClientErrorTests.swift`
+  **Dosya:** `proxy/api/scan.ts`, `Calp/Networking/AIProxyClient.swift`, `CalpTests/AIProxyClientErrorTests.swift`
   **Talimat:** §16 error seti: `invalid_request, unauthorized, rate_limited, daily_limit_reached, subscription_required, subscription_verification_failed, upstream_error, service_unavailable`. Geçersiz client key artık `unauthorized` (401) döner (bugün `invalid_request` dönüyor — istemci mapping'i iki değeri de tanısın). `mappedProxyError` yeni türleri ayrıştırır.
   **Kabul:** §27 "Geçersiz client key → 401"; her hata türü için istemci map testi.
   **Uygulama notu:** Proxy hata gövdesi ve HTTP kodları standardize edildi; iOS mapping ve overlay exhaustive hale getirildi. Xcode Simulator: 109 test, 0 hata. ✅
@@ -189,12 +189,12 @@
 
 - [x] **SF-1302 · Proxy: Apple JWS doğrulama + entitlement cache** ✅ 2026-07-14
   **Dosya:** yeni `proxy/lib/entitlement.ts`, `proxy/api/scan.ts`
-  **Talimat:** JWS x5c zincirini Apple Root CA'ya karşı doğrula; `productID ∈ {com.fatih.calorisor.monthly, com.fatih.calorisor.annual}`, `expirationDate > now`, `revocationDate == null` kontrolü. Sonuç `calorisor:entitlement:{installation_hash}` key'inde 15 dk–1 saat TTL ile cache'lenir. Doğrulama başarısızsa tier=free + `subscription_verification_failed` sinyali (istek free limitleriyle devam eder, hard-fail değil). Root sertifika digest'i deployment secret/config olarak `APPLE_ROOT_CA_SHA256` ile pinlenir.
+  **Talimat:** JWS x5c zincirini Apple Root CA'ya karşı doğrula; `productID ∈ {com.fatih.calp.monthly, com.fatih.calp.annual}`, `expirationDate > now`, `revocationDate == null` kontrolü. Sonuç `calp:entitlement:{installation_hash}` key'inde 15 dk–1 saat TTL ile cache'lenir. Doğrulama başarısızsa tier=free + `subscription_verification_failed` sinyali (istek free limitleriyle devam eder, hard-fail değil). Root sertifika digest'i deployment secret/config olarak `APPLE_ROOT_CA_SHA256` ile pinlenir.
   **Kabul:** §27: expired→free, revoked→free, geçerli monthly/annual→pro (test vektörleriyle).
   **Uygulama notu:** `proxy/lib/entitlement.ts` ES256 + x5c/root pin doğrulaması, ürün/tarih/revocation politikası ve 30 dakikalık installation-hash cache içeriyor. Expired/revoked free, geçerli ürünler pro; 1303 testi imzasız Pro claim’in nano/free’a düştüğünü doğruluyor. ✅ Proxy testleri: 9/9.
 
 - [x] **SF-1303 · claimed_tier bağımlılığını kaldır** ✅ 2026-07-14
-  **Dosya:** `proxy/api/scan.ts`, `Calorisor/Networking/AIProxyClient.swift`
+  **Dosya:** `proxy/api/scan.ts`, `Calp/Networking/AIProxyClient.swift`
   **Talimat:** Model ve limit seçimi yalnız sunucu tier'ından. `claimed_tier` yalnız eski app_version'lar için okunur; sunset sürümü belirle. İstemciden `tier` alanını kaldır.
   **Kabul:** `claimed_tier: "pro"` + geçersiz/eksik JWS → nano model + free limitleri (test).
   **Uygulama notu:** iOS request body’den `tier` ve `claimed_tier` kaldırıldı; proxy tier’i yalnız JWS kararından alıyor. Legacy body tier alanı kabul edilse bile yalnız Pro iddiası olarak değerlendirilip doğrulama yoksa free uygulanıyor. ✅ iOS Simulator: 110/110.
@@ -210,19 +210,19 @@
 ## FAZ 14 — RETENTION: HIZLI TEKRAR EKLEME (kaynak Faz 4)
 
 - [x] **SF-1401 · Normalize öğün kimliği + sık eklenenler hesaplayıcı** ✅ 2026-07-14
-  **Dosya:** yeni `Calorisor/Models/FrequentMealsBuilder.swift`, test
+  **Dosya:** yeni `Calp/Models/FrequentMealsBuilder.swift`, test
   **Talimat:** İlk sürümde ayrı FavoriteMeal @Model'i YOK (§19.3): son 30 günün kayıtlarını normalize kimlikle grupla — lowercased adlar + sıralı item adları + porsiyon birimi + yuvarlanmış miktar → SHA256 (§19.4). Kullanım sayısına göre ilk 5.
   **Kabul:** Aynı öğünün farklı sıralı itemları aynı kimliği üretir; birim testleri.
   **Uygulama notu:** Son 30 gün kayıtları; normalize ad + sıralı item + birim + iki ondalık miktar üzerinden SHA-256 ile gruplanıyor, ilk 5 kullanım sıklığına göre dönüyor. ✅ `FrequentMealsBuilderTests`.
 
 - [x] **SF-1402 · Bugün ekranına "Sık Eklenenler" + tek dokunuş derin kopya** ✅ 2026-07-14
-  **Dosya:** `Calorisor/Views/Daily/DailyView.swift`, ilgili modeller
+  **Dosya:** `Calp/Views/Daily/DailyView.swift`, ilgili modeller
   **Talimat:** Kart: öğün adı, toplam kalori, son kullanım, ekle butonu. Eklemede **derin kopya** yeni SwiftData kaydı (eski kaydın referansı tekrar KULLANILMAZ, §19.5); AI çağrısı YAPILMAZ; widget özeti (`WidgetDataStore`) ve `MealReminderService` güncellenir; CloudKit senkronu bozulmaz.
   **Kabul:** §19.6 kriterlerinin tamamı: bağımsız nesne, eski kayıt değişmez, makrolar aynen, porsiyon eklemeden önce değiştirilebilir, proxy çağrısı yok, widget/bildirim güncel.
   **Uygulama notu:** DailyView kartı yeni manual `ScanEntry` + yeni `LoggedItem` graph’ı oluşturuyor; kaynak kayıt referansı kullanılmıyor. Kaydetme sonrası widget özeti ve hatırlatıcı yeniden hesaplanıyor; mevcut editör üzerinden porsiyon değiştirilebiliyor. ✅
 
 - [x] **SF-1403 · Widget ve Siri quick-add** ✅ 2026-07-14
-  **Dosya:** `CalorisorWidget/`, `Calorisor/AppIntents/LogMealIntent.swift`
+  **Dosya:** `CalpWidget/`, `Calp/AppIntents/LogMealIntent.swift`
   **Talimat:** SF-701'in QuickAdd modeli üstüne: widget'tan sık eklenen öğünü tek dokunuşla ekleme; `LogMealIntent`'i favori/sık eklenen parametresiyle genişlet.
   **Kabul:** Widget'tan ekleme AI çağrısı yapmaz; günlük özet anında yenilenir.
   **Uygulama notu:** Widget interactive AppIntent’i App Group kuyruğuna snapshot yazar ve özeti anında günceller; uygulama foreground olduğunda bağımsız SwiftData kaydı üretir. `LogMealIntent` sık eklenen ID parametresini destekliyor. ✅
@@ -232,7 +232,7 @@
 ## FAZ 15 — ÜRÜN DEĞERİ: HEALTHKIT + HAFTALIK RAPOR (kaynak Faz 5)
 
 - [x] **SF-1501 · HealthKit temel entegrasyon** ✅ 2026-07-14
-  **Dosya:** yeni `Calorisor/Health/HealthKitManager.swift`, `Calorisor/Info.plist`, `Calorisor.entitlements`, `project.yml`, SettingsView (`ContentView.swift`)
+  **Dosya:** yeni `Calp/Health/HealthKitManager.swift`, `Calp/Info.plist`, `Calp.entitlements`, `project.yml`, SettingsView (`ContentView.swift`)
   **Talimat:** Okuma: ağırlık, boy, aktif enerji, adım (doğum tarihi/cinsiyet YALNIZ hedef hesabında kullanılacaksa iste — §20.1). Yazma (açık izinle): dietaryEnergy, protein, karbonhidrat, yağ. Info.plist açıklamaları TR/EN. İzin reddinde uygulama normal çalışır. HealthKit verisi proxy'ye/loglara/analitiğe ASLA gitmez (§20.3).
   **Kabul:** §20.5'in tamamı; izin reddi testte crash üretmez.
   **Uygulama notu:** Okuma/yazma yalnızca `HealthKitManager` içinde; Settings'ten kullanıcı başlatmalı izin akışı; izin yoksa boş snapshot/`false` dönüşü ve crash yok. Simulator test runner'ı iki koşuda da CoreSimulator “Busy” hatasıyla başlatılamadı; Swift derlemesi başarılı.
@@ -249,24 +249,24 @@
   **Uygulama notu:** Her ScanEntry UUID’si dört besin örneğinin ortak HealthKit metadata anahtarıdır. Yeni kayıt ve düzenleme önce aynı UUID’ye ait örnekleri silip güncel toplamı yeniden yazar; günlük/geçmiş silme akışları da ilişkili örnekleri kaldırır. Uygulama HealthKit yazma başarısız olsa bile yerel öğün kaydını korur. Test runner Simulator “Busy” nedeniyle başlatılamadı; build başarılı.
 
 - [x] **SF-1504 · Haftalık özet hesaplayıcı + Free temel istatistik ekranı** ✅ 2026-07-14
-  **Dosya:** yeni `Calorisor/Models/WeeklySummaryBuilder.swift`, yeni haftalık görünüm
+  **Dosya:** yeni `Calp/Models/WeeklySummaryBuilder.swift`, yeni haftalık görünüm
   **Talimat:** §21.2 metrikleri tamamen cihazda hesaplanır (kayıtlı gün, ort. kalori/protein, hedef tutturulan gün, en yüksek/düşük gün, gece öğünü, önceki haftaya değişim; varsa aktif enerji + kilo değişimi). Free kullanıcı bu ekranı görür (AI raporu Pro — §21.5).
   **Kabul:** Builder birim testleri; AI erişimi olmadan ekran çalışır.
   **Uygulama notu:** `WeeklySummaryBuilder` kayıtlı gün, ortalama kalori/protein, hedef günleri, en yüksek/düşük gün, gece öğünü ve önceki hafta değişimini cihazda hesaplar; HealthKit aktif enerji ve kilo değişimi varsa eklenir. `HistoryView` içindeki haftalık özet Free kullanıcıya AI erişimi olmadan gösterilir. Builder testleri ve mevcut test paketi başarıyla geçti.
 
 - [x] **SF-1505 · Haftalık AI raporu (Pro)** ✅ 2026-07-14
   **Dosya:** yeni `proxy/api/weekly-report.ts` (veya scan.ts'e mode), `AIProxyClient.swift`, rapor view'ı
-  **Talimat:** Sunucuya YALNIZ §21.3 özet JSON'u gider (ham öğün geçmişi ve ham HealthKit verisi ASLA). Prompt kuralları §21.4: teşhis/tıbbi tavsiye/garanti yok, 1–2 uygulanabilir öneri, utandırmayan dil. Aynı hafta cache'lenir (`calorisor:weekly:{hash}:{week}`); kullanıcı yeniden oluşturabilir; başarısızlıkta SF-1504 ekranı ayakta kalır. "AI tarafından üretildi" ibaresi gösterilir. Rapor istekleri de usage/maliyet loguna girer.
+  **Talimat:** Sunucuya YALNIZ §21.3 özet JSON'u gider (ham öğün geçmişi ve ham HealthKit verisi ASLA). Prompt kuralları §21.4: teşhis/tıbbi tavsiye/garanti yok, 1–2 uygulanabilir öneri, utandırmayan dil. Aynı hafta cache'lenir (`calp:weekly:{hash}:{week}`); kullanıcı yeniden oluşturabilir; başarısızlıkta SF-1504 ekranı ayakta kalır. "AI tarafından üretildi" ibaresi gösterilir. Rapor istekleri de usage/maliyet loguna girer.
   **Kabul:** §21.6'nın tamamı.
-  **Uygulama notu:** `proxy/api/weekly-report.ts` yalnızca cihazda toplulaştırılmış haftalık metrikleri kabul eder; ham öğün/HealthKit alanlarını reddeder. Pro signed transaction doğrulaması, `calorisor:weekly:{hash}:{week}` cache’i, `force_refresh`, metadata-only token/maliyet logu ve güvenli rapor prompt’u eklendi. `AIProxyClient` signed JWS ile raporu çağırır; History ekranında Pro rapor kartı ve “AI tarafından üretildi” ibaresi gösterilir. Rapor başarısız olsa da SF-1504 temel istatistikleri görünür kalır. Proxy: 13/13 test; iOS build/test başarılı.
+  **Uygulama notu:** `proxy/api/weekly-report.ts` yalnızca cihazda toplulaştırılmış haftalık metrikleri kabul eder; ham öğün/HealthKit alanlarını reddeder. Pro signed transaction doğrulaması, `calp:weekly:{hash}:{week}` cache’i, `force_refresh`, metadata-only token/maliyet logu ve güvenli rapor prompt’u eklendi. `AIProxyClient` signed JWS ile raporu çağırır; History ekranında Pro rapor kartı ve “AI tarafından üretildi” ibaresi gösterilir. Rapor başarısız olsa da SF-1504 temel istatistikleri görünür kalır. Proxy: 13/13 test; iOS build/test başarılı.
 
 ---
 
 ## Test planı eşleştirmesi (kaynak §27)
 
 - Proxy senaryoları → `proxy/api/scan.test.ts` (SF-1204'te kurulan vitest; limit/cache/tier/hata/maliyet senaryolarının tamamı).
-- iOS senaryoları → mevcut `CalorisorTests/` düzenine yeni dosyalar: InstallationIdentityTests, FreeScanCounterTests (yeniden), AIProxyRequestTests (genişletme), FrequentMealsBuilderTests, WeeklySummaryBuilderTests, HealthKit izin akışı testleri.
-- Derleme/test komutları ROADMAP.md §0'daki gibi (`xcodegen generate` → `xcodebuild test -scheme Sofra ...`); yeni .swift dosyalarında `xcodegen generate` unutulmaz.
+- iOS senaryoları → mevcut `CalpTests/` düzenine yeni dosyalar: InstallationIdentityTests, FreeScanCounterTests (yeniden), AIProxyRequestTests (genişletme), FrequentMealsBuilderTests, WeeklySummaryBuilderTests, HealthKit izin akışı testleri.
+- Derleme/test komutları ROADMAP.md §0'daki gibi (`xcodegen generate` → `xcodebuild test -scheme Calp ...`); yeni .swift dosyalarında `xcodegen generate` unutulmaz.
 
 ## Definition of Done
 

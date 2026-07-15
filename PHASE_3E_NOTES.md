@@ -4,7 +4,7 @@ User-reported issues after 3d: scans always fail, camera screen has no exit/cont
 text-log close behaves unexpectedly, overall UI feels flat/bare. Full root-cause pass
 + redesign of every main screen.
 
-Verified: `xcodebuild -scheme Sofra -sdk iphonesimulator build` → **BUILD SUCCEEDED**,
+Verified: `xcodebuild -scheme Calp -sdk iphonesimulator build` → **BUILD SUCCEEDED**,
 zero errors, zero warnings, both targets. Simulator-verified screens: onboarding,
 daily (redesign), deep-link registration. Camera capture path requires a physical
 device (simulator has no camera hardware).
@@ -61,8 +61,8 @@ capture-failure toast. Free-scan badge hidden for subscribers.
   now opens `PaywallView` (with a context-appropriate skip label) and got an X back
   to daily (it must never be a dead end). The `.textLog` route is now gated by the
   same free-scan check as `.camera` (both entry points consume the same allowance).
-- New deep links (widget / future lock-screen actions): `sofra://camera`,
-  `sofra://textlog` alongside `sofra://daily`.
+- New deep links (widget / future lock-screen actions): `calp://camera`,
+  `calp://textlog` alongside `calp://daily`.
 
 ### 5. Portion correction didn't rescale nutrition (ResultView)
 Changing "2 kepçe" to "4 kepçe" left calories/macros untouched. `EditableVisionItem`
@@ -72,11 +72,11 @@ sits above "Logla".
 
 ---
 
-## Design overhaul ("Yumuşak Sofra", applied for real this time)
+## Design overhaul ("Yumuşak Calp", applied for real this time)
 
 - **Geist bundled.** Static OTFs (Sans R/M/SB + Mono R/M, MIT, from vercel/geist-font)
-  in `Sofra/Resources/Fonts/`, registered via `UIAppFonts`,
-  `SofraTypography.geistAvailable = true`. PostScript names verified against
+  in `Calp/Resources/Fonts/`, registered via `UIAppFonts`,
+  `CalpTypography.geistAvailable = true`. PostScript names verified against
   `Font+Tokens.swift`. Numerals across the app are now true Geist Mono (slashed zeros).
 - **DailyView:** time-of-day greeting ("Günaydın/İyi günler/İyi akşamlar") + full
   Turkish date; ring gains consumed/target caption and a neutral over-target state
@@ -107,13 +107,13 @@ sits above "Logla".
 ---
 
 ## Files added
-- `Sofra/Models/DaySummaryBuilder.swift`
-- `Sofra/Resources/Fonts/*.otf` (5 files)
-- `Sofra/Assets.xcassets/Colors/macro{Protein,Carb,Fat}.colorset`
-- Regenerated `Sofra.xcodeproj` via `xcodegen generate`.
+- `Calp/Models/DaySummaryBuilder.swift`
+- `Calp/Resources/Fonts/*.otf` (5 files)
+- `Calp/Assets.xcassets/Colors/macro{Protein,Carb,Fat}.colorset`
+- Regenerated `Calp.xcodeproj` via `xcodegen generate`.
 
 ## Known follow-ups
-- Deploy the Vercel proxy; set `AIProxyEndpointURL` (+ optional `x-sofra-key`).
+- Deploy the Vercel proxy; set `AIProxyEndpointURL` (+ optional `x-calp-key`).
 - Physical-device camera pass (simulator has no camera): torch, tap-to-focus,
   capture latency.
 - Onboarding/Paywall visual pass was out of scope this round (functional, tokens

@@ -30,14 +30,14 @@ daily ──camera button──> camera
 daily ──7-day summary──> sheet
 ```
 
-No tab bar — camera is the root screen per `PROJECT_CONTEXT.md`. Transitions use `Animation.sofraSpring` (response 0.4, damping 0.75).
+No tab bar — camera is the root screen per `PROJECT_CONTEXT.md`. Transitions use `Animation.calpSpring` (response 0.4, damping 0.75).
 
 ---
 
 ## New files added (Phase 2)
 
 ```
-Sofra/
+Calp/
   App/
     NavigationModel.swift          AppScreen enum + flow state
   Views/
@@ -65,7 +65,7 @@ Sofra/
 |---|---|
 | `AIProxyClient.swift` | Added `scanText()` method, refactored `AIProxyRequest` to support photo/text modes |
 | `ContentView.swift` | Replaced placeholder with navigation state machine |
-| `SofraApp.swift` | Injects `NavigationModel` as environment |
+| `CalpApp.swift` | Injects `NavigationModel` as environment |
 
 ---
 
@@ -77,13 +77,13 @@ Sofra/
 
 3. **DailyQuickCounter persistence.** Counters are loaded from SwiftData on `DailyView.onAppear` and saved on every `onChange(of: breadSlices/teaGlasses)`. The counter is keyed by start-of-day date. No unique constraint (CloudKit forbids it); the code fetches-or-creates the row for today.
 
-4. **Calorie target fallback.** Uses `@AppStorage("sofra.dailyCalorieTarget")` with a default of 2000 kcal. The real target will come from `UserProfile` after onboarding (Phase 3a).
+4. **Calorie target fallback.** Uses `@AppStorage("calp.dailyCalorieTarget")` with a default of 2000 kcal. The real target will come from `UserProfile` after onboarding (Phase 3a).
 
 5. **Free scan gate is enforced in `ContentView`.** When `FreeScanCounter.shared.canScanForFree` is false, `FreeScanLimitView` is shown instead of the camera. The paywall CTA is a placeholder — real StoreKit 2 flow is Phase 3b.
 
 6. **Empty image in text-log result.** When navigating from text log to result, `UIImage()` (blank) is passed as the thumbnail. The header thumbnail renders empty — non-ideal but functional; a dedicated icon or placeholder can be added in polish pass (Phase 3d).
 
-7. **Macro colors.** Protein→green, Carbs→orange, Fat→red. These are chosen for quick visual distinction; they are not from `design-tokens.json` (which defines only the Sofra palette). A future design pass may replace them with desaturated versions that fit the "Yumuşak Sofra" aesthetic better.
+7. **Macro colors.** Protein→green, Carbs→orange, Fat→red. These are chosen for quick visual distinction; they are not from `design-tokens.json` (which defines only the Calp palette). A future design pass may replace them with desaturated versions that fit the "Yumuşak Calp" aesthetic better.
 
 8. **7-day summary uses Turkish weekday abbreviations.** `DateFormatter` with `tr_TR` locale, short weekday names (Pzt, Sal, Çar...). "Bugün" and "Dün" labels for the most recent two days.
 
@@ -98,7 +98,7 @@ These are listed in the Phase 2 prompt as out of scope, confirmed here for clari
 - Onboarding quiz (Phase 3a)
 - Paywall / StoreKit 2 (Phase 3b) — free scan limit placeholder only
 - Home screen widget (Phase 3c)
-- Sofra Modu / pot calibration / Apple Health / barcode
+- Calp Modu / pot calibration / Apple Health / barcode
 - Final animation polish pass (Phase 3d) — only interactions explicitly listed in the Phase 2 prompt are built
 
 ---
@@ -117,6 +117,6 @@ Since the AI proxy endpoint is a placeholder (`https://REPLACE-ME.vercel.app/api
 
 1. The camera → capture → shutter flash → analysis → error → retry flow can be tested directly.
 2. The text log → result flow can be tested the same way.
-3. The daily ring, quick counters, and 7-day summary work fully with locally-saved `ScanEntry` data (e.g., by manually inserting test entries via a debug button or by temporarily adding sample data in `SofraApp`).
+3. The daily ring, quick counters, and 7-day summary work fully with locally-saved `ScanEntry` data (e.g., by manually inserting test entries via a debug button or by temporarily adding sample data in `CalpApp`).
 
 A real backend endpoint is the blocking dependency for the full end-to-end demo.

@@ -1,6 +1,6 @@
 {
-  "name": "Calorisor — Flat (Visual Nutrition Intelligence)",
-  "note": "Values mirror Sofra/Assets.xcassets/Colors (the source of truth at runtime). Flat, typography-led: no gradient, glass, emboss or physical-depth shadow. Hierarchy comes from fill, 1pt border and whitespace.",
+  "name": "Calp — Flat (Visual Nutrition Intelligence)",
+  "note": "Values mirror Calp/Assets.xcassets/Colors (the source of truth at runtime). Flat, typography-led: no gradient, glass, emboss or physical-depth shadow. Hierarchy comes from fill, 1pt border and whitespace.",
   "color": {
     "light": {
       "bg-page": "#F6F4F0",

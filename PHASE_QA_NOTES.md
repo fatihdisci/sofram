@@ -1,4 +1,4 @@
-# Calorisor · Gerçek Cihaz QA & Yayın Kapısı
+# Calp · Gerçek Cihaz QA & Yayın Kapısı
 
 Bu liste SF-1008 kapsamında Fatih'in iPhone'unda doldurulacak.
 Her adımı gerçek cihazda gözlemledikten sonra ✅ veya ❌ ile işaretle.
@@ -21,7 +21,7 @@ Her adımı gerçek cihazda gözlemledikten sonra ✅ veya ❌ ile işaretle.
 - [ ] Medical disclaimer görünüyor
 
 ### Paywall
-- [ ] Paywall "Calorisor Pro" başlığıyla açılıyor
+- [ ] Paywall "Calp Pro" başlığıyla açılıyor
 - [ ] Fiyat ve plan seçimi doğru (aylık/yıllık, 7 gün ücretsiz deneme)
 - [ ] "Ücretsiz devam et" ile kapanıyor
 - [ ] "Satın Alımları Geri Yükle" ve "Abonelik Yönetimi" butonları var
@@ -118,7 +118,7 @@ Her adımı gerçek cihazda gözlemledikten sonra ✅ veya ❌ ile işaretle.
 - [ ] Medical disclaimer İngilizce
 
 ### Paywall
-- [ ] "Calorisor Pro", plan seçimi, özellik kartı İngilizce
+- [ ] "Calp Pro", plan seçimi, özellik kartı İngilizce
 - [ ] Feature rows: "High-limit daily AI analysis", "More analysis with Pro", "Shareable with Family", "Smarter AI", "First access to new Pro features"
 
 ### Bugün (Today)
@@ -176,23 +176,23 @@ Her adımı gerçek cihazda gözlemledikten sonra ✅ veya ❌ ile işaretle.
 
 ## Yayın Kapısı (Fatih Aksiyon)
 
-- [ ] `calorisor.app` alan adı kayıtlı
-- [ ] Privacy Policy sayfası yayında (`https://calorisor.app/privacy`)
-- [ ] Terms of Use sayfası yayında (`https://calorisor.app/terms`)
-- [ ] App Store Connect'te "Calorisor" ismi rezerve edildi
+- [ ] `calp.app` alan adı kayıtlı
+- [ ] Privacy Policy sayfası yayında (`https://calp.app/privacy`)
+- [ ] Terms of Use sayfası yayında (`https://calp.app/terms`)
+- [ ] App Store Connect'te "Calp" ismi rezerve edildi
 - [ ] TURKPATENT marka araştırması tamam (sınıf 9, 42)
 - [ ] USPTO / EUIPO marka araştırması tamam
 - [ ] Foodvisor isim benzerliği hukuki değerlendirmesi yapıldı
-- [ ] Sosyal medya kullanıcı adı (@calorisor) kontrol edildi
+- [ ] Sosyal medya kullanıcı adı (@calp) kontrol edildi
 - [ ] `AIProxyEndpointURL` gerçek Vercel deployment URL'si ile değiştirildi
-- [ ] `AIProxyAPIKey` gerçek `CALORISOR_CLIENT_KEY` ile değiştirildi
+- [ ] `AIProxyAPIKey` gerçek `CALP_CLIENT_KEY` ile değiştirildi
 - [ ] `DEVELOPMENT_TEAM` project.yml'da ayarlandı
 - [ ] App Store Connect: aylık ve yıllık ürünler oluşturuldu
 - [ ] App Store Connect: yıllık planda 7 günlük introductory offer tanımlandı
 - [ ] App Store Connect: privacy nutrition label dolduruldu
 - [ ] App Store ekran görüntüleri (TR + EN, tüm ekran boyutları) hazır
 - [ ] App Store açıklaması ve anahtar kelimeler (TR + EN) hazır
-- [ ] Destek e-postası (`destek@calorisor.app`) aktif
+- [ ] Destek e-postası (`destek@calp.app`) aktif
 
 ---
 

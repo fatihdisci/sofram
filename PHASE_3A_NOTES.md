@@ -43,16 +43,16 @@ Rationale: A balanced Mediterranean/Turkish-diet split. Protein at 25% (~1.6g/kg
 
 ### New:
 ```
-Sofra/Views/Onboarding/
+Calp/Views/Onboarding/
   OnboardingModel.swift    Flow state + Mifflin-St Jeor calculator
   OnboardingView.swift     Quiz screens + result + paywall placeholder
 ```
 
 ### Modified:
 ```
-Sofra/Models/UserProfile.swift   Added Goal.gainMuscle case,
+Calp/Models/UserProfile.swift   Added Goal.gainMuscle case,
                                   displayName for Goal and ActivityLevel
-Sofra/App/ContentView.swift       Added onboarding-first-launch gate
+Calp/App/ContentView.swift       Added onboarding-first-launch gate
 ```
 
 ---
@@ -78,13 +78,13 @@ Sofra/App/ContentView.swift       Added onboarding-first-launch gate
 - Progress bar at top using accent color, spring-animated
 - Spring transitions between steps (response 0.4, damping 0.75)
 - Result screen: calorie ring in raisedSurface + macro pills
-- Paywall: sofra icon, welcome text, placeholder message, free CTA
+- Paywall: calp icon, welcome text, placeholder message, free CTA
 
 ---
 
 ## First-launch detection
 
-`@AppStorage("sofra.onboardingCompleted")` in `ContentView` controls whether onboarding or the main camera flow is shown. `OnboardingModel.hasCompletedOnboarding` mirrors this flag. After onboarding completes (paywall "Ücretsiz Başla"), the flag is set to true and the view automatically switches to the main app.
+`@AppStorage("calp.onboardingCompleted")` in `ContentView` controls whether onboarding or the main camera flow is shown. `OnboardingModel.hasCompletedOnboarding` mirrors this flag. After onboarding completes (paywall "Ücretsiz Başla"), the flag is set to true and the view automatically switches to the main app.
 
 ---
 
