@@ -56,6 +56,12 @@ targets:
           - "Info.plist"
           - "Secrets.plist"
           - "*.entitlements"
+    # Secrets are injected via xcconfig, not committed in Info.plist. The base
+    # file is committed and optionally includes Secrets.xcconfig.local (gitignored)
+    # for the real CALP_PROXY_API_KEY. Info.plist reads it as $(CALP_PROXY_API_KEY).
+    configFiles:
+      Debug: Config/Secrets.xcconfig
+      Release: Config/Secrets.xcconfig
     settings:
       base:
         PRODUCT_NAME: Calp

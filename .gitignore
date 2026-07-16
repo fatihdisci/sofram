@@ -36,6 +36,7 @@ fastlane/screenshots/**/*.png
 
 # Secrets — never commit real proxy keys/endpoints
 *.xcconfig.local
+Config/Secrets.xcconfig.local
 Secrets.plist
 
 # Scratch

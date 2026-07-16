@@ -71,7 +71,7 @@
 	<key>AIProxyEndpointURL</key>
 	<string>https://sofram-five.vercel.app/api/scan</string>
 	<key>AIProxyAPIKey</key>
-	<string>0acf371e226a6ce980b1f177b07f6f65602b15a79862c5c64d732815db62d1f3</string>
+	<string>$(CALP_PROXY_API_KEY)</string>
 
 	<!-- Custom fonts: Geist Sans (UI) + Geist Mono (numeric displays) -->
 	<key>UIAppFonts</key>
