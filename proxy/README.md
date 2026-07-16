@@ -29,6 +29,62 @@ The endpoint is available at `http://localhost:3000/api/scan`.
 Configure the same values in the Vercel project for deployment. Never commit
 real keys.
 
+## Apple StoreKit (Calp Pro) verification
+
+Pro entitlement is decided server-side. The iOS app sends the StoreKit
+`signedTransactionInfo` JWS in the `signed_transaction_info` field; the proxy
+verifies it with Apple's official
+[`@apple/app-store-server-library`](https://github.com/apple/app-store-server-library-node)
+(`SignedDataVerifier`) — signature, certificate chain up to Apple's root, bundle
+id and environment — then applies the Pro product policy. Pro product ids:
+`com.fatih.calp.monthly`, `com.fatih.calp.annual` (the pre-rename
+`com.fatih.calorisor.*` ids stay entitled via the legacy allowlist).
+
+> **Runtime note:** because the Apple library uses Node's `crypto`
+> (`X509Certificate`), `api/scan.ts` and `api/weekly-report.ts` run on the
+> **Node.js** runtime (`runtime: "nodejs"`), not Edge.
+
+### Environment variables
+
+| Variable | Required | Example | Notes |
+| --- | --- | --- | --- |
+| `APPLE_ROOT_CERTIFICATES` | Yes | `MIICQz...` | Base64 DER of Apple Root CA - G3. Comma/newline separated for multiple. Missing ⇒ every verification fails closed to free. |
+| `APPLE_BUNDLE_ID` | Recommended | `com.fatih.calp` | Bundle id the transaction must be signed for. Defaults to `com.fatih.calp`. |
+| `APPLE_STOREKIT_ENVIRONMENT` | Recommended | `Sandbox` | `Sandbox`, `Production`, or `Production,Sandbox`. Unset ⇒ both (Production first, then Sandbox). |
+| `APPLE_APP_APPLE_ID` | Prod only | `6790000000` | Numeric App Store app id (adamId). **Required** to verify Production; unused in Sandbox. |
+| `APPLE_ENABLE_ONLINE_CHECKS` | No | `false` | `true` turns on OCSP revocation + live-date checks (needs outbound egress). Default off. |
+
+### Sandbox vs Production
+
+- **Sandbox** — TestFlight and Xcode/dev installs always produce Sandbox
+  transactions. Set `APPLE_STOREKIT_ENVIRONMENT=Sandbox`; no `APPLE_APP_APPLE_ID`
+  needed. This is the value to use while running the pre-launch Sandbox test.
+- **Production** — App Store installs produce Production transactions. Set
+  `APPLE_STOREKIT_ENVIRONMENT=Production` **and** `APPLE_APP_APPLE_ID` (the
+  numeric app id from App Store Connect → App Information → *Apple ID*).
+- **Both** — a single deployment serving TestFlight and App Store users at once
+  can use `Production,Sandbox` (requires `APPLE_APP_APPLE_ID`); each transaction
+  is tried against Production first, then Sandbox.
+
+If Production is requested without `APPLE_APP_APPLE_ID`, Production transactions
+fail closed with reason `missing_app_apple_id` (Sandbox still works). If
+`APPLE_ROOT_CERTIFICATES` is unset, all verification fails closed with reason
+`missing_certificate_configuration`.
+
+### Preparing the Apple root certificate value
+
+1. Download **Apple Root CA - G3 Root Certificate** (`AppleRootCA-G3.cer`, DER)
+   from <https://www.apple.com/certificateauthority/>.
+2. Base64-encode it to a single line:
+
+   ```bash
+   base64 -i AppleRootCA-G3.cer | tr -d '\n'
+   ```
+
+3. Paste the output as the `APPLE_ROOT_CERTIFICATES` value. The certificate is
+   public (not a secret), but it is what pins the trust chain, so keep it under
+   config control rather than fetching it at runtime.
+
 ## Text-mode smoke test
 
 ```bash

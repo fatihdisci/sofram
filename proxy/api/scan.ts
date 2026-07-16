@@ -9,8 +9,11 @@ import {
 } from "../lib/openai-cost.js";
 import { recordOpenAICost } from "../lib/metrics.js";
 
+// Node.js (not Edge) runtime: Apple's @apple/app-store-server-library verifies
+// the StoreKit certificate chain with Node's `crypto` (X509Certificate) and is
+// not Edge-compatible. resolveEntitlement pulls it in transitively.
 export const config = {
-  runtime: "edge",
+  runtime: "nodejs",
 };
 
 type ScanMode = "photo" | "text";

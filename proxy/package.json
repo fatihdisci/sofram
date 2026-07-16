@@ -11,14 +11,16 @@
   },
   "devDependencies": {
     "@types/node": "latest",
+    "jsonwebtoken": "^9.0.2",
+    "jsrsasign": "^11.0.0",
     "tsx": "latest",
     "typescript": "5.9.3",
     "vercel": "latest",
     "vitest": "latest"
   },
   "dependencies": {
+    "@apple/app-store-server-library": "^3.1.0",
     "@upstash/ratelimit": "^2.0.8",
-    "@upstash/redis": "^1.38.0",
-    "jose": "^6.2.3"
+    "@upstash/redis": "^1.38.0"
   }
 }

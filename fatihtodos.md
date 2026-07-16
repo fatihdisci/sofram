@@ -43,6 +43,7 @@
   ürünlerini gösterir; kodda eski `com.fatih.calorisor.*` ID'leri yalnız proxy legacy-allowlist'inde. <!-- brand-keep -->
 - [ ] **Vercel env:** `CALP_CLIENT_KEY` (ve varsa `CALP_DAILY_COST_ALERT_MICROUSD`) ekle.
   Eski `CALORISOR_*` env'ler geçiş fallback'i; canlı doğrulama sonrası kaldırılabilir. <!-- brand-keep -->
+  StoreKit Pro doğrulaması için gereken Apple env değişkenleri ayrıca bölüm 2.3'te.
 - [ ] **Domain:** `calp.app` sahipliğini doğrula/al — kod artık `https://calp.app/privacy`
   ve `/terms`'e işaret ediyor. Domain hazır olana kadar bu linkler çalışmaz.
 - [ ] **Vercel endpoint** `https://sofram-five.vercel.app/api/scan` çalışmaya devam
@@ -128,6 +129,42 @@
 - [ ] OpenAI için ayrı project aç; hard/soft bütçe ve günlük harcama alarmı kur; anahtarı yalnız Vercel'de tut.
 - [ ] `https://calp.app/privacy` ve `/terms` sayfalarını gerçek veri akışıyla güncelle: installation hash, 7 günlük cache, token/maliyet kaydı, AI sonuçlarının tahmin olduğu ve adil kullanım.
 - [ ] App Store Privacy Nutrition Label'ı proxy'nin 7 günlük cache davranışıyla tutarlı doldur; “hiç veri toplanmıyor” seçme.
+
+## 2.3 Apple StoreKit sunucu doğrulaması — Vercel env (ZORUNLU)
+
+> Proxy artık Pro'yu sunucu tarafında, Apple'ın resmi
+> `@apple/app-store-server-library`'si (`SignedDataVerifier`) ile doğruluyor.
+> İstemci StoreKit `signedTransactionInfo` JWS'ini gönderir; proxy imza + sertifika
+> zinciri + bundle ID + environment doğrular, sonra Pro ürün politikasını uygular.
+> Ayrıntı: [proxy/README.md](/Users/fatihdisci/apps/sofram/proxy/README.md:1) →
+> "Apple StoreKit (Calp Pro) verification". Bunlar yalnız Vercel panelinde yapılır.
+>
+> Not: Apple kütüphanesi Node `crypto` kullandığı için `api/scan.ts` ve
+> `api/weekly-report.ts` artık **Node.js** runtime'ında çalışıyor (Edge değil).
+> Kod tarafı hazır; aşağıdakiler elle Vercel'e girilir.
+
+- [ ] **Apple Root CA - G3'ü hazırla:** <https://www.apple.com/certificateauthority/>
+  adresinden `AppleRootCA-G3.cer` (DER) indir ve tek satır base64'e çevir:
+
+  ```bash
+  base64 -i AppleRootCA-G3.cer | tr -d '\n'
+  ```
+
+- [ ] **Vercel env — Sandbox testi için (ZORUNLU, deploy'dan ÖNCE):**
+  - `APPLE_ROOT_CERTIFICATES` = yukarıdaki base64 çıktısı
+  - `APPLE_BUNDLE_ID` = `com.fatih.calp`
+  - `APPLE_STOREKIT_ENVIRONMENT` = `Sandbox`
+  - (`APPLE_APP_APPLE_ID` Sandbox için GEREKMEZ.)
+- [ ] **Production'a geçerken (App Store yayını):**
+  - `APPLE_STOREKIT_ENVIRONMENT` = `Production` (veya TestFlight + App Store
+    aynı anda hizmet verilecekse `Production,Sandbox`)
+  - `APPLE_APP_APPLE_ID` = App Store Connect → App Information → *Apple ID*
+    (sayısal adamId). Production doğrulaması bu değer olmadan `missing_app_apple_id`
+    ile başarısız olur (fail-closed).
+- [ ] **Gerçek Sandbox doğrulaması (StoreKit işi bunsuz tamamlanmış sayılmaz):**
+  Sandbox hesabıyla gerçek cihazda aylık/yıllık satın al; uygulama scan isteğinde
+  `signed_transaction_info` gönderdiğinde yanıt header'ında `x-calp-tier: pro`
+  döndüğünü doğrula. `free` dönüyorsa env değerlerini ve environment'ı kontrol et.
 
 ## 3. Gerçek cihazda önce yeni özellikleri test et
 
